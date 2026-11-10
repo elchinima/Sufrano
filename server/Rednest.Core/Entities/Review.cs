@@ -1,0 +1,49 @@
+namespace Rednest.Core.Entities;
+
+public enum ReviewCategory
+{
+    Delivery = 0,
+    Products = 1,
+    Service = 2,
+    Staff = 3
+}
+
+public enum ReviewStatus
+{
+    Published = 0,
+    Verification = 1,
+    Cancelled = 2,
+    Pending = 3
+}
+
+public enum ReviewLanguage
+{
+    Russian = 0,
+    English = 1,
+    Azerbaijani = 2
+}
+
+public class ReviewDetails
+{
+    public decimal Rating { get; set; }
+    public string Comment { get; set; } = string.Empty;
+}
+
+public class ReviewStatusInfo
+{
+    public ReviewStatus Status { get; set; } = ReviewStatus.Pending;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow.AddHours(4);
+}
+
+public class Review
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid UserId { get; set; }
+    public Guid OrderId { get; set; }
+    public ReviewCategory Category { get; set; }
+    public ReviewStatusInfo Status { get; set; } = new();
+    public ReviewLanguage? Language { get; set; } = null;
+    public ReviewDetails ReviewData { get; set; } = new();
+    public List<Guid> Likes { get; set; } = new();
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow.AddHours(4);
+}

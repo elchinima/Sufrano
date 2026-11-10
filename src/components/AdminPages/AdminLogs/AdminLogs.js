@@ -1,0 +1,837 @@
+import { __h, __Fragment } from '../../../utils/runtime.js';
+import React, { useState, useEffect, useCallback, useMemo } from "../../../utils/runtime.js";
+import { motion, AnimatePresence } from "../../../utils/motion.js";
+import AdminLayout from "../AdminLayout/AdminLayout.js";
+import { fetchWithRefresh } from "../../../utils/fetchWithRefresh.js";
+const loaderIcon = "/assets/icons/loader-animated.svg";
+const PAGE_SIZE_OPTIONS = [
+	15,
+	25,
+	50,
+	100
+];
+const PAGES_LIST = [
+	"All",
+	"Users",
+	"Products",
+	"Orders",
+	"Promos",
+	"Reviews",
+	"Newsletter",
+	"Database",
+	"Footer"
+];
+const TYPES_LIST = [
+	"All",
+	"POST",
+	"PUT",
+	"PATCH",
+	"DELETE"
+];
+const ROLES_LIST = [
+	"All",
+	"Super Admin",
+	"Admin",
+	"Moderator"
+];
+const fadeUp = {
+	hidden: {
+		opacity: 0,
+		y: 16
+	},
+	show: (i) => ({
+		opacity: 1,
+		y: 0,
+		transition: {
+			delay: i * .05,
+			duration: .4,
+			ease: [
+				.16,
+				1,
+				.3,
+				1
+			]
+		}
+	})
+};
+const formatBakuDate = (isoStr) => {
+	if (!isoStr) return "—";
+	try {
+		const d = new Date(isoStr);
+		if (isNaN(d.getTime())) return "—";
+		const formatter = new Intl.DateTimeFormat("en-GB", {
+			timeZone: "Asia/Baku",
+			day: "2-digit",
+			month: "2-digit",
+			year: "numeric",
+			hour: "2-digit",
+			minute: "2-digit",
+			hour12: false
+		});
+		const parts = formatter.formatToParts(d);
+		const day = parts.find((p) => p.type === "day")?.value || "01";
+		const month = parts.find((p) => p.type === "month")?.value || "01";
+		const year = parts.find((p) => p.type === "year")?.value || "2000";
+		const hour = parts.find((p) => p.type === "hour")?.value || "00";
+		const minute = parts.find((p) => p.type === "minute")?.value || "00";
+		return `${day}.${month}.${year}, ${hour}:${minute}`;
+	} catch {
+		return "—";
+	}
+};
+const formatRelativeTime = (dateStr) => {
+	if (!dateStr) return "Never";
+	try {
+		const d = new Date(dateStr);
+		const now = new Date();
+		const diffMs = now - d;
+		const diffSecs = Math.floor(diffMs / 1e3);
+		const diffMins = Math.floor(diffSecs / 60);
+		const diffHours = Math.floor(diffMins / 60);
+		const diffDays = Math.floor(diffHours / 24);
+		if (diffSecs < 10) return "Just now";
+		if (diffSecs < 60) return `${diffSecs}s ago`;
+		if (diffMins < 60) return `${diffMins}m ago`;
+		if (diffHours < 24) return `${diffHours}h ago`;
+		if (diffDays < 7) return `${diffDays}d ago`;
+		return d.toLocaleDateString("en-GB", {
+			day: "2-digit",
+			month: "short",
+			year: "numeric"
+		});
+	} catch {
+		return "—";
+	}
+};
+const formatRoleName = (role) => {
+	if (!role) return "Admin";
+	const r = String(role).trim();
+	if (r.toLowerCase().replace(/\s+/g, "") === "superadmin") {
+		return "Super Admin";
+	}
+	return r;
+};
+const formatActionName = (name) => {
+	if (!name) return "Action";
+	const str = String(name).trim();
+	return str.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2").trim();
+};
+const formatFieldName = (field) => {
+	if (!field) return "";
+	const str = String(field).trim();
+	return str.replace(/Id$/i, " ID").replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2").replace(/^./, (c) => c.toUpperCase()).trim();
+};
+const getTypeBadgeClass = (type) => {
+	const t = String(type || "").toUpperCase();
+	switch (t) {
+		case "POST": return "badge badge--success";
+		case "PUT": return "badge badge--info";
+		case "PATCH": return "badge badge--purple";
+		case "DELETE": return "badge badge--danger";
+		default: return "badge badge--muted";
+	}
+};
+const getRoleBadgeClass = (role) => {
+	const r = String(role || "").toLowerCase();
+	if (r.includes("super")) {
+		return "badge badge--warning";
+	}
+	if (r.includes("admin")) {
+		return "badge badge--danger";
+	}
+	if (r.includes("moderator")) {
+		return "badge badge--info";
+	}
+	return "badge badge--muted";
+};
+const parseJsonSafe = (str) => {
+	if (!str) return {};
+	if (typeof str === "object") return str;
+	try {
+		return JSON.parse(str);
+	} catch {
+		return { text: str };
+	}
+};
+const formatValueDisplay = (val) => {
+	if (val === null || val === undefined) return "null";
+	if (typeof val === "boolean") return val ? "True" : "False";
+	if (typeof val === "object") {
+		try {
+			return JSON.stringify(val);
+		} catch {
+			return String(val);
+		}
+	}
+	return String(val);
+};
+const extractChanges = (data) => {
+	if (!data || typeof data !== "object") return [];
+	if (data.changes && typeof data.changes === "object") {
+		return Object.entries(data.changes).filter(([_, val]) => val !== null && typeof val === "object").map(([key, val]) => ({
+			field: formatFieldName(key),
+			rawField: key,
+			from: formatValueDisplay(val.from),
+			to: formatValueDisplay(val.to)
+		}));
+	}
+	if (data.previousStatus !== undefined && data.newStatus !== undefined) {
+		return [{
+			field: "Status",
+			rawField: "status",
+			from: formatValueDisplay(data.previousStatus),
+			to: formatValueDisplay(data.newStatus)
+		}];
+	}
+	if (data.before && data.after && typeof data.before === "object" && typeof data.after === "object") {
+		const allKeys = Array.from(new Set([...Object.keys(data.before), ...Object.keys(data.after)]));
+		const diffs = [];
+		for (const k of allKeys) {
+			const bVal = data.before[k];
+			const aVal = data.after[k];
+			if (bVal !== aVal && (bVal !== undefined || aVal !== undefined)) {
+				diffs.push({
+					field: formatFieldName(k),
+					rawField: k,
+					from: formatValueDisplay(bVal),
+					to: formatValueDisplay(aVal)
+				});
+			}
+		}
+		if (diffs.length > 0) return diffs;
+	}
+	if (data.action && String(data.action).toLowerCase().includes("toggle") && data.isActive !== undefined) {
+		return [{
+			field: "Is Active",
+			rawField: "isActive",
+			from: formatValueDisplay(!data.isActive),
+			to: formatValueDisplay(data.isActive)
+		}];
+	}
+	return [];
+};
+const extractParams = (data) => {
+	if (!data || typeof data !== "object") return [];
+	const skipKeys = new Set([
+		"action",
+		"changes",
+		"before",
+		"after",
+		"previousStatus",
+		"newStatus"
+	]);
+	const result = [];
+	for (const [key, val] of Object.entries(data)) {
+		if (skipKeys.has(key)) continue;
+		if (val === null || val === undefined) continue;
+		result.push({
+			key: formatFieldName(key),
+			rawKey: key,
+			value: formatValueDisplay(val)
+		});
+	}
+	return result;
+};
+const extractActionSummary = (descriptionStr, type, page) => {
+	const data = parseJsonSafe(descriptionStr);
+	const actionName = formatActionName(data.action || type || "Action");
+	const changes = extractChanges(data);
+	const params = extractParams(data);
+	let targetPreview = "";
+	if (data.targetEmail) {
+		targetPreview = data.targetEmail;
+	} else if (data.productName) {
+		targetPreview = data.productName;
+	} else if (data.orderId) {
+		targetPreview = `Order #${String(data.orderId).substring(0, 8)}...`;
+	} else if (data.promoCode) {
+		targetPreview = `Promo: ${data.promoCode}`;
+	} else if (data.fileName) {
+		targetPreview = data.fileName;
+	} else if (data.subject) {
+		targetPreview = `Subject: "${data.subject.substring(0, 30)}${data.subject.length > 30 ? "..." : ""}"`;
+	} else if (data.toEmail) {
+		targetPreview = `To: ${data.toEmail}`;
+	} else if (data.targetUserId) {
+		targetPreview = `User: ${String(data.targetUserId).substring(0, 8)}...`;
+	} else if (data.reviewId) {
+		targetPreview = `Review: ${String(data.reviewId).substring(0, 8)}...`;
+	} else if (data.target) {
+		targetPreview = data.target;
+	}
+	return {
+		actionName,
+		targetPreview,
+		data,
+		changes,
+		params
+	};
+};
+const AdminLogs = () => {
+	const [logs, setLogs] = useState([]);
+	const [totalCount, setTotalCount] = useState(0);
+	const [totalPages, setTotalPages] = useState(1);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [pageSize, setPageSize] = useState(25);
+	const [isLoading, setIsLoading] = useState(true);
+	const [searchInput, setSearchInput] = useState("");
+	const [activeSearch, setActiveSearch] = useState("");
+	const [filterPage, setFilterPage] = useState("All");
+	const [filterType, setFilterType] = useState("All");
+	const [filterRole, setFilterRole] = useState("All");
+	const [selectedLog, setSelectedLog] = useState(null);
+	const [toastMessage, setToastMessage] = useState("");
+	const [toastType, setToastType] = useState("success");
+	const [expandedRows, setExpandedRows] = useState(new Set());
+	const [rowViewModes, setRowViewModes] = useState({});
+	const [modalViewMode, setModalViewMode] = useState("visual");
+	const showToast = (msg, type = "success") => {
+		setToastMessage(msg);
+		setToastType(type);
+		setTimeout(() => setToastMessage(""), 4e3);
+	};
+	const copyToClipboard = async (text, label = "Copied") => {
+		try {
+			await navigator.clipboard.writeText(text);
+			showToast(`${label} copied to clipboard!`, "success");
+		} catch {
+			showToast("Could not copy to clipboard", "error");
+		}
+	};
+	const fetchLogs = useCallback(async () => {
+		setIsLoading(true);
+		try {
+			const params = new URLSearchParams({
+				page: currentPage.toString(),
+				pageSize: pageSize.toString()
+			});
+			if (activeSearch.trim()) {
+				params.append("search", activeSearch.trim());
+			}
+			if (filterPage && filterPage !== "All") {
+				params.append("filterPage", filterPage);
+			}
+			if (filterType && filterType !== "All") {
+				params.append("filterType", filterType);
+			}
+			if (filterRole && filterRole !== "All") {
+				params.append("filterRole", filterRole);
+			}
+			const res = await fetchWithRefresh(`/api/Admin/logs?${params.toString()}`);
+			if (res.ok) {
+				const data = await res.json();
+				setLogs(data.logs || []);
+				setTotalCount(data.totalCount || 0);
+				setTotalPages(data.totalPages || 1);
+			} else {
+				showToast("Failed to load audit logs.", "error");
+			}
+		} catch (err) {
+			console.error("Error fetching admin logs:", err);
+			showToast("Error loading logs.", "error");
+		} finally {
+			setIsLoading(false);
+		}
+	}, [
+		currentPage,
+		pageSize,
+		activeSearch,
+		filterPage,
+		filterType,
+		filterRole
+	]);
+	useEffect(() => {
+		fetchLogs();
+	}, [fetchLogs]);
+	const handleSearchSubmit = (e) => {
+		if (e) e.preventDefault();
+		setActiveSearch(searchInput.trim());
+		setCurrentPage(1);
+	};
+	const handleSearchKeyDown = (e) => {
+		if (e.key === "Enter") {
+			handleSearchSubmit(e);
+		}
+	};
+	const handleClearSearch = () => {
+		setSearchInput("");
+		setActiveSearch("");
+		setCurrentPage(1);
+	};
+	const handleClearFilters = () => {
+		setSearchInput("");
+		setActiveSearch("");
+		setFilterPage("All");
+		setFilterType("All");
+		setFilterRole("All");
+		setCurrentPage(1);
+	};
+	const isFiltered = activeSearch.trim() !== "" || filterPage !== "All" || filterType !== "All" || filterRole !== "All";
+	const toggleRowExpand = (id) => {
+		setExpandedRows((prev) => {
+			const next = new Set(prev);
+			if (next.has(id)) next.delete(id);
+			else next.add(id);
+			return next;
+		});
+	};
+	const setRowMode = (id, mode) => {
+		setRowViewModes((prev) => ({
+			...prev,
+			[id]: mode
+		}));
+	};
+	const statsSummary = useMemo(() => {
+		const postCount = logs.filter((l) => l.type?.toUpperCase() === "POST").length;
+		const putPatchCount = logs.filter((l) => ["PUT", "PATCH"].includes(l.type?.toUpperCase())).length;
+		const deleteCount = logs.filter((l) => l.type?.toUpperCase() === "DELETE").length;
+		return {
+			postCount,
+			putPatchCount,
+			deleteCount
+		};
+	}, [logs]);
+	return /* @__PURE__ */ __h(AdminLayout, null, /* @__PURE__ */ __h("div", { className: "admin-logs" }, /* @__PURE__ */ __h(AnimatePresence, null, toastMessage && /* @__PURE__ */ __h(motion.div, {
+		className: `admin-logs__toast ${toastType === "error" ? "admin-logs__toast--error" : ""}`,
+		initial: {
+			opacity: 0,
+			y: -20,
+			scale: .95
+		},
+		animate: {
+			opacity: 1,
+			y: 0,
+			scale: 1
+		},
+		exit: {
+			opacity: 0,
+			y: -20,
+			scale: .95
+		}
+	}, toastType === "error" ? /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2"
+	}, /* @__PURE__ */ __h("circle", {
+		cx: "12",
+		cy: "12",
+		r: "10"
+	}), /* @__PURE__ */ __h("line", {
+		x1: "12",
+		y1: "8",
+		x2: "12",
+		y2: "12"
+	}), /* @__PURE__ */ __h("line", {
+		x1: "12",
+		y1: "16",
+		x2: "12.01",
+		y2: "16"
+	})) : /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2"
+	}, /* @__PURE__ */ __h("polyline", { points: "20 6 9 17 4 12" })), /* @__PURE__ */ __h("span", null, toastMessage))), /* @__PURE__ */ __h(motion.div, {
+		className: "admin-logs__header",
+		initial: {
+			opacity: 0,
+			y: -16
+		},
+		animate: {
+			opacity: 1,
+			y: 0
+		},
+		transition: {
+			duration: .4,
+			ease: [
+				.16,
+				1,
+				.3,
+				1
+			]
+		}
+	}, /* @__PURE__ */ __h("div", null, /* @__PURE__ */ __h("h1", { className: "admin-logs__title" }, "Audit Logs"), /* @__PURE__ */ __h("p", { className: "admin-logs__subtitle" }, "Comprehensive activity history, data changes, and system operations"))), /* @__PURE__ */ __h("div", { className: "admin-logs__stats" }, /* @__PURE__ */ __h(motion.div, {
+		className: "admin-logs__stat-card",
+		style: { "--accent": "#d4af37" },
+		custom: 0,
+		variants: fadeUp,
+		initial: "hidden",
+		animate: "show"
+	}, /* @__PURE__ */ __h("div", { className: "admin-logs__stat-icon" }, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2"
+	}, /* @__PURE__ */ __h("path", { d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" }), /* @__PURE__ */ __h("polyline", { points: "14 2 14 8 20 8" }), /* @__PURE__ */ __h("line", {
+		x1: "16",
+		y1: "13",
+		x2: "8",
+		y2: "13"
+	}), /* @__PURE__ */ __h("line", {
+		x1: "16",
+		y1: "17",
+		x2: "8",
+		y2: "17"
+	}), /* @__PURE__ */ __h("polyline", { points: "10 9 9 9 8 9" }))), /* @__PURE__ */ __h("div", { className: "admin-logs__stat-body" }, /* @__PURE__ */ __h("span", { className: "admin-logs__stat-value" }, isLoading ? "..." : totalCount), /* @__PURE__ */ __h("span", { className: "admin-logs__stat-label" }, "Total Actions"), /* @__PURE__ */ __h("span", { className: "admin-logs__stat-sub" }, "Recorded in database"))), /* @__PURE__ */ __h(motion.div, {
+		className: "admin-logs__stat-card",
+		style: { "--accent": "#10b981" },
+		custom: 1,
+		variants: fadeUp,
+		initial: "hidden",
+		animate: "show"
+	}, /* @__PURE__ */ __h("div", { className: "admin-logs__stat-icon" }, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2"
+	}, /* @__PURE__ */ __h("line", {
+		x1: "12",
+		y1: "5",
+		x2: "12",
+		y2: "19"
+	}), /* @__PURE__ */ __h("line", {
+		x1: "5",
+		y1: "12",
+		x2: "19",
+		y2: "12"
+	}))), /* @__PURE__ */ __h("div", { className: "admin-logs__stat-body" }, /* @__PURE__ */ __h("span", { className: "admin-logs__stat-value" }, isLoading ? "..." : statsSummary.postCount), /* @__PURE__ */ __h("span", { className: "admin-logs__stat-label" }, "Created (POST)"), /* @__PURE__ */ __h("span", { className: "admin-logs__stat-sub" }, "Current view entries"))), /* @__PURE__ */ __h(motion.div, {
+		className: "admin-logs__stat-card",
+		style: { "--accent": "#3b82f6" },
+		custom: 2,
+		variants: fadeUp,
+		initial: "hidden",
+		animate: "show"
+	}, /* @__PURE__ */ __h("div", { className: "admin-logs__stat-icon" }, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2"
+	}, /* @__PURE__ */ __h("path", { d: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" }), /* @__PURE__ */ __h("path", { d: "M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" }))), /* @__PURE__ */ __h("div", { className: "admin-logs__stat-body" }, /* @__PURE__ */ __h("span", { className: "admin-logs__stat-value" }, isLoading ? "..." : statsSummary.putPatchCount), /* @__PURE__ */ __h("span", { className: "admin-logs__stat-label" }, "Modifications"), /* @__PURE__ */ __h("span", { className: "admin-logs__stat-sub" }, "PUT / PATCH actions"))), /* @__PURE__ */ __h(motion.div, {
+		className: "admin-logs__stat-card",
+		style: { "--accent": "#f43f5e" },
+		custom: 3,
+		variants: fadeUp,
+		initial: "hidden",
+		animate: "show"
+	}, /* @__PURE__ */ __h("div", { className: "admin-logs__stat-icon" }, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2"
+	}, /* @__PURE__ */ __h("polyline", { points: "3 6 5 6 21 6" }), /* @__PURE__ */ __h("path", { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" }), /* @__PURE__ */ __h("line", {
+		x1: "10",
+		y1: "11",
+		x2: "10",
+		y2: "17"
+	}), /* @__PURE__ */ __h("line", {
+		x1: "14",
+		y1: "11",
+		x2: "14",
+		y2: "17"
+	}))), /* @__PURE__ */ __h("div", { className: "admin-logs__stat-body" }, /* @__PURE__ */ __h("span", { className: "admin-logs__stat-value" }, isLoading ? "..." : statsSummary.deleteCount), /* @__PURE__ */ __h("span", { className: "admin-logs__stat-label" }, "Deletions"), /* @__PURE__ */ __h("span", { className: "admin-logs__stat-sub" }, "DELETE operations")))), /* @__PURE__ */ __h("div", { className: "admin-logs__controls" }, /* @__PURE__ */ __h("form", {
+		onSubmit: handleSearchSubmit,
+		className: "admin-logs__search-wrap"
+	}, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2"
+	}, /* @__PURE__ */ __h("circle", {
+		cx: "11",
+		cy: "11",
+		r: "8"
+	}), /* @__PURE__ */ __h("line", {
+		x1: "21",
+		y1: "21",
+		x2: "16.65",
+		y2: "16.65"
+	})), /* @__PURE__ */ __h("input", {
+		type: "text",
+		placeholder: "Search and press Enter...",
+		value: searchInput,
+		onChange: (e) => setSearchInput(e.target.value),
+		onKeyDown: handleSearchKeyDown
+	}), searchInput && /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "admin-logs__search-clear",
+		onClick: handleClearSearch,
+		"aria-label": "Clear search"
+	}, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2"
+	}, /* @__PURE__ */ __h("line", {
+		x1: "18",
+		y1: "6",
+		x2: "6",
+		y2: "18"
+	}), /* @__PURE__ */ __h("line", {
+		x1: "6",
+		y1: "6",
+		x2: "18",
+		y2: "18"
+	})))), /* @__PURE__ */ __h("div", { className: "admin-logs__filters" }, /* @__PURE__ */ __h("div", { className: "admin-logs__select-wrap" }, /* @__PURE__ */ __h("select", {
+		value: filterPage,
+		onChange: (e) => {
+			setFilterPage(e.target.value);
+			setCurrentPage(1);
+		}
+	}, PAGES_LIST.map((p) => /* @__PURE__ */ __h("option", {
+		key: p,
+		value: p
+	}, p === "All" ? "All Pages" : p)))), /* @__PURE__ */ __h("div", { className: "admin-logs__select-wrap" }, /* @__PURE__ */ __h("select", {
+		value: filterType,
+		onChange: (e) => {
+			setFilterType(e.target.value);
+			setCurrentPage(1);
+		}
+	}, TYPES_LIST.map((t) => /* @__PURE__ */ __h("option", {
+		key: t,
+		value: t
+	}, t === "All" ? "All Methods" : t)))), /* @__PURE__ */ __h("div", { className: "admin-logs__select-wrap" }, /* @__PURE__ */ __h("select", {
+		value: filterRole,
+		onChange: (e) => {
+			setFilterRole(e.target.value);
+			setCurrentPage(1);
+		}
+	}, ROLES_LIST.map((r) => /* @__PURE__ */ __h("option", {
+		key: r,
+		value: r
+	}, r === "All" ? "All Roles" : r)))), /* @__PURE__ */ __h("div", { className: "admin-logs__select-wrap" }, /* @__PURE__ */ __h("select", {
+		value: pageSize,
+		onChange: (e) => {
+			setPageSize(Number(e.target.value));
+			setCurrentPage(1);
+		}
+	}, PAGE_SIZE_OPTIONS.map((sz) => /* @__PURE__ */ __h("option", {
+		key: sz,
+		value: sz
+	}, sz, " / page")))), isFiltered && /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "admin-logs__btn-clear",
+		onClick: handleClearFilters
+	}, "Clear"))), /* @__PURE__ */ __h("div", { className: "admin-logs__table-card" }, isLoading ? /* @__PURE__ */ __h("div", { className: "admin-logs__loading" }, /* @__PURE__ */ __h("img", {
+		src: loaderIcon,
+		alt: "Loading...",
+		className: "admin-logs__spinner"
+	}), /* @__PURE__ */ __h("span", null, "Loading activity logs...")) : logs.length === 0 ? /* @__PURE__ */ __h("div", { className: "admin-logs__empty" }, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "1.5"
+	}, /* @__PURE__ */ __h("path", { d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" }), /* @__PURE__ */ __h("polyline", { points: "14 2 14 8 20 8" }), /* @__PURE__ */ __h("line", {
+		x1: "12",
+		y1: "18",
+		x2: "12",
+		y2: "12"
+	}), /* @__PURE__ */ __h("line", {
+		x1: "9",
+		y1: "15",
+		x2: "15",
+		y2: "15"
+	})), /* @__PURE__ */ __h("h3", null, "No activity logs found"), /* @__PURE__ */ __h("p", null, isFiltered ? "Try adjusting or clearing your filters to see more results." : "Administrative actions will appear here automatically when performed."), isFiltered && /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "admin-logs__btn-secondary",
+		onClick: handleClearFilters
+	}, "Clear Filters")) : /* @__PURE__ */ __h("div", { className: "admin-logs__table-responsive" }, /* @__PURE__ */ __h("table", { className: "admin-logs__table" }, /* @__PURE__ */ __h("thead", null, /* @__PURE__ */ __h("tr", null, /* @__PURE__ */ __h("th", { style: { width: "32px" } }), /* @__PURE__ */ __h("th", null, "Timestamp"), /* @__PURE__ */ __h("th", null, "Admin User"), /* @__PURE__ */ __h("th", null, "Role"), /* @__PURE__ */ __h("th", null, "Page"), /* @__PURE__ */ __h("th", null, "Method"), /* @__PURE__ */ __h("th", null, "Action, Target & Changes"), /* @__PURE__ */ __h("th", { className: "text-right" }, "Actions"))), /* @__PURE__ */ __h("tbody", null, logs.map((log) => {
+		const typeBadgeClass = getTypeBadgeClass(log.type);
+		const roleBadgeClass = getRoleBadgeClass(log.role);
+		const { actionName, targetPreview, data, changes, params } = extractActionSummary(log.description, log.type, log.page);
+		const isExpanded = expandedRows.has(log.id);
+		const rowMode = rowViewModes[log.id] || "visual";
+		return /* @__PURE__ */ __h(React.Fragment, { key: log.id }, /* @__PURE__ */ __h("tr", {
+			className: `admin-logs__row${isExpanded ? " admin-logs__row--expanded" : ""}`,
+			onClick: () => toggleRowExpand(log.id)
+		}, /* @__PURE__ */ __h("td", { className: "admin-logs__expand-cell" }, /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: `admin-logs__chevron-btn${isExpanded ? " admin-logs__chevron-btn--open" : ""}`,
+			onClick: (e) => {
+				e.stopPropagation();
+				toggleRowExpand(log.id);
+			},
+			"aria-label": "Toggle details"
+		}, /* @__PURE__ */ __h("svg", {
+			viewBox: "0 0 24 24",
+			fill: "none",
+			stroke: "currentColor",
+			strokeWidth: "2"
+		}, /* @__PURE__ */ __h("polyline", { points: "9 18 15 12 9 6" })))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("span", { className: "admin-logs__time-main" }, formatBakuDate(log.createdAt)), /* @__PURE__ */ __h("span", { className: "admin-logs__time-sub" }, formatRelativeTime(log.createdAt))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-logs__user-info" }, /* @__PURE__ */ __h("span", { className: "admin-logs__user-name" }, log.user?.name || "Administrator"), /* @__PURE__ */ __h("span", { className: "admin-logs__user-email" }, log.user?.email || log.userId || "—"))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("span", { className: roleBadgeClass }, formatRoleName(log.role))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("span", { className: "badge badge--muted" }, log.page)), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("span", { className: typeBadgeClass }, log.type)), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-logs__action-col" }, /* @__PURE__ */ __h("div", { className: "admin-logs__action-title" }, actionName), targetPreview && /* @__PURE__ */ __h("div", {
+			className: "admin-logs__action-target",
+			title: targetPreview
+		}, targetPreview), changes.length > 0 && /* @__PURE__ */ __h("div", { className: "admin-logs__diff-pill-list" }, changes.slice(0, 3).map((ch, idx) => /* @__PURE__ */ __h("div", {
+			key: idx,
+			className: "admin-logs__diff-pill",
+			title: `${ch.field}: ${ch.from} → ${ch.to}`
+		}, /* @__PURE__ */ __h("span", { className: "diff-label" }, ch.field, ":"), /* @__PURE__ */ __h("span", { className: "diff-was" }, ch.from), /* @__PURE__ */ __h("span", { className: "diff-arrow" }, "→"), /* @__PURE__ */ __h("span", { className: "diff-now" }, ch.to))), changes.length > 3 && /* @__PURE__ */ __h("span", { style: {
+			fontSize: "0.7rem",
+			color: "rgba(255,255,255,0.45)"
+		} }, "+", changes.length - 3, " more changes")))), /* @__PURE__ */ __h("td", {
+			className: "text-right",
+			onClick: (e) => e.stopPropagation()
+		}, /* @__PURE__ */ __h("div", { className: "admin-logs__action-buttons" }, /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: "admin-logs__action-btn",
+			onClick: () => setSelectedLog(log),
+			title: "Inspect Details"
+		}, /* @__PURE__ */ __h("svg", {
+			viewBox: "0 0 24 24",
+			fill: "none",
+			stroke: "currentColor",
+			strokeWidth: "2"
+		}, /* @__PURE__ */ __h("circle", {
+			cx: "12",
+			cy: "12",
+			r: "10"
+		}), /* @__PURE__ */ __h("line", {
+			x1: "12",
+			y1: "16",
+			x2: "12",
+			y2: "12"
+		}), /* @__PURE__ */ __h("line", {
+			x1: "12",
+			y1: "8",
+			x2: "12.01",
+			y2: "8"
+		}))), /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: "admin-logs__action-btn",
+			onClick: () => copyToClipboard(log.description, "Payload"),
+			title: "Copy JSON"
+		}, /* @__PURE__ */ __h("svg", {
+			viewBox: "0 0 24 24",
+			fill: "none",
+			stroke: "currentColor",
+			strokeWidth: "2"
+		}, /* @__PURE__ */ __h("rect", {
+			x: "9",
+			y: "9",
+			width: "13",
+			height: "13",
+			rx: "2",
+			ry: "2"
+		}), /* @__PURE__ */ __h("path", { d: "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" })))))), isExpanded && /* @__PURE__ */ __h("tr", { className: "admin-logs__expanded-tr" }, /* @__PURE__ */ __h("td", { colSpan: "8" }, /* @__PURE__ */ __h(motion.div, {
+			className: "admin-logs__expanded-card",
+			initial: {
+				opacity: 0,
+				height: 0
+			},
+			animate: {
+				opacity: 1,
+				height: "auto"
+			},
+			exit: {
+				opacity: 0,
+				height: 0
+			},
+			transition: { duration: .2 }
+		}, /* @__PURE__ */ __h("div", { className: "admin-logs__expanded-top" }, /* @__PURE__ */ __h("div", { className: "admin-logs__expanded-title-wrap" }, /* @__PURE__ */ __h("span", { className: "admin-logs__expanded-badge" }, actionName), /* @__PURE__ */ __h("span", { className: "admin-logs__expanded-id" }, "Record ID: ", /* @__PURE__ */ __h("code", null, log.id))), /* @__PURE__ */ __h("div", { style: {
+			display: "flex",
+			alignItems: "center",
+			gap: "8px"
+		} }, /* @__PURE__ */ __h("div", { className: "admin-logs__view-tabs" }, /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: `admin-logs__tab-btn${rowMode === "visual" ? " admin-logs__tab-btn--active" : ""}`,
+			onClick: () => setRowMode(log.id, "visual")
+		}, "Visual Overview"), /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: `admin-logs__tab-btn${rowMode === "json" ? " admin-logs__tab-btn--active" : ""}`,
+			onClick: () => setRowMode(log.id, "json")
+		}, "Raw JSON")), /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: "admin-logs__btn-action-small",
+			onClick: () => copyToClipboard(JSON.stringify(data, null, 2), "JSON")
+		}, "Copy JSON"), /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: "admin-logs__btn-action-small",
+			onClick: () => setSelectedLog(log)
+		}, "Modal View"))), rowMode === "visual" ? /* @__PURE__ */ __h(__Fragment, null, changes.length > 0 && /* @__PURE__ */ __h("div", { className: "admin-logs__diff-section" }, /* @__PURE__ */ __h("h4", { className: "admin-logs__diff-heading" }, "Value Changes (Before → After)"), /* @__PURE__ */ __h("div", { className: "admin-logs__diff-grid" }, changes.map((ch, idx) => /* @__PURE__ */ __h("div", {
+			key: idx,
+			className: "admin-logs__diff-card"
+		}, /* @__PURE__ */ __h("div", { className: "admin-logs__diff-card-header" }, ch.field), /* @__PURE__ */ __h("div", { className: "admin-logs__diff-card-compare" }, /* @__PURE__ */ __h("div", { className: "admin-logs__diff-card-from" }, /* @__PURE__ */ __h("span", { className: "lbl" }, "Before"), /* @__PURE__ */ __h("span", { className: "val" }, ch.from)), /* @__PURE__ */ __h("span", { className: "admin-logs__diff-card-arrow" }, "→"), /* @__PURE__ */ __h("div", { className: "admin-logs__diff-card-to" }, /* @__PURE__ */ __h("span", { className: "lbl" }, "After"), /* @__PURE__ */ __h("span", { className: "val" }, ch.to))))))), params.length > 0 && /* @__PURE__ */ __h("div", { className: "admin-logs__params-section" }, /* @__PURE__ */ __h("h4", { className: "admin-logs__diff-heading" }, "Operation Parameters"), /* @__PURE__ */ __h("div", { className: "admin-logs__params-grid" }, params.map((pm, idx) => /* @__PURE__ */ __h("div", {
+			key: idx,
+			className: "admin-logs__param-item"
+		}, /* @__PURE__ */ __h("span", { className: "admin-logs__param-item-label" }, pm.key), /* @__PURE__ */ __h("span", { className: "admin-logs__param-item-value" }, pm.value)))))) : /* @__PURE__ */ __h("pre", { className: "admin-logs__json-view" }, JSON.stringify(data, null, 2))))));
+	})))), !isLoading && totalPages > 1 && /* @__PURE__ */ __h("div", { className: "admin-logs__pagination" }, /* @__PURE__ */ __h("div", { className: "admin-logs__pagination-info" }, "Showing ", (currentPage - 1) * pageSize + 1, "–", Math.min(currentPage * pageSize, totalCount), " of ", totalCount, " logs"), /* @__PURE__ */ __h("div", { className: "admin-logs__pagination-controls" }, /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "admin-logs__page-btn",
+		onClick: () => setCurrentPage(1),
+		disabled: currentPage === 1,
+		title: "First page"
+	}, "«"), /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "admin-logs__page-btn",
+		onClick: () => setCurrentPage((p) => Math.max(1, p - 1)),
+		disabled: currentPage === 1,
+		title: "Previous page"
+	}, "‹ Prev"), /* @__PURE__ */ __h("span", { className: "admin-logs__page-current" }, "Page ", currentPage, " of ", totalPages), /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "admin-logs__page-btn",
+		onClick: () => setCurrentPage((p) => Math.min(totalPages, p + 1)),
+		disabled: currentPage === totalPages,
+		title: "Next page"
+	}, "Next ›"), /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "admin-logs__page-btn",
+		onClick: () => setCurrentPage(totalPages),
+		disabled: currentPage === totalPages,
+		title: "Last page"
+	}, "»")))), /* @__PURE__ */ __h(AnimatePresence, null, selectedLog && (() => {
+		const modalSummary = extractActionSummary(selectedLog.description, selectedLog.type, selectedLog.page);
+		return /* @__PURE__ */ __h("div", {
+			className: "admin-logs__modal-backdrop",
+			onClick: () => setSelectedLog(null)
+		}, /* @__PURE__ */ __h(motion.div, {
+			className: "admin-logs__modal",
+			initial: {
+				opacity: 0,
+				scale: .94,
+				y: 15
+			},
+			animate: {
+				opacity: 1,
+				scale: 1,
+				y: 0
+			},
+			exit: {
+				opacity: 0,
+				scale: .94,
+				y: 15
+			},
+			onClick: (e) => e.stopPropagation()
+		}, /* @__PURE__ */ __h("div", { className: "admin-logs__modal-header" }, /* @__PURE__ */ __h("div", null, /* @__PURE__ */ __h("div", { className: "admin-logs__modal-badges" }, /* @__PURE__ */ __h("span", { className: getTypeBadgeClass(selectedLog.type) }, selectedLog.type), /* @__PURE__ */ __h("span", { className: "badge badge--muted" }, selectedLog.page), /* @__PURE__ */ __h("span", { className: getRoleBadgeClass(selectedLog.role) }, formatRoleName(selectedLog.role))), /* @__PURE__ */ __h("h2", { className: "admin-logs__modal-title" }, modalSummary.actionName, " Details")), /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: "admin-logs__modal-close",
+			onClick: () => setSelectedLog(null),
+			"aria-label": "Close"
+		}, "✕")), /* @__PURE__ */ __h("div", { className: "admin-logs__modal-body" }, /* @__PURE__ */ __h("div", { className: "admin-logs__modal-grid" }, /* @__PURE__ */ __h("div", { className: "admin-logs__modal-item" }, /* @__PURE__ */ __h("span", { className: "admin-logs__modal-item-label" }, "Timestamp (UTC+4 Baku)"), /* @__PURE__ */ __h("span", { className: "admin-logs__modal-item-value" }, formatBakuDate(selectedLog.createdAt))), /* @__PURE__ */ __h("div", { className: "admin-logs__modal-item" }, /* @__PURE__ */ __h("span", { className: "admin-logs__modal-item-label" }, "Relative Time"), /* @__PURE__ */ __h("span", { className: "admin-logs__modal-item-value" }, formatRelativeTime(selectedLog.createdAt))), /* @__PURE__ */ __h("div", { className: "admin-logs__modal-item" }, /* @__PURE__ */ __h("span", { className: "admin-logs__modal-item-label" }, "Admin User"), /* @__PURE__ */ __h("span", { className: "admin-logs__modal-item-value" }, selectedLog.user?.name || "Administrator", " (", selectedLog.user?.email || selectedLog.userId || "—", ")")), /* @__PURE__ */ __h("div", { className: "admin-logs__modal-item" }, /* @__PURE__ */ __h("span", { className: "admin-logs__modal-item-label" }, "Admin User ID"), /* @__PURE__ */ __h("span", { className: "admin-logs__modal-item-value" }, /* @__PURE__ */ __h("code", null, selectedLog.userId || "System"))), /* @__PURE__ */ __h("div", { className: "admin-logs__modal-item admin-logs__modal-item--full" }, /* @__PURE__ */ __h("span", { className: "admin-logs__modal-item-label" }, "Log Record ID"), /* @__PURE__ */ __h("span", { className: "admin-logs__modal-item-value" }, /* @__PURE__ */ __h("code", null, selectedLog.id)))), /* @__PURE__ */ __h("div", { style: {
+			display: "flex",
+			alignItems: "center",
+			justifyContent: "space-between"
+		} }, /* @__PURE__ */ __h("div", { className: "admin-logs__view-tabs" }, /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: `admin-logs__tab-btn${modalViewMode === "visual" ? " admin-logs__tab-btn--active" : ""}`,
+			onClick: () => setModalViewMode("visual")
+		}, "Visual Overview"), /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: `admin-logs__tab-btn${modalViewMode === "json" ? " admin-logs__tab-btn--active" : ""}`,
+			onClick: () => setModalViewMode("json")
+		}, "Raw JSON")), /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: "admin-logs__btn-action-small",
+			onClick: () => copyToClipboard(JSON.stringify(modalSummary.data, null, 2), "Full Payload")
+		}, "Copy JSON")), modalViewMode === "visual" ? /* @__PURE__ */ __h(__Fragment, null, modalSummary.changes.length > 0 && /* @__PURE__ */ __h("div", { className: "admin-logs__diff-section" }, /* @__PURE__ */ __h("h4", { className: "admin-logs__diff-heading" }, "Value Changes (Before → After)"), /* @__PURE__ */ __h("div", { className: "admin-logs__diff-grid" }, modalSummary.changes.map((ch, idx) => /* @__PURE__ */ __h("div", {
+			key: idx,
+			className: "admin-logs__diff-card"
+		}, /* @__PURE__ */ __h("div", { className: "admin-logs__diff-card-header" }, ch.field), /* @__PURE__ */ __h("div", { className: "admin-logs__diff-card-compare" }, /* @__PURE__ */ __h("div", { className: "admin-logs__diff-card-from" }, /* @__PURE__ */ __h("span", { className: "lbl" }, "Before"), /* @__PURE__ */ __h("span", { className: "val" }, ch.from)), /* @__PURE__ */ __h("span", { className: "admin-logs__diff-card-arrow" }, "→"), /* @__PURE__ */ __h("div", { className: "admin-logs__diff-card-to" }, /* @__PURE__ */ __h("span", { className: "lbl" }, "After"), /* @__PURE__ */ __h("span", { className: "val" }, ch.to))))))), modalSummary.params.length > 0 && /* @__PURE__ */ __h("div", { className: "admin-logs__params-section" }, /* @__PURE__ */ __h("h4", { className: "admin-logs__diff-heading" }, "Operation Parameters & Entity Info"), /* @__PURE__ */ __h("div", { className: "admin-logs__params-grid" }, modalSummary.params.map((pm, idx) => /* @__PURE__ */ __h("div", {
+			key: idx,
+			className: "admin-logs__param-item"
+		}, /* @__PURE__ */ __h("span", { className: "admin-logs__param-item-label" }, pm.key), /* @__PURE__ */ __h("span", { className: "admin-logs__param-item-value" }, pm.value)))))) : /* @__PURE__ */ __h("pre", { className: "admin-logs__modal-json" }, JSON.stringify(modalSummary.data, null, 2))), /* @__PURE__ */ __h("div", { className: "admin-logs__modal-footer" }, /* @__PURE__ */ __h("button", {
+			type: "button",
+			className: "admin-logs__btn-secondary",
+			onClick: () => setSelectedLog(null)
+		}, "Close"))));
+	})())));
+};
+export default AdminLogs;

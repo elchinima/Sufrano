@@ -1,0 +1,463 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" width="100%" height="auto">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e0405" />
+      <stop offset="35%" stop-color="#24050d" />
+      <stop offset="70%" stop-color="#641113" />
+      <stop offset="100%" stop-color="#180304" />
+    </linearGradient>
+
+    <!-- Glowing Orbs Gradients -->
+    <radialGradient id="glow-primary" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.45" />
+      <stop offset="50%" stop-color="#c59b27" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#d4af37" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="glow-amber" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.35" />
+      <stop offset="60%" stop-color="#b45309" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="glow-crimson" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e5c158" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#4a0e1c" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Card Border Gradient -->
+    <linearGradient id="border-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.7" />
+      <stop offset="30%" stop-color="#ffffff" stop-opacity="0.25" />
+      <stop offset="70%" stop-color="#b5892e" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#e5c158" stop-opacity="0.6" />
+    </linearGradient>
+
+    <!-- Brand Text Gradient -->
+    <linearGradient id="title-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="45%" stop-color="#ffffff" />
+      <stop offset="75%" stop-color="#f7dfa0" />
+      <stop offset="100%" stop-color="#e5c158" />
+    </linearGradient>
+
+    <!-- Cup Ceramic Gradient -->
+    <linearGradient id="cup-body" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef2f2" />
+      <stop offset="50%" stop-color="#fee2e2" />
+      <stop offset="100%" stop-color="#d4af37" />
+    </linearGradient>
+
+    <!-- Coffee Liquid Gradient -->
+    <linearGradient id="coffee-surface" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b110e" />
+      <stop offset="50%" stop-color="#78350f" />
+      <stop offset="100%" stop-color="#451a03" />
+    </linearGradient>
+
+    <!-- Crema / Foam Art Gradient -->
+    <linearGradient id="crema-art" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+
+    <!-- Saucer Gradient -->
+    <linearGradient id="saucer-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b5892e" />
+      <stop offset="50%" stop-color="#e5c158" />
+      <stop offset="100%" stop-color="#4a0e1c" />
+    </linearGradient>
+
+    <!-- Badge Background Gradient -->
+    <linearGradient id="badge-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.04" />
+    </linearGradient>
+
+    <!-- Subtle Grid Pattern -->
+    <pattern id="fine-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.035" />
+    </pattern>
+
+    <!-- Glow Filter -->
+    <filter id="soft-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="intense-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="blur2" />
+      <feMerge>
+        <feMergeNode in="blur2" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <style>
+      /* --- KEYFRAME ANIMATIONS --- */
+      @keyframes steamFloat1 {
+        0% {
+          transform: translateY(0px) scaleX(1);
+          opacity: 0;
+        }
+        25% {
+          opacity: 0.75;
+        }
+        60% {
+          opacity: 0.6;
+        }
+        100% {
+          transform: translateY(-50px) scaleX(1.25);
+          opacity: 0;
+        }
+      }
+
+      @keyframes steamFloat2 {
+        0% {
+          transform: translateY(0px) scaleX(1);
+          opacity: 0;
+        }
+        30% {
+          opacity: 0.85;
+        }
+        70% {
+          opacity: 0.5;
+        }
+        100% {
+          transform: translateY(-58px) scaleX(1.35);
+          opacity: 0;
+        }
+      }
+
+      @keyframes steamFloat3 {
+        0% {
+          transform: translateY(0px) scaleX(0.9);
+          opacity: 0;
+        }
+        20% {
+          opacity: 0.7;
+        }
+        65% {
+          opacity: 0.45;
+        }
+        100% {
+          transform: translateY(-46px) scaleX(1.2);
+          opacity: 0;
+        }
+      }
+
+      @keyframes auraPulse {
+        0%, 100% {
+          transform: scale(1);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scale(1.14);
+          opacity: 0.8;
+        }
+      }
+
+      @keyframes orbBreath {
+        0%, 100% {
+          transform: scale(1) translate(0, 0);
+          opacity: 0.4;
+        }
+        50% {
+          transform: scale(1.18) translate(-15px, 10px);
+          opacity: 0.65;
+        }
+      }
+
+      @keyframes liveDot {
+        0%, 100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.35;
+          transform: scale(0.75);
+        }
+      }
+
+      @keyframes sparkleTwinkle {
+        0%, 100% {
+          opacity: 0.2;
+          transform: scale(0.6) rotate(0deg);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.25) rotate(45deg);
+        }
+      }
+
+      @keyframes beanBobbing1 {
+        0%, 100% {
+          transform: translateY(0px) rotate(15deg);
+        }
+        50% {
+          transform: translateY(-8px) rotate(22deg);
+        }
+      }
+
+      @keyframes beanBobbing2 {
+        0%, 100% {
+          transform: translateY(0px) rotate(-25deg);
+        }
+        50% {
+          transform: translateY(7px) rotate(-18deg);
+        }
+      }
+
+      @keyframes shimmerBorder {
+        0% {
+          stroke-dashoffset: 2400;
+        }
+        100% {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      /* Applied Classes */
+      .steam-1 {
+        animation: steamFloat1 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        transform-origin: 180px 170px;
+      }
+      .steam-2 {
+        animation: steamFloat2 4.1s cubic-bezier(0.4, 0, 0.2, 1) infinite 0.9s;
+        transform-origin: 205px 170px;
+      }
+      .steam-3 {
+        animation: steamFloat3 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite 1.7s;
+        transform-origin: 230px 170px;
+      }
+
+      .aura-glow {
+        animation: auraPulse 4s ease-in-out infinite;
+        transform-origin: 205px 230px;
+      }
+
+      .top-orb {
+        animation: orbBreath 7s ease-in-out infinite;
+        transform-origin: 1000px 80px;
+      }
+
+      .amber-orb {
+        animation: orbBreath 6s ease-in-out infinite reverse;
+        transform-origin: 300px 350px;
+      }
+
+      .live-indicator {
+        animation: liveDot 1.8s ease-in-out infinite;
+        transform-origin: center;
+      }
+
+      .sparkle-1 {
+        animation: sparkleTwinkle 2.5s ease-in-out infinite;
+        transform-origin: 110px 140px;
+      }
+      .sparkle-2 {
+        animation: sparkleTwinkle 3.2s ease-in-out infinite 1s;
+        transform-origin: 310px 110px;
+      }
+      .sparkle-3 {
+        animation: sparkleTwinkle 2.8s ease-in-out infinite 1.6s;
+        transform-origin: 1120px 70px;
+      }
+
+      .coffee-bean-1 {
+        animation: beanBobbing1 4.5s ease-in-out infinite;
+        transform-origin: 95px 290px;
+      }
+      .coffee-bean-2 {
+        animation: beanBobbing2 5s ease-in-out infinite 0.7s;
+        transform-origin: 315px 270px;
+      }
+
+      .shimmer-line {
+        stroke-dasharray: 200, 1000;
+        animation: shimmerBorder 8s linear infinite;
+      }
+    </style>
+  </defs>
+
+  <!-- Base Card Container -->
+  <rect x="6" y="6" width="1188" height="448" rx="28" fill="url(#bg-grad)" />
+  <rect x="6" y="6" width="1188" height="448" rx="28" fill="url(#fine-grid)" />
+
+  <!-- Ambient Light Orbs -->
+  <circle class="top-orb" cx="1020" cy="80" r="240" fill="url(#glow-primary)" />
+  <circle class="amber-orb" cx="280" cy="380" r="220" fill="url(#glow-amber)" />
+  <circle class="aura-glow" cx="205" cy="230" r="180" fill="url(#glow-crimson)" />
+
+  <!-- Animated Border Stroke -->
+  <rect x="6" y="6" width="1188" height="448" rx="28" fill="none" stroke="url(#border-grad)" stroke-width="2.5" />
+  <rect class="shimmer-line" x="6" y="6" width="1188" height="448" rx="28" fill="none" stroke="#f3cf7a" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- ==================== LEFT SECTION: COFFEE EMBLEM ==================== -->
+  <g id="coffee-emblem-group" transform="translate(10, 0)">
+    <!-- Saucer Glow & Body -->
+    <ellipse cx="205" cy="296" rx="98" ry="18" fill="rgba(0,0,0,0.4)" filter="url(#soft-glow)" />
+    <ellipse cx="205" cy="292" rx="90" ry="15" fill="url(#saucer-grad)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" />
+    <ellipse cx="205" cy="289" rx="66" ry="9" fill="#24050d" opacity="0.6" />
+
+    <!-- Cup Handle -->
+    <path d="M 245 205 C 285 205, 290 258, 240 262" fill="none" stroke="url(#cup-body)" stroke-width="13" stroke-linecap="round" />
+    <path d="M 245 205 C 285 205, 290 258, 240 262" fill="none" stroke="#4a0e1c" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+
+    <!-- Cup Body -->
+    <path d="M 140 195 C 144 268, 168 288, 205 288 C 242 288, 266 268, 270 195 Z" fill="url(#cup-body)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+
+    <!-- Cup Rim & Coffee Surface -->
+    <ellipse cx="205" cy="195" rx="65" ry="19" fill="#ffffff" opacity="0.25" />
+    <ellipse cx="205" cy="195" rx="63" ry="17" fill="url(#cup-body)" />
+    <ellipse cx="205" cy="195" rx="57" ry="14" fill="url(#coffee-surface)" />
+
+    <!-- Latte Art / Coffee Heart Swirl -->
+    <path d="M 205 198 C 200 193, 188 190, 193 186 C 198 182, 205 188, 205 191 C 205 188, 212 182, 217 186 C 222 190, 210 193, 205 198 Z" fill="url(#crema-art)" opacity="0.9" />
+    <circle cx="205" cy="189" r="2.5" fill="#fef3c7" />
+
+    <!-- Cup Logo Accent (Small Süfrano R & Bean) -->
+    <g transform="translate(196, 230)">
+      <path d="M 5 0 C 12 0, 15 4, 15 9 C 15 14, 11 17, 5 17 L 0 17 L 0 0 Z" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+      <path d="M 9 17 L 16 27" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+      <line x1="0" y1="0" x2="0" y2="27" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+    </g>
+
+    <!-- Rising Steam Curves (Animated) -->
+    <!-- Steam Ribbon 1 (Left) -->
+    <g class="steam-1">
+      <path d="M 182 175 C 172 155, 192 140, 178 120 C 168 106, 178 94, 172 78" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.7" filter="url(#soft-glow)" />
+    </g>
+
+    <!-- Steam Ribbon 2 (Center - High) -->
+    <g class="steam-2">
+      <path d="M 205 172 C 218 150, 195 132, 210 110 C 222 92, 202 76, 212 55" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" opacity="0.85" filter="url(#soft-glow)" />
+    </g>
+
+    <!-- Steam Ribbon 3 (Right) -->
+    <g class="steam-3">
+      <path d="M 228 175 C 238 156, 220 142, 232 122 C 244 105, 232 90, 240 76" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.65" filter="url(#soft-glow)" />
+    </g>
+
+    <!-- Floating Coffee Bean 1 (Left bottom) -->
+    <g class="coffee-bean-1" transform="translate(95, 290)">
+      <ellipse cx="0" cy="0" rx="14" ry="9" fill="#3b110e" stroke="#d4af37" stroke-width="1.2" />
+      <path d="M -11 0 Q 0 -4, 11 0" fill="none" stroke="#f3cf7a" stroke-width="1.6" stroke-linecap="round" />
+    </g>
+
+    <!-- Floating Coffee Bean 2 (Right bottom) -->
+    <g class="coffee-bean-2" transform="translate(325, 280)">
+      <ellipse cx="0" cy="0" rx="16" ry="10" fill="#2d0b0a" stroke="#e5c158" stroke-width="1.2" />
+      <path d="M -13 0 Q 0 4, 13 0" fill="none" stroke="#f3cf7a" stroke-width="1.6" stroke-linecap="round" />
+    </g>
+
+    <!-- Twinkling Sparkles -->
+    <g class="sparkle-1" transform="translate(110, 140)">
+      <path d="M 0 -9 L 2 -2 L 9 0 L 2 2 L 0 9 L -2 2 L -9 0 L -2 -2 Z" fill="#fbbf24" filter="url(#intense-glow)" />
+    </g>
+    <g class="sparkle-2" transform="translate(310, 110)">
+      <path d="M 0 -11 L 3 -3 L 11 0 L 3 3 L 0 11 L -3 3 L -11 0 L -3 -3 Z" fill="#f3cf7a" filter="url(#intense-glow)" />
+    </g>
+  </g>
+
+  <!-- ==================== RIGHT SECTION: BRAND & PLATFORM INFO ==================== -->
+  <g transform="translate(410, 0)">
+    <!-- Top Pill: Status & Live Ecosystem -->
+    <g transform="translate(0, 52)">
+      <rect x="0" y="0" width="375" height="34" rx="17" fill="url(#badge-grad)" stroke="rgba(255,255,255,0.18)" stroke-width="1" />
+      <circle class="live-indicator" cx="19" cy="17" r="5" fill="#d4af37" filter="url(#soft-glow)" />
+      <text x="34" y="22" font-family="'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" fill="#f3cf7a" letter-spacing="1.5">SPECIALTY ROASTERY &amp; POS PLATFORM</text>
+    </g>
+
+    <!-- Main Title: SÜFRANO -->
+    <text x="0" y="152" font-family="'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="64" font-weight="900" fill="url(#title-grad)" letter-spacing="1.5">
+      SÜFRANO
+    </text>
+
+    <!-- Süfrano Ruby Dot / Flame Accent -->
+    <circle cx="330" cy="116" r="6" fill="#d4af37" filter="url(#intense-glow)" />
+
+    <!-- Subtitle / Brand Promise -->
+    <text x="0" y="194" font-family="'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="700" fill="#ffffff" letter-spacing="0.5">
+      Specialty Coffee • Smart Barista POS • Clean Architecture
+    </text>
+
+    <!-- Narrative Description -->
+    <text x="0" y="226" font-family="'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="14.5" font-weight="400" fill="rgba(255, 255, 255, 0.78)" letter-spacing="0.2">
+      Cinematic customer storefront paired with an enterprise ASP.NET Core 10 backend,
+    </text>
+    <text x="0" y="248" font-family="'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="14.5" font-weight="400" fill="rgba(255, 255, 255, 0.78)" letter-spacing="0.2">
+      touch-ready Cashbox terminal, AI review moderation &amp; gamified loyalty ecosystem.
+    </text>
+
+    <!-- Subtle Divider Line -->
+    <line x1="0" y1="272" x2="720" y2="272" stroke="rgba(255,255,255,0.14)" stroke-width="1" />
+
+    <!-- Feature Pills (Row 1) -->
+    <g transform="translate(0, 292)">
+      <!-- Pill 1: Storefront -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="160" height="32" rx="10" fill="rgba(255,255,255,0.07)" stroke="rgba(212, 175, 55,0.4)" stroke-width="1" />
+        <text x="14" y="21" font-family="'Inter', -apple-system, sans-serif" font-size="12" font-weight="600" fill="#ffffff">☕ Specialty Catalog</text>
+      </g>
+
+      <!-- Pill 2: POS Cashbox -->
+      <g transform="translate(170, 0)">
+        <rect x="0" y="0" width="160" height="32" rx="10" fill="rgba(255,255,255,0.07)" stroke="rgba(245,158,11,0.45)" stroke-width="1" />
+        <text x="14" y="21" font-family="'Inter', -apple-system, sans-serif" font-size="12" font-weight="600" fill="#ffffff">⚡ Touch POS Cashbox</text>
+      </g>
+
+      <!-- Pill 3: Backend -->
+      <g transform="translate(340, 0)">
+        <rect x="0" y="0" width="175" height="32" rx="10" fill="rgba(255,255,255,0.07)" stroke="rgba(99,102,241,0.45)" stroke-width="1" />
+        <text x="14" y="21" font-family="'Inter', -apple-system, sans-serif" font-size="12" font-weight="600" fill="#ffffff">🛡️ ASP.NET Core 10</text>
+      </g>
+
+      <!-- Pill 4: Frontend -->
+      <g transform="translate(525, 0)">
+        <rect x="0" y="0" width="185" height="32" rx="10" fill="rgba(255,255,255,0.07)" stroke="rgba(56,189,248,0.45)" stroke-width="1" />
+        <text x="14" y="21" font-family="'Inter', -apple-system, sans-serif" font-size="12" font-weight="600" fill="#ffffff">⚛️ React 19 &amp; Motion</text>
+      </g>
+    </g>
+
+    <!-- Feature Pills (Row 2) -->
+    <g transform="translate(0, 334)">
+      <!-- Pill 5: AI Moderation -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="170" height="32" rx="10" fill="rgba(255,255,255,0.07)" stroke="rgba(236,72,153,0.45)" stroke-width="1" />
+        <text x="14" y="21" font-family="'Inter', -apple-system, sans-serif" font-size="12" font-weight="600" fill="#ffffff">🤖 AI Moderation (LLM)</text>
+      </g>
+
+      <!-- Pill 6: Loyalty & Wheel -->
+      <g transform="translate(180, 0)">
+        <rect x="0" y="0" width="170" height="32" rx="10" fill="rgba(255,255,255,0.07)" stroke="rgba(168,85,247,0.45)" stroke-width="1" />
+        <text x="14" y="21" font-family="'Inter', -apple-system, sans-serif" font-size="12" font-weight="600" fill="#ffffff">🎡 Wheel &amp; Loyalty Vault</text>
+      </g>
+
+      <!-- Pill 7: Stripe & Security -->
+      <g transform="translate(360, 0)">
+        <rect x="0" y="0" width="165" height="32" rx="10" fill="rgba(255,255,255,0.07)" stroke="rgba(34,197,94,0.45)" stroke-width="1" />
+        <text x="14" y="21" font-family="'Inter', -apple-system, sans-serif" font-size="12" font-weight="600" fill="#ffffff">💳 Stripe &amp; AES-256</text>
+      </g>
+
+      <!-- Pill 8: RBAC -->
+      <g transform="translate(535, 0)">
+        <rect x="0" y="0" width="175" height="32" rx="10" fill="rgba(255,255,255,0.07)" stroke="rgba(251,146,60,0.45)" stroke-width="1" />
+        <text x="14" y="21" font-family="'Inter', -apple-system, sans-serif" font-size="12" font-weight="600" fill="#ffffff">🔐 Dual Auth &amp; 9 Roles</text>
+      </g>
+    </g>
+
+    <!-- Bottom Tech Specs Line -->
+    <g transform="translate(0, 396)">
+      <text x="0" y="0" font-family="'Inter', -apple-system, sans-serif" font-size="11.5" font-weight="500" fill="rgba(255,255,255,0.55)" letter-spacing="0.5">
+        STACK: POSTGRESQL (SUPABASE) • EF CORE 10 • JWT COOKIE ROTATION • SIGNALR • DOCKER READY • TRILINGUAL (AZ / EN / RU)
+      </text>
+    </g>
+  </g>
+
+  <!-- Top Right Sparkle -->
+  <g class="sparkle-3" transform="translate(1120, 70)">
+    <path d="M 0 -10 L 2.5 -2.5 L 10 0 L 2.5 2.5 L 0 10 L -2.5 2.5 L -10 0 L -2.5 -2.5 Z" fill="#ffffff" filter="url(#intense-glow)" />
+  </g>
+</svg>

@@ -1,0 +1,162 @@
+.google-auth-page {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  background: url("../../../assets/images/product/Cappuccino.jpg") no-repeat center center/cover;
+  background-attachment: fixed;
+  position: relative;
+}
+.google-auth-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.88) 0%, rgba(30, 10, 10, 0.8) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.google-auth-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 460px;
+  background: rgba(22, 18, 18, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 44px 32px;
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.google-auth-brand {
+  display: inline-block;
+  margin-bottom: 8px;
+  transition: transform 0.25s ease;
+}
+.google-auth-brand:hover {
+  transform: scale(1.04);
+}
+.google-auth-brand .google-auth-logo {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+
+.google-auth-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.google-auth-state h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 12px 0 8px;
+  line-height: 1.3;
+}
+.google-auth-state p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 360px;
+}
+.google-auth-state .google-auth-error-desc {
+  color: rgba(255, 180, 180, 0.9);
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 14px;
+  font-size: 0.92rem;
+  word-break: break-word;
+}
+
+.google-auth-spinner {
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.google-auth-spinner img {
+  width: 32px;
+  height: 32px;
+}
+
+.google-auth-icon-badge {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+.google-auth-icon-badge--warning {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+}
+.google-auth-icon-badge--danger {
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: #e5c158;
+}
+
+.google-auth-actions {
+  width: 100%;
+  margin-top: 24px;
+}
+.google-auth-actions .google-auth-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 24px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #1a040a;
+  background: #ffffff;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+.google-auth-actions .google-auth-btn:hover {
+  background: rgba(255, 255, 255, 0.95);
+  color: #d4af37;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+.google-auth-actions .google-auth-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .google-auth-card {
+    padding: 32px 20px;
+  }
+  .google-auth-state h2 {
+    font-size: 1.35rem;
+  }
+}
