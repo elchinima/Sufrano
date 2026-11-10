@@ -9,6 +9,7 @@ const ecoFriendlyIcon = "/assets/icons/eco_friendly.svg";
 const homeCardLoader = "/assets/icons/home-product-card-loader.svg";
 const bgVideoUrl = "/assets/video/media_1.mp4";
 const aboutImage = "/assets/images/about_image.png";
+const cappuccinoImg = "/assets/images/product/Cappuccino.jpg";
 import SubscribeModal from "./SubscribeModal.js";
 import SubscribeErrorModal from "./SubscribeErrorModal.js";
 import SubscribeSuccessModal from "./SubscribeSuccessModal.js";
@@ -21,12 +22,13 @@ let blobFetchPromise = null;
 function getVideoBlobUrl() {
 	if (cachedBlobUrl) return Promise.resolve(cachedBlobUrl);
 	if (blobFetchPromise) return blobFetchPromise;
-	blobFetchPromise = fetch(bgVideoUrl).then((res) => res.blob()).then((blob) => {
+	const resolvedVideoUrl = (typeof window !== "undefined" && window.__SUFRANO_BASE__ ? window.__SUFRANO_BASE__ : "") + bgVideoUrl;
+	blobFetchPromise = fetch(resolvedVideoUrl).then((res) => res.blob()).then((blob) => {
 		cachedBlobUrl = URL.createObjectURL(blob);
 		return cachedBlobUrl;
 	}).catch(() => {
 		blobFetchPromise = null;
-		return bgVideoUrl;
+		return resolvedVideoUrl;
 	});
 	return blobFetchPromise;
 }

@@ -6,7 +6,10 @@ var possibleWebRoots = new[]
     Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"),
     Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "src"),
     Path.Combine(Directory.GetCurrentDirectory(), "..", "src"),
-    Path.Combine(Directory.GetCurrentDirectory(), "src")
+    Path.Combine(Directory.GetCurrentDirectory(), "src"),
+    Path.Combine(AppContext.BaseDirectory, "wwwroot"),
+    Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "src"),
+    Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "src")
 };
 var resolvedWebRoot = possibleWebRoots.FirstOrDefault(Directory.Exists);
 
@@ -21,7 +24,9 @@ var possibleEnvPaths = new[]
     Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "secret", ".env"),
     Path.Combine(Directory.GetCurrentDirectory(), "..", "secret", ".env"),
     Path.Combine(Directory.GetCurrentDirectory(), "secret", ".env"),
-    Path.Combine(Directory.GetCurrentDirectory(), ".env")
+    Path.Combine(Directory.GetCurrentDirectory(), ".env"),
+    Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "secret", ".env"),
+    Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "secret", ".env")
 };
 foreach (var p in possibleEnvPaths)
 {
@@ -107,8 +112,8 @@ builder.Services.AddRateLimiter(options =>
     options.GlobalLimiter = PartitionedRateLimiter.CreateChained(
         PartitionedRateLimiter.Create<HttpContext, string>(context =>
         {
-            if (context.Request.Path.StartsWithSegments("/hubs"))
-                return RateLimitPartition.GetNoLimiter("hubs");
+            if (!context.Request.Path.StartsWithSegments("/api") || context.Request.Path.StartsWithSegments("/hubs"))
+                return RateLimitPartition.GetNoLimiter("non_api");
 
             return RateLimitPartition.GetFixedWindowLimiter(
                 partitionKey: GetPartitionKey(context),
@@ -122,8 +127,8 @@ builder.Services.AddRateLimiter(options =>
         }),
         PartitionedRateLimiter.Create<HttpContext, string>(context =>
         {
-            if (context.Request.Path.StartsWithSegments("/hubs"))
-                return RateLimitPartition.GetNoLimiter("hubs");
+            if (!context.Request.Path.StartsWithSegments("/api") || context.Request.Path.StartsWithSegments("/hubs"))
+                return RateLimitPartition.GetNoLimiter("non_api");
 
             return RateLimitPartition.GetFixedWindowLimiter(
                 partitionKey: GetPartitionKey(context),
@@ -162,7 +167,11 @@ builder.Services.AddRateLimiter(options =>
 });
 
 var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "super_secret_key_that_is_at_least_32_chars_long";
-var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "RednestApp";
+if (Encoding.UTF8.GetByteCount(jwtSecret) < 32)
+{
+    jwtSecret = jwtSecret.PadRight(32, '_');
+}
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "SüfranoApp";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -240,10 +249,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowAll");
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseMiddleware<BandwidthThrottlingMiddleware>(1_048_576L);
 
 app.Use(async (context, next) =>
 {
+    if (!context.Request.Path.StartsWithSegments("/api"))
+    {
+        await next(context);
+        return;
+    }
+
     var accessToken = context.Request.Cookies["accessToken"];
     var refreshToken = context.Request.Cookies["refreshToken"];
 

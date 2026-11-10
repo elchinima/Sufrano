@@ -11,8 +11,7 @@ namespace Rednest.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "NewsletterLogs");
+            migrationBuilder.Sql("DROP TABLE IF EXISTS \"NewsletterLogs\";");
         }
 
         /// <inheritdoc />

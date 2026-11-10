@@ -156,7 +156,6 @@ export function createPortal(children, container) {
   };
 }
 
-// Hooks & Component state
 let currentInstance = null;
 const dirtyInstances = new Set();
 let isFlushing = false;
@@ -172,20 +171,24 @@ function scheduleUpdate(instance) {
 }
 
 function flushUpdates() {
-  while (dirtyInstances.size > 0) {
-    const batch = Array.from(dirtyInstances).sort((a, b) => a.depth - b.depth);
-    dirtyInstances.clear();
-    for (const inst of batch) {
-      if (inst.isMounted && !inst.updatedInPass) {
-        updateComponent(inst);
+  let guard = 0;
+  while ((dirtyInstances.size > 0 || pendingEffectInstances.length > 0) && guard < 50) {
+    guard++;
+    while (dirtyInstances.size > 0) {
+      const batch = Array.from(dirtyInstances).sort((a, b) => a.depth - b.depth);
+      dirtyInstances.clear();
+      for (const inst of batch) {
+        if (inst.isMounted && !inst.updatedInPass) {
+          updateComponent(inst);
+        }
+      }
+      for (const inst of batch) {
+        inst.updatedInPass = false;
       }
     }
-    for (const inst of batch) {
-      inst.updatedInPass = false;
-    }
+    flushEffects();
   }
   isFlushing = false;
-  flushEffects();
 }
 
 function flushEffects() {
@@ -286,6 +289,14 @@ function depsChanged(oldDeps, newDeps) {
 
 export function createContext(defaultValue) {
   const contextId = Symbol('Context');
+  const contextObj = {
+    _id: contextId,
+    _defaultValue: defaultValue,
+    _currentValue: defaultValue,
+    _subscribers: new Set(),
+    Provider: null
+  };
+
   function Provider(props) {
     const children = props.children;
     if (Array.isArray(children)) {
@@ -295,20 +306,25 @@ export function createContext(defaultValue) {
   }
   Provider._isContextProvider = true;
   Provider._contextId = contextId;
+  Provider._context = contextObj;
+  contextObj.Provider = Provider;
 
-  return {
-    _id: contextId,
-    _defaultValue: defaultValue,
-    Provider
-  };
+  return contextObj;
 }
 
 export function useContext(context) {
-  if (!currentInstance || !context) return context?._defaultValue;
-  if (currentInstance.contextMap && currentInstance.contextMap.has(context._id)) {
-    return currentInstance.contextMap.get(context._id);
+  if (!context) return undefined;
+  if (currentInstance) {
+    context._subscribers.add(currentInstance);
+    if (!currentInstance.subscribedContexts) {
+      currentInstance.subscribedContexts = new Set();
+    }
+    currentInstance.subscribedContexts.add(context);
+    if (currentInstance.contextMap && currentInstance.contextMap.has(context._id)) {
+      return currentInstance.contextMap.get(context._id);
+    }
   }
-  return context._defaultValue;
+  return context._currentValue !== undefined ? context._currentValue : context._defaultValue;
 }
 
 export class Component {
@@ -572,7 +588,16 @@ function updateDomProps(dom, oldProps, newProps, isSvg) {
     } else if (newVal === true) {
       dom.setAttribute(attrName, '');
     } else if (typeof newVal !== 'function' && typeof newVal !== 'object') {
-      dom.setAttribute(attrName, String(newVal));
+      let strAttr = String(newVal);
+      if (
+        (attrName === 'src' || attrName === 'href' || attrName === 'data') &&
+        strAttr.startsWith('/assets/') &&
+        typeof window !== 'undefined' &&
+        window.__SUFRANO_BASE__
+      ) {
+        strAttr = window.__SUFRANO_BASE__ + strAttr;
+      }
+      dom.setAttribute(attrName, strAttr);
     }
   }
 }
@@ -617,6 +642,9 @@ function mount(vnode, parentDom, anchor, contextMap, isSvg, depth = 0) {
     if (vnode.type._isContextProvider) {
       nextContextMap = new Map(contextMap);
       nextContextMap.set(vnode.type._contextId, vnode.props.value);
+      if (vnode.type._context) {
+        vnode.type._context._currentValue = vnode.props.value;
+      }
     }
 
     const instance = {
@@ -625,6 +653,7 @@ function mount(vnode, parentDom, anchor, contextMap, isSvg, depth = 0) {
       hooks: [],
       hookIndex: 0,
       pendingEffects: [],
+      subscribedContexts: null,
       vnode,
       subTree: null,
       parentDom,
@@ -657,7 +686,6 @@ function mount(vnode, parentDom, anchor, contextMap, isSvg, depth = 0) {
 
     instance.subTree = normalizeVNode(rendered);
     mount(instance.subTree, parentDom, anchor, nextContextMap, isSvg, depth + 1);
-    flushEffects();
     return;
   }
 
@@ -699,6 +727,18 @@ function updateComponent(instance) {
     nextContextMap = new Map(instance.contextMap);
     nextContextMap.set(instance.Component._contextId, instance.props.value);
     instance.contextMap = nextContextMap;
+    const ctx = instance.Component._context;
+    if (ctx) {
+      ctx._currentValue = instance.props.value;
+      for (const sub of Array.from(ctx._subscribers)) {
+        if (sub && sub.isMounted && sub !== instance) {
+          if (sub.contextMap) {
+            sub.contextMap.set(ctx._id, instance.props.value);
+          }
+          scheduleUpdate(sub);
+        }
+      }
+    }
   }
 
   const prevInstance = currentInstance;
@@ -722,7 +762,6 @@ function updateComponent(instance) {
   instance.subTree = nextSubTree;
 
   patch(instance.parentDom, prevSubTree, nextSubTree, nextContextMap, instance.isSvg, instance.depth + 1);
-  flushEffects();
 }
 
 function patch(parentDom, oldVNode, newVNode, contextMap, isSvg, depth = 0) {
@@ -915,6 +954,12 @@ function unmount(vnode, removeDom = true) {
     if (instance) {
       instance.isMounted = false;
       dirtyInstances.delete(instance);
+      if (instance.subscribedContexts) {
+        for (const ctx of instance.subscribedContexts) {
+          ctx._subscribers.delete(instance);
+        }
+        instance.subscribedContexts.clear();
+      }
       for (const hook of instance.hooks) {
         if (typeof hook.cleanup === 'function') {
           try { hook.cleanup(); } catch {}
@@ -958,6 +1003,7 @@ export function createRoot(container) {
         patch(container, rootVNode, nextVNode, new Map(), false, 0);
       }
       rootVNode = nextVNode;
+      flushUpdates();
     },
     unmount() {
       if (rootVNode) {

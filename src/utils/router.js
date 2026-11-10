@@ -1,14 +1,39 @@
 // Pure Vanilla JS Router for Süfrano (History API)
 import { h, Fragment, useState, useEffect, useCallback, useMemo } from './runtime.js';
 
-let currentLocationState = window.history.state || null;
+let currentLocationState = (typeof window !== 'undefined' && window.history?.state) || null;
 const routerListeners = new Set();
+let virtualLocation = null;
+
+function normalizeRoutePath(rawPathname) {
+  if (!rawPathname) return '/';
+  let p = rawPathname.replace(/\\/g, '/');
+  if (p.endsWith('/src/index.html') || p === '/src' || p === '/src/') {
+    return '/';
+  }
+  if (p.startsWith('/src/')) {
+    p = p.slice(4) || '/';
+  }
+  if (p.endsWith('/index.html')) {
+    return '/';
+  }
+  return p || '/';
+}
 
 function getSnapshot() {
+  if (virtualLocation) {
+    return {
+      pathname: virtualLocation.pathname,
+      search: virtualLocation.search,
+      hash: virtualLocation.hash,
+      state: currentLocationState
+    };
+  }
+  const rawPathname = typeof window !== 'undefined' ? window.location.pathname : '/';
   return {
-    pathname: window.location.pathname || '/',
-    search: window.location.search || '',
-    hash: window.location.hash || '',
+    pathname: normalizeRoutePath(rawPathname),
+    search: (typeof window !== 'undefined' && window.location.search) || '',
+    hash: (typeof window !== 'undefined' && window.location.hash) || '',
     state: currentLocationState
   };
 }
@@ -29,6 +54,7 @@ function notifyListeners() {
 if (typeof window !== 'undefined') {
   window.addEventListener('popstate', (e) => {
     currentLocationState = e.state || null;
+    virtualLocation = null;
     notifyListeners();
   });
 }
@@ -43,7 +69,7 @@ export function navigateTo(to, options = {}) {
   if (typeof to === 'string') {
     targetUrl = to;
   } else if (to && typeof to === 'object') {
-    const p = to.pathname || window.location.pathname;
+    const p = to.pathname || currentLocation.pathname || '/';
     const s = to.search ? (to.search.startsWith('?') ? to.search : `?${to.search}`) : '';
     const hash = to.hash ? (to.hash.startsWith('#') ? to.hash : `#${to.hash}`) : '';
     targetUrl = `${p}${s}${hash}`;
@@ -51,10 +77,34 @@ export function navigateTo(to, options = {}) {
 
   currentLocationState = options.state !== undefined ? options.state : null;
 
-  if (options.replace) {
-    window.history.replaceState(currentLocationState, '', targetUrl);
+  const isFileProtocol = typeof window !== 'undefined' && window.location.protocol === 'file:';
+  const isLiveServerSrc =
+    typeof window !== 'undefined' &&
+    (window.location.pathname.startsWith('/src/') || window.location.pathname.endsWith('/index.html'));
+
+  if (isFileProtocol || isLiveServerSrc) {
+    const parsed = new URL(targetUrl, 'http://localhost');
+    virtualLocation = {
+      pathname: normalizeRoutePath(parsed.pathname),
+      search: parsed.search || '',
+      hash: parsed.hash || ''
+    };
   } else {
-    window.history.pushState(currentLocationState, '', targetUrl);
+    virtualLocation = null;
+    try {
+      if (options.replace) {
+        window.history.replaceState(currentLocationState, '', targetUrl);
+      } else {
+        window.history.pushState(currentLocationState, '', targetUrl);
+      }
+    } catch {
+      const parsed = new URL(targetUrl, 'http://localhost');
+      virtualLocation = {
+        pathname: normalizeRoutePath(parsed.pathname),
+        search: parsed.search || '',
+        hash: parsed.hash || ''
+      };
+    }
   }
 
   notifyListeners();

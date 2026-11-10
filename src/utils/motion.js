@@ -79,7 +79,7 @@ function createMotionTag(tag) {
     }
 
     const initObj = resolveVariant(props?.initial, props?.variants);
-    const animObj = resolveVariant(props?.animate, props?.variants);
+    const animObj = resolveVariant(props?.animate || props?.whileInView, props?.variants);
     const finalFrame = toCssKeyframe(animObj);
 
     if (finalFrame) {

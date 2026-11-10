@@ -3,74 +3,49 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="/favicon.png" />
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#4a0e1c" />
   <meta name="description" content="Süfrano — Fine Dining & Restaurant Experience. Discover signature dishes, warm hospitality, and exclusive club rewards." />
   <title>Süfrano</title>
+  <script>
+    (function () {
+      var loc = window.location;
+      var path = loc.pathname.replace(/\\/g, '/');
+      var baseHref = '/';
+      var assetBase = '';
+      if (loc.protocol === 'file:') {
+        baseHref = path.substring(0, path.lastIndexOf('/') + 1);
+        assetBase = baseHref.replace(/\/$/, '');
+      } else if (path === '/src' || path.indexOf('/src/') === 0) {
+        baseHref = '/src/';
+        assetBase = '/src';
+      }
+      document.write('<base href="' + baseHref + '" />');
+      window.__SUFRANO_BASE__ = assetBase;
+
+      var isSeparateLocalDev =
+        loc.protocol === 'file:' ||
+        ((loc.hostname === 'localhost' || loc.hostname === '127.0.0.1') &&
+          loc.port !== '' &&
+          loc.port !== '5045' &&
+          loc.port !== '5273' &&
+          loc.port !== '7133' &&
+          loc.port !== '8080');
+      window.__SUFRANO_API_URL__ = isSeparateLocalDev ? 'http://localhost:5045' : '';
+    })();
+  </script>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/index.css" />
-  <link rel="stylesheet" href="/components/AdminPages/AdminLayout/AdminLayout.css" />
-  <link rel="stylesheet" href="/components/AdminPages/AdminLogin/AdminLogin.css" />
-  <link rel="stylesheet" href="/components/AdminPages/AdminLogs/AdminLogs.css" />
-  <link rel="stylesheet" href="/components/AdminPages/Dashboard/Dashboard.css" />
-  <link rel="stylesheet" href="/components/AdminPages/Database/Database.css" />
-  <link rel="stylesheet" href="/components/AdminPages/Newsletter/Newsletter.css" />
-  <link rel="stylesheet" href="/components/AdminPages/Orders/Orders.css" />
-  <link rel="stylesheet" href="/components/AdminPages/Products/Products.css" />
-  <link rel="stylesheet" href="/components/AdminPages/Promos/Promos.css" />
-  <link rel="stylesheet" href="/components/AdminPages/Reviews/Reviews.css" />
-  <link rel="stylesheet" href="/components/AdminPages/Users/Users.css" />
-  <link rel="stylesheet" href="/components/Cashbox/Cashbox.css" />
-  <link rel="stylesheet" href="/components/Cashbox/History/CashboxHistory.css" />
-  <link rel="stylesheet" href="/components/Elements/AdminTableActions.css" />
-  <link rel="stylesheet" href="/components/Elements/ProfilePasswordModal.css" />
-  <link rel="stylesheet" href="/components/Elements/RednestModal.css" />
-  <link rel="stylesheet" href="/components/Elements/UserNavPills.css" />
-  <link rel="stylesheet" href="/components/Footer/AppDownloadBanner.css" />
-  <link rel="stylesheet" href="/components/Footer/Footer.css" />
-  <link rel="stylesheet" href="/components/PublicPages/Auth/Auth.css" />
-  <link rel="stylesheet" href="/components/PublicPages/Auth/GoogleAuth.css" />
-  <link rel="stylesheet" href="/components/PublicPages/Basket/Basket.css" />
-  <link rel="stylesheet" href="/components/PublicPages/Catalog/Catalog.css" />
-  <link rel="stylesheet" href="/components/PublicPages/ErrorPage/ErrorPage.css" />
-  <link rel="stylesheet" href="/components/PublicPages/Home/Home.css" />
-  <link rel="stylesheet" href="/components/PublicPages/Home/SubscribeModal.css" />
-  <link rel="stylesheet" href="/components/PublicPages/Reviews/OrderSelectModal.css" />
-  <link rel="stylesheet" href="/components/PublicPages/Reviews/Reviews.css" />
-  <link rel="stylesheet" href="/components/PublicPages/Reviews/WriteReviewModal.css" />
-  <link rel="stylesheet" href="/components/PublicPages/Rules/Rules.css" />
-  <link rel="stylesheet" href="/components/UserPages/Addresses/Addresses.css" />
-  <link rel="stylesheet" href="/components/UserPages/Addresses/AddressModal.css" />
-  <link rel="stylesheet" href="/components/UserPages/Fortune/Fortune.css" />
-  <link rel="stylesheet" href="/components/UserPages/Order/Order.css" />
-  <link rel="stylesheet" href="/components/UserPages/Order/StripePaymentModal.css" />
-  <link rel="stylesheet" href="/components/UserPages/Orders/Orders.css" />
-  <link rel="stylesheet" href="/components/UserPages/PaymentMethods/AddCardModal.css" />
-  <link rel="stylesheet" href="/components/UserPages/PaymentMethods/PaymentMethods.css" />
-  <link rel="stylesheet" href="/components/UserPages/Profile/ChangePasswordModal.css" />
-  <link rel="stylesheet" href="/components/UserPages/Profile/Profile.css" />
-  <link rel="stylesheet" href="/components/UserPages/Promos/Promos.css" />
-  <link rel="stylesheet" href="/components/UserPages/Reviews/Reviews.css" />
-  <link rel="stylesheet" href="/components/UserPages/Sessions/Sessions.css" />
-  <link rel="stylesheet" href="/routes/AdminProtectedRoute.css" />
-  <script>
-    (function () {
-      var host = window.location.hostname;
-      var port = window.location.port;
-      var isSeparateLocalDev = (host === 'localhost' || host === '127.0.0.1') && port !== '' && port !== '5273' && port !== '7133' && port !== '8080';
-      window.__SUFRANO_API_URL__ = isSeparateLocalDev ? 'http://localhost:5273' : '';
-    })();
-  </script>
+  <link rel="stylesheet" href="styles/bundle.css" />
 </head>
 
 <body style="background-color: #24050d; margin: 0;">
   <div id="root"></div>
-  <script type="module" src="/main.js"></script>
+  <script defer src="app.bundle.js"></script>
 </body>
 
 </html>
