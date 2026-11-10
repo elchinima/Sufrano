@@ -61,6 +61,10 @@ public class AuthController : ControllerBase
             SetTokenCookies(result.AccessToken, result.RefreshToken);
 
             var user = result.User;
+            if (user != null)
+            {
+                SecurityVerificationHelper.AppendSecurityCookie(Response, user.Id.ToString());
+            }
             var userSession = user.Session ?? await userRepository.GetSessionByUserIdAsync(user.Id);
 
             return Ok(new
@@ -122,6 +126,10 @@ public class AuthController : ControllerBase
             SetTokenCookies(result.AccessToken!, result.RefreshToken!);
 
             var user = result.User ?? await userRepository.GetByEmailAsync(request.Email);
+            if (user != null)
+            {
+                SecurityVerificationHelper.AppendSecurityCookie(Response, user.Id.ToString());
+            }
             var userSession = user?.Session ?? (user != null ? await userRepository.GetSessionByUserIdAsync(user.Id) : null);
 
             return Ok(new 
@@ -165,6 +173,10 @@ public class AuthController : ControllerBase
 
             var result = await _authService.VerifyTwoFactorAsync(request, ipAddress, userAgent, platformVersion, deviceModel);
             SetTokenCookies(result.AccessToken, result.RefreshToken);
+            if (result.User != null)
+            {
+                SecurityVerificationHelper.AppendSecurityCookie(Response, result.User.Id.ToString());
+            }
 
             return Ok(new
             {
@@ -360,6 +372,14 @@ public class AuthController : ControllerBase
             SetTokenCookies(result.AccessToken, result.RefreshToken);
 
             var user = result.User;
+            if (user != null)
+            {
+                SecurityVerificationHelper.AppendSecurityCookie(Response, user.Id.ToString());
+            }
+            if (user != null)
+            {
+                SecurityVerificationHelper.AppendSecurityCookie(Response, user.Id.ToString());
+            }
             var userSession = user.Session ?? await userRepository.GetSessionByUserIdAsync(user.Id);
 
             return Ok(new
@@ -694,7 +714,6 @@ public class AuthController : ControllerBase
     }
 
     [Microsoft.AspNetCore.Authorization.Authorize]
-    [RequireSecurityVerification]
     [HttpPut("name")]
     public async Task<IActionResult> UpdateName(
         [FromBody] UpdateNameRequest nameRequest, 
@@ -714,8 +733,23 @@ public class AuthController : ControllerBase
                 return NotFound("User not found.");
             }
 
+            if (!string.IsNullOrWhiteSpace(user.Name))
+            {
+                var secToken = Request.Cookies[SecurityVerificationHelper.CookieName];
+                if (string.IsNullOrEmpty(secToken) || !SecurityVerificationHelper.ValidateToken(secToken, userIdString))
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new
+                    {
+                        message = "Security verification required. Please enter your account password.",
+                        requiresSecurityCheck = true
+                    });
+                }
+            }
+
             user.Name = nameRequest.Name;
             await userRepository.UpdateAsync(user);
+
+            SecurityVerificationHelper.AppendSecurityCookie(Response, user.Id.ToString());
 
             return Ok(new
             {
