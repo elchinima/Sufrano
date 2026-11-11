@@ -98,7 +98,7 @@
     background: rgba(255, 255, 255, 0.05);
   }
   .catalog-card:hover::after {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(197, 160, 89, 0.3);
   }
 }
 .catalog-card .card-image-container {
@@ -161,10 +161,11 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(24, 3, 9, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(197, 160, 89, 0.42);
+  box-shadow: 0 0 12px rgba(197, 160, 89, 0.16), 0 4px 14px rgba(0, 0, 0, 0.4);
   padding: 0;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -175,6 +176,9 @@
 }
 .catalog-card .add-to-cart-btn:hover {
   transform: scale(1.15) translateY(-2px);
+  background: rgba(36, 5, 13, 0.96);
+  border-color: rgba(223, 194, 136, 0.7);
+  box-shadow: 0 0 18px rgba(197, 160, 89, 0.3), 0 6px 18px rgba(0, 0, 0, 0.5);
 }
 .catalog-card .add-to-cart-btn:active {
   transform: scale(0.95);
@@ -248,7 +252,7 @@
 .catalog-card .card-content .card-header .item-old-price-pill .old-price {
   color: rgba(255, 255, 255, 0.55);
   text-decoration: line-through;
-  text-decoration-color: #d4af37;
+  text-decoration-color: #c5a059;
   text-decoration-thickness: 1.5px;
 }
 .catalog-card .card-content .card-header .item-price {
@@ -361,6 +365,6 @@
   .carousel-dots .dot.active {
     width: 24px;
     border-radius: 12px;
-    background: #d4af37;
+    background: #c5a059;
   }
 }

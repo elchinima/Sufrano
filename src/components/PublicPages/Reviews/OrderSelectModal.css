@@ -58,8 +58,8 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,7 +68,7 @@
 .order-select-modal__icon svg {
   width: 24px;
   height: 24px;
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .order-select-modal__title {
   font-size: 1.35rem;
@@ -97,7 +97,7 @@
   width: 5px;
 }
 .order-select-modal__list::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.35);
   border-radius: 4px;
 }
 .order-select-modal__footer {
@@ -127,13 +127,13 @@
 }
 .order-select-card:hover {
   background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(212, 175, 55, 0.4);
+  border-color: rgba(197, 160, 89, 0.4);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 .order-select-card--selected {
-  background: rgba(212, 175, 55, 0.12) !important;
-  border-color: rgba(212, 175, 55, 0.6) !important;
-  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.3), 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  background: rgba(197, 160, 89, 0.12) !important;
+  border-color: rgba(197, 160, 89, 0.6) !important;
+  box-shadow: 0 0 0 1px rgba(197, 160, 89, 0.3), 0 4px 16px rgba(0, 0, 0, 0.3) !important;
 }
 .order-select-card__top {
   display: flex;
@@ -177,15 +177,15 @@
   transition: all 0.2s ease;
 }
 .order-select-card__radio.active {
-  border-color: #d4af37;
-  background: rgba(212, 175, 55, 0.2);
+  border-color: #c5a059;
+  background: rgba(197, 160, 89, 0.2);
 }
 .order-select-card__radio-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #d4af37;
-  box-shadow: 0 0 6px rgba(212, 175, 55, 0.8);
+  background: #c5a059;
+  box-shadow: 0 0 6px rgba(197, 160, 89, 0.8);
 }
 .order-select-card__items {
   display: flex;
@@ -232,7 +232,7 @@
   text-overflow: ellipsis;
 }
 .order-select-card__item-qty {
-  color: #f3cf7a;
+  color: #dfc288;
   font-weight: 700;
   font-size: 0.72rem;
 }

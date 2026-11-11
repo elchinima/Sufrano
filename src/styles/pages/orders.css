@@ -169,8 +169,8 @@
   color: rgba(255, 255, 255, 0.4);
 }
 .orders-search-box .orders-search-input:focus {
-  border-color: rgba(212, 175, 55, 0.6);
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  border-color: rgba(197, 160, 89, 0.6);
+  box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
 }
 .orders-search-box .orders-search-clear {
   position: absolute;
@@ -232,8 +232,8 @@
   justify-content: center;
   margin-bottom: 4px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.25);
 }
 .orders-empty-card .orders-empty-icon-img {
   width: 36px;
@@ -277,7 +277,7 @@
 }
 .order-card:hover {
   border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.12), 0 8px 24px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 20px rgba(197, 160, 89, 0.12), 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 .order-card__header {
   display: flex;
@@ -377,9 +377,9 @@
 }
 
 .orders-status--pending {
-  background: rgba(245, 158, 11, 0.12);
-  border-color: rgba(245, 158, 11, 0.35);
-  color: #fbbf24;
+  background: rgba(197, 160, 89, 0.12);
+  border-color: rgba(197, 160, 89, 0.35);
+  color: #c5a059;
 }
 
 .orders-status--preparing {
@@ -401,9 +401,9 @@
 }
 
 .orders-status--cancelled {
-  background: rgba(212, 175, 55, 0.12);
-  border-color: rgba(212, 175, 55, 0.35);
-  color: #e5c158;
+  background: rgba(197, 160, 89, 0.12);
+  border-color: rgba(197, 160, 89, 0.35);
+  color: #d4b475;
 }
 
 .order-card__items-section {
@@ -625,11 +625,11 @@
   transform: translateY(-1px);
 }
 .order-card__action-btn--reorder {
-  background: #d4af37 !important;
+  background: #c5a059 !important;
   color: #ffffff !important;
 }
 .order-card__action-btn--reorder:hover {
-  background: #e5c158 !important;
+  background: #d4b475 !important;
   color: #ffffff !important;
   transform: translateY(-1px);
 }
@@ -818,11 +818,11 @@
   transform: translateY(-1px);
 }
 .orders-receipt-modal__actions .orders-receipt-modal__btn--reorder {
-  background: #d4af37 !important;
+  background: #c5a059 !important;
   color: #ffffff !important;
 }
 .orders-receipt-modal__actions .orders-receipt-modal__btn--reorder:hover {
-  background: #e5c158 !important;
+  background: #d4b475 !important;
   color: #ffffff !important;
   transform: translateY(-1px);
 }

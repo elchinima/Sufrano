@@ -7,7 +7,7 @@
   overflow: hidden;
   position: relative;
   background: #24050d;
-  background-image: radial-gradient(circle at top right, rgba(212, 175, 55, 0.25) 0%, transparent 50%), radial-gradient(circle at bottom left, #24050d 0%, #4a0e1c 100%);
+  background-image: radial-gradient(circle at top right, rgba(197, 160, 89, 0.25) 0%, transparent 50%), radial-gradient(circle at bottom left, #24050d 0%, #4a0e1c 100%);
 }
 
 .admin-login-overlay {
@@ -42,7 +42,7 @@
 
 .admin-login-left {
   flex: 1;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.18) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.18) 0%, rgba(0, 0, 0, 0.5) 100%);
   padding: 48px;
   display: flex;
   flex-direction: column;
@@ -163,9 +163,9 @@
 }
 .admin-login-form .input-group input:focus {
   outline: none;
-  border-color: #d4af37;
+  border-color: #c5a059;
   background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.15);
 }
 .admin-login-form .input-group input:-webkit-autofill, .admin-login-form .input-group input:-webkit-autofill:hover, .admin-login-form .input-group input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 30px #1a1a1a inset !important;
@@ -177,19 +177,19 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 20px;
-  color: #f3cf7a;
+  color: #dfc288;
   font-size: 0.85rem;
   line-height: 1.45;
 }
 .admin-login-restricted-banner svg {
   width: 20px;
   height: 20px;
-  color: #e5c158;
+  color: #d4b475;
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -204,12 +204,12 @@
   color: rgba(255, 255, 255, 0.7);
 }
 .admin-login-restricted-banner p span {
-  color: #f3cf7a;
+  color: #dfc288;
   font-weight: 600;
 }
 
 .admin-login-error {
-  color: #d4af37;
+  color: #c5a059;
   font-size: 0.9rem;
   text-align: center;
 }
@@ -230,13 +230,13 @@
 }
 .admin-login-submit:hover {
   background: rgba(255, 255, 255, 0.95);
-  color: #d4af37;
+  color: #c5a059;
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 .admin-login-submit:hover svg {
-  stroke: #d4af37;
-  color: #d4af37;
+  stroke: #c5a059;
+  color: #c5a059;
 }
 .admin-login-submit:disabled {
   cursor: not-allowed;
@@ -244,20 +244,20 @@
 }
 .admin-login-submit:disabled:hover {
   background: rgba(255, 255, 255, 0.95);
-  color: #d4af37;
+  color: #c5a059;
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 .admin-login-submit:disabled:hover svg {
-  stroke: #d4af37;
-  color: #d4af37;
+  stroke: #c5a059;
+  color: #c5a059;
 }
 .admin-login-submit__loader {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #d4af37;
+  color: #c5a059;
 }
 
 @keyframes adminPopIn {
@@ -305,7 +305,7 @@
   align-items: center;
   justify-content: center;
   background: #24050d;
-  background-image: radial-gradient(circle at top right, rgba(212, 175, 55, 0.15) 0%, transparent 50%);
+  background-image: radial-gradient(circle at top right, rgba(197, 160, 89, 0.15) 0%, transparent 50%);
 }
 
 .admin-loading-spinner {

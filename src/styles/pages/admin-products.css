@@ -22,7 +22,7 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 .admin-products__toast--error {
-  background: rgba(212, 175, 55, 0.95);
+  background: rgba(197, 160, 89, 0.95);
 }
 @media (max-width: 640px) {
   .admin-products__toast {
@@ -96,8 +96,8 @@
   justify-content: center;
   gap: 8px;
   padding: 9px 18px;
-  background: linear-gradient(135deg, #d4af37, #b5892e);
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, #c5a059, #9e7a36);
+  border: 1px solid rgba(197, 160, 89, 0.4);
   border-radius: 6px;
   color: #fff;
   font-size: 0.85rem;
@@ -105,7 +105,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
-  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 4px 14px rgba(197, 160, 89, 0.3);
 }
 .admin-products__btn-primary svg {
   width: 15px;
@@ -113,8 +113,8 @@
 }
 .admin-products__btn-primary:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.45);
-  background: linear-gradient(135deg, rgb(84.552892762%, 71.2611958364%, 28.1529895909%), #d4af37);
+  box-shadow: 0 6px 18px rgba(197, 160, 89, 0.45);
+  background: linear-gradient(135deg, #dfc288, #c5a059);
 }
 .admin-products__btn-primary:disabled {
   opacity: 0.5;
@@ -218,9 +218,9 @@
   }
 }
 .admin-products__stat-icon--total {
-  background: rgba(212, 175, 55, 0.12);
-  color: #d4af37;
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: rgba(197, 160, 89, 0.12);
+  color: #c5a059;
+  border: 1px solid rgba(197, 160, 89, 0.25);
 }
 .admin-products__stat-icon--categories {
   background: rgba(59, 130, 246, 0.12);
@@ -233,9 +233,9 @@
   border: 1px solid rgba(16, 185, 129, 0.25);
 }
 .admin-products__stat-icon--range {
-  background: rgba(245, 158, 11, 0.12);
-  color: #f59e0b;
-  border: 1px solid rgba(245, 158, 11, 0.25);
+  background: rgba(197, 160, 89, 0.12);
+  color: #c5a059;
+  border: 1px solid rgba(197, 160, 89, 0.25);
 }
 .admin-products__stat-info {
   display: flex;
@@ -323,8 +323,8 @@
 }
 .admin-products__search input:focus {
   background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(212, 175, 55, 0.5);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  border-color: rgba(197, 160, 89, 0.5);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
 }
 .admin-products__search-clear {
   position: absolute;
@@ -379,7 +379,7 @@
   color: #fff;
 }
 .admin-products__select:focus {
-  border-color: rgba(212, 175, 55, 0.5);
+  border-color: rgba(197, 160, 89, 0.5);
 }
 .admin-products__table-wrapper {
   background: rgba(255, 255, 255, 0.02);
@@ -500,14 +500,14 @@
   white-space: nowrap;
 }
 .admin-products__category-badge--main {
-  background: rgba(245, 158, 11, 0.12);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: rgba(197, 160, 89, 0.12);
+  color: #c5a059;
+  border: 1px solid rgba(197, 160, 89, 0.3);
 }
 .admin-products__category-badge--specialty {
-  background: rgba(212, 175, 55, 0.12);
-  color: #e5c158;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.12);
+  color: #d4b475;
+  border: 1px solid rgba(197, 160, 89, 0.3);
 }
 .admin-products__category-badge--dessert {
   background: rgba(168, 85, 247, 0.12);
@@ -587,7 +587,7 @@
   font-size: 0.76rem;
   color: rgba(255, 255, 255, 0.45);
   text-decoration: line-through;
-  text-decoration-color: #d4af37;
+  text-decoration-color: #c5a059;
   font-variant-numeric: tabular-nums;
 }
 .admin-products__discount-tag {
@@ -794,8 +794,8 @@
 .product-modal__form-group textarea:focus,
 .product-modal__form-group select:focus {
   background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(212, 175, 55, 0.5);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+  border-color: rgba(197, 160, 89, 0.5);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.12);
 }
 .product-modal__form-group input option,
 .product-modal__form-group textarea option,
@@ -819,7 +819,7 @@
   color: rgba(255, 248, 231, 0.82);
 }
 .product-modal__counter.limit {
-  color: #d4af37;
+  color: #c5a059;
 }
 .product-modal__discount-badge {
   font-size: 0.74rem;
@@ -923,12 +923,12 @@ input[type=checkbox]:checked + .product-modal__switch-slider::after {
   color: #fff;
 }
 .product-modal__lang-tab--active {
-  background: rgba(212, 175, 55, 0.18);
+  background: rgba(197, 160, 89, 0.18);
   color: #fff;
-  border-color: rgba(212, 175, 55, 0.35);
+  border-color: rgba(197, 160, 89, 0.35);
 }
 .product-modal__lang-required {
-  color: #d4af37;
+  color: #c5a059;
   font-weight: 800;
   font-size: 0.9rem;
   margin-left: 1px;
@@ -1025,7 +1025,7 @@ input[type=checkbox]:checked + .product-modal__switch-slider::after {
 .product-modal__details-price {
   font-size: 1.4rem;
   font-weight: 800;
-  color: #d4af37;
+  color: #c5a059;
 }
 .product-modal__details-box {
   background: rgba(255, 255, 255, 0.03);
@@ -1069,9 +1069,9 @@ input[type=checkbox]:checked + .product-modal__switch-slider::after {
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  color: #d4af37;
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  color: #c5a059;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1090,9 +1090,9 @@ input[type=checkbox]:checked + .product-modal__switch-slider::after {
 }
 .product-modal__delete-warning {
   font-size: 0.8rem;
-  color: rgba(212, 175, 55, 0.9);
-  background: rgba(212, 175, 55, 0.08);
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: rgba(197, 160, 89, 0.9);
+  background: rgba(197, 160, 89, 0.08);
+  border: 1px solid rgba(197, 160, 89, 0.2);
   border-radius: 8px;
   padding: 8px 12px;
 }

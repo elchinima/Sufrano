@@ -31,7 +31,7 @@ class ErrorBoundary extends React.Component {
 				alignItems: "center",
 				justifyContent: "center",
 				background: "#24050d",
-				backgroundImage: "radial-gradient(circle at top right, rgba(212, 175, 55, 0.15) 0%, transparent 50%), radial-gradient(circle at bottom left, #24050d 0%, #4a0e1c 100%)",
+				backgroundImage: "radial-gradient(circle at top right, rgba(197, 160, 89, 0.15) 0%, transparent 50%), radial-gradient(circle at bottom left, #24050d 0%, #4a0e1c 100%)",
 				color: "#fff",
 				fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
 				padding: "24px"
@@ -62,7 +62,7 @@ class ErrorBoundary extends React.Component {
 					padding: "12px 28px",
 					borderRadius: "12px",
 					border: "none",
-					background: "#d4af37",
+					background: "#c5a059",
 					color: "#fff",
 					fontWeight: 600,
 					fontSize: "14px",
@@ -70,8 +70,8 @@ class ErrorBoundary extends React.Component {
 					transition: "background 0.2s",
 					fontFamily: "inherit"
 				},
-				onMouseOver: (e) => e.target.style.background = "#e5c158",
-				onMouseOut: (e) => e.target.style.background = "#d4af37"
+				onMouseOver: (e) => e.target.style.background = "#d4b475",
+				onMouseOut: (e) => e.target.style.background = "#c5a059"
 			}, "Refresh page"), /* @__PURE__ */ __h("button", {
 				onClick: this.handleGoHome,
 				style: {

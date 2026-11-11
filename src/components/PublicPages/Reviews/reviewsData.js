@@ -26,8 +26,8 @@ export const REVIEW_CATEGORIES = [
 	}
 ];
 export const AVATAR_GRADIENTS = [
-	"linear-gradient(135deg, #d4af37, #b5892e)",
-	"linear-gradient(135deg, #f59e0b, #d97706)",
+	"linear-gradient(135deg, #c5a059, #9e7a36)",
+	"linear-gradient(135deg, #c5a059, #9e7a36)",
 	"linear-gradient(135deg, #ec4899, #be185d)",
 	"linear-gradient(135deg, #8b5cf6, #6d28d9)",
 	"linear-gradient(135deg, #10b981, #047857)",

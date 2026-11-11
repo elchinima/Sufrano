@@ -22,7 +22,7 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 .admin-orders__toast--error {
-  background: rgba(212, 175, 55, 0.95);
+  background: rgba(197, 160, 89, 0.95);
 }
 @media (max-width: 640px) {
   .admin-orders__toast {
@@ -194,7 +194,7 @@
   text-overflow: ellipsis;
 }
 .admin-orders__stat-value.highlight {
-  color: #fbbf24;
+  color: #c5a059;
 }
 @media (max-width: 580px) {
   .admin-orders__stat-value {
@@ -282,8 +282,8 @@
 .admin-orders__search-wrap input:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(212, 175, 55, 0.5);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  border-color: rgba(197, 160, 89, 0.5);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
 }
 .admin-orders__search-clear {
   position: absolute;
@@ -347,7 +347,7 @@
 }
 .admin-orders__select-wrap select:focus {
   outline: none;
-  border-color: rgba(212, 175, 55, 0.5);
+  border-color: rgba(197, 160, 89, 0.5);
 }
 .admin-orders .status-badge {
   appearance: none;
@@ -378,9 +378,9 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2334d399' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 .admin-orders .status-badge--pending {
-  background-color: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.35);
+  background-color: rgba(197, 160, 89, 0.15);
+  color: #c5a059;
+  border: 1px solid rgba(197, 160, 89, 0.35);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23fbbf24' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 .admin-orders .status-badge--preparing {
@@ -396,9 +396,9 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236ee7b7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 .admin-orders .status-badge--cancelled {
-  background-color: rgba(212, 175, 55, 0.15);
-  color: #e5c158;
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background-color: rgba(197, 160, 89, 0.15);
+  color: #d4b475;
+  border: 1px solid rgba(197, 160, 89, 0.35);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23f87171' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 .admin-orders .status-badge--completed {
@@ -409,7 +409,7 @@
 }
 .admin-orders .status-badge:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.3);
 }
 .admin-orders__table-card {
   background: rgba(255, 255, 255, 0.025);
@@ -555,7 +555,7 @@
 .admin-orders__payment-cell .total-val {
   font-weight: 800;
   font-size: 0.95rem;
-  color: #fbbf24;
+  color: #c5a059;
 }
 .admin-orders__payment-cell .payment-method-row {
   display: inline-flex;
@@ -571,7 +571,7 @@
 }
 .admin-orders__payment-cell .discount-tag {
   font-size: 0.68rem;
-  color: #e5c158;
+  color: #d4b475;
   font-weight: 600;
 }
 .admin-orders__status-cell {
@@ -623,9 +623,9 @@
   transform: translateY(-1px);
 }
 .admin-orders__action-btn--delete:hover {
-  background: rgba(212, 175, 55, 0.18);
-  border-color: rgba(212, 175, 55, 0.35);
-  color: #e5c158;
+  background: rgba(197, 160, 89, 0.18);
+  border-color: rgba(197, 160, 89, 0.35);
+  color: #d4b475;
 }
 .admin-orders__load-more {
   display: flex;
@@ -681,10 +681,10 @@
   align-items: center;
   gap: 12px;
   padding: 14px 18px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.3);
   border-radius: 6px;
-  color: #f3cf7a;
+  color: #dfc288;
   font-size: 0.88rem;
   margin-bottom: 24px;
 }
@@ -725,7 +725,7 @@
 }
 .admin-orders__modal {
   background: #1e040b;
-  background-image: radial-gradient(circle at top, rgba(212, 175, 55, 0.14) 0%, #160308 100%);
+  background-image: radial-gradient(circle at top, rgba(197, 160, 89, 0.14) 0%, #160308 100%);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 24px;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
@@ -861,7 +861,7 @@
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: rgba(212, 175, 55, 0.45) transparent;
+  scrollbar-color: rgba(197, 160, 89, 0.45) transparent;
 }
 .admin-orders__modal-body::-webkit-scrollbar {
   width: 6px;
@@ -870,11 +870,11 @@
   background: transparent;
 }
 .admin-orders__modal-body::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.45);
+  background: rgba(197, 160, 89, 0.45);
   border-radius: 999px;
 }
 .admin-orders__modal-body::-webkit-scrollbar-thumb:hover {
-  background: rgba(212, 175, 55, 0.8);
+  background: rgba(197, 160, 89, 0.8);
 }
 @media (max-width: 640px) {
   .admin-orders__modal-body {
@@ -897,7 +897,7 @@
     padding-right: 4px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
-    scrollbar-color: rgba(212, 175, 55, 0.4) transparent;
+    scrollbar-color: rgba(197, 160, 89, 0.4) transparent;
   }
   .admin-orders .receipt-meta-grid::-webkit-scrollbar {
     width: 4px;
@@ -906,7 +906,7 @@
     background: transparent;
   }
   .admin-orders .receipt-meta-grid::-webkit-scrollbar-thumb {
-    background: rgba(212, 175, 55, 0.4);
+    background: rgba(197, 160, 89, 0.4);
     border-radius: 999px;
   }
 }
@@ -994,7 +994,7 @@
   border-radius: 6px;
   overflow-x: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(212, 175, 55, 0.3) transparent;
+  scrollbar-color: rgba(197, 160, 89, 0.3) transparent;
 }
 .admin-orders .receipt-items-section .receipt-items-table-wrap::-webkit-scrollbar {
   width: 5px;
@@ -1004,7 +1004,7 @@
   background: transparent;
 }
 .admin-orders .receipt-items-section .receipt-items-table-wrap::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.3);
   border-radius: 999px;
 }
 @media (max-width: 640px) {
@@ -1074,7 +1074,7 @@
 }
 .admin-orders .receipt-items-section .receipt-items-table .highlight {
   font-weight: 700;
-  color: #fbbf24;
+  color: #c5a059;
   white-space: nowrap;
 }
 .admin-orders .receipt-notes-section {
@@ -1139,7 +1139,7 @@
   color: rgba(255, 255, 255, 0.75);
 }
 .admin-orders .receipt-payment-summary .summary-row.discount {
-  color: #e5c158;
+  color: #d4b475;
   font-weight: 600;
 }
 .admin-orders .receipt-payment-summary .summary-row .intent-code {
@@ -1165,7 +1165,7 @@
 .admin-orders .receipt-payment-summary .summary-row.total-row .final-total {
   font-size: 1.3rem;
   font-weight: 800;
-  color: #fbbf24;
+  color: #c5a059;
 }
 .admin-orders .receipt-modal-actions {
   display: flex;
@@ -1190,7 +1190,7 @@
 }
 .admin-orders .receipt-modal-actions .cta-btn {
   padding: 10px 20px;
-  background: linear-gradient(135deg, #d4af37, #b5892e);
+  background: linear-gradient(135deg, #c5a059, #9e7a36);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -1202,7 +1202,7 @@
 }
 .admin-orders .receipt-modal-actions .cta-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 6px 16px rgba(197, 160, 89, 0.35);
 }
 .admin-orders .delete-modal-body {
   padding: 24px;
@@ -1216,8 +1216,8 @@
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1225,7 +1225,7 @@
 .admin-orders .delete-modal-body .delete-warning-icon svg {
   width: 26px;
   height: 26px;
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .admin-orders .delete-modal-body h3 {
   font-size: 1.15rem;
@@ -1263,7 +1263,7 @@
 }
 .admin-orders .delete-modal-body .delete-modal-actions .delete-confirm-btn {
   padding: 10px 20px;
-  background: #d4af37;
+  background: #c5a059;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -1274,8 +1274,8 @@
   font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 .admin-orders .delete-modal-body .delete-modal-actions .delete-confirm-btn:hover:not(:disabled) {
-  background: #c59b27;
-  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+  background: #9e7a36;
+  box-shadow: 0 4px 14px rgba(197, 160, 89, 0.35);
 }
 .admin-orders .delete-modal-body .delete-modal-actions .delete-confirm-btn:disabled {
   opacity: 0.5;

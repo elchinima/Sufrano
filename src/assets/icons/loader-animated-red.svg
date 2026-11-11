@@ -9,24 +9,24 @@
     </filter>
 
     <linearGradient id="iso-top-red" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#e5c158" stop-opacity="1" />
-      <stop offset="100%" stop-color="#d4af37" stop-opacity="0.9" />
+      <stop offset="0%" stop-color="#d4b475" stop-opacity="1" />
+      <stop offset="100%" stop-color="#c5a059" stop-opacity="0.9" />
     </linearGradient>
     
     <linearGradient id="iso-left-red" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.85" />
-      <stop offset="100%" stop-color="#c59b27" stop-opacity="0.55" />
+      <stop offset="0%" stop-color="#c5a059" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#9e7a36" stop-opacity="0.55" />
     </linearGradient>
 
     <linearGradient id="iso-right-red" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#b5892e" stop-opacity="0.75" />
+      <stop offset="0%" stop-color="#9e7a36" stop-opacity="0.75" />
       <stop offset="100%" stop-color="#4a0e1c" stop-opacity="0.4" />
     </linearGradient>
 
     <linearGradient id="shadow-grad-red" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#d4af37" stop-opacity="0" />
-      <stop offset="50%" stop-color="#d4af37" stop-opacity="0.35" />
-      <stop offset="100%" stop-color="#d4af37" stop-opacity="0" />
+      <stop offset="0%" stop-color="#c5a059" stop-opacity="0" />
+      <stop offset="50%" stop-color="#c5a059" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#c5a059" stop-opacity="0" />
     </linearGradient>
   </defs>
 
@@ -62,7 +62,7 @@
         repeatCount="indefinite"
       />
 
-      <circle cx="24" cy="23" r="3.2" fill="#d4af37">
+      <circle cx="24" cy="23" r="3.2" fill="#c5a059">
         <animate
           attributeName="r"
           values="2; 4; 2"
@@ -92,7 +92,7 @@
         <polygon
           points="24,9 35.5,15.6 24,22.2 12.5,15.6"
           fill="url(#iso-top-red)"
-          stroke="#d4af37"
+          stroke="#c5a059"
           stroke-width="1.2"
           stroke-linejoin="round"
         />
@@ -112,7 +112,7 @@
         <polygon
           points="12.5,16.6 23.5,23 23.5,36 12.5,29.6"
           fill="url(#iso-left-red)"
-          stroke="#d4af37"
+          stroke="#c5a059"
           stroke-width="1.2"
           stroke-linejoin="round"
         />
@@ -132,7 +132,7 @@
         <polygon
           points="24.5,23 35.5,16.6 35.5,29.6 24.5,36"
           fill="url(#iso-right-red)"
-          stroke="#c59b27"
+          stroke="#9e7a36"
           stroke-width="1.2"
           stroke-linejoin="round"
         />

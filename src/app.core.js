@@ -3182,10 +3182,10 @@
 		.support-tooltip {
 		  position: absolute;
 		  right: calc(100% + 15px);
-		  background: rgba(255, 255, 255, 0.15);
-		  backdrop-filter: blur(15px);
-		  -webkit-backdrop-filter: blur(15px);
-		  border: 1px solid rgba(255, 255, 255, 0.3);
+		  background: rgba(24, 3, 9, 0.9);
+		  backdrop-filter: blur(16px);
+		  -webkit-backdrop-filter: blur(16px);
+		  border: 1px solid rgba(197, 160, 89, 0.4);
 		  padding: 12px 18px;
 		  border-radius: 12px 12px 0 12px;
 		  color: #fff;
@@ -3196,7 +3196,7 @@
 		  visibility: hidden;
 		  transform: translate(15px, -50px) scale(0.9);
 		  pointer-events: none;
-		  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+		  box-shadow: 0 0 14px rgba(197, 160, 89, 0.16), 0 6px 20px rgba(0, 0, 0, 0.4);
 		}
 		.support-widget-container:hover .support-tooltip {
 		  visibility: visible;
@@ -3216,10 +3216,11 @@
 		  width: 65px;
 		  height: 65px;
 		  border-radius: 50%;
-		  background: rgba(255, 255, 255, 0.15);
-		  backdrop-filter: blur(15px);
-		  -webkit-backdrop-filter: blur(15px);
-		  border: 1px solid rgba(255, 255, 255, 0.3);
+		  background: rgba(24, 3, 9, 0.88);
+		  backdrop-filter: blur(16px);
+		  -webkit-backdrop-filter: blur(16px);
+		  border: 1px solid rgba(197, 160, 89, 0.42);
+		  box-shadow: 0 0 14px rgba(197, 160, 89, 0.18), 0 0 30px rgba(197, 160, 89, 0.08), 0 6px 20px rgba(0, 0, 0, 0.4);
 		  display: flex;
 		  align-items: center;
 		  justify-content: center;
@@ -3231,7 +3232,10 @@
 		  height: 40px;
 		}
 		.support-widget:hover {
-		  transform: scale(1.15) translateY(-5px);
+		  transform: scale(1.12) translateY(-5px);
+		  background: rgba(36, 5, 13, 0.96);
+		  border-color: rgba(223, 194, 136, 0.7);
+		  box-shadow: 0 0 20px rgba(197, 160, 89, 0.32), 0 0 40px rgba(197, 160, 89, 0.14), 0 8px 24px rgba(0, 0, 0, 0.5);
 		}
 		.support-widget:active {
 		  transform: scale(0.95);
@@ -3563,10 +3567,11 @@
 		  min-height: 49px !important;
 		  box-sizing: border-box;
 		  border-radius: 26px;
-		  background: rgba(220, 53, 69, 0.9);
-		  backdrop-filter: blur(15px);
-		  -webkit-backdrop-filter: blur(15px);
-		  border: 1px solid rgba(255, 255, 255, 0.4);
+		  background: rgba(24, 3, 9, 0.88);
+		  backdrop-filter: blur(16px);
+		  -webkit-backdrop-filter: blur(16px);
+		  border: 1px solid rgba(197, 160, 89, 0.42);
+		  box-shadow: 0 0 14px rgba(197, 160, 89, 0.18), 0 0 30px rgba(197, 160, 89, 0.08), 0 6px 20px rgba(0, 0, 0, 0.4);
 		  color: #fff;
 		  font-size: 0.85rem;
 		  font-weight: 700;
@@ -3581,8 +3586,10 @@
 		  white-space: nowrap;
 		}
 		.buynow-widget:hover {
-		  transform: scale(1.08) translateY(-3px);
-		  background: rgba(220, 53, 69, 1);
+		  transform: scale(1.06) translateY(-3px);
+		  background: rgba(36, 5, 13, 0.96);
+		  border-color: rgba(223, 194, 136, 0.7);
+		  box-shadow: 0 0 20px rgba(197, 160, 89, 0.32), 0 0 40px rgba(197, 160, 89, 0.14), 0 8px 24px rgba(0, 0, 0, 0.5);
 		}
 		.buynow-widget:active {
 		  transform: scale(0.95);
@@ -3602,13 +3609,14 @@
 		.review-widget-icon {
 		  width: 18px;
 		  height: 18px;
+		  color: #dfc288;
 		}
 		.cart-badge {
 		  position: absolute;
 		  top: -6px;
 		  right: -7px;
-		  background: #ffffff;
-		  color: #dc3545;
+		  background: linear-gradient(135deg, #dfc288 0%, #c5a059 100%);
+		  color: #24050d;
 		  font-size: 0.52rem;
 		  font-weight: 800;
 		  min-width: 13px;
@@ -3618,7 +3626,7 @@
 		  display: flex;
 		  align-items: center;
 		  justify-content: center;
-		  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+		  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
 		  animation: badgePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		  line-height: 1;
 		}
@@ -3791,10 +3799,10 @@
 		.fortune-tooltip {
 		  position: absolute;
 		  left: calc(100% + 15px);
-		  background: rgba(255, 255, 255, 0.15);
-		  backdrop-filter: blur(15px);
-		  -webkit-backdrop-filter: blur(15px);
-		  border: 1px solid rgba(255, 255, 255, 0.3);
+		  background: rgba(24, 3, 9, 0.9);
+		  backdrop-filter: blur(16px);
+		  -webkit-backdrop-filter: blur(16px);
+		  border: 1px solid rgba(197, 160, 89, 0.4);
 		  padding: 12px 18px;
 		  border-radius: 12px 12px 12px 0;
 		  color: #fff;
@@ -3805,7 +3813,7 @@
 		  visibility: hidden;
 		  transform: translate(-15px, -50px) scale(0.9);
 		  pointer-events: none;
-		  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+		  box-shadow: 0 0 14px rgba(197, 160, 89, 0.16), 0 6px 20px rgba(0, 0, 0, 0.4);
 		}
 		.fortune-widget-container:hover .fortune-tooltip {
 		  visibility: visible;
@@ -3825,10 +3833,11 @@
 		  width: 65px;
 		  height: 65px;
 		  border-radius: 50%;
-		  background: rgba(255, 255, 255, 0.15);
-		  backdrop-filter: blur(15px);
-		  -webkit-backdrop-filter: blur(15px);
-		  border: 1px solid rgba(255, 255, 255, 0.3);
+		  background: rgba(24, 3, 9, 0.88);
+		  backdrop-filter: blur(16px);
+		  -webkit-backdrop-filter: blur(16px);
+		  border: 1px solid rgba(197, 160, 89, 0.42);
+		  box-shadow: 0 0 14px rgba(197, 160, 89, 0.18), 0 0 30px rgba(197, 160, 89, 0.08), 0 6px 20px rgba(0, 0, 0, 0.4);
 		  display: flex;
 		  align-items: center;
 		  justify-content: center;
@@ -3840,7 +3849,10 @@
 		  height: 40px;
 		}
 		.fortune-widget:hover {
-		  transform: scale(1.15) translateY(-5px);
+		  transform: scale(1.12) translateY(-5px);
+		  background: rgba(36, 5, 13, 0.96);
+		  border-color: rgba(223, 194, 136, 0.7);
+		  box-shadow: 0 0 20px rgba(197, 160, 89, 0.32), 0 0 40px rgba(197, 160, 89, 0.14), 0 8px 24px rgba(0, 0, 0, 0.5);
 		}
 		.fortune-widget:active {
 		  transform: scale(0.95);
@@ -4195,7 +4207,7 @@
 						alignItems: "center",
 						justifyContent: "center",
 						background: "#24050d",
-						backgroundImage: "radial-gradient(circle at top right, rgba(212, 175, 55, 0.15) 0%, transparent 50%), radial-gradient(circle at bottom left, #24050d 0%, #4a0e1c 100%)",
+						backgroundImage: "radial-gradient(circle at top right, rgba(197, 160, 89, 0.15) 0%, transparent 50%), radial-gradient(circle at bottom left, #24050d 0%, #4a0e1c 100%)",
 						color: "#fff",
 						fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
 						padding: "24px"
@@ -4226,7 +4238,7 @@
 							padding: "12px 28px",
 							borderRadius: "12px",
 							border: "none",
-							background: "#d4af37",
+							background: "#c5a059",
 							color: "#fff",
 							fontWeight: 600,
 							fontSize: "14px",
@@ -4234,8 +4246,8 @@
 							transition: "background 0.2s",
 							fontFamily: "inherit"
 						},
-						onMouseOver: (e) => e.target.style.background = "#e5c158",
-						onMouseOut: (e) => e.target.style.background = "#d4af37"
+						onMouseOver: (e) => e.target.style.background = "#d4b475",
+						onMouseOut: (e) => e.target.style.background = "#c5a059"
 					}, "Refresh page"), /* @__PURE__ */ __h("button", {
 						onClick: this.handleGoHome,
 						style: {
@@ -5235,7 +5247,7 @@
 				display: "flex",
 				alignItems: "center",
 				gap: "8px",
-				color: "#e5c158"
+				color: "#d4b475"
 			} }, /* @__PURE__ */ __h("img", {
 				src: loaderIconRed,
 				alt: "Loading",
@@ -6006,7 +6018,7 @@
 				display: "flex",
 				alignItems: "center",
 				gap: "8px",
-				color: "#e5c158"
+				color: "#d4b475"
 			} }, /* @__PURE__ */ __h("img", {
 				src: loaderIconRed,
 				alt: "Loading",
@@ -6051,8 +6063,8 @@
 			}
 		];
 		const AVATAR_GRADIENTS = [
-			"linear-gradient(135deg, #d4af37, #b5892e)",
-			"linear-gradient(135deg, #f59e0b, #d97706)",
+			"linear-gradient(135deg, #c5a059, #9e7a36)",
+			"linear-gradient(135deg, #c5a059, #9e7a36)",
 			"linear-gradient(135deg, #ec4899, #be185d)",
 			"linear-gradient(135deg, #8b5cf6, #6d28d9)",
 			"linear-gradient(135deg, #10b981, #047857)",
@@ -6708,8 +6720,8 @@
 				viewBox: "0 0 24 24",
 				width: "14.5",
 				height: "14.5",
-				fill: "#fbbf24",
-				stroke: "#fbbf24",
+				fill: "#c5a059",
+				stroke: "#c5a059",
 				strokeWidth: "1"
 			}, /* @__PURE__ */ __h("polygon", { points: "12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" })), /* @__PURE__ */ __h("span", { className: "review-modal__rating-sep" }, "·"), /* @__PURE__ */ __h("span", { className: "review-modal__rating-text" }, currentLabel))), /* @__PURE__ */ __h("div", { className: "review-modal__slider-wrapper" }, /* @__PURE__ */ __h("input", {
 				type: "range",
@@ -6721,7 +6733,7 @@
 					setRating(Number(e.target.value));
 				},
 				className: "review-modal__slider",
-				style: { background: `linear-gradient(90deg, #d4af37 0%, #fbbf24 ${sliderPercentage}%, rgba(255, 255, 255, 0.12) ${sliderPercentage}%)` },
+				style: { background: `linear-gradient(90deg, #c5a059 0%, #c5a059 ${sliderPercentage}%, rgba(255, 255, 255, 0.12) ${sliderPercentage}%)` },
 				"aria-label": "Slide to adjust rating"
 			}), /* @__PURE__ */ __h("div", { className: "review-modal__slider-ticks" }, /* @__PURE__ */ __h("span", {
 				className: rating >= 1 ? "active" : "",

@@ -466,7 +466,7 @@
 				y2: "12"
 			})), /* @__PURE__ */ __h("span", null, "Create Promo Code")))), /* @__PURE__ */ __h("div", { className: "admin-promos__stats" }, /* @__PURE__ */ __h(motion.div, {
 				className: "admin-promos__stat-card",
-				style: { "--accent": "#d4af37" },
+				style: { "--accent": "#c5a059" },
 				custom: 0,
 				variants: fadeUp,
 				initial: "hidden",
@@ -524,7 +524,7 @@
 			}), /* @__PURE__ */ __h("path", { d: "M23 21v-2a4 4 0 0 0-3-3.87" }), /* @__PURE__ */ __h("path", { d: "M16 3.13a4 4 0 0 1 0 7.75" }))), /* @__PURE__ */ __h("div", { className: "admin-promos__stat-body" }, /* @__PURE__ */ __h("span", { className: "admin-promos__stat-value" }, loading ? "..." : stats.claimed), /* @__PURE__ */ __h("span", { className: "admin-promos__stat-label" }, "Claimed by Users"), /* @__PURE__ */ __h("span", { className: "admin-promos__stat-sub" }, "Activated by customers"))), /* @__PURE__ */ __h(motion.div, {
 				className: "admin-promos__stat-card",
 				style: {
-					"--accent": "#fbbf24",
+					"--accent": "#c5a059",
 					cursor: "pointer"
 				},
 				custom: 3,

@@ -45,10 +45,11 @@ body.mobile-menu-open .buynow-widget-container {
   min-height: 49px !important;
   box-sizing: border-box;
   border-radius: 26px;
-  background: rgba(220, 53, 69, 0.9);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(24, 3, 9, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(197, 160, 89, 0.42);
+  box-shadow: 0 0 14px rgba(197, 160, 89, 0.18), 0 0 30px rgba(197, 160, 89, 0.08), 0 6px 20px rgba(0, 0, 0, 0.4);
   color: #fff;
   font-size: 0.85rem;
   font-weight: 700;
@@ -63,8 +64,10 @@ body.mobile-menu-open .buynow-widget-container {
   white-space: nowrap;
 }
 .buynow-widget:hover {
-  transform: scale(1.08) translateY(-3px);
-  background: rgba(220, 53, 69, 1);
+  transform: scale(1.06) translateY(-3px);
+  background: rgba(36, 5, 13, 0.96);
+  border-color: rgba(223, 194, 136, 0.7);
+  box-shadow: 0 0 20px rgba(197, 160, 89, 0.32), 0 0 40px rgba(197, 160, 89, 0.14), 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 .buynow-widget:active {
   transform: scale(0.95);
@@ -84,13 +87,14 @@ body.mobile-menu-open .buynow-widget-container {
 .review-widget-icon {
   width: 18px;
   height: 18px;
+  color: #dfc288;
 }
 .cart-badge {
   position: absolute;
   top: -6px;
   right: -7px;
-  background: #ffffff;
-  color: #dc3545;
+  background: linear-gradient(135deg, #dfc288 0%, #c5a059 100%);
+  color: #24050d;
   font-size: 0.52rem;
   font-weight: 800;
   min-width: 13px;
@@ -100,7 +104,7 @@ body.mobile-menu-open .buynow-widget-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
   animation: badgePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   line-height: 1;
 }

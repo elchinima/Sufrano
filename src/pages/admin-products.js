@@ -831,7 +831,7 @@
 					fontSize: "0.85rem",
 					color: "rgba(255,255,255,0.45)",
 					textDecoration: "line-through",
-					textDecorationColor: "#d4af37"
+					textDecorationColor: "#c5a059"
 				} }, priceInfo.formattedBasePrice, " ₼"), /* @__PURE__ */ __h("div", { style: {
 					display: "flex",
 					alignItems: "center",
@@ -881,7 +881,7 @@
 					textTransform: "uppercase"
 				} }, label), code === "AZ" && /* @__PURE__ */ __h("span", { style: {
 					fontSize: "0.68rem",
-					color: "#d4af37",
+					color: "#c5a059",
 					fontWeight: 700
 				} }, "required")), isEmpty ? /* @__PURE__ */ __h("p", { style: {
 					margin: 0,
@@ -1148,7 +1148,7 @@
 			}, "Cancel"), /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "admin-products__btn-primary",
-				style: { background: "linear-gradient(135deg, #d4af37, #5c1224)" },
+				style: { background: "linear-gradient(135deg, #c5a059, #5c1224)" },
 				onClick: handleConfirmDelete,
 				disabled: isDeleting
 			}, isDeleting ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("img", {

@@ -208,8 +208,8 @@ const WriteReviewModal = ({ isOpen, onClose, onSubmitReview }) => {
 		viewBox: "0 0 24 24",
 		width: "14.5",
 		height: "14.5",
-		fill: "#fbbf24",
-		stroke: "#fbbf24",
+		fill: "#c5a059",
+		stroke: "#c5a059",
 		strokeWidth: "1"
 	}, /* @__PURE__ */ __h("polygon", { points: "12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" })), /* @__PURE__ */ __h("span", { className: "review-modal__rating-sep" }, "·"), /* @__PURE__ */ __h("span", { className: "review-modal__rating-text" }, currentLabel))), /* @__PURE__ */ __h("div", { className: "review-modal__slider-wrapper" }, /* @__PURE__ */ __h("input", {
 		type: "range",
@@ -221,7 +221,7 @@ const WriteReviewModal = ({ isOpen, onClose, onSubmitReview }) => {
 			setRating(Number(e.target.value));
 		},
 		className: "review-modal__slider",
-		style: { background: `linear-gradient(90deg, #d4af37 0%, #fbbf24 ${sliderPercentage}%, rgba(255, 255, 255, 0.12) ${sliderPercentage}%)` },
+		style: { background: `linear-gradient(90deg, #c5a059 0%, #c5a059 ${sliderPercentage}%, rgba(255, 255, 255, 0.12) ${sliderPercentage}%)` },
 		"aria-label": "Slide to adjust rating"
 	}), /* @__PURE__ */ __h("div", { className: "review-modal__slider-ticks" }, /* @__PURE__ */ __h("span", {
 		className: rating >= 1 ? "active" : "",

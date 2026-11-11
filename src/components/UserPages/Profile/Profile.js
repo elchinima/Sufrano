@@ -413,7 +413,7 @@ const Profile = () => {
 		display: "flex",
 		alignItems: "center",
 		gap: "8px",
-		color: "#e5c158"
+		color: "#d4b475"
 	} }, /* @__PURE__ */ __h("img", {
 		src: loaderIconRed,
 		alt: "Deleting...",

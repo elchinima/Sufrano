@@ -395,16 +395,16 @@
 				className: "rednest-modal__btn rednest-modal__btn--danger",
 				style: {
 					textDecoration: "none",
-					background: "#d97706",
-					boxShadow: "0 4px 14px rgba(217, 119, 6, 0.35)"
+					background: "#9e7a36",
+					boxShadow: "0 4px 14px rgba(158, 122, 54, 0.35)"
 				},
 				onClick: onClose
 			}, lang === "ru" ? "Служба поддержки" : lang === "az" ? "Dəstək xidməti" : "Contact Support"), !isAlreadySubscribed && isAccountRequired && onOpenRegister && /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "rednest-modal__btn rednest-modal__btn--danger",
 				style: {
-					background: "#d4af37",
-					boxShadow: "0 4px 14px rgba(212, 175, 55, 0.35)"
+					background: "#c5a059",
+					boxShadow: "0 4px 14px rgba(197, 160, 89, 0.35)"
 				},
 				onClick: () => {
 					onClose();

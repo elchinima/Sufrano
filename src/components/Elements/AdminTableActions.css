@@ -26,17 +26,17 @@
 }
 .admin-table-actions__trigger:hover {
   background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(212, 175, 55, 0.5);
+  border-color: rgba(197, 160, 89, 0.5);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.25);
 }
 .admin-table-actions__trigger:active {
   transform: scale(0.95);
 }
 .admin-table-actions__trigger.active {
-  background: rgba(212, 175, 55, 0.18);
-  border-color: rgba(212, 175, 55, 0.6);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+  background: rgba(197, 160, 89, 0.18);
+  border-color: rgba(197, 160, 89, 0.6);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2);
 }
 .admin-table-actions__icon {
   width: 18px;
@@ -132,24 +132,24 @@
   cursor: not-allowed;
 }
 .admin-table-actions__item--danger {
-  color: #e5c158;
+  color: #d4b475;
 }
 .admin-table-actions__item--danger:hover:not(:disabled) {
-  background: rgba(212, 175, 55, 0.16);
-  color: #f3cf7a;
+  background: rgba(197, 160, 89, 0.16);
+  color: #dfc288;
 }
 .admin-table-actions__item--danger .admin-table-actions__item-icon svg {
-  stroke: #e5c158;
+  stroke: #d4b475;
 }
 .admin-table-actions__item--warning {
-  color: #fbbf24;
+  color: #c5a059;
 }
 .admin-table-actions__item--warning:hover:not(:disabled) {
-  background: rgba(245, 158, 11, 0.16);
-  color: #fde68a;
+  background: rgba(197, 160, 89, 0.16);
+  color: #e8cfa0;
 }
 .admin-table-actions__item--warning .admin-table-actions__item-icon svg {
-  stroke: #fbbf24;
+  stroke: #c5a059;
 }
 .admin-table-actions__item-icon {
   width: 16px;
@@ -188,10 +188,10 @@
   opacity: 0.65;
 }
 .admin-table-actions__item--locked:hover {
-  background: rgba(212, 175, 55, 0.12) !important;
-  color: #e5c158 !important;
+  background: rgba(197, 160, 89, 0.12) !important;
+  color: #d4b475 !important;
   transform: none !important;
 }
 .admin-table-actions__item--locked:hover .admin-table-actions__item-lock svg {
-  stroke: #e5c158;
+  stroke: #d4b475;
 }

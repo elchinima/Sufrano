@@ -59,7 +59,7 @@
   left: 0;
   width: 30px;
   height: 2px;
-  background: #d4af37;
+  background: #c5a059;
 }
 .footer .footer-col ul {
   list-style: none;
@@ -87,12 +87,12 @@
   transition: color 0.3s ease;
 }
 .footer .footer-col ul li a:hover {
-  color: #d4af37;
+  color: #c5a059;
 }
 .footer .footer-col ul li svg {
   margin-top: 2px;
   min-width: 18px;
-  color: #d4af37;
+  color: #c5a059;
 }
 .footer .footer-col ul li span {
   line-height: 1.4;
@@ -157,7 +157,7 @@
   transition: all 0.3s ease;
 }
 .footer .brand-col .social-links .social-link:hover {
-  background: #d4af37;
+  background: #c5a059;
   color: #ffffff;
   transform: translateY(-3px);
 }
@@ -214,7 +214,7 @@
   }
 }
 .footer .footer-bottom .language-switcher select:focus {
-  border-color: #d4af37;
+  border-color: #c5a059;
 }
 .footer .footer-bottom .language-switcher select option {
   background: #24050d;
@@ -252,5 +252,5 @@
   }
 }
 .footer .footer-bottom .terms-link a:hover {
-  color: #d4af37;
+  color: #c5a059;
 }

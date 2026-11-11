@@ -32,7 +32,7 @@
   transform: translate(-50%, -50%);
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(36, 5, 13, 0) 70%);
+  background: radial-gradient(circle, rgba(197, 160, 89, 0.12) 0%, rgba(36, 5, 13, 0) 70%);
   filter: blur(80px);
   pointer-events: none;
   z-index: 0;
@@ -69,7 +69,7 @@
   margin-bottom: 16px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.05);
-  color: #e5c158;
+  color: #d4b475;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -80,7 +80,7 @@
   }
 }
 .rules-badge svg {
-  stroke: #e5c158;
+  stroke: #d4b475;
 }
 
 .rules-title {
@@ -149,13 +149,13 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: rgba(197, 160, 89, 0.1);
+  border: 1px solid rgba(197, 160, 89, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 24px;
-  color: #e5c158;
+  color: #d4b475;
 }
 .rules-empty-icon svg {
   width: 32px;

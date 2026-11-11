@@ -48,8 +48,8 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,7 +58,7 @@
 .change-password-modal__icon svg {
   width: 24px;
   height: 24px;
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .change-password-modal__title {
   font-size: 1.35rem;
@@ -83,18 +83,18 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.3);
   border-radius: 6px;
   padding: 10px 14px;
-  color: #f3cf7a;
+  color: #dfc288;
   font-size: 0.84rem;
   line-height: 1.4;
 }
 .change-password-modal__error svg {
   width: 18px;
   height: 18px;
-  stroke: #d4af37;
+  stroke: #c5a059;
   flex-shrink: 0;
 }
 .change-password-modal__actions {
@@ -133,14 +133,14 @@
 }
 .change-password-modal__btn--submit:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.95);
-  color: #d4af37;
+  color: #c5a059;
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 .change-password-modal__btn--submit:disabled {
   opacity: 0.95;
   cursor: not-allowed;
-  color: #d4af37;
+  color: #c5a059;
   background: rgba(255, 255, 255, 0.95);
 }
 
@@ -178,9 +178,9 @@
 }
 .pwd-input-wrap input:focus {
   outline: none;
-  border-color: #d4af37;
+  border-color: #c5a059;
   background: rgba(0, 0, 0, 0.55);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2);
 }
 .pwd-input-wrap input::placeholder {
   color: rgba(255, 255, 255, 0.25);
@@ -219,13 +219,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #d4af37;
+  color: #c5a059;
 }
 .pwd-loader-inner .pwd-btn-spinner {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  color: #d4af37;
+  color: #c5a059;
 }
 
 @media (max-width: 480px) {
@@ -329,11 +329,11 @@
 }
 .profile-toast--error {
   background: rgba(35, 10, 10, 0.96);
-  border: 1px solid rgba(212, 175, 55, 0.45);
-  color: #f3cf7a;
+  border: 1px solid rgba(197, 160, 89, 0.45);
+  color: #dfc288;
 }
 .profile-toast--error svg {
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .profile-toast--success {
   background: rgba(10, 30, 18, 0.96);
@@ -401,7 +401,7 @@
   border-radius: 50%;
   position: relative;
   overflow: hidden;
-  background: radial-gradient(circle at top, rgba(212, 175, 55, 0.25) 0%, rgba(36, 5, 13, 0.9) 100%);
+  background: radial-gradient(circle at top, rgba(197, 160, 89, 0.25) 0%, rgba(36, 5, 13, 0.9) 100%);
   border: 3px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 24px rgba(0, 0, 0, 0.45);
   display: flex;
@@ -410,8 +410,8 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .profile-avatar-circle:hover {
-  border-color: rgba(212, 175, 55, 0.5);
-  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.2), 0 8px 28px rgba(212, 175, 55, 0.25);
+  border-color: rgba(197, 160, 89, 0.5);
+  box-shadow: 0 0 0 1px rgba(197, 160, 89, 0.2), 0 8px 28px rgba(197, 160, 89, 0.25);
 }
 
 .profile-avatar-img {
@@ -472,14 +472,14 @@
 }
 .profile-btn--delete {
   flex: 1;
-  background: rgba(212, 175, 55, 0.15);
-  color: #f3cf7a;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.15);
+  color: #dfc288;
+  border: 1px solid rgba(197, 160, 89, 0.3);
 }
 .profile-btn--delete:hover:not(.no-hover) {
-  background: rgba(212, 175, 55, 0.25);
+  background: rgba(197, 160, 89, 0.25);
   color: #ffffff;
-  border-color: rgba(212, 175, 55, 0.5);
+  border-color: rgba(197, 160, 89, 0.5);
 }
 .profile-btn .btn-icon {
   width: 16px;
@@ -627,7 +627,7 @@
   display: block;
 }
 .profile-switch--on {
-  background: #d4af37;
+  background: #c5a059;
 }
 .profile-switch--on .profile-switch__handle {
   transform: translateX(22px);
@@ -661,11 +661,11 @@
   stroke: #ffffff;
 }
 .profile-modal__icon--danger {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.15);
+  border-color: rgba(197, 160, 89, 0.3);
 }
 .profile-modal__icon--danger svg {
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .profile-modal__title {
   font-size: 1.35rem;
@@ -697,11 +697,11 @@
   color: #ffffff;
 }
 .profile-modal__btn--confirm-delete {
-  background: #d4af37;
+  background: #c5a059;
   color: #ffffff;
 }
 .profile-modal__btn--confirm-delete:hover:not(.no-hover) {
-  background: #c59b27;
+  background: #9e7a36;
   color: #ffffff;
 }
 
@@ -832,7 +832,7 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #d4af37;
+  background: #c5a059;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   transition: transform 0.15s ease;
@@ -844,7 +844,7 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #d4af37;
+  background: #c5a059;
   cursor: pointer;
   border: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);

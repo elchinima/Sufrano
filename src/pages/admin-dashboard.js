@@ -154,7 +154,7 @@
 				ry: "3"
 			}), /* @__PURE__ */ __h("path", { d: "M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" }), /* @__PURE__ */ __h("path", { d: "M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" })), "Go to Database")), /* @__PURE__ */ __h("div", { className: "dashboard__section" }, /* @__PURE__ */ __h("div", { className: "dashboard__section-header" }, /* @__PURE__ */ __h("div", { className: "dashboard__section-title-wrap" }, /* @__PURE__ */ __h("span", { className: "dashboard__section-dot" }), /* @__PURE__ */ __h("h2", { className: "dashboard__section-title" }, "Current Month Statistics")), /* @__PURE__ */ __h("div", { className: "dashboard__badges" }, monthlyStats.monthName && /* @__PURE__ */ __h("span", { className: "dashboard__badge dashboard__badge--month" }, monthlyStats.monthName), /* @__PURE__ */ __h("span", { className: "dashboard__badge dashboard__badge--timezone" }, "UTC+4 (Baku)"))), /* @__PURE__ */ __h("div", { className: "dashboard__stats dashboard__stats--grid-4" }, /* @__PURE__ */ __h(StatCard, {
 				index: 0,
-				accent: "#f59e0b",
+				accent: "#c5a059",
 				icon: /* @__PURE__ */ __h("svg", {
 					viewBox: "0 0 24 24",
 					fill: "none",
@@ -222,7 +222,7 @@
 				sub: "Active in last 15 minutes"
 			}), /* @__PURE__ */ __h(StatCard, {
 				index: 4,
-				accent: "#eab308",
+				accent: "#c5a059",
 				icon: /* @__PURE__ */ __h("svg", {
 					viewBox: "0 0 24 24",
 					fill: "none",
@@ -263,7 +263,7 @@
 				sub: "Created this month"
 			}), /* @__PURE__ */ __h(StatCard, {
 				index: 7,
-				accent: "#f43f5e",
+				accent: "#c5a059",
 				icon: /* @__PURE__ */ __h("svg", {
 					viewBox: "0 0 24 24",
 					fill: "none",
@@ -283,7 +283,7 @@
 				sub: "Total discounts applied"
 			}))), canAccessDatabase && /* @__PURE__ */ __h("div", { className: "dashboard__section" }, /* @__PURE__ */ __h("div", { className: "dashboard__section-header" }, /* @__PURE__ */ __h("div", { className: "dashboard__section-title-wrap" }, /* @__PURE__ */ __h("span", { className: "dashboard__section-dot dashboard__section-dot--storage" }), /* @__PURE__ */ __h("h2", { className: "dashboard__section-title" }, "Media Storage")), /* @__PURE__ */ __h("span", { className: "dashboard__badge dashboard__badge--storage" }, "Supabase Storage")), /* @__PURE__ */ __h("div", { className: "dashboard__stats" }, /* @__PURE__ */ __h(StatCard, {
 				index: 8,
-				accent: "#d4af37",
+				accent: "#c5a059",
 				icon: /* @__PURE__ */ __h("svg", {
 					viewBox: "0 0 24 24",
 					fill: "none",
@@ -305,7 +305,7 @@
 				sub: "Supabase Storage · admin-files"
 			}), /* @__PURE__ */ __h(StatCard, {
 				index: 9,
-				accent: "#fb923c",
+				accent: "#c5a059",
 				icon: /* @__PURE__ */ __h("svg", {
 					viewBox: "0 0 24 24",
 					fill: "none",

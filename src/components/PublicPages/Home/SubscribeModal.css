@@ -1,7 +1,7 @@
 .subscribe-modal-content {
   box-sizing: border-box;
   background: rgba(15, 15, 15, 0.9);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  border: 1px solid rgba(197, 160, 89, 0.25);
   border-radius: 24px;
   width: 100%;
   max-width: 440px;
@@ -84,9 +84,9 @@
 }
 .subscribe-modal-content .subscribe-modal-form .two-factor-inputs .two-factor-digit:focus {
   outline: none;
-  border-color: #d4af37;
+  border-color: #c5a059;
   background: rgba(0, 0, 0, 0.7);
-  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.2);
   transform: translateY(-2px);
 }
 .subscribe-modal-content .subscribe-modal-form .subscribe-timer-info {
@@ -95,11 +95,11 @@
   color: rgba(255, 248, 231, 0.82);
 }
 .subscribe-modal-content .subscribe-modal-form .subscribe-timer-info .timer-value {
-  color: #f6ad55;
+  color: #d4b475;
   font-weight: 600;
 }
 .subscribe-modal-content .subscribe-modal-form .subscribe-timer-info .timer-expired {
-  color: #e5c158;
+  color: #d4b475;
   font-weight: 600;
 }
 .subscribe-modal-content .subscribe-modal-form .subscribe-success-msg {
@@ -112,11 +112,11 @@
   text-align: center;
 }
 .subscribe-modal-content .subscribe-modal-form .subscribe-error-msg {
-  color: #e5c158;
+  color: #d4b475;
   font-size: 0.85rem;
   padding: 10px 14px;
-  background: rgba(255, 80, 80, 0.1);
-  border: 1px solid rgba(255, 80, 80, 0.25);
+  background: rgba(197, 160, 89, 0.1);
+  border: 1px solid rgba(197, 160, 89, 0.25);
   border-radius: 8px;
   text-align: center;
 }
@@ -138,7 +138,7 @@
 }
 .subscribe-modal-content .subscribe-modal-form .subscribe-submit-btn:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.95);
-  color: #d4af37;
+  color: #c5a059;
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }

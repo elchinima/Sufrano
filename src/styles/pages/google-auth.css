@@ -78,9 +78,9 @@
   max-width: 360px;
 }
 .google-auth-state .google-auth-error-desc {
-  color: rgba(255, 180, 180, 0.9);
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  color: rgba(223, 194, 136, 0.9);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.25);
   border-radius: 12px;
   padding: 14px 16px;
   margin-top: 14px;
@@ -113,14 +113,14 @@
   margin-bottom: 6px;
 }
 .google-auth-icon-badge--warning {
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  color: #fbbf24;
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.35);
+  color: #c5a059;
 }
 .google-auth-icon-badge--danger {
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  color: #e5c158;
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.35);
+  color: #d4b475;
 }
 
 .google-auth-actions {
@@ -145,7 +145,7 @@
 }
 .google-auth-actions .google-auth-btn:hover {
   background: rgba(255, 255, 255, 0.95);
-  color: #d4af37;
+  color: #c5a059;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }

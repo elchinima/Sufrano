@@ -32,7 +32,7 @@
   transform: translate(-50%, -50%);
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(36, 5, 13, 0) 70%);
+  background: radial-gradient(circle, rgba(197, 160, 89, 0.15) 0%, rgba(36, 5, 13, 0) 70%);
   filter: blur(60px);
   pointer-events: none;
   z-index: 0;
@@ -83,22 +83,22 @@
   }
 }
 .error-badge--429, .error-badge--warning {
-  background: rgba(245, 158, 11, 0.15);
-  border-color: rgba(245, 158, 11, 0.35);
-  color: #fcd34d;
+  background: rgba(197, 160, 89, 0.15);
+  border-color: rgba(197, 160, 89, 0.35);
+  color: #dfc288;
 }
 .error-badge--429 .error-badge__dot, .error-badge--warning .error-badge__dot {
-  background: #f59e0b;
-  box-shadow: 0 0 8px #f59e0b;
+  background: #c5a059;
+  box-shadow: 0 0 8px #c5a059;
 }
 .error-badge--404, .error-badge--danger {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: rgba(212, 175, 55, 0.35);
-  color: #f3cf7a;
+  background: rgba(197, 160, 89, 0.15);
+  border-color: rgba(197, 160, 89, 0.35);
+  color: #dfc288;
 }
 .error-badge--404 .error-badge__dot, .error-badge--danger .error-badge__dot {
-  background: #d4af37;
-  box-shadow: 0 0 8px #d4af37;
+  background: #c5a059;
+  box-shadow: 0 0 8px #c5a059;
 }
 .error-badge--500, .error-badge--server {
   background: rgba(168, 85, 247, 0.15);
@@ -139,7 +139,7 @@
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: radial-gradient(circle at top, rgba(212, 175, 55, 0.25) 0%, rgba(36, 5, 13, 0.8) 100%);
+  background: radial-gradient(circle at top, rgba(197, 160, 89, 0.25) 0%, rgba(36, 5, 13, 0.8) 100%);
   border: 2px solid rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
@@ -238,7 +238,7 @@
   }
 }
 .error-countdown-header .countdown-timer-value {
-  color: #fcd34d;
+  color: #dfc288;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
@@ -253,7 +253,7 @@
 
 .error-countdown-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #f59e0b, #d4af37);
+  background: linear-gradient(90deg, #c5a059, #c5a059);
   border-radius: 3px;
   transition: width 1s linear;
 }

@@ -28,18 +28,18 @@
   stroke: #ffffff;
 }
 .rednest-modal__icon--danger {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.15);
+  border-color: rgba(197, 160, 89, 0.35);
 }
 .rednest-modal__icon--danger svg {
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .rednest-modal__icon--warning {
-  background: rgba(245, 158, 11, 0.15);
-  border-color: rgba(245, 158, 11, 0.35);
+  background: rgba(197, 160, 89, 0.15);
+  border-color: rgba(197, 160, 89, 0.35);
 }
 .rednest-modal__icon--warning svg {
-  stroke: #f59e0b;
+  stroke: #c5a059;
 }
 .rednest-modal__icon--success {
   background: rgba(72, 187, 120, 0.15);
@@ -110,13 +110,13 @@
   transform: translateY(-1px);
 }
 .rednest-modal__btn--danger {
-  background: #d4af37;
+  background: #c5a059;
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 4px 14px rgba(197, 160, 89, 0.35);
 }
 .rednest-modal__btn--danger:hover:not(:disabled) {
-  background: #c59b27;
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
+  background: #9e7a36;
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.45);
   transform: translateY(-1px);
 }
 .rednest-modal__btn--success {

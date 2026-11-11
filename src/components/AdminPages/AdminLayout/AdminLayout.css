@@ -2,7 +2,7 @@
   display: flex;
   min-height: 100vh;
   background: #24050d;
-  background-image: radial-gradient(circle at top right, rgba(212, 175, 55, 0.12) 0%, transparent 45%), radial-gradient(circle at bottom left, #24050d 0%, #4a0e1c 100%);
+  background-image: radial-gradient(circle at top right, rgba(197, 160, 89, 0.12) 0%, transparent 45%), radial-gradient(circle at bottom left, #24050d 0%, #4a0e1c 100%);
   position: relative;
 }
 @media (max-width: 860px) {
@@ -49,7 +49,7 @@
 }
 .admin-mobile-header__toggle:hover {
   background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(212, 175, 55, 0.4);
+  border-color: rgba(197, 160, 89, 0.4);
 }
 .admin-mobile-header__brand {
   display: flex;
@@ -85,9 +85,9 @@
   height: 17px;
 }
 .admin-mobile-header__logout:hover {
-  color: #e5c158;
-  border-color: rgba(212, 175, 55, 0.3);
-  background: rgba(212, 175, 55, 0.08);
+  color: #d4b475;
+  border-color: rgba(197, 160, 89, 0.3);
+  background: rgba(197, 160, 89, 0.08);
 }
 
 .admin-sidebar-overlay {
@@ -252,9 +252,9 @@
 .admin-sidebar__link-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.18) 0%, rgba(36, 5, 13, 0.12) 100%);
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.18) 0%, rgba(36, 5, 13, 0.12) 100%);
   border-radius: 6px;
-  border: 1px solid rgba(212, 175, 55, 0.18);
+  border: 1px solid rgba(197, 160, 89, 0.18);
 }
 .admin-sidebar__link-icon {
   position: relative;
@@ -278,7 +278,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(212, 175, 55, 0.9);
+  color: rgba(197, 160, 89, 0.9);
   flex-shrink: 0;
 }
 .admin-sidebar__link-lock svg {
@@ -342,8 +342,8 @@
 }
 .admin-sidebar__audit-btn--active {
   color: #fff;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.18) 0%, rgba(36, 5, 13, 0.12) 100%);
-  border-color: rgba(212, 175, 55, 0.3);
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.18) 0%, rgba(36, 5, 13, 0.12) 100%);
+  border-color: rgba(197, 160, 89, 0.3);
   font-weight: 600;
 }
 @media (max-width: 860px) {
@@ -382,9 +382,9 @@
   flex-shrink: 0;
 }
 .admin-sidebar__logout:hover {
-  color: #e5c158;
-  border-color: rgba(212, 175, 55, 0.3);
-  background: rgba(212, 175, 55, 0.06);
+  color: #d4b475;
+  border-color: rgba(197, 160, 89, 0.3);
+  background: rgba(197, 160, 89, 0.06);
   transform: translateY(-1px);
 }
 @media (max-width: 860px) {
@@ -433,7 +433,7 @@
   align-items: center;
   justify-content: center;
   background: #24050d;
-  background-image: radial-gradient(circle at top right, rgba(212, 175, 55, 0.12) 0%, transparent 50%);
+  background-image: radial-gradient(circle at top right, rgba(197, 160, 89, 0.12) 0%, transparent 50%);
 }
 
 .admin-loading-spinner {
@@ -450,7 +450,7 @@
   align-items: center;
   gap: 10px;
   padding: 12px 20px;
-  background: rgba(212, 175, 55, 0.95);
+  background: rgba(197, 160, 89, 0.95);
   backdrop-filter: blur(12px);
   color: #fff;
   font-size: 0.9rem;

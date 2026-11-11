@@ -11,8 +11,8 @@
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.15), 0 0 30px rgba(212, 175, 55, 0.06), 0 4px 16px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(197, 160, 89, 0.32);
+  box-shadow: 0 0 12px rgba(197, 160, 89, 0.15), 0 0 30px rgba(197, 160, 89, 0.06), 0 4px 16px rgba(0, 0, 0, 0.25);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: inherit;
@@ -21,8 +21,8 @@
 }
 .user-nav-capsule:hover {
   background: rgba(0, 0, 0, 0.4);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 18px rgba(212, 175, 55, 0.25), 0 0 40px rgba(212, 175, 55, 0.1), 0 6px 20px rgba(0, 0, 0, 0.35);
+  border-color: rgba(223, 194, 136, 0.55);
+  box-shadow: 0 0 18px rgba(197, 160, 89, 0.25), 0 0 40px rgba(197, 160, 89, 0.1), 0 6px 20px rgba(0, 0, 0, 0.35);
   transform: translateY(-1px);
 }
 .user-nav-capsule__avatar {
@@ -34,12 +34,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba(197, 160, 89, 0.45);
   transition: border-color 0.3s ease;
   text-decoration: none;
 }
 .user-nav-capsule__avatar:hover {
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(223, 194, 136, 0.8);
 }
 .user-nav-capsule__avatar-img {
   width: 100%;
@@ -126,7 +126,7 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   padding: 6px;
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.15), 0 0 30px rgba(212, 175, 55, 0.06), 0 8px 24px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 12px rgba(197, 160, 89, 0.15), 0 0 30px rgba(197, 160, 89, 0.06), 0 8px 24px rgba(0, 0, 0, 0.35);
   box-sizing: border-box;
 }
 .user-nav-capsule__dropdown-inner {
@@ -169,7 +169,7 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.15), 0 0 30px rgba(212, 175, 55, 0.06), 0 4px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 12px rgba(197, 160, 89, 0.15), 0 0 30px rgba(197, 160, 89, 0.06), 0 4px 16px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   padding: 0;
   cursor: default;

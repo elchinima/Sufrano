@@ -420,7 +420,7 @@ const AdminReviews = () => {
 		}
 	}, /* @__PURE__ */ __h("div", null, /* @__PURE__ */ __h("h1", { className: "admin-reviews__title" }, "Reviews"), /* @__PURE__ */ __h("p", { className: "admin-reviews__subtitle" }, "Customer feedback, ratings, and moderation controls"))), /* @__PURE__ */ __h("div", { className: "admin-reviews__stats" }, /* @__PURE__ */ __h(motion.div, {
 		className: "admin-reviews__stat-card",
-		style: { "--accent": "#d4af37" },
+		style: { "--accent": "#c5a059" },
 		custom: 0,
 		variants: fadeUp,
 		initial: "hidden",
@@ -432,7 +432,7 @@ const AdminReviews = () => {
 		strokeWidth: "2"
 	}, /* @__PURE__ */ __h("polygon", { points: "12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" }))), /* @__PURE__ */ __h("div", { className: "admin-reviews__stat-body" }, /* @__PURE__ */ __h("span", { className: "admin-reviews__stat-value" }, loading ? "..." : stats.total), /* @__PURE__ */ __h("span", { className: "admin-reviews__stat-label" }, "Total Reviews"), /* @__PURE__ */ __h("span", { className: "admin-reviews__stat-sub" }, "Across all categories"))), /* @__PURE__ */ __h(motion.div, {
 		className: "admin-reviews__stat-card",
-		style: { "--accent": "#fbbf24" },
+		style: { "--accent": "#c5a059" },
 		custom: 1,
 		variants: fadeUp,
 		initial: "hidden",
@@ -449,7 +449,7 @@ const AdminReviews = () => {
 	}), /* @__PURE__ */ __h("path", { d: "M12 6v6l4 2" }))), /* @__PURE__ */ __h("div", { className: "admin-reviews__stat-body" }, /* @__PURE__ */ __h("span", { className: "admin-reviews__stat-value highlight" }, loading ? "..." : stats.avgRating), /* @__PURE__ */ __h("span", { className: "admin-reviews__stat-label" }, "Average Rating"), /* @__PURE__ */ __h("span", { className: "admin-reviews__stat-sub" }, "Out of 5.0"))), /* @__PURE__ */ __h(motion.div, {
 		className: "admin-reviews__stat-card",
 		style: {
-			"--accent": "#f59e0b",
+			"--accent": "#c5a059",
 			cursor: "pointer"
 		},
 		custom: 2,

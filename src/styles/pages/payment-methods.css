@@ -66,8 +66,8 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,7 +87,7 @@
 .add-card-modal__icon svg {
   width: 22px;
   height: 22px;
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .add-card-modal__title {
   font-size: 1.3rem;
@@ -141,7 +141,7 @@
   right: -20%;
   width: 220px;
   height: 220px;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(197, 160, 89, 0.25) 0%, transparent 70%);
   pointer-events: none;
 }
 .card-preview--visa {
@@ -150,7 +150,7 @@
 }
 .card-preview--mastercard {
   background: linear-gradient(135deg, #241416 0%, #3d1419 50%, #52191b 100%);
-  border-color: rgba(245, 101, 101, 0.35);
+  border-color: rgba(197, 160, 89, 0.35);
 }
 .card-preview__top {
   display: flex;
@@ -161,7 +161,7 @@
 .card-preview__chip {
   width: 32px;
   height: 22px;
-  background: linear-gradient(135deg, #e2c069 0%, #c49a37 100%);
+  background: linear-gradient(135deg, #dfc288 0%, #9e7a36 100%);
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   position: relative;
@@ -315,13 +315,13 @@
   color: rgba(255, 255, 255, 0.3);
 }
 .add-card-form .form-input:focus {
-  border-color: #d4af37;
+  border-color: #c5a059;
   background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2);
 }
 .add-card-form .form-input.error {
-  border-color: #d4af37;
-  background: rgba(212, 175, 55, 0.08);
+  border-color: #c5a059;
+  background: rgba(197, 160, 89, 0.08);
 }
 .add-card-form .form-input:disabled {
   opacity: 0.6;
@@ -329,7 +329,7 @@
 }
 .add-card-form .error-text {
   font-size: 0.78rem;
-  color: #e5c158;
+  color: #d4b475;
   margin-top: 2px;
 }
 .add-card-form .checkboxes-row {
@@ -363,8 +363,8 @@
   display: none;
 }
 .add-card-form .custom-checkbox-label input[type=checkbox]:checked + .checkbox-box {
-  background: #d4af37;
-  border-color: #d4af37;
+  background: #c5a059;
+  border-color: #c5a059;
 }
 .add-card-form .custom-checkbox-label input[type=checkbox]:checked + .checkbox-box::after {
   opacity: 1;
@@ -397,7 +397,7 @@
   margin-bottom: 2px;
 }
 .add-card-form .custom-checkbox-label .terms-link {
-  color: #e5c158;
+  color: #d4b475;
   text-decoration: underline;
   transition: color 0.2s ease;
 }
@@ -493,7 +493,7 @@
   font-size: 0.96rem;
   font-weight: 700;
   border-radius: 9999px;
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.35);
 }
 .payment-methods-hero__add-btn svg {
   width: 18px;
@@ -563,19 +563,19 @@
   width: 38px;
   height: 38px;
   border-radius: 10px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.28);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.28);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #d4af37;
+  color: #c5a059;
   flex-shrink: 0;
   user-select: none;
 }
 .payment-card__icon-badge svg {
   width: 19px;
   height: 19px;
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .payment-card__icon-badge--visa {
   background: rgba(66, 153, 225, 0.12);
@@ -586,12 +586,12 @@
   stroke: #4299e1;
 }
 .payment-card__icon-badge--mastercard {
-  background: rgba(245, 101, 101, 0.12);
-  border-color: rgba(245, 101, 101, 0.28);
-  color: #d4af37;
+  background: rgba(197, 160, 89, 0.12);
+  border-color: rgba(197, 160, 89, 0.28);
+  color: #c5a059;
 }
 .payment-card__icon-badge--mastercard svg {
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .payment-card__meta {
   display: flex;
@@ -778,12 +778,12 @@
   border-color: rgba(34, 197, 94, 0.25);
 }
 .payment-card__action-btn--delete {
-  color: rgba(212, 175, 55, 0.85);
+  color: rgba(197, 160, 89, 0.85);
 }
 .payment-card__action-btn--delete:hover:not(:disabled) {
-  background: rgba(212, 175, 55, 0.14);
-  color: #f3cf7a;
-  border-color: rgba(212, 175, 55, 0.28);
+  background: rgba(197, 160, 89, 0.14);
+  color: #dfc288;
+  border-color: rgba(197, 160, 89, 0.28);
 }
 
 .payment-methods-loading-state,
@@ -832,8 +832,8 @@
   -webkit-backdrop-filter: blur(10px);
 }
 .payment-methods-toast--error {
-  border-color: rgba(212, 175, 55, 0.4);
-  color: #f3cf7a;
+  border-color: rgba(197, 160, 89, 0.4);
+  color: #dfc288;
 }
 
 @media (max-width: 768px) {

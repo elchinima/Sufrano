@@ -94,8 +94,8 @@ const Newsletter = () => {
 		bodyHtml: `<p>Hello <strong>{name}</strong>,</p>
 <p>As a valued member of the <strong>Süfrano Club</strong>, we are thrilled to offer you an exclusive <strong>20% discount</strong> on our entire premium menu this week!</p>
 <p>Whether you're craving our handcrafted specialty coffee, signature cold brews, or artisanal sweet bites, your member discount is ready to be claimed.</p>
-<p style="padding:14px 18px;background:rgba(212, 175, 55,0.12);border-left:4px solid #d4af37;border-radius:6px;margin:20px 0;">
-  Use promo code <strong style="color:#e5c158;letter-spacing:1px;">SUFRANO20</strong> at checkout or show this email to our barista.
+<p style="padding:14px 18px;background:rgba(197, 160, 89,0.12);border-left:4px solid #c5a059;border-radius:6px;margin:20px 0;">
+  Use promo code <strong style="color:#d4b475;letter-spacing:1px;">SUFRANO20</strong> at checkout or show this email to our barista.
 </p>
 <p>Thank you for choosing Süfrano. We can't wait to craft your next favorite cup!</p>`,
 		buttonText: "Order Online Now",
@@ -420,7 +420,7 @@ const Newsletter = () => {
 		className: "admin-newsletter__loader-mini"
 	}) : stats.totalSubscribers.toLocaleString()), /* @__PURE__ */ __h("span", { className: "admin-newsletter__stat-label" }, "Active Subscribers"), /* @__PURE__ */ __h("span", { className: "admin-newsletter__stat-sub" }, "Users with newsletter active"))), /* @__PURE__ */ __h("div", { className: "admin-newsletter__stat-card" }, /* @__PURE__ */ __h("div", {
 		className: "admin-newsletter__stat-icon",
-		style: { "--accent": "#e5c158" }
+		style: { "--accent": "#d4b475" }
 	}, /* @__PURE__ */ __h("svg", {
 		viewBox: "0 0 24 24",
 		fill: "none",

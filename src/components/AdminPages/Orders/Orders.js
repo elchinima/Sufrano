@@ -143,7 +143,7 @@ const getStatusBadge = (status) => {
 		return {
 			className: "status-badge status-badge--pending",
 			label: "Pending Payment",
-			dotColor: "#f59e0b"
+			dotColor: "#c5a059"
 		};
 	}
 	if (s.includes("prep") || s.includes("process")) {
@@ -164,7 +164,7 @@ const getStatusBadge = (status) => {
 		return {
 			className: "status-badge status-badge--cancelled",
 			label: "Cancelled",
-			dotColor: "#d4af37"
+			dotColor: "#c5a059"
 		};
 	}
 	return {
@@ -455,7 +455,7 @@ const Orders = () => {
 		}
 	}, /* @__PURE__ */ __h("div", null, /* @__PURE__ */ __h("h1", { className: "admin-orders__title" }, "Orders"), /* @__PURE__ */ __h("p", { className: "admin-orders__subtitle" }, "Real-time feed of customer coffee receipts, orders, and payment statuses"))), /* @__PURE__ */ __h("div", { className: "admin-orders__stats" }, /* @__PURE__ */ __h(motion.div, {
 		className: "admin-orders__stat-card",
-		style: { "--accent": "#d4af37" },
+		style: { "--accent": "#c5a059" },
 		custom: 0,
 		variants: fadeUp,
 		initial: "hidden",
@@ -467,7 +467,7 @@ const Orders = () => {
 		strokeWidth: "2"
 	}, /* @__PURE__ */ __h("path", { d: "M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" }), /* @__PURE__ */ __h("path", { d: "M3 6h18" }), /* @__PURE__ */ __h("path", { d: "M16 10a4 4 0 0 1-8 0" }))), /* @__PURE__ */ __h("div", { className: "admin-orders__stat-body" }, /* @__PURE__ */ __h("span", { className: "admin-orders__stat-value" }, loading ? "..." : stats.totalCount), /* @__PURE__ */ __h("span", { className: "admin-orders__stat-label" }, "Total Orders"), /* @__PURE__ */ __h("span", { className: "admin-orders__stat-sub" }, "Across all users"))), /* @__PURE__ */ __h(motion.div, {
 		className: "admin-orders__stat-card",
-		style: { "--accent": "#fbbf24" },
+		style: { "--accent": "#c5a059" },
 		custom: 1,
 		variants: fadeUp,
 		initial: "hidden",

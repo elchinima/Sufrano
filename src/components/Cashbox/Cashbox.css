@@ -21,11 +21,11 @@
   align-items: center;
   gap: 10px;
   padding: 12px 24px;
-  background: rgba(197, 155, 39, 0.95);
+  background: rgba(197, 160, 89, 0.95);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 9999px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(197, 160, 89, 0.4);
   font-size: 0.92rem;
   font-weight: 600;
   color: #ffffff;
@@ -73,11 +73,11 @@
   background: rgba(0, 0, 0, 0.2);
 }
 .cashbox-view__catalog::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.35);
   border-radius: 4px;
 }
 .cashbox-view__catalog::-webkit-scrollbar-thumb:hover {
-  background: rgba(212, 175, 55, 0.6);
+  background: rgba(197, 160, 89, 0.6);
 }
 @media (max-width: 900px) {
   .cashbox-view__catalog {
@@ -142,7 +142,7 @@
 .cashbox-topbar__logo {
   height: 34px;
   width: auto;
-  filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.3));
+  filter: drop-shadow(0 2px 8px rgba(197, 160, 89, 0.3));
 }
 @media (max-width: 900px) {
   .cashbox-topbar__logo {
@@ -153,7 +153,7 @@
   font-size: 1.35rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #ffffff 40%, #f3cf7a 100%);
+  background: linear-gradient(135deg, #ffffff 40%, #dfc288 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -167,9 +167,9 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  background: rgba(212, 175, 55, 0.2);
-  color: #d4af37;
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: rgba(197, 160, 89, 0.2);
+  color: #c5a059;
+  border: 1px solid rgba(197, 160, 89, 0.4);
   padding: 2px 7px;
   border-radius: 6px;
 }
@@ -228,8 +228,8 @@
 }
 .cashbox-topbar__search-input:focus {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(212, 175, 55, 0.6);
-  box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
+  border-color: rgba(197, 160, 89, 0.6);
+  box-shadow: 0 0 14px rgba(197, 160, 89, 0.25);
 }
 .cashbox-topbar__search-clear {
   position: absolute;
@@ -265,8 +265,8 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   padding: 7px 13px;
   border-radius: 10px;
   font-size: 0.85rem;
@@ -278,14 +278,14 @@
 .cashbox-topbar__history-btn svg {
   width: 16px;
   height: 16px;
-  color: #d4af37;
+  color: #c5a059;
   transition: transform 0.2s ease;
 }
 .cashbox-topbar__history-btn:hover {
-  background: rgba(212, 175, 55, 0.22);
-  border-color: #d4af37;
+  background: rgba(197, 160, 89, 0.22);
+  border-color: #c5a059;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.25);
 }
 .cashbox-topbar__history-btn:hover svg {
   transform: rotate(-15deg);
@@ -334,13 +334,13 @@
 .cashbox-topbar__chip svg {
   width: 15px;
   height: 15px;
-  color: #d4af37;
+  color: #c5a059;
 }
 .cashbox-topbar__avatar {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: #d4af37;
+  background: #c5a059;
   color: #ffffff;
   font-weight: 700;
   font-size: 0.75rem;
@@ -382,8 +382,8 @@
   height: 18px;
 }
 .cashbox-topbar__exit-btn:hover {
-  background: rgba(212, 175, 55, 0.2);
-  border-color: rgba(212, 175, 55, 0.5);
+  background: rgba(197, 160, 89, 0.2);
+  border-color: rgba(197, 160, 89, 0.5);
   color: #ffffff;
 }
 
@@ -467,14 +467,14 @@
   transform: translateY(-1px);
 }
 .cashbox-sidebar__btn--active {
-  background: rgba(212, 175, 55, 0.15) !important;
-  border-color: #d4af37 !important;
+  background: rgba(197, 160, 89, 0.15) !important;
+  border-color: #c5a059 !important;
   color: #ffffff !important;
-  box-shadow: 0 0 18px rgba(212, 175, 55, 0.35), inset 0 0 12px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 18px rgba(197, 160, 89, 0.35), inset 0 0 12px rgba(197, 160, 89, 0.15);
 }
 .cashbox-sidebar__btn--active .cashbox-sidebar__icon svg {
-  color: #d4af37;
-  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.6));
+  color: #c5a059;
+  filter: drop-shadow(0 0 6px rgba(197, 160, 89, 0.6));
 }
 .cashbox-sidebar__icon {
   width: 26px;
@@ -540,12 +540,12 @@
 }
 .cashbox-sidebar__promo-btn {
   width: 100%;
-  background: rgba(212, 175, 55, 0.05);
-  border: 1px dashed rgba(212, 175, 55, 0.4);
+  background: rgba(197, 160, 89, 0.05);
+  border: 1px dashed rgba(197, 160, 89, 0.4);
   color: rgba(255, 255, 255, 0.75);
 }
 .cashbox-sidebar__promo-btn .cashbox-sidebar__icon svg {
-  color: #d4af37;
+  color: #c5a059;
   transition: transform 0.22s ease, filter 0.22s ease;
 }
 .cashbox-sidebar__promo-btn--active {
@@ -559,16 +559,16 @@
   filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6)) !important;
 }
 .cashbox-sidebar__promo-btn:hover {
-  background: rgba(212, 175, 55, 0.16);
-  border-color: #d4af37;
+  background: rgba(197, 160, 89, 0.16);
+  border-color: #c5a059;
   border-style: solid;
   color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 4px 16px rgba(197, 160, 89, 0.25);
 }
 .cashbox-sidebar__promo-btn:hover .cashbox-sidebar__icon svg {
   transform: scale(1.12);
-  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.6));
+  filter: drop-shadow(0 0 6px rgba(197, 160, 89, 0.6));
 }
 .cashbox-sidebar__promo-btn:active {
   transform: translateY(0);
@@ -594,10 +594,10 @@
   justify-content: center;
   gap: 5px;
   padding: 10px 4px;
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px dashed rgba(245, 158, 11, 0.4);
+  background: rgba(197, 160, 89, 0.1);
+  border: 1px dashed rgba(197, 160, 89, 0.4);
   border-radius: 12px;
-  color: #fbbf24;
+  color: #c5a059;
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
@@ -607,8 +607,8 @@
   height: 20px;
 }
 .cashbox-sidebar__held-btn:hover {
-  background: rgba(245, 158, 11, 0.18);
-  border-color: #fbbf24;
+  background: rgba(197, 160, 89, 0.18);
+  border-color: #c5a059;
   transform: translateY(-1px);
 }
 .cashbox-sidebar__held-text {
@@ -671,8 +671,8 @@
 .cashbox-grid__empty-btn {
   margin-top: 18px;
   padding: 9px 20px;
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid #d4af37;
+  background: rgba(197, 160, 89, 0.2);
+  border: 1px solid #c5a059;
   border-radius: 10px;
   color: #ffffff;
   font-size: 0.86rem;
@@ -681,7 +681,7 @@
   transition: all 0.2s ease;
 }
 .cashbox-grid__empty-btn:hover {
-  background: #d4af37;
+  background: #c5a059;
 }
 
 .cashbox-card {
@@ -697,8 +697,8 @@
 }
 .cashbox-card:hover {
   background: rgba(45, 8, 8, 0.75);
-  border-color: rgba(212, 175, 55, 0.45);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 16px rgba(212, 175, 55, 0.2);
+  border-color: rgba(197, 160, 89, 0.45);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 16px rgba(197, 160, 89, 0.2);
   transform: translateY(-3px);
 }
 .cashbox-card:hover .cashbox-card__img {
@@ -759,7 +759,7 @@
 .cashbox-card__price {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #e5c158;
+  color: #d4b475;
   letter-spacing: -0.01em;
 }
 .cashbox-card__add-badge {
@@ -777,9 +777,9 @@
   transition: all 0.2s ease;
 }
 .cashbox-card:hover .cashbox-card__add-badge {
-  background: #d4af37;
-  border-color: #d4af37;
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  background: #c5a059;
+  border-color: #c5a059;
+  box-shadow: 0 0 10px rgba(197, 160, 89, 0.5);
 }
 .cashbox-card--skeleton {
   pointer-events: none;
@@ -840,7 +840,7 @@
 .cashbox-receipt__clear-btn {
   background: none;
   border: none;
-  color: #d4af37;
+  color: #c5a059;
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
@@ -848,7 +848,7 @@
   border-radius: 4px;
 }
 .cashbox-receipt__clear-btn:hover {
-  background: rgba(212, 175, 55, 0.1);
+  background: rgba(197, 160, 89, 0.1);
 }
 .cashbox-receipt__divider-dashed {
   margin: 8px 0;
@@ -959,7 +959,7 @@
   margin-left: 6px;
 }
 .cashbox-receipt__del-btn:hover {
-  color: #d4af37;
+  color: #c5a059;
 }
 .cashbox-receipt__col-price {
   font-weight: 700;
@@ -970,8 +970,8 @@
   margin: 10px 0 6px;
 }
 .cashbox-receipt__promo-card {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(197, 155, 39, 0.04) 100%);
-  border: 1px dashed rgba(212, 175, 55, 0.35);
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.08) 0%, rgba(197, 160, 89, 0.04) 100%);
+  border: 1px dashed rgba(197, 160, 89, 0.35);
   border-radius: 8px;
   padding: 8px 10px;
   display: flex;
@@ -987,8 +987,8 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: rgba(212, 175, 55, 0.12);
-  color: #c59b27;
+  background: rgba(197, 160, 89, 0.12);
+  color: #9e7a36;
   padding: 2px 8px;
   border-radius: 6px;
   font-size: 0.76rem;
@@ -1012,7 +1012,7 @@
   transition: color 0.15s ease;
 }
 .cashbox-receipt__promo-remove:hover {
-  color: #d4af37;
+  color: #c5a059;
 }
 .cashbox-receipt__promo-details {
   display: flex;
@@ -1039,13 +1039,13 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  background: rgba(212, 175, 55, 0.05);
-  border: 1px dashed rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.05);
+  border: 1px dashed rgba(197, 160, 89, 0.3);
   border-radius: 8px;
   padding: 7px 10px;
   font-size: 0.78rem;
   font-weight: 700;
-  color: #c59b27;
+  color: #9e7a36;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -1054,8 +1054,8 @@
   height: 14px;
 }
 .cashbox-receipt__add-promo-btn:hover {
-  background: rgba(212, 175, 55, 0.1);
-  border-color: #d4af37;
+  background: rgba(197, 160, 89, 0.1);
+  border-color: #c5a059;
 }
 .cashbox-receipt__footer {
   padding: 0 14px 10px;
@@ -1094,7 +1094,7 @@
 .cashbox-receipt__total-val {
   font-size: 1.25rem;
   font-weight: 900;
-  color: #c59b27;
+  color: #9e7a36;
   letter-spacing: -0.02em;
 }
 
@@ -1105,7 +1105,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: linear-gradient(135deg, #d4af37 0%, #c59b27 100%);
+  background: linear-gradient(135deg, #c5a059 0%, #9e7a36 100%);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   color: #ffffff;
@@ -1114,7 +1114,7 @@
   letter-spacing: 0.5px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.45);
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
@@ -1123,8 +1123,8 @@
   height: 20px;
 }
 .cashbox-confirm-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #e5c158 0%, #d4af37 100%);
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.6);
+  background: linear-gradient(135deg, #d4b475 0%, #c5a059 100%);
+  box-shadow: 0 8px 24px rgba(197, 160, 89, 0.6);
 }
 .cashbox-confirm-btn:active:not(:disabled) {
   transform: scale(0.98);
@@ -1184,12 +1184,12 @@
   box-shadow: 0 8px 22px rgba(16, 185, 129, 0.5);
 }
 .cashbox-confirm-split-btn--card {
-  background: linear-gradient(135deg, #d4af37 0%, #c59b27 100%);
-  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, #c5a059 0%, #9e7a36 100%);
+  box-shadow: 0 6px 18px rgba(197, 160, 89, 0.4);
 }
 .cashbox-confirm-split-btn--card:hover:not(:disabled) {
-  background: linear-gradient(135deg, #e5c158 0%, #d4af37 100%);
-  box-shadow: 0 8px 22px rgba(212, 175, 55, 0.55);
+  background: linear-gradient(135deg, #d4b475 0%, #c5a059 100%);
+  box-shadow: 0 8px 22px rgba(197, 160, 89, 0.55);
 }
 
 .cashbox-confirm-split-cancel {
@@ -1251,14 +1251,14 @@
   transform: scale(0.95);
 }
 .cashbox-numpad__key--note {
-  background: rgba(212, 175, 55, 0.12);
-  border-color: rgba(212, 175, 55, 0.35);
-  color: #f3cf7a;
+  background: rgba(197, 160, 89, 0.12);
+  border-color: rgba(197, 160, 89, 0.35);
+  color: #dfc288;
   font-size: 0.95rem;
 }
 .cashbox-numpad__key--note:hover {
-  background: rgba(212, 175, 55, 0.25);
-  border-color: #d4af37;
+  background: rgba(197, 160, 89, 0.25);
+  border-color: #c5a059;
   color: #ffffff;
 }
 .cashbox-numpad__key--fn {
@@ -1316,21 +1316,21 @@
   height: 18px;
 }
 .cashbox-numpad__pay-btn--card {
-  background: linear-gradient(135deg, #d4af37 0%, #c59b27 100%);
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, #c5a059 0%, #9e7a36 100%);
+  box-shadow: 0 4px 16px rgba(197, 160, 89, 0.4);
 }
 .cashbox-numpad__pay-btn--card:hover {
-  background: linear-gradient(135deg, #e5c158 0%, #d4af37 100%);
-  box-shadow: 0 6px 22px rgba(212, 175, 55, 0.55);
+  background: linear-gradient(135deg, #d4b475 0%, #c5a059 100%);
+  box-shadow: 0 6px 22px rgba(197, 160, 89, 0.55);
 }
 .cashbox-numpad__pay-btn--cash {
-  background: linear-gradient(135deg, #b5892e 0%, #5c1224 100%);
+  background: linear-gradient(135deg, #9e7a36 0%, #5c1224 100%);
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 .cashbox-numpad__pay-btn--cash:hover {
-  background: linear-gradient(135deg, #c59b27 0%, #b5892e 100%);
-  box-shadow: 0 6px 20px rgba(197, 155, 39, 0.4);
+  background: linear-gradient(135deg, #9e7a36 0%, #9e7a36 100%);
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.4);
 }
 
 @keyframes pulse {
@@ -1361,9 +1361,9 @@
     background: rgba(28, 4, 4, 0.94);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(212, 175, 55, 0.5);
+    border: 1px solid rgba(197, 160, 89, 0.5);
     border-radius: 9999px;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), 0 0 24px rgba(212, 175, 55, 0.35);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), 0 0 24px rgba(197, 160, 89, 0.35);
     color: #ffffff;
     cursor: pointer;
     z-index: 100;
@@ -1371,8 +1371,8 @@
   }
   .cashbox-mobile-trigger:hover {
     background: rgba(38, 5, 5, 0.98);
-    border-color: #d4af37;
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.5);
+    border-color: #c5a059;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(197, 160, 89, 0.5);
   }
 }
 .cashbox-mobile-trigger__left {
@@ -1385,11 +1385,11 @@
   width: 38px;
   height: 38px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #d4af37 0%, #b5892e 100%);
+  background: linear-gradient(135deg, #c5a059 0%, #9e7a36 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.4);
   flex-shrink: 0;
 }
 .cashbox-mobile-trigger__icon-wrap svg {
@@ -1405,7 +1405,7 @@
   height: 18px;
   border-radius: 9px;
   background: #ffffff;
-  color: #c59b27;
+  color: #9e7a36;
   font-size: 0.72rem;
   font-weight: 800;
   display: flex;
@@ -1447,7 +1447,7 @@
   font-variant-numeric: tabular-nums;
 }
 .cashbox-mobile-trigger__amount .currency-symbol, .cashbox-mobile-trigger__total .currency-symbol {
-  color: #d4af37;
+  color: #c5a059;
   font-size: 0.9em;
   font-weight: 700;
 }
@@ -1473,8 +1473,8 @@
   transition: transform 0.2s ease;
 }
 .cashbox-mobile-trigger:hover .cashbox-mobile-trigger__chevron-wrap {
-  background: rgba(212, 175, 55, 0.3);
-  border-color: rgba(212, 175, 55, 0.6);
+  background: rgba(197, 160, 89, 0.3);
+  border-color: rgba(197, 160, 89, 0.6);
 }
 .cashbox-mobile-trigger:hover .cashbox-mobile-trigger__chevron-wrap svg,
 .cashbox-mobile-trigger:hover .cashbox-mobile-trigger__chevron-wrap .cashbox-mobile-trigger__chevron {
@@ -1486,8 +1486,8 @@
   align-items: center;
   gap: 4px;
   padding: 6px 12px;
-  background: rgba(212, 175, 55, 0.25);
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: rgba(197, 160, 89, 0.25);
+  border: 1px solid rgba(197, 160, 89, 0.4);
   border-radius: 9999px;
   font-size: 0.78rem;
   font-weight: 700;
@@ -1524,9 +1524,9 @@
   flex-direction: column;
   background: #180309;
   background-image: radial-gradient(circle at 50% 0%, rgba(74, 14, 28, 0.5) 0%, transparent 60%), linear-gradient(180deg, #26060f 0%, #120206 100%);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   border-radius: 24px 24px 0 0;
-  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(197, 160, 89, 0.25);
   overflow: hidden;
 }
 @media (min-width: 641px) {
@@ -1568,10 +1568,10 @@
   font-size: 0.74rem;
   font-weight: 700;
   padding: 3px 8px;
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.2);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   border-radius: 9999px;
-  color: #f3cf7a;
+  color: #dfc288;
 }
 .cashbox-modal__close-btn, .cashbox-modal__close {
   width: 32px;
@@ -1597,8 +1597,8 @@
   color: currentColor;
 }
 .cashbox-modal__close-btn:hover, .cashbox-modal__close:hover {
-  background: rgba(212, 175, 55, 0.3);
-  border-color: #d4af37;
+  background: rgba(197, 160, 89, 0.3);
+  border-color: #c5a059;
   color: #ffffff;
   transform: scale(1.06);
 }
@@ -1615,7 +1615,7 @@
   width: 5px;
 }
 .cashbox-modal__scrollable::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.3);
   border-radius: 3px;
 }
 .cashbox-modal__scrollable .cashbox-receipt {
@@ -1644,9 +1644,9 @@
   flex-direction: column;
   background: #180309;
   background-image: radial-gradient(circle at 50% 0%, rgba(74, 14, 28, 0.45) 0%, transparent 60%), linear-gradient(180deg, #24050d 0%, #120206 100%);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   border-radius: 22px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85), 0 0 32px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85), 0 0 32px rgba(197, 160, 89, 0.25);
   overflow: hidden;
 }
 @media (max-width: 640px) {
@@ -1671,11 +1671,11 @@
   width: 38px;
   height: 38px;
   border-radius: 10px;
-  background: linear-gradient(135deg, #d4af37 0%, #5c1224 100%);
+  background: linear-gradient(135deg, #c5a059 0%, #5c1224 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 14px rgba(197, 160, 89, 0.4);
   flex-shrink: 0;
 }
 .cashbox-promo-modal__icon svg {
@@ -1719,8 +1719,8 @@
   color: currentColor;
 }
 .cashbox-promo-modal__close-btn:hover {
-  background: rgba(212, 175, 55, 0.25);
-  border-color: #d4af37;
+  background: rgba(197, 160, 89, 0.25);
+  border-color: #c5a059;
   color: #ffffff;
   transform: scale(1.06);
 }
@@ -1785,8 +1785,8 @@
 }
 .cashbox-promo-modal__input:focus {
   background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(212, 175, 55, 0.6);
-  box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
+  border-color: rgba(197, 160, 89, 0.6);
+  box-shadow: 0 0 14px rgba(197, 160, 89, 0.25);
 }
 .cashbox-promo-modal__clear-btn {
   position: absolute;
@@ -1819,8 +1819,8 @@
 .cashbox-promo-modal__submit-btn {
   height: 42px;
   padding: 0 20px;
-  background: linear-gradient(135deg, #d4af37 0%, #b5892e 100%);
-  border: 1px solid rgba(212, 175, 55, 0.5);
+  background: linear-gradient(135deg, #c5a059 0%, #9e7a36 100%);
+  border: 1px solid rgba(197, 160, 89, 0.5);
   border-radius: 12px;
   color: #ffffff;
   font-size: 0.88rem;
@@ -1838,7 +1838,7 @@
   }
 }
 .cashbox-promo-modal__submit-btn:hover:not(:disabled) {
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 16px rgba(197, 160, 89, 0.4);
   transform: translateY(-1px);
 }
 .cashbox-promo-modal__submit-btn:disabled {
@@ -1856,7 +1856,7 @@
   width: 5px;
 }
 .cashbox-promo-modal__body::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.3);
   border-radius: 3px;
 }
 @media (max-width: 480px) {
@@ -1869,10 +1869,10 @@
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.4);
   border-radius: 10px;
-  color: #f3cf7a;
+  color: #dfc288;
   font-size: 0.84rem;
   margin-bottom: 14px;
 }
@@ -1880,7 +1880,7 @@
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  color: #d4af37;
+  color: #c5a059;
 }
 .cashbox-promo-modal__empty {
   text-align: center;
@@ -1929,8 +1929,8 @@
 .cashbox-promo-modal__spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid rgba(212, 175, 55, 0.2);
-  border-top-color: #d4af37;
+  border: 3px solid rgba(197, 160, 89, 0.2);
+  border-top-color: #c5a059;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -1961,8 +1961,8 @@
   box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12);
 }
 .cashbox-promo-card--expired {
-  border-color: rgba(212, 175, 55, 0.35);
-  background: linear-gradient(180deg, rgba(212, 175, 55, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-color: rgba(197, 160, 89, 0.35);
+  background: linear-gradient(180deg, rgba(197, 160, 89, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
 }
 .cashbox-promo-card__header {
   display: flex;
@@ -1999,7 +1999,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #d4af37;
+  background: #c5a059;
   color: #ffffff;
   font-weight: 700;
   font-size: 0.8rem;
@@ -2063,8 +2063,8 @@
   border-color: rgba(255, 255, 255, 0.12);
 }
 .cashbox-promo-card__discount-box {
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   border-radius: 10px;
   padding: 8px 14px;
   display: flex;
@@ -2081,7 +2081,7 @@
   font-size: 0.95rem;
   font-weight: 800;
   font-family: monospace;
-  color: #f3cf7a;
+  color: #dfc288;
   letter-spacing: 0.05em;
   margin-top: 2px;
 }
@@ -2092,7 +2092,7 @@
 .cashbox-promo-card__discount-value {
   font-size: 1rem;
   font-weight: 800;
-  color: #d4af37;
+  color: #c5a059;
   margin-top: 2px;
 }
 .cashbox-promo-card__actions {
@@ -2150,9 +2150,9 @@
   height: 16px;
 }
 .cashbox-promo-card__remove-btn {
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  color: #f3cf7a;
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.35);
+  color: #dfc288;
   font-size: 0.76rem;
   font-weight: 700;
   padding: 4px 10px;
@@ -2162,9 +2162,9 @@
   font-family: inherit;
 }
 .cashbox-promo-card__remove-btn:hover {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.3);
   color: #ffffff;
-  border-color: #d4af37;
+  border-color: #c5a059;
 }
 .cashbox-promo-card__footer {
   display: flex;
@@ -2176,7 +2176,7 @@
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 .cashbox-promo-card__date--expired {
-  color: #e5c158 !important;
+  color: #d4b475 !important;
   font-weight: 600;
 }
 
@@ -2216,13 +2216,13 @@
   box-shadow: 0 0 6px #10b981;
 }
 .cashbox-promo-badge--expired {
-  background: rgba(212, 175, 55, 0.18);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  color: #e5c158;
+  background: rgba(197, 160, 89, 0.18);
+  border: 1px solid rgba(197, 160, 89, 0.4);
+  color: #d4b475;
 }
 .cashbox-promo-badge--expired .cashbox-promo-badge__dot {
-  background: #d4af37;
-  box-shadow: 0 0 6px #d4af37;
+  background: #c5a059;
+  box-shadow: 0 0 6px #c5a059;
 }
 .cashbox-promo-badge--inactive {
   background: rgba(255, 255, 255, 0.1);
@@ -2265,9 +2265,9 @@
   max-width: 440px;
   background: #180309;
   background-image: radial-gradient(circle at 50% 0%, rgba(74, 14, 28, 0.5) 0%, transparent 65%), linear-gradient(180deg, #26060f 0%, #120206 100%);
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  border: 1px solid rgba(197, 160, 89, 0.4);
   border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(197, 160, 89, 0.3);
   overflow: hidden;
   padding: 0;
   margin: auto 14px;
@@ -2288,11 +2288,11 @@
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #d4af37 0%, #b5892e 100%);
+  background: linear-gradient(135deg, #c5a059 0%, #9e7a36 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.4);
   flex-shrink: 0;
 }
 .cashbox-paymethod-modal__icon svg {
@@ -2313,7 +2313,7 @@
   margin: 3px 0 0;
 }
 .cashbox-paymethod-modal__total span {
-  color: #f3cf7a;
+  color: #dfc288;
   font-weight: 800;
   font-size: 0.95rem;
 }
@@ -2408,18 +2408,18 @@
   transform: scale(1.05);
 }
 .cashbox-paymethod-card--card .cashbox-paymethod-card__icon-wrap {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(197, 155, 39, 0.35) 100%);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  color: #e5c158;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.25) 0%, rgba(197, 160, 89, 0.35) 100%);
+  border: 1px solid rgba(197, 160, 89, 0.4);
+  color: #d4b475;
+  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.25);
 }
 .cashbox-paymethod-card--card:hover, .cashbox-paymethod-card--card:active {
-  background: rgba(212, 175, 55, 0.12);
-  border-color: rgba(212, 175, 55, 0.6);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.12);
+  border-color: rgba(197, 160, 89, 0.6);
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.3);
 }
 .cashbox-paymethod-card--card:hover .cashbox-paymethod-card__arrow, .cashbox-paymethod-card--card:active .cashbox-paymethod-card__arrow {
-  background: #d4af37;
+  background: #c5a059;
   color: #ffffff;
   transform: translateX(2px);
 }

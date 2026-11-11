@@ -90,9 +90,9 @@
   flex-shrink: 0;
 }
 .database__alert--error {
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  color: #f3cf7a;
+  background: rgba(197, 160, 89, 0.1);
+  border: 1px solid rgba(197, 160, 89, 0.2);
+  color: #dfc288;
 }
 .database__alert--success {
   background: rgba(52, 211, 153, 0.1);
@@ -122,12 +122,12 @@
   }
 }
 .database__dropzone:hover {
-  border-color: rgba(212, 175, 55, 0.35);
-  background: rgba(212, 175, 55, 0.04);
+  border-color: rgba(197, 160, 89, 0.35);
+  background: rgba(197, 160, 89, 0.04);
 }
 .database__dropzone--over {
-  border-color: #d4af37;
-  background: rgba(212, 175, 55, 0.08);
+  border-color: #c5a059;
+  background: rgba(197, 160, 89, 0.08);
   transform: scale(1.01);
 }
 .database__dropzone--uploading {
@@ -171,10 +171,10 @@
   }
 }
 .database__dropzone-icon--over {
-  background: rgba(212, 175, 55, 0.15);
+  background: rgba(197, 160, 89, 0.15);
 }
 .database__dropzone-icon--over svg {
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .database__dropzone-title {
   font-size: 1rem;
@@ -223,9 +223,9 @@
   }
 }
 .database__badge--arrow {
-  background: rgba(212, 175, 55, 0.1);
-  border-color: rgba(212, 175, 55, 0.2);
-  color: #f3cf7a;
+  background: rgba(197, 160, 89, 0.1);
+  border-color: rgba(197, 160, 89, 0.2);
+  color: #dfc288;
 }
 .database__upload-progress {
   display: flex;
@@ -237,7 +237,7 @@
 .database__progress-icon {
   width: 56px;
   height: 56px;
-  background: rgba(212, 175, 55, 0.12);
+  background: rgba(197, 160, 89, 0.12);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -252,7 +252,7 @@
 .database__progress-icon svg {
   width: 24px;
   height: 24px;
-  stroke: #d4af37;
+  stroke: #c5a059;
   animation: dbBounce 1s ease-in-out infinite;
 }
 @media (max-width: 640px) {
@@ -281,13 +281,13 @@
 }
 .database__progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #d4af37, #e5c158);
+  background: linear-gradient(90deg, #c5a059, #d4b475);
   border-radius: 9999px;
 }
 .database__progress-pct {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #d4af37;
+  color: #c5a059;
 }
 .database__files-header {
   display: flex;
@@ -326,8 +326,8 @@
   }
 }
 .database__files-count {
-  background: rgba(212, 175, 55, 0.15);
-  color: #d4af37;
+  background: rgba(197, 160, 89, 0.15);
+  color: #c5a059;
   border-radius: 9999px;
   padding: 2px 10px;
   font-size: 0.8rem;
@@ -378,9 +378,9 @@
   color: rgba(255, 255, 255, 0.35);
 }
 .database__search-input:focus {
-  border-color: rgba(212, 175, 55, 0.5);
+  border-color: rgba(197, 160, 89, 0.5);
   background: rgba(255, 255, 255, 0.06);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
 }
 .database__search-clear {
   position: absolute;
@@ -548,7 +548,7 @@
   transition: color 0.2s ease;
 }
 .database__file-name--clickable:hover {
-  color: #e5c158;
+  color: #d4b475;
 }
 @media (max-width: 640px) {
   .database__file-name {
@@ -567,8 +567,8 @@
   }
 }
 .database__file-badge {
-  background: rgba(212, 175, 55, 0.12);
-  color: #f3cf7a;
+  background: rgba(197, 160, 89, 0.12);
+  color: #dfc288;
   border-radius: 4px;
   padding: 2px 7px;
   font-size: 0.65rem;
@@ -643,8 +643,8 @@
 }
 .database__file-btn--delete {
   flex: 0;
-  background: rgba(212, 175, 55, 0.08);
-  color: rgba(212, 175, 55, 0.5);
+  background: rgba(197, 160, 89, 0.08);
+  color: rgba(197, 160, 89, 0.5);
   padding: 7px 10px;
 }
 @media (max-width: 640px) {
@@ -653,8 +653,8 @@
   }
 }
 .database__file-btn--delete:hover {
-  background: rgba(212, 175, 55, 0.18);
-  color: #f3cf7a;
+  background: rgba(197, 160, 89, 0.18);
+  color: #dfc288;
   transform: translateY(-1px);
 }
 .database__file-btn--delete:disabled {
@@ -673,9 +673,9 @@
   height: 13px;
 }
 .database__file-btn--delete.database__file-btn--locked:hover {
-  background: rgba(212, 175, 55, 0.12);
-  color: #e5c158;
-  border-color: rgba(212, 175, 55, 0.25);
+  background: rgba(197, 160, 89, 0.12);
+  color: #d4b475;
+  border-color: rgba(197, 160, 89, 0.25);
   transform: none;
 }
 
@@ -908,11 +908,11 @@
   flex-shrink: 0;
 }
 .database-preview-btn--copy {
-  background: #d4af37;
+  background: #c5a059;
   color: #fff;
 }
 .database-preview-btn--copy:hover {
-  background: #e5c158;
+  background: #d4b475;
   transform: translateY(-1px);
 }
 .database-preview-btn--copied {
@@ -929,14 +929,14 @@
   transform: translateY(-1px);
 }
 .database-preview-btn--delete {
-  background: rgba(212, 175, 55, 0.12);
-  color: #f3cf7a;
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: rgba(197, 160, 89, 0.12);
+  color: #dfc288;
+  border: 1px solid rgba(197, 160, 89, 0.25);
 }
 .database-preview-btn--delete:hover {
-  background: #d4af37;
+  background: #c5a059;
   color: #fff;
-  border-color: #d4af37;
+  border-color: #c5a059;
   transform: translateY(-1px);
 }
 .database-preview-btn--locked {
@@ -952,9 +952,9 @@
 }
 .database-preview-btn--locked:hover {
   transform: none !important;
-  background: rgba(212, 175, 55, 0.12) !important;
-  color: #e5c158 !important;
-  border-color: rgba(212, 175, 55, 0.25) !important;
+  background: rgba(197, 160, 89, 0.12) !important;
+  color: #d4b475 !important;
+  border-color: rgba(197, 160, 89, 0.25) !important;
 }
 
 .database-delete-overlay {
@@ -998,14 +998,14 @@
   width: 58px;
   height: 58px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.14);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.14);
+  border: 1px solid rgba(197, 160, 89, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #e5c158;
+  color: #d4b475;
   margin-bottom: 16px;
-  box-shadow: 0 0 24px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 0 24px rgba(197, 160, 89, 0.25);
 }
 .database-delete-icon-wrap svg {
   width: 26px;
@@ -1121,13 +1121,13 @@
   color: #fff;
 }
 .database-delete-btn--danger {
-  background: #d4af37;
+  background: #c5a059;
   color: #fff;
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 4px 16px rgba(197, 160, 89, 0.35);
 }
 .database-delete-btn--danger:hover:not(:disabled) {
-  background: #e5c158;
-  box-shadow: 0 6px 22px rgba(212, 175, 55, 0.5);
+  background: #d4b475;
+  box-shadow: 0 6px 22px rgba(197, 160, 89, 0.5);
   transform: translateY(-1px);
 }
 

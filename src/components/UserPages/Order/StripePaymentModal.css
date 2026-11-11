@@ -47,8 +47,8 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,7 +73,7 @@
   margin: 0 auto;
 }
 .stripe-modal__amount {
-  color: #d4af37;
+  color: #c5a059;
   font-weight: 800;
   font-size: 1.05em;
 }
@@ -122,9 +122,9 @@
   letter-spacing: 0.5px;
 }
 .saved-cards-header-row .add-new-card-link-btn {
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  color: #e5c158;
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  color: #d4b475;
   padding: 5px 12px;
   font-size: 0.8rem;
   font-weight: 600;
@@ -140,7 +140,7 @@
   height: 14px;
 }
 .saved-cards-header-row .add-new-card-link-btn:hover:not(:disabled) {
-  background: #d4af37;
+  background: #c5a059;
   color: #ffffff;
   transform: translateY(-1px);
 }
@@ -178,9 +178,9 @@
   border-color: rgba(255, 255, 255, 0.16);
 }
 .saved-card-item.selected {
-  background: rgba(212, 175, 55, 0.1);
-  border-color: rgba(212, 175, 55, 0.45);
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.15);
+  background: rgba(197, 160, 89, 0.1);
+  border-color: rgba(197, 160, 89, 0.45);
+  box-shadow: 0 0 16px rgba(197, 160, 89, 0.15);
 }
 .saved-card-item__radio {
   display: flex;
@@ -199,13 +199,13 @@
   transition: all 0.2s ease;
 }
 .saved-card-item__radio .saved-card-radio-circle.active {
-  border-color: #d4af37;
+  border-color: #c5a059;
 }
 .saved-card-item__radio .saved-card-radio-circle.active .saved-card-radio-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #d4af37;
+  background: #c5a059;
 }
 .saved-card-item__icon-badge {
   padding: 4px 8px;
@@ -222,9 +222,9 @@
   font-style: italic;
 }
 .saved-card-item__icon-badge--mastercard {
-  background: rgba(245, 101, 101, 0.15);
-  border: 1px solid rgba(245, 101, 101, 0.35);
-  color: #d4af37;
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.35);
+  color: #c5a059;
 }
 .saved-card-item__icon-badge--card {
   background: rgba(255, 255, 255, 0.08);
@@ -283,7 +283,7 @@
 .back-to-saved-link {
   background: none;
   border: none;
-  color: #e5c158;
+  color: #d4b475;
   font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
@@ -368,13 +368,13 @@
   color: rgba(255, 255, 255, 0.3);
 }
 .new-card-form .form-input:focus {
-  border-color: #d4af37;
+  border-color: #c5a059;
   background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2);
 }
 .new-card-form .form-input.error {
-  border-color: #d4af37;
-  background: rgba(212, 175, 55, 0.08);
+  border-color: #c5a059;
+  background: rgba(197, 160, 89, 0.08);
 }
 .new-card-form .form-input:disabled {
   opacity: 0.6;
@@ -382,7 +382,7 @@
 }
 .new-card-form .error-text {
   font-size: 0.78rem;
-  color: #e5c158;
+  color: #d4b475;
   margin-top: 2px;
 }
 .new-card-form .checkboxes-row {
@@ -407,8 +407,8 @@
   display: none;
 }
 .new-card-form .custom-checkbox-label input[type=checkbox]:checked + .checkbox-box {
-  background: #d4af37;
-  border-color: #d4af37;
+  background: #c5a059;
+  border-color: #c5a059;
 }
 .new-card-form .custom-checkbox-label input[type=checkbox]:checked + .checkbox-box::after {
   opacity: 1;
@@ -440,7 +440,7 @@
   margin-bottom: 2px;
 }
 .new-card-form .custom-checkbox-label .terms-link {
-  color: #e5c158;
+  color: #d4b475;
   text-decoration: underline;
   transition: color 0.2s ease;
 }
@@ -488,7 +488,7 @@
 }
 .stripe-modal-btn--submit:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.95);
-  color: #d4af37;
+  color: #c5a059;
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
@@ -516,7 +516,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #d4af37;
+  color: #c5a059;
 }
 .stripe-btn-loading .stripe-spinner {
   width: 18px;

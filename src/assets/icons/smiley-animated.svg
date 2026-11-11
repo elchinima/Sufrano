@@ -33,11 +33,11 @@
     </path>
     
     <!-- Румянец -->
-    <circle cx="22" cy="55" r="6" fill="#e74c3c" opacity="0.8">
-      <animate attributeName="opacity" values="0.8; 0.5; 0.8" dur="3s" repeatCount="indefinite" />
+    <circle cx="22" cy="55" r="6" fill="#c5a059" opacity="0.85">
+      <animate attributeName="opacity" values="0.85; 0.45; 0.85" dur="3s" repeatCount="indefinite" />
     </circle>
-    <circle cx="78" cy="55" r="6" fill="#e74c3c" opacity="0.8">
-      <animate attributeName="opacity" values="0.8; 0.5; 0.8" dur="3s" repeatCount="indefinite" />
+    <circle cx="78" cy="55" r="6" fill="#c5a059" opacity="0.85">
+      <animate attributeName="opacity" values="0.85; 0.45; 0.85" dur="3s" repeatCount="indefinite" />
     </circle>
   </g>
 </svg>

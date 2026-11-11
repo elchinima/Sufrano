@@ -9,7 +9,7 @@
     <path d="M 12 20 L 25 20 L 38 65 L 78 65 L 88 32 L 28 32" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
     
     <!-- Колеса -->
-    <circle cx="45" cy="85" r="7" fill="#ffffff" />
-    <circle cx="72" cy="85" r="7" fill="#ffffff" />
+    <circle cx="45" cy="85" r="7" fill="#c5a059" />
+    <circle cx="72" cy="85" r="7" fill="#c5a059" />
   </g>
 </svg>

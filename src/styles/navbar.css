@@ -249,8 +249,8 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #d4af37;
-    box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+    background: #c5a059;
+    box-shadow: 0 0 8px rgba(197, 160, 89, 0.6);
   }
   .home-header .nav-menu .nav-links .nav-link.active .nav-link__icon {
     opacity: 1;

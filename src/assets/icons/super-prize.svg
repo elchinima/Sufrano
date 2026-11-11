@@ -4,11 +4,11 @@
     <animateTransform attributeName="transform" type="rotate" values="-2 50 50; 2 50 50; -2 50 50" dur="3.5s" repeatCount="indefinite" additive="sum" />
     
     <path d="M 18 72 L 24 36 L 40 54 L 50 26 L 60 54 L 76 36 L 82 72 Z" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-    <path d="M 18 72 C 30 76 70 76 82 72 L 82 80 C 70 84 30 84 18 80 Z" stroke="#d4af37" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="rgba(212, 175, 55, 0.2)" />
+    <path d="M 18 72 C 30 76 70 76 82 72 L 82 80 C 70 84 30 84 18 80 Z" stroke="#c5a059" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="rgba(197, 160, 89, 0.2)" />
     
-    <circle cx="24" cy="32" r="4.5" fill="#d4af37" />
-    <circle cx="50" cy="22" r="5.5" fill="#d4af37" />
-    <circle cx="76" cy="32" r="4.5" fill="#d4af37" />
+    <circle cx="24" cy="32" r="4.5" fill="#c5a059" />
+    <circle cx="50" cy="22" r="5.5" fill="#c5a059" />
+    <circle cx="76" cy="32" r="4.5" fill="#c5a059" />
     
     <circle cx="36" cy="76" r="2.5" fill="#ffffff" />
     <circle cx="50" cy="76" r="3" fill="#ffffff" />

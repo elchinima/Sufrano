@@ -9,7 +9,7 @@
   <!-- Cute little smile -->
   <path d="M 42 60 Q 50 72 58 60" stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none"/>
   
-  <!-- Blush (in brand red/coral color) -->
-  <circle cx="22" cy="55" r="6" fill="#e74c3c" opacity="0.8" />
-  <circle cx="78" cy="55" r="6" fill="#e74c3c" opacity="0.8" />
+  <!-- Blush (in brand gold color) -->
+  <circle cx="22" cy="55" r="6" fill="#c5a059" opacity="0.85" />
+  <circle cx="78" cy="55" r="6" fill="#c5a059" opacity="0.85" />
 </svg>

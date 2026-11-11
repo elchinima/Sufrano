@@ -463,7 +463,7 @@
 				}
 			}, /* @__PURE__ */ __h("div", null, /* @__PURE__ */ __h("h1", { className: "admin-logs__title" }, "Audit Logs"), /* @__PURE__ */ __h("p", { className: "admin-logs__subtitle" }, "Comprehensive activity history, data changes, and system operations"))), /* @__PURE__ */ __h("div", { className: "admin-logs__stats" }, /* @__PURE__ */ __h(motion.div, {
 				className: "admin-logs__stat-card",
-				style: { "--accent": "#d4af37" },
+				style: { "--accent": "#c5a059" },
 				custom: 0,
 				variants: fadeUp,
 				initial: "hidden",
@@ -519,7 +519,7 @@
 				strokeWidth: "2"
 			}, /* @__PURE__ */ __h("path", { d: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" }), /* @__PURE__ */ __h("path", { d: "M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" }))), /* @__PURE__ */ __h("div", { className: "admin-logs__stat-body" }, /* @__PURE__ */ __h("span", { className: "admin-logs__stat-value" }, isLoading ? "..." : statsSummary.putPatchCount), /* @__PURE__ */ __h("span", { className: "admin-logs__stat-label" }, "Modifications"), /* @__PURE__ */ __h("span", { className: "admin-logs__stat-sub" }, "PUT / PATCH actions"))), /* @__PURE__ */ __h(motion.div, {
 				className: "admin-logs__stat-card",
-				style: { "--accent": "#f43f5e" },
+				style: { "--accent": "#c5a059" },
 				custom: 3,
 				variants: fadeUp,
 				initial: "hidden",

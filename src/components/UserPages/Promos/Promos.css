@@ -67,13 +67,13 @@
 }
 
 .promos-activate-card {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(20, 20, 24, 0.6) 100%);
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.08) 0%, rgba(20, 20, 24, 0.6) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  border: 1px solid rgba(197, 160, 89, 0.25);
   border-radius: 24px;
   padding: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 20px rgba(212, 175, 55, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 20px rgba(197, 160, 89, 0.06);
 }
 @media (max-width: 768px) {
   .promos-activate-card {
@@ -129,9 +129,9 @@
   gap: 6px;
   padding: 3px 10px;
   border-radius: 9999px;
-  background: rgba(212, 175, 55, 0.18);
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  color: #e5c158;
+  background: rgba(197, 160, 89, 0.18);
+  border: 1px solid rgba(197, 160, 89, 0.35);
+  color: #d4b475;
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -184,8 +184,8 @@
 }
 .promos-activate-card__input-wrap input:focus {
   background: rgba(0, 0, 0, 0.7);
-  border-color: rgba(212, 175, 55, 0.6);
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
+  border-color: rgba(197, 160, 89, 0.6);
+  box-shadow: 0 0 16px rgba(197, 160, 89, 0.2);
 }
 .promos-activate-card__input-wrap input::placeholder {
   font-family: "Inter", system-ui, -apple-system, sans-serif;
@@ -211,7 +211,7 @@
   height: 44px;
   padding: 0 24px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, #d4af37, rgb(73.0089566691%, 59.5022996853%, 15.6969256839%));
+  background: linear-gradient(135deg, #c5a059, #9e7a36);
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #ffffff;
   font-size: 0.88rem;
@@ -221,14 +221,14 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 16px rgba(184, 0, 0, 0.35);
+  box-shadow: 0 4px 16px rgba(197, 160, 89, 0.35);
   transition: all 0.25s ease;
   white-space: nowrap;
 }
 .promos-activate-card__btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(184, 0, 0, 0.5);
-  background: linear-gradient(135deg, rgb(84.9068022271%, 71.9196320504%, 29.7990801259%), #d4af37);
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.5);
+  background: linear-gradient(135deg, #dfc288, #c5a059);
 }
 .promos-activate-card__btn:disabled {
   opacity: 0.5;
@@ -277,12 +277,12 @@
   stroke: #4ade80;
 }
 .promos-activate-feedback--error {
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  color: #e5c158;
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  color: #d4b475;
 }
 .promos-activate-feedback--error svg {
-  stroke: #e5c158;
+  stroke: #d4b475;
 }
 
 .promos-filters {
@@ -388,7 +388,7 @@
   height: 100%;
   object-fit: contain;
   display: block;
-  filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.25));
+  filter: drop-shadow(0 0 16px rgba(197, 160, 89, 0.25));
 }
 .promos-empty-card h3 {
   font-size: 1.3rem;
@@ -420,7 +420,7 @@
   flex-shrink: 0;
 }
 .promos-empty-card .promos-empty-btn:hover {
-  color: #d4af37;
+  color: #c5a059;
   transform: translateY(-2px);
 }
 
@@ -454,12 +454,12 @@
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 .promo-ticket-card.promo-ticket--active {
-  border-color: rgba(212, 175, 55, 0.35);
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.14), 0 4px 20px rgba(0, 0, 0, 0.3);
+  border-color: rgba(197, 160, 89, 0.35);
+  box-shadow: 0 0 16px rgba(197, 160, 89, 0.14), 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 .promo-ticket-card.promo-ticket--active:hover {
-  border-color: rgba(212, 175, 55, 0.55);
-  box-shadow: 0 0 24px rgba(212, 175, 55, 0.25), 0 8px 28px rgba(0, 0, 0, 0.4);
+  border-color: rgba(197, 160, 89, 0.55);
+  box-shadow: 0 0 24px rgba(197, 160, 89, 0.25), 0 8px 28px rgba(0, 0, 0, 0.4);
 }
 .promo-ticket-card.promo-ticket--expired {
   opacity: 0.65;
@@ -698,19 +698,19 @@
   justify-content: center;
   width: 100%;
   padding: 9px 16px;
-  background: rgba(212, 175, 55, 0.2);
+  background: rgba(197, 160, 89, 0.2);
   color: #ffffff;
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  border: 1px solid rgba(197, 160, 89, 0.4);
   border-radius: 9999px;
   font-size: 0.85rem;
   font-weight: 700;
   text-decoration: none;
   transition: all 0.25s ease;
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 12px rgba(197, 160, 89, 0.1);
 }
 .promo-ticket__actions .promo-action-btn:hover {
-  background: #d4af37;
-  border-color: #e5c158;
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
+  background: #c5a059;
+  border-color: #d4b475;
+  box-shadow: 0 0 16px rgba(197, 160, 89, 0.35);
   transform: translateY(-1px);
 }

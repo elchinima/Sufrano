@@ -200,7 +200,7 @@ const CashboxHistory = () => {
 	}), /* @__PURE__ */ __h("p", null, t?.history?.loadingHistory || "Loading history...")) : error ? /* @__PURE__ */ __h("div", { className: "cb-history-error" }, /* @__PURE__ */ __h("div", { className: "cb-history-error__icon" }, /* @__PURE__ */ __h("svg", {
 		viewBox: "0 0 24 24",
 		fill: "none",
-		stroke: "#d4af37",
+		stroke: "#c5a059",
 		strokeWidth: "2",
 		strokeLinecap: "round",
 		strokeLinejoin: "round",

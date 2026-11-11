@@ -306,14 +306,14 @@ const Fortune = () => {
 		xmlns: "http://www.w3.org/2000/svg"
 	}, /* @__PURE__ */ __h("polygon", {
 		points: "18,42 1,5 35,5",
-		fill: "#ffffff",
-		stroke: "rgba(255,255,255,0.25)",
-		strokeWidth: "1"
+		fill: "#c5a059",
+		stroke: "#dfc288",
+		strokeWidth: "1.5"
 	}), /* @__PURE__ */ __h("circle", {
 		cx: "18",
 		cy: "8",
 		r: "4.5",
-		fill: "rgba(255,255,255,0.9)"
+		fill: "#24050d"
 	}))), /* @__PURE__ */ __h("canvas", {
 		ref: canvasRef,
 		className: "fortune-canvas"

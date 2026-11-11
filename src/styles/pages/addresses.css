@@ -50,8 +50,8 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,7 +60,7 @@
 .address-modal__icon svg {
   width: 24px;
   height: 24px;
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .address-modal__title {
   font-size: 1.35rem;
@@ -86,11 +86,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.3);
   border-radius: 6px;
   padding: 10px 14px;
-  color: #f3cf7a;
+  color: #dfc288;
   font-size: 0.84rem;
   line-height: 1.4;
   width: 100%;
@@ -99,7 +99,7 @@
 .address-modal__error svg {
   width: 18px;
   height: 18px;
-  stroke: #d4af37;
+  stroke: #c5a059;
   flex-shrink: 0;
 }
 .address-modal__row {
@@ -144,9 +144,9 @@
 }
 .address-modal__field input:focus, .address-modal__field textarea:focus {
   outline: none;
-  border-color: #d4af37;
+  border-color: #c5a059;
   background: rgba(0, 0, 0, 0.55);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2);
 }
 .address-modal__field input::placeholder, .address-modal__field textarea::placeholder {
   color: rgba(255, 255, 255, 0.25);
@@ -161,7 +161,7 @@
   line-height: 1.45;
 }
 .address-modal__required {
-  color: #d4af37;
+  color: #c5a059;
   font-weight: 700;
 }
 .address-modal__default-toggle {
@@ -254,14 +254,14 @@
 }
 .address-modal__btn--submit:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.95);
-  color: #d4af37;
+  color: #c5a059;
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 .address-modal__btn--submit:disabled {
   opacity: 0.95;
   cursor: not-allowed;
-  color: #d4af37;
+  color: #c5a059;
   background: rgba(255, 255, 255, 0.95);
 }
 
@@ -270,13 +270,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #d4af37;
+  color: #c5a059;
 }
 .address-loader-inner .address-btn-spinner {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  color: #d4af37;
+  color: #c5a059;
 }
 
 @media (max-width: 600px) {
@@ -366,9 +366,9 @@
   gap: 6px;
   padding: 4px 14px;
   border-radius: 9999px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.28);
-  color: #f3cf7a;
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.28);
+  color: #dfc288;
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -406,7 +406,7 @@
   font-size: 0.96rem;
   font-weight: 700;
   border-radius: 9999px;
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.35);
 }
 .addresses-hero__add-btn svg {
   width: 18px;
@@ -465,19 +465,19 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.28);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.28);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #d4af37;
+  color: #c5a059;
   flex-shrink: 0;
   user-select: none;
 }
 .address-card__icon-badge svg {
   width: 22px;
   height: 22px;
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .address-card__meta {
   display: flex;
@@ -551,7 +551,7 @@
 .address-card__street svg {
   width: 20px;
   height: 20px;
-  stroke: #d4af37;
+  stroke: #c5a059;
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -595,7 +595,7 @@
   align-items: flex-start;
   gap: 8px;
   background: rgba(255, 255, 255, 0.025);
-  border-left: 3px solid #d4af37;
+  border-left: 3px solid #c5a059;
   border-radius: 0 8px 8px 0;
   padding: 8px 12px;
   font-size: 0.84rem;
@@ -673,11 +673,11 @@
   color: #93c5fd;
 }
 .address-card__action-btn--delete {
-  color: #f3cf7a;
+  color: #dfc288;
 }
 .address-card__action-btn--delete:hover:not(:disabled) {
-  background: rgba(212, 175, 55, 0.2);
-  border-color: rgba(212, 175, 55, 0.45);
+  background: rgba(197, 160, 89, 0.2);
+  border-color: rgba(197, 160, 89, 0.45);
   color: #fff;
 }
 
@@ -712,12 +712,12 @@
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.08);
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  background: rgba(197, 160, 89, 0.08);
+  border: 1px solid rgba(197, 160, 89, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #d4af37;
+  color: #c5a059;
   margin-bottom: 4px;
 }
 .addresses-empty-card .addresses-empty-icon svg {
@@ -805,8 +805,8 @@
 }
 .addresses-toast--error {
   background: rgba(30, 10, 10, 0.96);
-  border-color: rgba(212, 175, 55, 0.45);
-  color: #f3cf7a;
+  border-color: rgba(197, 160, 89, 0.45);
+  color: #dfc288;
 }
 
 @media (max-width: 768px) {

@@ -73,7 +73,7 @@
   font-size: 0.96rem;
   font-weight: 700;
   border-radius: 9999px;
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.35);
 }
 .payment-methods-hero__add-btn svg {
   width: 18px;
@@ -143,19 +143,19 @@
   width: 38px;
   height: 38px;
   border-radius: 10px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.28);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.28);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #d4af37;
+  color: #c5a059;
   flex-shrink: 0;
   user-select: none;
 }
 .payment-card__icon-badge svg {
   width: 19px;
   height: 19px;
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .payment-card__icon-badge--visa {
   background: rgba(66, 153, 225, 0.12);
@@ -166,12 +166,12 @@
   stroke: #4299e1;
 }
 .payment-card__icon-badge--mastercard {
-  background: rgba(245, 101, 101, 0.12);
-  border-color: rgba(245, 101, 101, 0.28);
-  color: #d4af37;
+  background: rgba(197, 160, 89, 0.12);
+  border-color: rgba(197, 160, 89, 0.28);
+  color: #c5a059;
 }
 .payment-card__icon-badge--mastercard svg {
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 .payment-card__meta {
   display: flex;
@@ -358,12 +358,12 @@
   border-color: rgba(34, 197, 94, 0.25);
 }
 .payment-card__action-btn--delete {
-  color: rgba(212, 175, 55, 0.85);
+  color: rgba(197, 160, 89, 0.85);
 }
 .payment-card__action-btn--delete:hover:not(:disabled) {
-  background: rgba(212, 175, 55, 0.14);
-  color: #f3cf7a;
-  border-color: rgba(212, 175, 55, 0.28);
+  background: rgba(197, 160, 89, 0.14);
+  color: #dfc288;
+  border-color: rgba(197, 160, 89, 0.28);
 }
 
 .payment-methods-loading-state,
@@ -412,8 +412,8 @@
   -webkit-backdrop-filter: blur(10px);
 }
 .payment-methods-toast--error {
-  border-color: rgba(212, 175, 55, 0.4);
-  color: #f3cf7a;
+  border-color: rgba(197, 160, 89, 0.4);
+  color: #dfc288;
 }
 
 @media (max-width: 768px) {

@@ -95,7 +95,7 @@
 .auth-card-left {
   flex: 1 1 50%;
   max-width: 50%;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.15) 0%, rgba(0, 0, 0, 0.5) 100%);
   padding: clamp(32px, 4vw, 48px);
   display: flex;
   flex-direction: column;
@@ -224,9 +224,9 @@
 }
 .auth-form .input-group input:focus {
   outline: none;
-  border-color: #d4af37;
+  border-color: #c5a059;
   background: rgba(0, 0, 0, 0.55);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2);
 }
 .auth-form .input-group input:-webkit-autofill, .auth-form .input-group input:-webkit-autofill:hover, .auth-form .input-group input:-webkit-autofill:focus, .auth-form .input-group input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px #161616 inset !important;
@@ -255,8 +255,8 @@
   transition: all 0.2s ease;
 }
 .auth-form .checkbox-group input[type=checkbox]:checked {
-  background: #d4af37;
-  border-color: #d4af37;
+  background: #c5a059;
+  border-color: #c5a059;
 }
 .auth-form .checkbox-group input[type=checkbox]:checked::after {
   content: "✓";
@@ -270,7 +270,7 @@
 }
 .auth-form .checkbox-group input[type=checkbox]:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.25);
 }
 .auth-form .checkbox-group label {
   font-size: 0.88rem;
@@ -279,7 +279,7 @@
   line-height: 1.4;
 }
 .auth-form .checkbox-group label .terms-link {
-  color: #e5c158;
+  color: #d4b475;
   text-decoration: none;
   font-weight: 600;
 }
@@ -290,12 +290,12 @@
   animation: termsShake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 .auth-form .checkbox-group--highlight input[type=checkbox] {
-  border-color: #d4af37 !important;
-  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.45) !important;
-  background: rgba(212, 175, 55, 0.2) !important;
+  border-color: #c5a059 !important;
+  box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.45) !important;
+  background: rgba(197, 160, 89, 0.2) !important;
 }
 .auth-form .checkbox-group--highlight label {
-  color: #f3cf7a !important;
+  color: #dfc288 !important;
 }
 .auth-form .checkbox-group--highlight .terms-link {
   color: #ffffff !important;
@@ -306,12 +306,12 @@
   margin: -4px 0 4px;
 }
 .auth-form .error-wrapper .auth-error {
-  color: #ff5e5e;
+  color: #dfc288;
   font-size: 0.88rem;
   line-height: 1.4;
   padding: 8px 12px;
-  background: rgba(255, 60, 60, 0.1);
-  border: 1px solid rgba(255, 60, 60, 0.2);
+  background: rgba(197, 160, 89, 0.1);
+  border: 1px solid rgba(197, 160, 89, 0.2);
   border-radius: 6px;
   animation: fadeIn 0.3s ease;
 }
@@ -348,13 +348,13 @@
 }
 .auth-form .auth-submit-btn:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.95);
-  color: #d4af37;
+  color: #c5a059;
   transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
 }
 .auth-form .auth-submit-btn:hover:not(:disabled) svg {
-  stroke: #d4af37;
-  color: #d4af37;
+  stroke: #c5a059;
+  color: #c5a059;
 }
 .auth-form .auth-submit-btn:active:not(:disabled) {
   transform: translateY(0);
@@ -424,7 +424,7 @@
   text-decoration: underline;
 }
 .auth-form .auth-forgot-password-btn:focus-visible {
-  outline: 2px solid rgba(212, 175, 55, 0.5);
+  outline: 2px solid rgba(197, 160, 89, 0.5);
   outline-offset: 2px;
 }
 .auth-form .auth-btn-loader {
@@ -432,7 +432,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #d4af37;
+  color: #c5a059;
 }
 .auth-form .two-factor-inputs {
   display: flex;
@@ -454,9 +454,9 @@
 }
 .auth-form .two-factor-inputs .two-factor-digit:focus {
   outline: none;
-  border-color: #d4af37;
+  border-color: #c5a059;
   background: rgba(0, 0, 0, 0.7);
-  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.2);
   transform: translateY(-2px);
 }
 .auth-form .forgot-code-inputs {
@@ -482,9 +482,9 @@
 }
 .auth-form .forgot-code-inputs .forgot-code-digit:focus {
   outline: none;
-  border-color: #d4af37;
+  border-color: #c5a059;
   background: rgba(0, 0, 0, 0.7);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.25);
   transform: translateY(-2px);
 }
 .auth-form .two-factor-info {
@@ -494,11 +494,11 @@
   margin-top: 4px;
 }
 .auth-form .two-factor-info .two-factor-timer {
-  color: #f6ad55;
+  color: #d4b475;
   font-weight: 600;
 }
 .auth-form .two-factor-info .two-factor-expired {
-  color: #e5c158;
+  color: #d4b475;
   font-weight: 600;
 }
 .auth-form .two-factor-success {
@@ -520,7 +520,7 @@
 .auth-form .two-factor-actions .two-factor-resend-btn {
   background: none;
   border: none;
-  color: #d4af37;
+  color: #c5a059;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
@@ -530,7 +530,7 @@
 }
 .auth-form .two-factor-actions .two-factor-resend-btn:hover:not(:disabled) {
   text-decoration: underline;
-  background: rgba(212, 175, 55, 0.08);
+  background: rgba(197, 160, 89, 0.08);
 }
 .auth-form .two-factor-actions .two-factor-resend-btn:disabled {
   color: rgba(255, 255, 255, 0.35);

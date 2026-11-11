@@ -23,8 +23,8 @@
   position: relative;
   border-radius: 20px;
   background: linear-gradient(135deg, rgba(36, 5, 13, 0.88) 0%, rgba(30, 4, 4, 0.96) 100%);
-  border: 1px solid rgba(212, 175, 55, 0.22);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.65), 0 0 35px rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(197, 160, 89, 0.22);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.65), 0 0 35px rgba(197, 160, 89, 0.1);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   overflow: hidden;
@@ -55,10 +55,10 @@
   transition: all 0.25s ease;
 }
 .rednest-app-banner .banner-inner .banner-close-btn:hover {
-  background: rgba(212, 175, 55, 0.35);
-  border-color: rgba(212, 175, 55, 0.6);
+  background: rgba(197, 160, 89, 0.35);
+  border-color: rgba(197, 160, 89, 0.6);
   transform: scale(1.08);
-  box-shadow: 0 0 14px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 0 14px rgba(197, 160, 89, 0.35);
 }
 .rednest-app-banner .banner-inner .banner-close-btn:active {
   transform: scale(0.92);
@@ -108,7 +108,7 @@
   left: 8%;
   width: 450px;
   height: 450px;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.24) 0%, rgba(181, 137, 46, 0) 70%);
+  background: radial-gradient(circle, rgba(197, 160, 89, 0.24) 0%, rgba(158, 122, 54, 0) 70%);
   pointer-events: none;
   filter: blur(50px);
   z-index: 1;
@@ -137,7 +137,7 @@
   width: 235px;
   height: 235px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.35) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(197, 160, 89, 0.35) 0%, transparent 70%);
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
@@ -241,22 +241,22 @@
   -webkit-user-select: none;
 }
 .rednest-app-banner .banner-feature-card:hover {
-  background: rgba(212, 175, 55, 0.14);
-  border-color: rgba(212, 175, 55, 0.45);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4), 0 0 16px rgba(212, 175, 55, 0.22);
+  background: rgba(197, 160, 89, 0.14);
+  border-color: rgba(197, 160, 89, 0.45);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4), 0 0 16px rgba(197, 160, 89, 0.22);
 }
 .rednest-app-banner .banner-feature-card:hover .feature-icon-box {
-  background: #d4af37;
+  background: #c5a059;
   color: #ffffff;
   transform: scale(1.08) rotate(3deg);
 }
 .rednest-app-banner .banner-feature-card.is-marquee-active {
-  background: rgba(212, 175, 55, 0.16);
-  border-color: rgba(212, 175, 55, 0.48);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(212, 175, 55, 0.22);
+  background: rgba(197, 160, 89, 0.16);
+  border-color: rgba(197, 160, 89, 0.48);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(197, 160, 89, 0.22);
 }
 .rednest-app-banner .banner-feature-card.is-marquee-active .feature-icon-box {
-  background: #d4af37;
+  background: #c5a059;
   color: #ffffff;
   transform: scale(1.05);
 }
@@ -264,9 +264,9 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: rgba(212, 175, 55, 0.18);
-  border: 1px solid rgba(212, 175, 55, 0.32);
-  color: #f3cf7a;
+  background: rgba(197, 160, 89, 0.18);
+  border: 1px solid rgba(197, 160, 89, 0.32);
+  color: #dfc288;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -422,10 +422,10 @@
   box-sizing: border-box;
 }
 .rednest-app-banner .store-btn:hover {
-  background: rgba(212, 175, 55, 0.22);
-  border-color: rgba(212, 175, 55, 0.6);
+  background: rgba(197, 160, 89, 0.22);
+  border-color: rgba(197, 160, 89, 0.6);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 16px rgba(212, 175, 55, 0.28);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 16px rgba(197, 160, 89, 0.28);
 }
 .rednest-app-banner .store-btn:active {
   transform: scale(0.98);

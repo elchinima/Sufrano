@@ -45,13 +45,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #d4af37;
+  background: #c5a059;
   color: #fff;
   border-radius: 9999px;
   padding: 10px 20px;
   font-size: 0.9rem;
   white-space: nowrap;
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 4px 16px rgba(197, 160, 89, 0.3);
   transition: all 0.3s ease;
 }
 @media (max-width: 640px) {
@@ -67,8 +67,8 @@
   height: 16px;
 }
 .dashboard__cta:hover {
-  background: #e5c158;
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4);
+  background: #d4b475;
+  box-shadow: 0 8px 24px rgba(197, 160, 89, 0.4);
 }
 .dashboard__section {
   margin-bottom: 64px;
@@ -95,8 +95,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #d4af37;
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+  background: #c5a059;
+  box-shadow: 0 0 10px rgba(197, 160, 89, 0.6);
 }
 .dashboard__section-dot--storage {
   background: #60a5fa;
@@ -132,9 +132,9 @@
   border-radius: 9999px;
 }
 .dashboard__badge--month {
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  color: #ff8a8a;
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  color: #dfc288;
 }
 .dashboard__badge--timezone {
   background: rgba(255, 255, 255, 0.05);
@@ -196,7 +196,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent, #d4af37), transparent);
+  background: linear-gradient(90deg, transparent, var(--accent, #c5a059), transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -223,7 +223,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: color-mix(in srgb, var(--accent, #d4af37) 12%, transparent);
+  background: color-mix(in srgb, var(--accent, #c5a059) 12%, transparent);
 }
 @media (max-width: 640px) {
   .dashboard-stat__icon {
@@ -234,7 +234,7 @@
 .dashboard-stat__icon svg {
   width: 20px;
   height: 20px;
-  stroke: var(--accent, #d4af37);
+  stroke: var(--accent, #c5a059);
 }
 @media (max-width: 640px) {
   .dashboard-stat__icon svg {

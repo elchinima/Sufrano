@@ -40,10 +40,10 @@ body.mobile-menu-open .support-widget-container {
 .support-tooltip {
   position: absolute;
   right: calc(100% + 15px);
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(24, 3, 9, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(197, 160, 89, 0.4);
   padding: 12px 18px;
   border-radius: 12px 12px 0 12px;
   color: #fff;
@@ -54,7 +54,7 @@ body.mobile-menu-open .support-widget-container {
   visibility: hidden;
   transform: translate(15px, -50px) scale(0.9);
   pointer-events: none;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 14px rgba(197, 160, 89, 0.16), 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 .support-widget-container:hover .support-tooltip {
   visibility: visible;
@@ -74,10 +74,11 @@ body.mobile-menu-open .support-widget-container {
   width: 65px;
   height: 65px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(24, 3, 9, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(197, 160, 89, 0.42);
+  box-shadow: 0 0 14px rgba(197, 160, 89, 0.18), 0 0 30px rgba(197, 160, 89, 0.08), 0 6px 20px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,7 +90,10 @@ body.mobile-menu-open .support-widget-container {
   height: 40px;
 }
 .support-widget:hover {
-  transform: scale(1.15) translateY(-5px);
+  transform: scale(1.12) translateY(-5px);
+  background: rgba(36, 5, 13, 0.96);
+  border-color: rgba(223, 194, 136, 0.7);
+  box-shadow: 0 0 20px rgba(197, 160, 89, 0.32), 0 0 40px rgba(197, 160, 89, 0.14), 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 .support-widget:active {
   transform: scale(0.95);

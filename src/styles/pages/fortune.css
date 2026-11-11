@@ -155,7 +155,7 @@
   color: rgba(255, 255, 255, 0.6);
 }
 .fortune-timer-badge .fortune-timer-value {
-  color: #fbbf24;
+  color: #c5a059;
   font-weight: 700;
   font-family: monospace;
   font-size: 0.9rem;
@@ -224,7 +224,7 @@
 .prize-label {
   font-size: 1.35rem;
   font-weight: 700;
-  color: #d4af37;
+  color: #c5a059;
   margin: 0 0 8px;
 }
 

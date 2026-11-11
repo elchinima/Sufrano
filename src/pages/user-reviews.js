@@ -133,15 +133,15 @@
 					viewBox: "0 0 24 24",
 					width: "15",
 					height: "15",
-					fill: star <= Math.round(num) ? "#fbbf24" : "rgba(255,255,255,0.2)",
-					stroke: star <= Math.round(num) ? "#fbbf24" : "rgba(255,255,255,0.2)",
+					fill: star <= Math.round(num) ? "#c5a059" : "rgba(255,255,255,0.2)",
+					stroke: star <= Math.round(num) ? "#c5a059" : "rgba(255,255,255,0.2)",
 					strokeWidth: "1"
 				}, /* @__PURE__ */ __h("polygon", { points: "12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" })))), /* @__PURE__ */ __h("div", { className: "stars-compact--mobile" }, /* @__PURE__ */ __h("span", { className: "rating-num" }, formattedRating), /* @__PURE__ */ __h("svg", {
 					viewBox: "0 0 24 24",
 					width: "13",
 					height: "13",
-					fill: "#fbbf24",
-					stroke: "#fbbf24",
+					fill: "#c5a059",
+					stroke: "#c5a059",
 					strokeWidth: "1"
 				}, /* @__PURE__ */ __h("polygon", { points: "12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" }))));
 			};
@@ -325,7 +325,7 @@
 			}), /* @__PURE__ */ __h("p", null, "Loading your reviews...")) : error ? /* @__PURE__ */ __h("div", { className: "user-reviews-error" }, /* @__PURE__ */ __h("svg", {
 				viewBox: "0 0 24 24",
 				fill: "none",
-				stroke: "#d4af37",
+				stroke: "#c5a059",
 				strokeWidth: "2",
 				width: "36",
 				height: "36"
@@ -437,8 +437,8 @@
 					viewBox: "0 0 24 24",
 					width: "15",
 					height: "15",
-					fill: "#d4af37",
-					stroke: "#d4af37",
+					fill: "#c5a059",
+					stroke: "#c5a059",
 					strokeWidth: "2"
 				}, /* @__PURE__ */ __h("path", { d: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" })), /* @__PURE__ */ __h("span", null, likesCount, " ", likesCount === 1 ? "like received" : "likes received")), /* @__PURE__ */ __h("button", {
 					type: "button",

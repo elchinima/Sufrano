@@ -204,7 +204,7 @@ const Sessions = () => {
 	}), /* @__PURE__ */ __h("p", null, t("sessions_loading"))) : error ? /* @__PURE__ */ __h("div", { className: "sessions-error-state" }, /* @__PURE__ */ __h("svg", {
 		viewBox: "0 0 24 24",
 		fill: "none",
-		stroke: "#d4af37",
+		stroke: "#c5a059",
 		strokeWidth: "2",
 		width: "40",
 		height: "40"
@@ -435,7 +435,7 @@ const Sessions = () => {
 			display: "flex",
 			alignItems: "center",
 			gap: "6px",
-			color: "#e5c158"
+			color: "#d4b475"
 		} }, /* @__PURE__ */ __h("img", {
 			src: loaderIconRed,
 			alt: "",

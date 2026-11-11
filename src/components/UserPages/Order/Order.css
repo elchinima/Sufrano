@@ -38,9 +38,9 @@
   letter-spacing: 1px;
   padding: 4px 12px;
   border-radius: 9999px;
-  background: rgba(212, 175, 55, 0.15);
-  color: #e5c158;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.15);
+  color: #d4b475;
+  border: 1px solid rgba(197, 160, 89, 0.3);
   margin-bottom: 12px;
 }
 .order-hero-text h1 {
@@ -111,19 +111,19 @@
   transition: border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, background-color 0.25s ease;
 }
 .order-method-card:hover {
-  border-color: rgba(212, 175, 55, 0.45);
-  box-shadow: 0 0 24px rgba(212, 175, 55, 0.18), 0 6px 24px rgba(0, 0, 0, 0.35);
+  border-color: rgba(197, 160, 89, 0.45);
+  box-shadow: 0 0 24px rgba(197, 160, 89, 0.18), 0 6px 24px rgba(0, 0, 0, 0.35);
 }
 .order-method-card.selected {
-  border-color: #d4af37;
-  background-color: rgba(212, 175, 55, 0.08);
-  box-shadow: 0 0 28px rgba(212, 175, 55, 0.28), 0 6px 24px rgba(0, 0, 0, 0.4);
+  border-color: #c5a059;
+  background-color: rgba(197, 160, 89, 0.08);
+  box-shadow: 0 0 28px rgba(197, 160, 89, 0.28), 0 6px 24px rgba(0, 0, 0, 0.4);
 }
 .order-method-card.selected .order-method-card__radio-btn {
-  background: #d4af37;
+  background: #c5a059;
   color: #ffffff;
-  border-color: #d4af37;
-  box-shadow: 0 0 14px rgba(212, 175, 55, 0.4);
+  border-color: #c5a059;
+  box-shadow: 0 0 14px rgba(197, 160, 89, 0.4);
 }
 .order-method-card.unselected {
   opacity: 0.55;
@@ -160,9 +160,9 @@
   display: block;
 }
 .order-method-card.selected .order-method-card__icon-wrap {
-  background: rgba(212, 175, 55, 0.12);
-  border-color: rgba(212, 175, 55, 0.4);
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.22);
+  background: rgba(197, 160, 89, 0.12);
+  border-color: rgba(197, 160, 89, 0.4);
+  box-shadow: 0 0 16px rgba(197, 160, 89, 0.22);
 }
 .order-method-card__title-group {
   display: flex;
@@ -318,7 +318,7 @@
   margin-bottom: 4px;
 }
 .order-step-header .order-step-info h3 span {
-  color: #d4af37;
+  color: #c5a059;
 }
 .order-step-header .order-step-info p {
   font-size: 0.9rem;
@@ -391,7 +391,7 @@
   transition: all 0.2s ease;
 }
 .order-promo-selector .order-promo-select:focus {
-  border-color: rgba(212, 175, 55, 0.5);
+  border-color: rgba(197, 160, 89, 0.5);
   background: rgba(0, 0, 0, 0.65);
 }
 .order-promo-selector .order-promo-select option {
@@ -434,7 +434,7 @@
 }
 .order-summary-pill-row .order-summary-pill.total .value {
   font-size: 1.1rem;
-  color: #d4af37;
+  color: #c5a059;
   letter-spacing: 0.3px;
 }
 @media (max-width: 768px) {
@@ -463,13 +463,13 @@
 }
 .order-actions-row .order-confirm-btn {
   flex: 1;
-  background: #d4af37;
+  background: #c5a059;
   color: #ffffff;
   font-weight: 700;
   padding: 13px 24px;
   font-size: 0.95rem;
   border-radius: 12px;
-  box-shadow: 0 4px 18px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 4px 18px rgba(197, 160, 89, 0.35);
   cursor: pointer;
   border: none;
   text-align: center;
@@ -477,9 +477,9 @@
   transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease;
 }
 .order-actions-row .order-confirm-btn:hover {
-  background: #c59b27;
+  background: #9e7a36;
   color: #ffffff;
-  box-shadow: 0 6px 24px rgba(212, 175, 55, 0.55);
+  box-shadow: 0 6px 24px rgba(197, 160, 89, 0.55);
   transform: translateY(-1px);
 }
 .order-actions-row .order-confirm-btn:active {
@@ -503,7 +503,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #d4af37;
+  color: #c5a059;
 }
 .order-actions-row .order-btn-loading .order-spinner {
   width: 18px;
@@ -575,10 +575,10 @@
 
 .order-error-message {
   padding: 12px 16px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   border-radius: 12px;
-  color: #f3cf7a;
+  color: #dfc288;
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -652,17 +652,17 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: rgba(197, 160, 89, 0.15);
+  color: #c5a059;
+  border: 1px solid rgba(197, 160, 89, 0.3);
   margin-bottom: 14px;
 }
 .order-success-modal__status-badge .pulsing-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #fbbf24;
-  box-shadow: 0 0 8px #fbbf24;
+  background: #c5a059;
+  box-shadow: 0 0 8px #c5a059;
   animation: pulseDotAmber 1.8s infinite;
 }
 .order-success-modal__title {
@@ -709,7 +709,7 @@
 .order-success-modal__number-value {
   font-size: 1.35rem;
   font-weight: 800;
-  color: #d4af37;
+  color: #c5a059;
   letter-spacing: 1.2px;
   font-family: inherit;
 }
@@ -751,7 +751,7 @@
 .order-success-modal__detail-row.total .order-success-modal__detail-value {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #d4af37;
+  color: #c5a059;
 }
 .order-success-modal__detail-label {
   color: rgba(255, 255, 255, 0.55);
@@ -799,7 +799,7 @@
 }
 .order-success-modal__btn--submit:hover {
   background: rgba(255, 255, 255, 0.95);
-  color: #d4af37;
+  color: #c5a059;
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
@@ -877,8 +877,8 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -887,7 +887,7 @@
 .online-payment-modal__icon svg {
   width: 24px;
   height: 24px;
-  stroke: #d4af37;
+  stroke: #c5a059;
 }
 @media (max-width: 768px) {
   .online-payment-modal__icon {
@@ -913,7 +913,7 @@
   }
 }
 .online-payment-modal__amount {
-  color: #d4af37;
+  color: #c5a059;
   font-weight: 800;
 }
 .online-payment-modal__services {
@@ -958,7 +958,7 @@
 }
 .online-payment-modal__btn--submit:hover {
   background: rgba(255, 255, 255, 0.95);
-  color: #d4af37;
+  color: #c5a059;
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
@@ -998,13 +998,13 @@
   background: rgba(0, 0, 0, 0.5);
 }
 .online-payment-service-card.selected {
-  border-color: #d4af37;
-  background: rgba(212, 175, 55, 0.1);
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.18);
+  border-color: #c5a059;
+  background: rgba(197, 160, 89, 0.1);
+  box-shadow: 0 0 16px rgba(197, 160, 89, 0.18);
 }
 .online-payment-service-card.selected .online-payment-service-card__icon-wrap {
-  background: rgba(212, 175, 55, 0.2);
-  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(197, 160, 89, 0.2);
+  border-color: rgba(197, 160, 89, 0.4);
 }
 .online-payment-service-card__icon-wrap {
   width: 42px;
@@ -1059,9 +1059,9 @@
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 20px;
-  background: rgba(212, 175, 55, 0.15);
-  color: #f3cf7a;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.15);
+  color: #dfc288;
+  border: 1px solid rgba(197, 160, 89, 0.3);
   white-space: nowrap;
 }
 .online-payment-service-card__radio {
@@ -1082,28 +1082,28 @@
   transition: all 0.2s ease;
 }
 .online-radio-dot.active {
-  border-color: #d4af37;
-  background: rgba(212, 175, 55, 0.2);
+  border-color: #c5a059;
+  background: rgba(197, 160, 89, 0.2);
 }
 .online-radio-dot__inner {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #d4af37;
-  box-shadow: 0 0 6px rgba(212, 175, 55, 0.8);
+  background: #c5a059;
+  box-shadow: 0 0 6px rgba(197, 160, 89, 0.8);
 }
 
 @keyframes pulseDotAmber {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
+    box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.7);
   }
   70% {
     transform: scale(1.1);
-    box-shadow: 0 0 0 5px rgba(251, 191, 36, 0);
+    box-shadow: 0 0 0 5px rgba(197, 160, 89, 0);
   }
   100% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0);
+    box-shadow: 0 0 0 0 rgba(197, 160, 89, 0);
   }
 }

@@ -449,7 +449,7 @@
 				}
 			}, /* @__PURE__ */ __h("div", null, /* @__PURE__ */ __h("h1", { className: "admin-users__title" }, "Users"), /* @__PURE__ */ __h("p", { className: "admin-users__subtitle" }, "Manage registered accounts, view profiles, and edit balances"))), /* @__PURE__ */ __h("div", { className: "admin-users__stats" }, /* @__PURE__ */ __h(motion.div, {
 				className: "admin-users__stat-card",
-				style: { "--accent": "#d4af37" },
+				style: { "--accent": "#c5a059" },
 				custom: 0,
 				variants: fadeUp,
 				initial: "hidden",
@@ -477,7 +477,7 @@
 				strokeWidth: "2"
 			}, /* @__PURE__ */ __h("path", { d: "M22 11.08V12a10 10 0 1 1-5.93-9.14" }), /* @__PURE__ */ __h("polyline", { points: "22 4 12 14.01 9 11.01" }))), /* @__PURE__ */ __h("div", { className: "admin-users__stat-body" }, /* @__PURE__ */ __h("span", { className: "admin-users__stat-value" }, loading ? "..." : stats.active), /* @__PURE__ */ __h("span", { className: "admin-users__stat-label" }, "Active Accounts"), /* @__PURE__ */ __h("span", { className: "admin-users__stat-sub" }, "In good standing"))), /* @__PURE__ */ __h(motion.div, {
 				className: "admin-users__stat-card",
-				style: { "--accent": "#f43f5e" },
+				style: { "--accent": "#c5a059" },
 				custom: 2,
 				variants: fadeUp,
 				initial: "hidden",
@@ -498,7 +498,7 @@
 				y2: "19.07"
 			}))), /* @__PURE__ */ __h("div", { className: "admin-users__stat-body" }, /* @__PURE__ */ __h("span", { className: "admin-users__stat-value" }, loading ? "..." : stats.blocked), /* @__PURE__ */ __h("span", { className: "admin-users__stat-label" }, "Blocked Accounts"), /* @__PURE__ */ __h("span", { className: "admin-users__stat-sub" }, "Suspended access"))), /* @__PURE__ */ __h(motion.div, {
 				className: "admin-users__stat-card",
-				style: { "--accent": "#fb923c" },
+				style: { "--accent": "#c5a059" },
 				custom: 3,
 				variants: fadeUp,
 				initial: "hidden",

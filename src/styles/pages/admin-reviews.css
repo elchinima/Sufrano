@@ -22,7 +22,7 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 .admin-reviews__toast--error {
-  background: rgba(212, 175, 55, 0.95);
+  background: rgba(197, 160, 89, 0.95);
 }
 @media (max-width: 640px) {
   .admin-reviews__toast {
@@ -114,19 +114,19 @@
   justify-content: center;
   gap: 8px;
   padding: 9px 18px;
-  background: #d4af37;
+  background: #c5a059;
   border: none;
   border-radius: 6px;
   color: #fff;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 4px 14px rgba(197, 160, 89, 0.35);
   transition: all 0.2s ease;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 .admin-reviews__btn-primary:hover:not(:disabled) {
-  background: rgb(85.2607116921%, 72.5780682643%, 31.4451706609%);
+  background: #dfc288;
   transform: translateY(-1px);
 }
 .admin-reviews__btn-primary:disabled {
@@ -139,10 +139,10 @@
   justify-content: center;
   gap: 8px;
   padding: 9px 16px;
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.25);
   border-radius: 6px;
-  color: #e5c158;
+  color: #d4b475;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -150,8 +150,8 @@
   font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 .admin-reviews__btn-danger:hover:not(:disabled) {
-  background: rgba(212, 175, 55, 0.25);
-  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(197, 160, 89, 0.25);
+  border-color: rgba(197, 160, 89, 0.4);
 }
 .admin-reviews__btn-danger:disabled {
   opacity: 0.5;
@@ -244,7 +244,7 @@
   text-overflow: ellipsis;
 }
 .admin-reviews__stat-value.highlight {
-  color: #fbbf24;
+  color: #c5a059;
 }
 @media (max-width: 580px) {
   .admin-reviews__stat-value {
@@ -332,8 +332,8 @@
 .admin-reviews__search-wrap input:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(212, 175, 55, 0.5);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  border-color: rgba(197, 160, 89, 0.5);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
 }
 .admin-reviews__search-clear {
   position: absolute;
@@ -399,7 +399,7 @@
 }
 .admin-reviews__select-wrap select:focus {
   outline: none;
-  border-color: rgba(212, 175, 55, 0.5);
+  border-color: rgba(197, 160, 89, 0.5);
 }
 .admin-reviews .badge {
   display: inline-flex;
@@ -420,14 +420,14 @@
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 .admin-reviews .badge--warning {
-  background: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: rgba(197, 160, 89, 0.15);
+  color: #c5a059;
+  border: 1px solid rgba(197, 160, 89, 0.3);
 }
 .admin-reviews .badge--danger {
-  background: rgba(212, 175, 55, 0.15);
-  color: #e5c158;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.15);
+  color: #d4b475;
+  border: 1px solid rgba(197, 160, 89, 0.3);
 }
 .admin-reviews .badge--info {
   background: rgba(56, 189, 248, 0.15);
@@ -560,7 +560,7 @@
 .admin-reviews__rating-cell .rating-num {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #fbbf24;
+  color: #c5a059;
 }
 .admin-reviews__comment-preview {
   max-width: 240px;
@@ -633,9 +633,9 @@
   transform: translateY(-1px);
 }
 .admin-reviews__action-btn--delete:hover {
-  color: #e5c158;
-  background: rgba(212, 175, 55, 0.15);
-  border-color: rgba(212, 175, 55, 0.3);
+  color: #d4b475;
+  background: rgba(197, 160, 89, 0.15);
+  border-color: rgba(197, 160, 89, 0.3);
 }
 .admin-reviews__load-more {
   display: flex;
@@ -675,10 +675,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.25);
   border-radius: 6px;
-  color: #e5c158;
+  color: #d4b475;
   font-size: 0.85rem;
   margin-bottom: 24px;
   gap: 12px;
@@ -690,8 +690,8 @@
 }
 .admin-reviews__error-banner button {
   background: none;
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  color: #e5c158;
+  border: 1px solid rgba(197, 160, 89, 0.4);
+  color: #d4b475;
   padding: 4px 10px;
   border-radius: 4px;
   font-size: 0.78rem;
@@ -699,7 +699,7 @@
   white-space: nowrap;
 }
 .admin-reviews__error-banner button:hover {
-  background: rgba(212, 175, 55, 0.2);
+  background: rgba(197, 160, 89, 0.2);
 }
 .admin-reviews__modal-backdrop {
   position: fixed;
@@ -853,7 +853,7 @@
   color: #fff;
 }
 .admin-reviews__detail-box .val.highlight {
-  color: #fbbf24;
+  color: #c5a059;
 }
 .admin-reviews__detail-box .val.code-val {
   font-family: monospace;
@@ -932,9 +932,9 @@
   gap: 8px;
 }
 .admin-reviews__btn-danger {
-  background: rgba(212, 175, 55, 0.15);
-  color: #f3cf7a;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.15);
+  color: #dfc288;
+  border: 1px solid rgba(197, 160, 89, 0.3);
   padding: 8px 16px;
   border-radius: 6px;
   font-size: 0.85rem;
@@ -944,18 +944,18 @@
   font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 .admin-reviews__btn-danger:hover {
-  background: #d4af37;
+  background: #c5a059;
   color: #fff;
-  border-color: #d4af37;
+  border-color: #c5a059;
 }
 .admin-reviews__btn-danger--locked {
   opacity: 0.45;
   cursor: not-allowed;
 }
 .admin-reviews__btn-danger--locked:hover {
-  background: rgba(212, 175, 55, 0.15);
-  color: #f3cf7a;
-  border-color: rgba(212, 175, 55, 0.3);
+  background: rgba(197, 160, 89, 0.15);
+  color: #dfc288;
+  border-color: rgba(197, 160, 89, 0.3);
 }
 .admin-reviews__edit-form {
   display: flex;
@@ -1006,8 +1006,8 @@
 }
 .admin-reviews__edit-form .form-group select:focus,
 .admin-reviews__edit-form .form-group textarea:focus {
-  border-color: rgba(212, 175, 55, 0.6);
-  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+  border-color: rgba(197, 160, 89, 0.6);
+  box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.15);
 }
 .admin-reviews__edit-form .form-group select option,
 .admin-reviews__edit-form .form-group textarea option {

@@ -19,8 +19,8 @@
     </clipPath>
 
     <radialGradient id="homeImageGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.12" />
-      <stop offset="100%" stop-color="#d4af37" stop-opacity="0" />
+      <stop offset="0%" stop-color="#c5a059" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#c5a059" stop-opacity="0" />
     </radialGradient>
   </defs>
 
@@ -58,7 +58,7 @@
       <path d="M57 40 C67 40, 67 58, 55 60" 
             fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2.5" stroke-linecap="round" />
 
-      <ellipse cx="35" cy="35" rx="22" ry="5" fill="rgba(212, 175, 55, 0.15)" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5" />
+      <ellipse cx="35" cy="35" rx="22" ry="5" fill="rgba(197, 160, 89, 0.15)" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5" />
       <path d="M35 36 C33 33, 30 33, 30 35 C30 37, 35 40, 35 40 C35 40, 40 37, 40 35 C40 33, 37 33, 35 36 Z" 
             fill="rgba(255, 255, 255, 0.4)" />
 
