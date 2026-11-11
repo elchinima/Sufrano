@@ -255,5 +255,7 @@ export function NavLink({ to, className, end, children, ...rest }) {
         ? `${className || ''} active`.trim()
         : className || '';
 
-  return h(Link, { ...rest, to, className: resolvedClass }, ...(Array.isArray(children) ? children : [children]));
+  const resolvedChildren = typeof children === 'function' ? children({ isActive }) : children;
+
+  return h(Link, { ...rest, to, className: resolvedClass }, ...(Array.isArray(resolvedChildren) ? resolvedChildren : [resolvedChildren]));
 }

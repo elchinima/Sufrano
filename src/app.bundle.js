@@ -1003,11 +1003,12 @@
 		const normCurrent = loc.pathname === "/" ? "/" : loc.pathname.replace(/\/+$/, "");
 		const isActive = end ? normCurrent.toLowerCase() === normTarget.toLowerCase() : normCurrent.toLowerCase() === normTarget.toLowerCase() || normTarget !== "/" && normCurrent.toLowerCase().startsWith(`${normTarget.toLowerCase()}/`);
 		const resolvedClass = typeof className === "function" ? className({ isActive }) : isActive ? `${className || ""} active`.trim() : className || "";
+		const resolvedChildren = typeof children === "function" ? children({ isActive }) : children;
 		return h(Link, {
 			...rest,
 			to,
 			className: resolvedClass
-		}, ...Array.isArray(children) ? children : [children]);
+		}, ...Array.isArray(resolvedChildren) ? resolvedChildren : [resolvedChildren]);
 	}
 	var currentLocationState, routerListeners, virtualLocation, currentLocation;
 	var init_router = __esmMin((() => {
