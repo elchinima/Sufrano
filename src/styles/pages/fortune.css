@@ -1,0 +1,311 @@
+/* === components/UserPages/Fortune/Fortune.css === */
+.fortune-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #24050d;
+  color: #ffffff;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+.fortune-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.fortune-content-wrapper {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+  gap: 32px;
+  max-width: 700px;
+  width: 100%;
+}
+
+.fortune-hero-text {
+  text-align: center;
+}
+.fortune-hero-text h1 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  margin: 0 0 16px;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+.fortune-hero-text p {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: rgba(255, 248, 231, 0.82);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.fortune-wheel-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.fortune-wheel-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 430px;
+  margin-top: 56px;
+  filter: drop-shadow(0 6px 32px rgba(74, 14, 28, 0.5));
+}
+@media (min-width: 769px) {
+  .fortune-wheel-wrap {
+    max-width: min(52vh, 430px);
+  }
+}
+
+.fortune-pointer {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: 25px;
+  height: 31px;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+  pointer-events: none;
+}
+
+.fortune-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.fortune-spin-btn {
+  min-width: 220px;
+}
+.fortune-spin-btn--spinning {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.7;
+}
+.fortune-spin-btn--used {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+.fortune-spin-btn__inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fortune-spin-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: #24050d;
+  animation: fortuneSpinDot 0.7s linear infinite;
+}
+@keyframes fortuneSpinDot {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fortune-cooldown-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.fortune-note {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+  text-align: center;
+}
+
+.fortune-timer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+}
+.fortune-timer-badge .fortune-timer-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+.fortune-timer-badge .fortune-timer-value {
+  color: #fbbf24;
+  font-weight: 700;
+  font-family: monospace;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.fortune-prize-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.fortune-prize-modal {
+  background: rgba(36, 5, 13, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 64px 32px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+@media (max-width: 480px) {
+  .fortune-prize-modal {
+    padding: 32px 24px;
+  }
+}
+
+.prize-emoji {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+  display: block;
+  animation: prizeEmojiBounce 0.7s ease forwards;
+}
+@keyframes prizeEmojiBounce {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  65% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  85% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.prize-heading {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 0 0 8px;
+  color: #ffffff;
+}
+
+.prize-label {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #d4af37;
+  margin: 0 0 8px;
+}
+
+.prize-desc {
+  font-size: 1rem;
+  color: rgba(255, 248, 231, 0.82);
+  margin: 0 0 32px;
+  line-height: 1.55;
+}
+
+.prize-code-label {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 0 0 8px;
+}
+
+.prize-code {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-family: "Courier New", monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+  user-select: all;
+}
+
+.prize-close-btn {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .fortune-page .footer {
+    margin-top: 0;
+  }
+  .fortune-main {
+    min-height: 100dvh;
+    flex-shrink: 0;
+  }
+  .fortune-content-wrapper {
+    padding: 16px;
+    gap: 32px;
+  }
+  .fortune-hero-text h1 {
+    font-size: 1.36rem;
+    margin-bottom: 0;
+  }
+}
+@media (max-width: 768px) and (max-width: 480px) {
+  .fortune-hero-text h1 {
+    font-size: 1.24rem;
+  }
+}
+@media (max-width: 768px) {
+  .fortune-hero-text p {
+    display: none;
+  }
+  .fortune-wheel-wrap {
+    max-width: min(88vw, 360px);
+  }
+  .fortune-spin-btn {
+    min-width: 180px;
+    font-size: 0.88rem;
+  }
+  .prize-heading {
+    font-size: 1.4rem;
+  }
+  .prize-label {
+    font-size: 1.08rem;
+  }
+  .prize-desc {
+    font-size: 0.82rem;
+  }
+  .prize-code {
+    font-size: 0.96rem;
+    padding: 8px 16px;
+  }
+}

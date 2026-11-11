@@ -1,0 +1,366 @@
+/* === components/PublicPages/Catalog/Catalog.css === */
+.catalog-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #24050d;
+  color: #ffffff;
+}
+
+.catalog-main {
+  flex: 1;
+  padding: 128px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.catalog-hero {
+  text-align: center;
+  margin-bottom: 128px;
+}
+.catalog-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+.catalog-hero p {
+  color: rgba(255, 248, 231, 0.82);
+  font-size: 1.2rem;
+}
+
+.menu-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 128px;
+}
+
+.menu-category-section .category-title {
+  font-size: 2rem;
+  margin-bottom: 32px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  row-gap: 64px;
+  column-gap: 32px;
+}
+
+.catalog-skeleton-card {
+  width: 100%;
+  aspect-ratio: 350/500;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+}
+.catalog-skeleton-card .skeleton-svg-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: fill;
+}
+
+.catalog-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 24px;
+  position: relative;
+  transition: transform 0.3s ease, background 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.catalog-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: border-color 0.3s ease;
+  -webkit-mask-image: radial-gradient(circle at 50% 100%, transparent 28px, black 28.5px);
+  mask-image: radial-gradient(circle at 50% 100%, transparent 28px, black 28.5px);
+}
+@media (max-width: 768px) {
+  .catalog-card::after {
+    -webkit-mask-image: radial-gradient(circle at 50% 100%, transparent 32px, black 32.5px);
+    mask-image: radial-gradient(circle at 50% 100%, transparent 32px, black 32.5px);
+  }
+}
+@media (min-width: 769px) {
+  .catalog-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .catalog-card:hover::after {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+.catalog-card .card-image-container {
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  aspect-ratio: 1/1;
+  width: 100%;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+.catalog-card .card-image-container .item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.5s ease;
+}
+.catalog-card .card-image-container .item-image.loaded {
+  opacity: 1;
+}
+@media (min-width: 769px) {
+  .catalog-card .card-image-container:hover .item-image {
+    transform: scale(1.05);
+  }
+}
+.catalog-card .card-image-container .item-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.07) 50%, rgba(255, 255, 255, 0.02) 75%);
+  background-size: 200% 100%;
+  animation: catalogShimmer 1.8s infinite;
+}
+.catalog-card .card-image-container .item-image-placeholder .placeholder-icon {
+  font-size: 3.5rem;
+  opacity: 0.35;
+}
+@keyframes catalogShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+.catalog-card .add-to-cart-btn {
+  position: absolute;
+  bottom: -24px;
+  left: calc(50% - 24px);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+.catalog-card .add-to-cart-btn:hover {
+  transform: scale(1.15) translateY(-2px);
+}
+.catalog-card .add-to-cart-btn:active {
+  transform: scale(0.95);
+}
+.catalog-card .add-to-cart-btn img, .catalog-card .add-to-cart-btn object {
+  width: 37px;
+  height: 37px;
+  pointer-events: none;
+}
+@media (max-width: 768px) {
+  .catalog-card .add-to-cart-btn {
+    width: 54px;
+    height: 54px;
+    bottom: -27px;
+    left: calc(50% - 27px);
+  }
+  .catalog-card .add-to-cart-btn img, .catalog-card .add-to-cart-btn object {
+    width: 41px;
+    height: 41px;
+  }
+}
+.catalog-card .card-content {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.catalog-card .card-content .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  min-width: 0;
+  width: 100%;
+}
+.catalog-card .card-content .card-header h3, .catalog-card .card-content .card-header .item-name {
+  font-size: 1.3rem;
+  margin: 0;
+  font-weight: 700;
+  color: #ffffff;
+  flex: 1;
+  min-width: 0;
+}
+.catalog-card .card-content .card-header .item-price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.catalog-card .card-content .card-header .item-old-price-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.catalog-card .card-content .card-header .item-old-price-pill .discount-tag {
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.catalog-card .card-content .card-header .item-old-price-pill .old-price {
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: line-through;
+  text-decoration-color: #d4af37;
+  text-decoration-thickness: 1.5px;
+}
+.catalog-card .card-content .card-header .item-price {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.catalog-card .card-content .item-description {
+  color: rgba(255, 248, 231, 0.82);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.carousel-dots {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .catalog-hero h1 {
+    font-size: 1.76rem;
+  }
+  .catalog-hero p {
+    font-size: 0.88rem;
+  }
+  .catalog-main {
+    padding: 100px 16px 128px;
+  }
+  .menu-categories {
+    gap: 128px;
+  }
+  .menu-category-section .category-title {
+    font-size: 1.28rem;
+    margin-bottom: 16px;
+  }
+  .catalog-grid {
+    display: flex;
+    grid-template-columns: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding-bottom: 40px;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .catalog-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .catalog-card {
+    flex: 0 0 82vw;
+    max-width: 320px;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+  .catalog-card .card-content {
+    padding: 24px;
+  }
+  .catalog-card .card-content .card-header {
+    align-items: center;
+    gap: 8px;
+  }
+  .catalog-card .card-content .card-header h3, .catalog-card .card-content .card-header .item-name {
+    font-size: 0.95rem;
+  }
+  .catalog-card .card-content .card-header .item-price-container {
+    gap: 3px;
+  }
+  .catalog-card .card-content .card-header .item-old-price-pill {
+    font-size: 0.68rem;
+    padding: 2px 6px;
+    gap: 4px;
+  }
+  .catalog-card .card-content .card-header .item-price {
+    font-size: 0.88rem;
+    padding: 3px 8px;
+  }
+  .catalog-card .card-content .item-description {
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .carousel-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .carousel-dots .dot.active {
+    width: 24px;
+    border-radius: 12px;
+    background: #d4af37;
+  }
+}

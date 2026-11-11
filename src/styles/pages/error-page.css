@@ -1,0 +1,299 @@
+/* === components/PublicPages/ErrorPage/ErrorPage.css === */
+.error-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #24050d;
+  color: #ffffff;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.error-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 32px;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 768px) {
+  .error-main {
+    padding: 32px 16px;
+    margin-top: 60px;
+  }
+}
+
+.error-ambient-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(36, 5, 13, 0) 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.error-card {
+  position: relative;
+  z-index: 1;
+  max-width: 580px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 64px 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03), 0 24px 60px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-sizing: border-box;
+}
+@media (max-width: 600px) {
+  .error-card {
+    padding: 32px 24px;
+  }
+}
+
+.error-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+}
+@media (max-width: 768px) {
+  .error-badge {
+    font-size: 0.72rem;
+    padding: 4px 12px;
+  }
+}
+.error-badge--429, .error-badge--warning {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #fcd34d;
+}
+.error-badge--429 .error-badge__dot, .error-badge--warning .error-badge__dot {
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+}
+.error-badge--404, .error-badge--danger {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.35);
+  color: #f3cf7a;
+}
+.error-badge--404 .error-badge__dot, .error-badge--danger .error-badge__dot {
+  background: #d4af37;
+  box-shadow: 0 0 8px #d4af37;
+}
+.error-badge--500, .error-badge--server {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.35);
+  color: #d8b4fe;
+}
+.error-badge--500 .error-badge__dot, .error-badge--server .error-badge__dot {
+  background: #a855f7;
+  box-shadow: 0 0 8px #a855f7;
+}
+.error-badge--auth {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #93c5fd;
+}
+.error-badge--auth .error-badge__dot {
+  background: #3b82f6;
+  box-shadow: 0 0 8px #3b82f6;
+}
+.error-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.6;
+  }
+}
+.error-icon-wrapper {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle at top, rgba(212, 175, 55, 0.25) 0%, rgba(36, 5, 13, 0.8) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+.error-icon-wrapper svg {
+  width: 44px;
+  height: 44px;
+  color: #ffffff;
+}
+
+.error-code-title {
+  font-size: clamp(3.5rem, 8vw, 5rem);
+  font-weight: 900;
+  line-height: 1;
+  margin: 0 0 4px;
+  letter-spacing: -1.5px;
+  background: linear-gradient(135deg, #ffffff 40%, rgba(255, 255, 255, 0.4) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+@media (max-width: 768px) {
+  .error-code-title {
+    font-size: 2.8rem;
+  }
+}
+@media (max-width: 480px) {
+  .error-code-title {
+    font-size: 2.4rem;
+  }
+}
+
+.error-title {
+  font-size: clamp(1.4rem, 3vw, 1.85rem);
+  font-weight: 800;
+  margin: 0 0 8px;
+  color: #ffffff;
+}
+@media (max-width: 768px) {
+  .error-title {
+    font-size: 1.28rem;
+  }
+}
+@media (max-width: 480px) {
+  .error-title {
+    font-size: 1.15rem;
+  }
+}
+
+.error-description {
+  font-size: clamp(0.92rem, 2vw, 1.02rem);
+  color: rgba(255, 248, 231, 0.82);
+  line-height: 1.6;
+  margin: 0 0 32px;
+  max-width: 440px;
+}
+@media (max-width: 768px) {
+  .error-description {
+    font-size: 0.84rem;
+  }
+}
+@media (max-width: 480px) {
+  .error-description {
+    font-size: 0.78rem;
+  }
+}
+
+.error-countdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 340px;
+  margin-bottom: 32px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+.error-countdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+@media (max-width: 768px) {
+  .error-countdown-header {
+    font-size: 0.76rem;
+  }
+}
+.error-countdown-header .countdown-timer-value {
+  color: #fcd34d;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.error-countdown-bar-wrap {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.error-countdown-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #d4af37);
+  border-radius: 3px;
+  transition: width 1s linear;
+}
+
+.error-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.error-actions .cta-btn {
+  min-width: 160px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.error-actions .cta-btn.secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+.error-actions .cta-btn.secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.error-actions .cta-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+@media (max-width: 480px) {
+  .error-actions {
+    flex-direction: column;
+  }
+  .error-actions .cta-btn {
+    width: 100%;
+    font-size: 0.88rem;
+  }
+}
