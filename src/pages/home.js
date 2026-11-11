@@ -642,8 +642,25 @@
 				};
 			}, [apiUrl, lang]);
 			useEffect(() => {
+				const videoEl = videoRef.current;
+				if (!videoEl || !videoBlobSrc) return;
+				videoEl.muted = true;
+				videoEl.defaultMuted = true;
+				videoEl.playsInline = true;
+				let isIntersecting = true;
+				const tryPlay = () => {
+					if (isIntersecting && videoEl.paused) {
+						videoEl.play().catch((error) => {
+							console.log("Auto-play prevented", error);
+						});
+					}
+				};
+				tryPlay();
+				videoEl.addEventListener("loadeddata", tryPlay);
+				videoEl.addEventListener("canplay", tryPlay);
 				const observer = new IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
+						isIntersecting = entry.isIntersecting;
 						if (videoRef.current) {
 							if (entry.isIntersecting) {
 								videoRef.current.play().catch((error) => {
@@ -658,15 +675,14 @@
 					rootMargin: "600px 0px 600px 0px",
 					threshold: 0
 				});
-				if (videoRef.current) {
-					observer.observe(videoRef.current);
-				}
+				observer.observe(videoEl);
 				return () => {
-					if (videoRef.current) {
-						observer.unobserve(videoRef.current);
-					}
+					videoEl.removeEventListener("loadeddata", tryPlay);
+					videoEl.removeEventListener("canplay", tryPlay);
+					observer.unobserve(videoEl);
+					observer.disconnect();
 				};
-			}, []);
+			}, [videoBlobSrc]);
 			const handleSubscribeSubmit = async (e) => {
 				e.preventDefault();
 				if (!subscribeEmail.trim() || subscribeLoading) return;

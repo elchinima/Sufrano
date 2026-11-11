@@ -576,9 +576,30 @@ function updateDomProps(dom, oldProps, newProps, isSvg) {
       continue;
     }
 
-    if (!isSvg && (key === 'disabled' || key === 'readOnly' || key === 'required' || key === 'multiple' || key === 'selected' || key === 'autoFocus' || key === 'muted' || key === 'loop' || key === 'playsInline' || key === 'autoPlay' || key === 'controls')) {
-      dom[key] = Boolean(newVal);
-      if (!newVal) dom.removeAttribute(key.toLowerCase());
+    if (!isSvg && (key === 'disabled' || key === 'readOnly' || key === 'required' || key === 'multiple' || key === 'selected' || key === 'autoFocus' || key === 'muted' || key === 'loop' || key === 'playsInline' || key === 'playsinline' || key === 'autoPlay' || key === 'autoplay' || key === 'controls')) {
+      const boolVal = Boolean(newVal);
+      const lowerKey = key.toLowerCase();
+      if (lowerKey === 'autoplay') {
+        dom.autoplay = boolVal;
+      } else if (lowerKey === 'muted') {
+        dom.muted = boolVal;
+        dom.defaultMuted = boolVal;
+      } else if (lowerKey === 'playsinline') {
+        dom.playsInline = boolVal;
+      } else {
+        dom[key] = boolVal;
+      }
+      if (boolVal) {
+        dom.setAttribute(lowerKey, '');
+        if (lowerKey === 'playsinline') {
+          dom.setAttribute('webkit-playsinline', '');
+        }
+      } else {
+        dom.removeAttribute(lowerKey);
+        if (lowerKey === 'playsinline') {
+          dom.removeAttribute('webkit-playsinline');
+        }
+      }
       continue;
     }
 
@@ -589,13 +610,17 @@ function updateDomProps(dom, oldProps, newProps, isSvg) {
       dom.setAttribute(attrName, '');
     } else if (typeof newVal !== 'function' && typeof newVal !== 'object') {
       let strAttr = String(newVal);
-      if (
-        (attrName === 'src' || attrName === 'href' || attrName === 'data') &&
-        strAttr.startsWith('/assets/') &&
-        typeof window !== 'undefined' &&
-        window.__SUFRANO_BASE__
-      ) {
-        strAttr = window.__SUFRANO_BASE__ + strAttr;
+      if (attrName === 'src' || attrName === 'href' || attrName === 'data') {
+        if (
+          strAttr.startsWith('/assets/') &&
+          typeof window !== 'undefined' &&
+          window.__SUFRANO_BASE__
+        ) {
+          strAttr = window.__SUFRANO_BASE__ + strAttr;
+        }
+        if (strAttr.includes('/assets/icons/') && strAttr.endsWith('.svg')) {
+          strAttr += '?v=2';
+        }
       }
       dom.setAttribute(attrName, strAttr);
     }

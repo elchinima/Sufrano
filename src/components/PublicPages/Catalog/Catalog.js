@@ -97,15 +97,75 @@ const CategorySection = ({ categoryObj, index, onAddItem, addedAnimations, loade
 			onClick: () => onAddItem(item.id),
 			"aria-label": getCatalogTranslation(lang, "catalog_add_btn"),
 			"data-id": "catalog_add_btn"
-		}, addedAnimations[item.id] ? /* @__PURE__ */ __h("object", {
-			type: "image/svg+xml",
-			data: successIcon,
+		}, addedAnimations[item.id] ? /* @__PURE__ */ __h("svg", {
+			key: "success",
+			width: "48",
+			height: "48",
+			viewBox: "0 0 48 48",
+			fill: "none",
+			xmlns: "http://www.w3.org/2000/svg",
 			"aria-label": getCatalogTranslation(lang, "catalog_added_label"),
-			"data-id": "catalog_added_label"
-		}) : /* @__PURE__ */ __h("img", {
-			src: addIcon,
-			alt: getCatalogTranslation(lang, "catalog_add_btn")
-		})));
+			"data-id": "catalog_added_label",
+			__onMount: (el) => {
+				try {
+					el.querySelectorAll("animate").forEach((a) => {
+						if (typeof a.beginElement === "function") a.beginElement();
+					});
+				} catch {}
+			}
+		}, /* @__PURE__ */ __h("circle", {
+			cx: "24",
+			cy: "24",
+			r: "18",
+			stroke: "#ffffff",
+			strokeWidth: "3",
+			strokeLinecap: "round",
+			strokeLinejoin: "round"
+		}), /* @__PURE__ */ __h("path", {
+			d: "M 15.5 25 L 21.5 32.5",
+			stroke: "#c5a059",
+			strokeWidth: "3",
+			strokeLinecap: "round"
+		}, /* @__PURE__ */ __h("animate", {
+			attributeName: "d",
+			values: "M 15.5 24 L 32.5 24; M 15.5 25 L 21.5 32.5",
+			begin: "0.05s",
+			dur: "0.35s",
+			fill: "freeze"
+		})), /* @__PURE__ */ __h("path", {
+			d: "M 31.4 17.2 L 21.5 32.5",
+			stroke: "#c5a059",
+			strokeWidth: "3",
+			strokeLinecap: "round"
+		}, /* @__PURE__ */ __h("animate", {
+			attributeName: "d",
+			values: "M 24 15.5 L 24 32.5; M 31.4 17.2 L 21.5 32.5",
+			begin: "0.05s",
+			dur: "0.35s",
+			fill: "freeze"
+		}))) : /* @__PURE__ */ __h("svg", {
+			key: "add",
+			width: "48",
+			height: "48",
+			viewBox: "0 0 48 48",
+			fill: "none",
+			xmlns: "http://www.w3.org/2000/svg",
+			"aria-label": getCatalogTranslation(lang, "catalog_add_btn")
+		}, /* @__PURE__ */ __h("circle", {
+			cx: "24",
+			cy: "24",
+			r: "18",
+			stroke: "#ffffff",
+			strokeWidth: "3",
+			strokeLinecap: "round",
+			strokeLinejoin: "round"
+		}), /* @__PURE__ */ __h("path", {
+			d: "M24 15.5V32.5M15.5 24H32.5",
+			stroke: "#c5a059",
+			strokeWidth: "3",
+			strokeLinecap: "round",
+			strokeLinejoin: "round"
+		}))));
 	})), categoryObj.items.length > 1 && /* @__PURE__ */ __h("div", { className: "carousel-dots" }, categoryObj.items.map((_, i) => /* @__PURE__ */ __h("button", {
 		key: i,
 		className: `dot ${i === activeIndex ? "active" : ""}`,

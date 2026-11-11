@@ -1,7 +1,7 @@
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="background: transparent; color-scheme: dark;" xmlns="http://www.w3.org/2000/svg">
   <g>
-    <circle cx="24" cy="24" r="18" stroke="#c5a059" stroke-opacity="0.7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 15.5 24 L 32.5 24" stroke="#dfc288" stroke-width="3" stroke-linecap="round">
+    <circle cx="24" cy="24" r="18" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 15.5 24 L 32.5 24" stroke="#c5a059" stroke-width="3" stroke-linecap="round">
       <animate attributeName="d" 
                values="M 15.5 24 L 32.5 24; M 15.5 25 L 21.5 32.5" 
                begin="0.1s"
@@ -9,7 +9,7 @@
                fill="freeze" />
     </path>
     
-    <path d="M 24 15.5 L 24 32.5" stroke="#dfc288" stroke-width="3" stroke-linecap="round">
+    <path d="M 24 15.5 L 24 32.5" stroke="#c5a059" stroke-width="3" stroke-linecap="round">
       <animate attributeName="d" 
                values="M 24 15.5 L 24 32.5; M 31.4 17.2 L 21.5 32.5" 
                begin="0.1s"

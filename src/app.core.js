@@ -601,9 +601,30 @@
 		      continue;
 		    }
 
-		    if (!isSvg && (key === 'disabled' || key === 'readOnly' || key === 'required' || key === 'multiple' || key === 'selected' || key === 'autoFocus' || key === 'muted' || key === 'loop' || key === 'playsInline' || key === 'autoPlay' || key === 'controls')) {
-		      dom[key] = Boolean(newVal);
-		      if (!newVal) dom.removeAttribute(key.toLowerCase());
+		    if (!isSvg && (key === 'disabled' || key === 'readOnly' || key === 'required' || key === 'multiple' || key === 'selected' || key === 'autoFocus' || key === 'muted' || key === 'loop' || key === 'playsInline' || key === 'playsinline' || key === 'autoPlay' || key === 'autoplay' || key === 'controls')) {
+		      const boolVal = Boolean(newVal);
+		      const lowerKey = key.toLowerCase();
+		      if (lowerKey === 'autoplay') {
+		        dom.autoplay = boolVal;
+		      } else if (lowerKey === 'muted') {
+		        dom.muted = boolVal;
+		        dom.defaultMuted = boolVal;
+		      } else if (lowerKey === 'playsinline') {
+		        dom.playsInline = boolVal;
+		      } else {
+		        dom[key] = boolVal;
+		      }
+		      if (boolVal) {
+		        dom.setAttribute(lowerKey, '');
+		        if (lowerKey === 'playsinline') {
+		          dom.setAttribute('webkit-playsinline', '');
+		        }
+		      } else {
+		        dom.removeAttribute(lowerKey);
+		        if (lowerKey === 'playsinline') {
+		          dom.removeAttribute('webkit-playsinline');
+		        }
+		      }
 		      continue;
 		    }
 
@@ -614,13 +635,17 @@
 		      dom.setAttribute(attrName, '');
 		    } else if (typeof newVal !== 'function' && typeof newVal !== 'object') {
 		      let strAttr = String(newVal);
-		      if (
-		        (attrName === 'src' || attrName === 'href' || attrName === 'data') &&
-		        strAttr.startsWith('/assets/') &&
-		        typeof window !== 'undefined' &&
-		        window.__SUFRANO_BASE__
-		      ) {
-		        strAttr = window.__SUFRANO_BASE__ + strAttr;
+		      if (attrName === 'src' || attrName === 'href' || attrName === 'data') {
+		        if (
+		          strAttr.startsWith('/assets/') &&
+		          typeof window !== 'undefined' &&
+		          window.__SUFRANO_BASE__
+		        ) {
+		          strAttr = window.__SUFRANO_BASE__ + strAttr;
+		        }
+		        if (strAttr.includes('/assets/icons/') && strAttr.endsWith('.svg')) {
+		          strAttr += '?v=2';
+		        }
 		      }
 		      dom.setAttribute(attrName, strAttr);
 		    }
@@ -1576,7 +1601,7 @@
 
 		    if (!existing) {
 		      link.rel = 'stylesheet';
-		      link.href = `styles/pages/${pageName}.css`;
+		      link.href = `styles/pages/${pageName}.css?v=2`;
 		      link.setAttribute('data-sufrano-page-css', pageName);
 		      document.head.appendChild(link);
 		    } else if (existing.sheet) {
@@ -1621,7 +1646,7 @@
 		    script.addEventListener('error', handleError, { once: true });
 
 		    if (!existing) {
-		      script.src = `pages/${pageName}.js`;
+		      script.src = `pages/${pageName}.js?v=2`;
 		      script.async = true;
 		      script.setAttribute('data-sufrano-page-js', pageName);
 		      document.head.appendChild(script);

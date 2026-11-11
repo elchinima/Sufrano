@@ -182,10 +182,13 @@
 .catalog-card .add-to-cart-btn:active {
   transform: scale(0.95);
 }
-.catalog-card .add-to-cart-btn img, .catalog-card .add-to-cart-btn object {
+.catalog-card .add-to-cart-btn img,
+.catalog-card .add-to-cart-btn object,
+.catalog-card .add-to-cart-btn svg {
   width: 37px;
   height: 37px;
   pointer-events: none;
+  background: transparent;
 }
 @media (max-width: 768px) {
   .catalog-card .add-to-cart-btn {
@@ -194,7 +197,9 @@
     bottom: -27px;
     left: calc(50% - 27px);
   }
-  .catalog-card .add-to-cart-btn img, .catalog-card .add-to-cart-btn object {
+  .catalog-card .add-to-cart-btn img,
+  .catalog-card .add-to-cart-btn object,
+  .catalog-card .add-to-cart-btn svg {
     width: 41px;
     height: 41px;
   }
