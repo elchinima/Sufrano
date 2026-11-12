@@ -12,6 +12,7 @@ const loaderIcon = "/assets/icons/loader-animated.svg";
 const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 import { useLang } from "../../../utils/useLang.js";
 import { getProfileTranslation } from "./Lang.js";
+import { DEFAULT_USER_AVATAR, getUserAvatarUrl, handleAvatarError, isDefaultAvatarUrl } from "../../../utils/avatar.js";
 const ALLOWED_TYPES = [
 	"image/png",
 	"image/jpeg",
@@ -38,7 +39,21 @@ const Profile = () => {
 	const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
 	const fileInputRef = useRef(null);
 	const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
-	const avatarUrl = user?.profilePictureUrl || user?.ProfilePictureUrl || null;
+	const rawAvatarUrl = user?.profilePictureUrl || user?.ProfilePictureUrl || null;
+	const hasCustomAvatar = !isDefaultAvatarUrl(rawAvatarUrl);
+	const avatarUrl = getUserAvatarUrl(rawAvatarUrl);
+	const renderChangeAvatarBtn = (extraClass) => /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: `cta-btn sm profile-btn ${extraClass}`,
+		onClick: () => fileInputRef.current?.click(),
+		disabled: avatarUploading || avatarDeleting
+	}, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2",
+		className: "btn-icon"
+	}, /* @__PURE__ */ __h("path", { d: "M12 20h9" }), /* @__PURE__ */ __h("path", { d: "M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" })), t("profile_avatar_change"));
 	const userName = user?.name || user?.Name || "User";
 	const userEmail = user?.email || user?.Email || "user@sufrano.com";
 	const showSuccess = (msg) => {
@@ -90,7 +105,7 @@ const Profile = () => {
 					profilePictureUrl: data.profilePictureUrl,
 					ProfilePictureUrl: data.profilePictureUrl
 				});
-				showSuccess("Profile photo updated successfully.");
+				showSuccess(t("profile_toast_avatar_updated"));
 				setIsCropModalOpen(false);
 				setCropperImageSrc("");
 			} else {
@@ -104,6 +119,7 @@ const Profile = () => {
 		}
 	};
 	const handleConfirmDeleteAvatar = async () => {
+		if (!hasCustomAvatar) return;
 		setAvatarDeleting(true);
 		setError("");
 		try {
@@ -112,11 +128,13 @@ const Profile = () => {
 				credentials: "include"
 			});
 			if (res.ok) {
+				const data = await res.json().catch(() => ({}));
+				const nextAvatarUrl = data.profilePictureUrl || DEFAULT_USER_AVATAR;
 				updateUser({
-					profilePictureUrl: null,
-					ProfilePictureUrl: null
+					profilePictureUrl: nextAvatarUrl,
+					ProfilePictureUrl: nextAvatarUrl
 				});
-				showSuccess("Profile photo removed.");
+				showSuccess(t("profile_toast_avatar_deleted"));
 				setIsDeleteAvatarModalOpen(false);
 			} else {
 				const data = await res.json().catch(() => ({}));
@@ -207,11 +225,12 @@ const Profile = () => {
 				1
 			]
 		}
-	}, /* @__PURE__ */ __h("div", { className: "profile-card__avatar-section" }, /* @__PURE__ */ __h("div", { className: "profile-avatar-wrapper" }, /* @__PURE__ */ __h("div", { className: `profile-avatar-circle ${avatarUploading ? "loading" : ""}` }, avatarUrl ? /* @__PURE__ */ __h("img", {
+	}, /* @__PURE__ */ __h("div", { className: "profile-card__avatar-section" }, /* @__PURE__ */ __h("div", { className: "profile-avatar-wrapper" }, /* @__PURE__ */ __h("div", { className: `profile-avatar-circle ${avatarUploading ? "loading" : ""}` }, /* @__PURE__ */ __h("img", {
 		src: avatarUrl,
 		alt: userName,
-		className: "profile-avatar-img"
-	}) : /* @__PURE__ */ __h("div", { className: "profile-avatar-placeholder" }, userName ? userName.charAt(0).toUpperCase() : "U"), avatarUploading && /* @__PURE__ */ __h("div", { className: "profile-avatar-overlay" }, /* @__PURE__ */ __h("img", {
+		className: "profile-avatar-img",
+		onError: handleAvatarError
+	}), avatarUploading && /* @__PURE__ */ __h("div", { className: "profile-avatar-overlay" }, /* @__PURE__ */ __h("img", {
 		src: loaderIcon,
 		alt: "Uploading",
 		className: "profile-avatar-loader"
@@ -221,39 +240,7 @@ const Profile = () => {
 		accept: ".png,.jpg,.jpeg,image/png,image/jpeg",
 		onChange: handleFileSelect,
 		style: { display: "none" }
-	}), /* @__PURE__ */ __h("div", { className: "profile-avatar-actions" }, !avatarUrl ? /* @__PURE__ */ __h("button", {
-		type: "button",
-		className: "cta-btn sm profile-btn profile-btn--add",
-		onClick: () => fileInputRef.current?.click(),
-		disabled: avatarUploading
-	}, /* @__PURE__ */ __h("svg", {
-		viewBox: "0 0 24 24",
-		fill: "none",
-		stroke: "currentColor",
-		strokeWidth: "2",
-		className: "btn-icon"
-	}, /* @__PURE__ */ __h("line", {
-		x1: "12",
-		y1: "5",
-		x2: "12",
-		y2: "19"
-	}), /* @__PURE__ */ __h("line", {
-		x1: "5",
-		y1: "12",
-		x2: "19",
-		y2: "12"
-	})), t("profile_avatar_add")) : /* @__PURE__ */ __h("div", { className: "profile-avatar-btn-group" }, /* @__PURE__ */ __h("button", {
-		type: "button",
-		className: "cta-btn sm profile-btn profile-btn--change",
-		onClick: () => fileInputRef.current?.click(),
-		disabled: avatarUploading || avatarDeleting
-	}, /* @__PURE__ */ __h("svg", {
-		viewBox: "0 0 24 24",
-		fill: "none",
-		stroke: "currentColor",
-		strokeWidth: "2",
-		className: "btn-icon"
-	}, /* @__PURE__ */ __h("path", { d: "M12 20h9" }), /* @__PURE__ */ __h("path", { d: "M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" })), t("profile_avatar_change")), /* @__PURE__ */ __h("button", {
+	}), /* @__PURE__ */ __h("div", { className: "profile-avatar-actions" }, !hasCustomAvatar ? renderChangeAvatarBtn("profile-btn--add") : /* @__PURE__ */ __h("div", { className: "profile-avatar-btn-group" }, renderChangeAvatarBtn("profile-btn--change"), /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "cta-btn sm profile-btn profile-btn--delete",
 		onClick: () => setIsDeleteAvatarModalOpen(true),
@@ -381,7 +368,7 @@ const Profile = () => {
 		className: "cta-btn sm profile-modal__btn",
 		onClick: () => setIsOrdersModalOpen(false)
 	}, t("profile_modal_got_it"))))), /* @__PURE__ */ __h(AnimatedModalWrapper, {
-		isOpen: isDeleteAvatarModalOpen,
+		isOpen: hasCustomAvatar && isDeleteAvatarModalOpen,
 		onClose: () => !avatarDeleting && setIsDeleteAvatarModalOpen(false),
 		targetBorderRadius: "24px"
 	}, /* @__PURE__ */ __h("div", { className: "profile-modal" }, /* @__PURE__ */ __h("div", { className: "profile-modal__icon profile-modal__icon--danger" }, /* @__PURE__ */ __h("svg", {

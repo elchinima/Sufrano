@@ -142,7 +142,7 @@ public class CashboxController : ControllerBase
         }
 
         var cashierName = !string.IsNullOrWhiteSpace(cashierUser.Name) ? cashierUser.Name : (cashierUser.Email ?? "Cashier");
-        var cashierAvatar = cashierUser.ProfilePictureUrl;
+        var cashierAvatar = AvatarHelper.Resolve(cashierUser.ProfilePictureUrl);
 
         return Ok(new
         {
@@ -213,7 +213,7 @@ public class CashboxController : ControllerBase
                 isClaimed = !isUnclaimed,
                 userName = ownerName,
                 userEmail = isUnclaimed ? null : p.User?.Email,
-                userAvatar = isUnclaimed ? null : p.User?.ProfilePictureUrl
+                userAvatar = isUnclaimed ? null : AvatarHelper.Resolve(p.User?.ProfilePictureUrl)
             };
         }).ToList();
 
@@ -498,10 +498,10 @@ public class CashboxController : ControllerBase
                 note = c.Description?.Note,
                 cashierId = creatorId,
                 cashierName = cashierName,
-                cashierAvatar = creatorUser?.ProfilePictureUrl,
+                cashierAvatar = creatorUser != null ? AvatarHelper.Resolve(creatorUser.ProfilePictureUrl) : null,
                 cashierEmail = creatorUser?.Email,
                 editedBy = editorName,
-                editorAvatar = editorUser?.ProfilePictureUrl,
+                editorAvatar = editorUser != null ? AvatarHelper.Resolve(editorUser.ProfilePictureUrl) : null,
                 editorEmail = editorUser?.Email,
                 editedAt = c.Description?.Edited?.Date,
                 createdAt = c.CreatedAt,
@@ -615,7 +615,7 @@ public class CashboxController : ControllerBase
                 status = cashboxRecord.Status.ToString(),
                 note = newNote,
                 editedBy = editorName,
-                editorAvatar = cashierUser.ProfilePictureUrl,
+                editorAvatar = AvatarHelper.Resolve(cashierUser.ProfilePictureUrl),
                 editorEmail = cashierUser.Email,
                 editedAt = editDate
             }

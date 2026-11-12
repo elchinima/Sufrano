@@ -8,6 +8,7 @@ import { getWidgetTranslation } from "./Lang.js";
 import LogoutModal from "./LogoutModal.js";
 const loaderIcon = "/assets/icons/loader-animated.svg";
 import { isAllowedCashboxRole } from "../../routes/CashboxProtectedRoute.js";
+import { getUserAvatarUrl, handleAvatarError } from "../../utils/avatar.js";
 const UserNavPills = ({ onMenuClose }) => {
 	const { user, authLoading, logout, isAuthenticated } = useAuth();
 	const { isProfileUnlocked, requireProfileAccess, lockProfile } = useProfileSecurity();
@@ -63,7 +64,7 @@ const UserNavPills = ({ onMenuClose }) => {
 			onClick: () => onMenuClose && onMenuClose()
 		}, t("user_nav_login"));
 	}
-	const avatarUrl = user?.profilePictureUrl || user?.ProfilePictureUrl || null;
+	const avatarUrl = getUserAvatarUrl(user?.profilePictureUrl || user?.ProfilePictureUrl);
 	const userName = user?.name || user?.Name || "User";
 	const rawBalance = user?.balance ?? user?.Balance ?? 0;
 	const formattedBalance = Number(rawBalance || 0).toFixed(2);
@@ -85,11 +86,12 @@ const UserNavPills = ({ onMenuClose }) => {
 	}, /* @__PURE__ */ __h("div", {
 		className: "user-nav-capsule__avatar",
 		title: `Profile - ${userName}`
-	}, avatarUrl ? /* @__PURE__ */ __h("img", {
+	}, /* @__PURE__ */ __h("img", {
 		src: avatarUrl,
 		alt: userName,
-		className: "user-nav-capsule__avatar-img"
-	}) : /* @__PURE__ */ __h("span", { className: "user-nav-capsule__avatar-fallback" }, userName ? userName.charAt(0).toUpperCase() : "U")), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__info-row" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__name" }, userName), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__divider" }), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-amount" }, formattedBalance), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-symbol" }, "₼")), /* @__PURE__ */ __h("svg", {
+		className: "user-nav-capsule__avatar-img",
+		onError: handleAvatarError
+	})), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__info-row" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__name" }, userName), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__divider" }), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-amount" }, formattedBalance), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-symbol" }, "₼")), /* @__PURE__ */ __h("svg", {
 		className: `user-nav-capsule__chevron ${isUserMenuOpen ? "open" : ""}`,
 		viewBox: "0 0 24 24",
 		width: "14",

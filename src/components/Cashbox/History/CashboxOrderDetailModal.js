@@ -1,6 +1,7 @@
 import { __h, __Fragment } from '../../../utils/runtime.js';
 import React, { useState, useEffect } from "../../../utils/runtime.js";
 import { motion, AnimatePresence } from "../../../utils/motion.js";
+import { getUserAvatarUrl, handleAvatarError } from "../../../utils/avatar.js";
 const CashboxOrderDetailModal = ({ order, isOpen, onClose, onUpdateOrder, t, canEdit = true }) => {
 	const [activeTab, setActiveTab] = useState("info");
 	const [selectedStatus, setSelectedStatus] = useState(order?.status || "Success");
@@ -157,11 +158,12 @@ const CashboxOrderDetailModal = ({ order, isOpen, onClose, onUpdateOrder, t, can
 		exit: { opacity: 0 },
 		transition: { duration: .15 },
 		className: "cb-tab-pane"
-	}, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-grid" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-top" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.status || "Status"), /* @__PURE__ */ __h("div", { className: "cb-detail-status-inline" }, getStatusBadge(order.status))), /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.payment || "Payment"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val" }, order.payMethod === "Card" ? t?.history?.card || "Card" : t?.history?.cash || "Cash")), /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item cb-detail-meta-item--date" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.date || "Date"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val" }, formattedDate)), order.promoCode && /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.promoCodeLabel || "Promo Code"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val cb-detail-promo-tag" }, order.promoCode))), /* @__PURE__ */ __h("div", { className: "cb-detail-users-row" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.createdBy || t?.history?.cashier || "Cashier"), /* @__PURE__ */ __h("div", { className: "cb-detail-user-pill" }, order.cashierAvatar ? /* @__PURE__ */ __h("img", {
-		src: order.cashierAvatar,
+	}, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-grid" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-top" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.status || "Status"), /* @__PURE__ */ __h("div", { className: "cb-detail-status-inline" }, getStatusBadge(order.status))), /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.payment || "Payment"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val" }, order.payMethod === "Card" ? t?.history?.card || "Card" : t?.history?.cash || "Cash")), /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item cb-detail-meta-item--date" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.date || "Date"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val" }, formattedDate)), order.promoCode && /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.promoCodeLabel || "Promo Code"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val cb-detail-promo-tag" }, order.promoCode))), /* @__PURE__ */ __h("div", { className: "cb-detail-users-row" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.createdBy || t?.history?.cashier || "Cashier"), /* @__PURE__ */ __h("div", { className: "cb-detail-user-pill" }, /* @__PURE__ */ __h("img", {
+		src: getUserAvatarUrl(order.cashierAvatar),
 		alt: order.cashierName || "Cashier",
-		className: "cb-detail-user-avatar"
-	}) : /* @__PURE__ */ __h("span", { className: "cb-detail-user-avatar-fallback" }, (order.cashierName || "C")[0]?.toUpperCase()), /* @__PURE__ */ __h("div", { className: "cb-detail-user-info" }, /* @__PURE__ */ __h("span", { className: "cb-detail-user-name" }, order.cashierName || "—"), order.userId && /* @__PURE__ */ __h("button", {
+		className: "cb-detail-user-avatar",
+		onError: handleAvatarError
+	}), /* @__PURE__ */ __h("div", { className: "cb-detail-user-info" }, /* @__PURE__ */ __h("span", { className: "cb-detail-user-name" }, order.cashierName || "—"), order.userId && /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "cb-detail-user-id-btn",
 		onClick: (e) => handleCopyUserId(e, order.userId),
@@ -182,11 +184,12 @@ const CashboxOrderDetailModal = ({ order, isOpen, onClose, onUpdateOrder, t, can
 		height: "13",
 		rx: "2",
 		ry: "2"
-	}), /* @__PURE__ */ __h("path", { d: "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" })), copiedUserId && /* @__PURE__ */ __h("span", { className: "cb-detail-copied-badge" }, "Copied"))))), order.editedBy && /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.editedBy || "Edited by"), /* @__PURE__ */ __h("div", { className: "cb-detail-user-pill" }, order.editorAvatar ? /* @__PURE__ */ __h("img", {
-		src: order.editorAvatar,
+	}), /* @__PURE__ */ __h("path", { d: "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" })), copiedUserId && /* @__PURE__ */ __h("span", { className: "cb-detail-copied-badge" }, "Copied"))))), order.editedBy && /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.editedBy || "Edited by"), /* @__PURE__ */ __h("div", { className: "cb-detail-user-pill" }, /* @__PURE__ */ __h("img", {
+		src: getUserAvatarUrl(order.editorAvatar),
 		alt: order.editedBy,
-		className: "cb-detail-user-avatar"
-	}) : /* @__PURE__ */ __h("span", { className: "cb-detail-user-avatar-fallback cb-detail-user-avatar-fallback--editor" }, (order.editedBy || "E")[0]?.toUpperCase()), /* @__PURE__ */ __h("div", { className: "cb-detail-user-info" }, /* @__PURE__ */ __h("span", { className: "cb-detail-user-name" }, order.editedBy), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-user-sub" }, new Date(order.editedAt).toLocaleString(undefined, {
+		className: "cb-detail-user-avatar",
+		onError: handleAvatarError
+	}), /* @__PURE__ */ __h("div", { className: "cb-detail-user-info" }, /* @__PURE__ */ __h("span", { className: "cb-detail-user-name" }, order.editedBy), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-user-sub" }, new Date(order.editedAt).toLocaleString(undefined, {
 		month: "short",
 		day: "numeric",
 		hour: "2-digit",
@@ -264,11 +267,12 @@ const CashboxOrderDetailModal = ({ order, isOpen, onClose, onUpdateOrder, t, can
 		placeholder: t?.history?.addNote || "Add optional note...",
 		value: note,
 		onChange: (e) => setNote(e.target.value)
-	}))), order.editedBy && /* @__PURE__ */ __h("div", { className: "cb-detail-edited-info" }, /* @__PURE__ */ __h("div", { className: "cb-detail-edited-avatar-wrap" }, order.editorAvatar ? /* @__PURE__ */ __h("img", {
-		src: order.editorAvatar,
+	}))), order.editedBy && /* @__PURE__ */ __h("div", { className: "cb-detail-edited-info" }, /* @__PURE__ */ __h("div", { className: "cb-detail-edited-avatar-wrap" }, /* @__PURE__ */ __h("img", {
+		src: getUserAvatarUrl(order.editorAvatar),
 		alt: order.editedBy,
-		className: "cb-detail-edited-mini-avatar"
-	}) : /* @__PURE__ */ __h("span", { className: "cb-detail-edited-mini-fallback" }, (order.editedBy || "E")[0]?.toUpperCase())), /* @__PURE__ */ __h("div", { className: "cb-detail-edited-text" }, /* @__PURE__ */ __h("span", null, t?.history?.editedBy || "Edited by:", " ", /* @__PURE__ */ __h("strong", null, order.editedBy)), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-edited-date" }, " ", "(", new Date(order.editedAt).toLocaleString(), ")"))), updateError && /* @__PURE__ */ __h("div", { className: "cb-detail-error" }, updateError)))), /* @__PURE__ */ __h("div", { className: "cb-detail-footer" }, /* @__PURE__ */ __h("button", {
+		className: "cb-detail-edited-mini-avatar",
+		onError: handleAvatarError
+	})), /* @__PURE__ */ __h("div", { className: "cb-detail-edited-text" }, /* @__PURE__ */ __h("span", null, t?.history?.editedBy || "Edited by:", " ", /* @__PURE__ */ __h("strong", null, order.editedBy)), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-edited-date" }, " ", "(", new Date(order.editedAt).toLocaleString(), ")"))), updateError && /* @__PURE__ */ __h("div", { className: "cb-detail-error" }, updateError)))), /* @__PURE__ */ __h("div", { className: "cb-detail-footer" }, /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "cb-detail-cancel-btn",
 		onClick: onClose

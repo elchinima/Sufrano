@@ -3,6 +3,7 @@ import React from "../../../utils/runtime.js";
 import { useNavigate } from "../../../utils/router.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import { isAllowedCashboxHistoryRole } from "../../../routes/CashboxProtectedRoute.js";
+import { getUserAvatarUrl, handleAvatarError } from "../../../utils/avatar.js";
 const logo = "/assets/icons/rednest_logo.png";
 const CashboxTopBar = ({ cashierName, cashierAvatar, searchQuery, setSearchQuery, searchPlaceholder, t, isHistory = false }) => {
 	const navigate = useNavigate();
@@ -86,18 +87,11 @@ const CashboxTopBar = ({ cashierName, cashierAvatar, searchQuery, setSearchQuery
 		cx: "12",
 		cy: "12",
 		r: "10"
-	}), /* @__PURE__ */ __h("polyline", { points: "12 6 12 12 16 14" })), /* @__PURE__ */ __h("span", { className: "cashbox-topbar__history-text" }, t?.history?.historyButton || "History")), /* @__PURE__ */ __h("div", { className: "cashbox-topbar__chip" }, /* @__PURE__ */ __h("div", { className: "cashbox-topbar__avatar" }, cashierAvatar ? /* @__PURE__ */ __h("img", {
-		src: cashierAvatar,
+	}), /* @__PURE__ */ __h("polyline", { points: "12 6 12 12 16 14" })), /* @__PURE__ */ __h("span", { className: "cashbox-topbar__history-text" }, t?.history?.historyButton || "History")), /* @__PURE__ */ __h("div", { className: "cashbox-topbar__chip" }, /* @__PURE__ */ __h("div", { className: "cashbox-topbar__avatar" }, /* @__PURE__ */ __h("img", {
+		src: getUserAvatarUrl(cashierAvatar),
 		alt: cashierName,
 		className: "cashbox-topbar__avatar-img",
-		onError: (e) => {
-			e.currentTarget.style.display = "none";
-			const fallback = e.currentTarget.parentElement?.querySelector(".cashbox-topbar__avatar-fallback");
-			if (fallback) fallback.style.display = "flex";
-		}
-	}) : null, /* @__PURE__ */ __h("span", {
-		className: "cashbox-topbar__avatar-fallback",
-		style: { display: cashierAvatar ? "none" : "flex" }
-	}, cashierName?.charAt(0)?.toUpperCase() || "C")), /* @__PURE__ */ __h("span", null, /* @__PURE__ */ __h("span", { className: "cashbox-topbar__cashier-label" }, t?.cashier || "Cashier:", " "), /* @__PURE__ */ __h("strong", null, cashierName)))));
+		onError: handleAvatarError
+	})), /* @__PURE__ */ __h("span", null, /* @__PURE__ */ __h("span", { className: "cashbox-topbar__cashier-label" }, t?.cashier || "Cashier:", " "), /* @__PURE__ */ __h("strong", null, cashierName)))));
 };
 export default CashboxTopBar;

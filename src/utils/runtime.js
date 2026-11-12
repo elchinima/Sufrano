@@ -159,6 +159,7 @@ export function createPortal(children, container) {
 let currentInstance = null;
 const dirtyInstances = new Set();
 let isFlushing = false;
+let currentBatchUpdated = null;
 const pendingEffectInstances = [];
 
 function scheduleUpdate(instance) {
@@ -172,23 +173,30 @@ function scheduleUpdate(instance) {
 
 function flushUpdates() {
   let guard = 0;
-  while ((dirtyInstances.size > 0 || pendingEffectInstances.length > 0) && guard < 50) {
-    guard++;
-    while (dirtyInstances.size > 0) {
-      const batch = Array.from(dirtyInstances).sort((a, b) => a.depth - b.depth);
-      dirtyInstances.clear();
-      for (const inst of batch) {
-        if (inst.isMounted && !inst.updatedInPass) {
-          updateComponent(inst);
+  isFlushing = true;
+  try {
+    while ((dirtyInstances.size > 0 || pendingEffectInstances.length > 0) && guard < 50) {
+      guard++;
+      while (dirtyInstances.size > 0) {
+        const batch = Array.from(dirtyInstances).sort((a, b) => a.depth - b.depth);
+        dirtyInstances.clear();
+        const batchUpdated = new Set();
+        currentBatchUpdated = batchUpdated;
+        try {
+          for (const inst of batch) {
+            if (inst.isMounted && !batchUpdated.has(inst)) {
+              updateComponent(inst);
+            }
+          }
+        } finally {
+          currentBatchUpdated = null;
         }
       }
-      for (const inst of batch) {
-        inst.updatedInPass = false;
-      }
+      flushEffects();
     }
-    flushEffects();
+  } finally {
+    isFlushing = false;
   }
-  isFlushing = false;
 }
 
 function flushEffects() {
@@ -686,7 +694,6 @@ function mount(vnode, parentDom, anchor, contextMap, isSvg, depth = 0) {
       isSvg,
       depth,
       isMounted: true,
-      updatedInPass: false,
       classInstance: null
     };
     vnode._instance = instance;
@@ -744,7 +751,10 @@ function mount(vnode, parentDom, anchor, contextMap, isSvg, depth = 0) {
 
 function updateComponent(instance) {
   if (!instance.isMounted) return;
-  instance.updatedInPass = true;
+  dirtyInstances.delete(instance);
+  if (currentBatchUpdated) {
+    currentBatchUpdated.add(instance);
+  }
   instance.hookIndex = 0;
 
   let nextContextMap = instance.contextMap;

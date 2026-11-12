@@ -25,6 +25,7 @@
 		const WriteReviewModal = __imp_4.default !== undefined ? __imp_4.default : __imp_4;
 		const { REVIEW_CATEGORIES, getAvatarGradient, formatBakuDateTime, sortReviewsByLanguage } = __require("components/PublicPages/Reviews/reviewsData.js");
 		const { useLang } = __require("utils/useLang.js");
+		const { getUserAvatarUrl, handleAvatarError } = __require("utils/avatar.js");
 		const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
 		const Reviews = () => {
 			const lang = useLang();
@@ -372,9 +373,8 @@
 				className: "cta-btn sm user-reviews-empty-btn user-reviews-empty-btn--secondary"
 			}, "View Orders"))) : /* @__PURE__ */ __h("div", { className: "user-reviews-grid" }, /* @__PURE__ */ __h(AnimatePresence, { mode: "popLayout" }, filteredReviews.map((review, index) => {
 				const authorFirstName = user?.name ? user.name.split(" ")[0] : (review.author || "You").split(" ")[0];
-				const initialLetter = review.initials || authorFirstName.charAt(0).toUpperCase() || "U";
 				const likesCount = Number(review.likes) || 0;
-				const avatarUrl = user?.profilePictureUrl || user?.ProfilePictureUrl || review.avatarUrl;
+				const avatarUrl = getUserAvatarUrl(user?.profilePictureUrl || user?.ProfilePictureUrl || review.avatarUrl);
 				return /* @__PURE__ */ __h(motion.div, {
 					key: review.id,
 					className: "user-review-card",
@@ -398,11 +398,12 @@
 				}, /* @__PURE__ */ __h("div", { className: "user-review-card__header" }, /* @__PURE__ */ __h("div", { className: "user-review-card__author" }, /* @__PURE__ */ __h("div", {
 					className: "user-review-card__avatar",
 					style: { background: getAvatarGradient(review.id || user?.id || authorFirstName) }
-				}, avatarUrl ? /* @__PURE__ */ __h("img", {
+				}, /* @__PURE__ */ __h("img", {
 					src: avatarUrl,
 					alt: authorFirstName,
-					className: "user-review-card__avatar-img"
-				}) : initialLetter), /* @__PURE__ */ __h("div", { className: "user-review-card__author-details" }, /* @__PURE__ */ __h("div", { className: "user-review-card__name-row" }, /* @__PURE__ */ __h("span", { className: "user-review-card__name" }, authorFirstName), /* @__PURE__ */ __h("span", { className: "user-review-card__you-badge" }, "You"), getStatusBadge(review.status)), /* @__PURE__ */ __h("span", {
+					className: "user-review-card__avatar-img",
+					onError: handleAvatarError
+				})), /* @__PURE__ */ __h("div", { className: "user-review-card__author-details" }, /* @__PURE__ */ __h("div", { className: "user-review-card__name-row" }, /* @__PURE__ */ __h("span", { className: "user-review-card__name" }, authorFirstName), /* @__PURE__ */ __h("span", { className: "user-review-card__you-badge" }, "You"), getStatusBadge(review.status)), /* @__PURE__ */ __h("span", {
 					className: "user-review-card__date",
 					title: "Time in Baku (UTC+4)"
 				}, formatBakuDateTime(review.createdAt)))), /* @__PURE__ */ __h("div", { className: "user-review-card__header-right" }, /* @__PURE__ */ __h("div", { className: "user-review-card__rating" }, renderStars(review.rating)), /* @__PURE__ */ __h("button", {

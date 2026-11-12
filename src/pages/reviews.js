@@ -24,6 +24,7 @@
 		const { REVIEW_CATEGORIES, getAvatarGradient, formatBakuDateTime, formatTimeAgo, sortReviewsByLanguage } = __require("components/PublicPages/Reviews/reviewsData.js");
 		const { useLang } = __require("utils/useLang.js");
 		const { getReviewsTranslation, getReviewCategoryLabel } = __require("components/PublicPages/Reviews/Lang.js");
+		const { getUserAvatarUrl, handleAvatarError } = __require("utils/avatar.js");
 		const loaderIcon = "/assets/icons/loader-animated.svg";
 		const Reviews = () => {
 			const lang = useLang();
@@ -297,7 +298,6 @@
 			}, t("reviews_card_view_order")))) : /* @__PURE__ */ __h("div", { className: "reviews-grid" }, /* @__PURE__ */ __h(AnimatePresence, { mode: "popLayout" }, filteredReviews.map((review, index) => {
 				const isOwner = !!(review.isOwner || user && (review.userId === user.id || review.userId === user.Id));
 				const authorFirstName = isOwner && user?.name ? user.name.split(" ")[0] : (review.author || "Customer").split(" ")[0];
-				const initialLetter = review.initials || authorFirstName.charAt(0).toUpperCase() || "C";
 				const isLiked = !!review.userLiked;
 				const likesCount = review.likes || 0;
 				return /* @__PURE__ */ __h(motion.div, {
@@ -323,11 +323,12 @@
 				}, /* @__PURE__ */ __h("div", { className: "review-card-top" }, /* @__PURE__ */ __h("div", { className: "author-info" }, /* @__PURE__ */ __h("div", {
 					className: "author-avatar",
 					style: { background: getAvatarGradient(review.id || review.userId || review.author) }
-				}, review.avatarUrl ? /* @__PURE__ */ __h("img", {
-					src: review.avatarUrl,
+				}, /* @__PURE__ */ __h("img", {
+					src: getUserAvatarUrl(review.avatarUrl),
 					alt: authorFirstName,
-					className: "author-avatar-img"
-				}) : initialLetter), /* @__PURE__ */ __h("div", { className: "author-details" }, /* @__PURE__ */ __h("div", { className: "author-name-row" }, /* @__PURE__ */ __h("span", { className: "author-name" }, authorFirstName), isOwner && /* @__PURE__ */ __h("span", { className: "review-owner-tag" }, "You")), /* @__PURE__ */ __h("span", {
+					className: "author-avatar-img",
+					onError: handleAvatarError
+				})), /* @__PURE__ */ __h("div", { className: "author-details" }, /* @__PURE__ */ __h("div", { className: "author-name-row" }, /* @__PURE__ */ __h("span", { className: "author-name" }, authorFirstName), isOwner && /* @__PURE__ */ __h("span", { className: "review-owner-tag" }, "You")), /* @__PURE__ */ __h("span", {
 					className: "review-date",
 					title: "Time in Baku (UTC+4)"
 				}, formatBakuDateTime(review.createdAt)))), /* @__PURE__ */ __h("div", { className: "review-card-top-right" }, /* @__PURE__ */ __h("div", { className: "review-card-rating" }, renderStars(review.rating)), isOwner && /* @__PURE__ */ __h("button", {

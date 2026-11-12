@@ -18,6 +18,7 @@
 		const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 		const __imp_2 = __require("components/Elements/AdminTableActions.js");
 		const AdminTableActions = __imp_2.default !== undefined ? __imp_2.default : __imp_2;
+		const { getUserAvatarUrl, handleAvatarError } = __require("utils/avatar.js");
 		const PAGE_SIZE = 12;
 		const cleanRole = (role) => (role || "").toLowerCase().replace(/\s+/g, "");
 		const formatDate = (dateStr) => {
@@ -55,17 +56,6 @@
 			} catch {
 				return "—";
 			}
-		};
-		const getInitials = (name, email) => {
-			if (name && name.trim()) {
-				const parts = name.trim().split(/\s+/);
-				if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-				return name.slice(0, 2).toUpperCase();
-			}
-			if (email && email.trim()) {
-				return email.slice(0, 2).toUpperCase();
-			}
-			return "U";
 		};
 		const getRewardBadge = (type, discountPercent, cashbackPercent) => {
 			const t = String(type || "").toLowerCase();
@@ -631,10 +621,11 @@
 				}), /* @__PURE__ */ __h("path", { d: "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" })))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-promos__reward-cell" }, /* @__PURE__ */ __h("span", { className: rewardBadge.className }, rewardBadge.label), p.prizeDescription && /* @__PURE__ */ __h("span", {
 					className: "admin-promos__reward-desc",
 					title: p.prizeDescription
-				}, p.prizeDescription))), /* @__PURE__ */ __h("td", null, p.isClaimed && p.claimedBy ? /* @__PURE__ */ __h("div", { className: "admin-promos__customer-cell" }, /* @__PURE__ */ __h("div", { className: "admin-promos__avatar" }, p.claimedBy.avatarUrl ? /* @__PURE__ */ __h("img", {
-					src: p.claimedBy.avatarUrl,
-					alt: p.claimedBy.name || p.claimedBy.email
-				}) : /* @__PURE__ */ __h("span", null, getInitials(p.claimedBy.name, p.claimedBy.email))), /* @__PURE__ */ __h("div", { className: "admin-promos__customer-info" }, /* @__PURE__ */ __h("span", { className: "admin-promos__customer-name" }, p.claimedBy.name || "Customer"), /* @__PURE__ */ __h("span", { className: "admin-promos__customer-email" }, p.claimedBy.email))) : /* @__PURE__ */ __h("span", { className: "badge badge--success" }, "● Unclaimed (Ready)")), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-promos__date-cell" }, /* @__PURE__ */ __h("span", { className: `date-main ${p.isExpired ? "expired-text" : ""}` }, formatDate(p.expiresAt)), /* @__PURE__ */ __h("span", { className: `date-rel ${p.isExpired ? "expired-tag" : ""}` }, formatRelativeTime(p.expiresAt)))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-promos__badges" }, !p.isActive ? /* @__PURE__ */ __h("span", { className: "badge badge--muted" }, "Inactive") : p.isExpired ? /* @__PURE__ */ __h("span", { className: "badge badge--danger" }, "Expired") : /* @__PURE__ */ __h("span", { className: "badge badge--success" }, "Active"))), /* @__PURE__ */ __h("td", { className: "text-right" }, /* @__PURE__ */ __h(AdminTableActions, {
+				}, p.prizeDescription))), /* @__PURE__ */ __h("td", null, p.isClaimed && p.claimedBy ? /* @__PURE__ */ __h("div", { className: "admin-promos__customer-cell" }, /* @__PURE__ */ __h("div", { className: "admin-promos__avatar" }, /* @__PURE__ */ __h("img", {
+					src: getUserAvatarUrl(p.claimedBy.avatarUrl),
+					alt: p.claimedBy.name || p.claimedBy.email,
+					onError: handleAvatarError
+				})), /* @__PURE__ */ __h("div", { className: "admin-promos__customer-info" }, /* @__PURE__ */ __h("span", { className: "admin-promos__customer-name" }, p.claimedBy.name || "Customer"), /* @__PURE__ */ __h("span", { className: "admin-promos__customer-email" }, p.claimedBy.email))) : /* @__PURE__ */ __h("span", { className: "badge badge--success" }, "● Unclaimed (Ready)")), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-promos__date-cell" }, /* @__PURE__ */ __h("span", { className: `date-main ${p.isExpired ? "expired-text" : ""}` }, formatDate(p.expiresAt)), /* @__PURE__ */ __h("span", { className: `date-rel ${p.isExpired ? "expired-tag" : ""}` }, formatRelativeTime(p.expiresAt)))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-promos__badges" }, !p.isActive ? /* @__PURE__ */ __h("span", { className: "badge badge--muted" }, "Inactive") : p.isExpired ? /* @__PURE__ */ __h("span", { className: "badge badge--danger" }, "Expired") : /* @__PURE__ */ __h("span", { className: "badge badge--success" }, "Active"))), /* @__PURE__ */ __h("td", { className: "text-right" }, /* @__PURE__ */ __h(AdminTableActions, {
 					index: i,
 					total: visiblePromos.length,
 					actions: [
@@ -955,10 +946,11 @@
 				type: "button",
 				className: "details-copy-btn",
 				onClick: () => copyToClipboard(selectedPromo.promoCode, selectedPromo.id)
-			}, "Copy Code")), /* @__PURE__ */ __h("div", { className: "details-grid" }, /* @__PURE__ */ __h("div", { className: "detail-box" }, /* @__PURE__ */ __h("span", { className: "label" }, "Reward Type"), /* @__PURE__ */ __h("span", { className: "val" }, selectedPromo.prizeName)), /* @__PURE__ */ __h("div", { className: "detail-box" }, /* @__PURE__ */ __h("span", { className: "label" }, "Status"), /* @__PURE__ */ __h("span", { className: "val" }, /* @__PURE__ */ __h("span", { className: `badge ${!selectedPromo.isActive ? "badge--muted" : selectedPromo.isExpired ? "badge--danger" : "badge--success"}` }, !selectedPromo.isActive ? "Inactive" : selectedPromo.isExpired ? "Expired" : "Active"))), /* @__PURE__ */ __h("div", { className: "detail-box wide" }, /* @__PURE__ */ __h("span", { className: "label" }, "Description"), /* @__PURE__ */ __h("span", { className: "val-text" }, selectedPromo.prizeDescription || "No description provided.")), /* @__PURE__ */ __h("div", { className: "detail-box" }, /* @__PURE__ */ __h("span", { className: "label" }, "Created / Activated"), /* @__PURE__ */ __h("span", { className: "val" }, formatDate(selectedPromo.activatedAt))), /* @__PURE__ */ __h("div", { className: "detail-box" }, /* @__PURE__ */ __h("span", { className: "label" }, "Expires"), /* @__PURE__ */ __h("span", { className: "val" }, formatDate(selectedPromo.expiresAt), " (", formatRelativeTime(selectedPromo.expiresAt), ")")), /* @__PURE__ */ __h("div", { className: "detail-box wide" }, /* @__PURE__ */ __h("span", { className: "label" }, "Claim Status"), selectedPromo.isClaimed && selectedPromo.claimedBy ? /* @__PURE__ */ __h("div", { className: "claimed-user-card" }, /* @__PURE__ */ __h("div", { className: "user-avatar" }, selectedPromo.claimedBy.avatarUrl ? /* @__PURE__ */ __h("img", {
-				src: selectedPromo.claimedBy.avatarUrl,
-				alt: selectedPromo.claimedBy.name || selectedPromo.claimedBy.email
-			}) : /* @__PURE__ */ __h("span", null, getInitials(selectedPromo.claimedBy.name, selectedPromo.claimedBy.email))), /* @__PURE__ */ __h("div", { className: "user-info" }, /* @__PURE__ */ __h("span", { className: "name" }, selectedPromo.claimedBy.name || "Customer"), /* @__PURE__ */ __h("span", { className: "email" }, selectedPromo.claimedBy.email, " • Role: ", selectedPromo.claimedBy.role))) : /* @__PURE__ */ __h("div", { className: "unclaimed-notice" }, /* @__PURE__ */ __h("svg", {
+			}, "Copy Code")), /* @__PURE__ */ __h("div", { className: "details-grid" }, /* @__PURE__ */ __h("div", { className: "detail-box" }, /* @__PURE__ */ __h("span", { className: "label" }, "Reward Type"), /* @__PURE__ */ __h("span", { className: "val" }, selectedPromo.prizeName)), /* @__PURE__ */ __h("div", { className: "detail-box" }, /* @__PURE__ */ __h("span", { className: "label" }, "Status"), /* @__PURE__ */ __h("span", { className: "val" }, /* @__PURE__ */ __h("span", { className: `badge ${!selectedPromo.isActive ? "badge--muted" : selectedPromo.isExpired ? "badge--danger" : "badge--success"}` }, !selectedPromo.isActive ? "Inactive" : selectedPromo.isExpired ? "Expired" : "Active"))), /* @__PURE__ */ __h("div", { className: "detail-box wide" }, /* @__PURE__ */ __h("span", { className: "label" }, "Description"), /* @__PURE__ */ __h("span", { className: "val-text" }, selectedPromo.prizeDescription || "No description provided.")), /* @__PURE__ */ __h("div", { className: "detail-box" }, /* @__PURE__ */ __h("span", { className: "label" }, "Created / Activated"), /* @__PURE__ */ __h("span", { className: "val" }, formatDate(selectedPromo.activatedAt))), /* @__PURE__ */ __h("div", { className: "detail-box" }, /* @__PURE__ */ __h("span", { className: "label" }, "Expires"), /* @__PURE__ */ __h("span", { className: "val" }, formatDate(selectedPromo.expiresAt), " (", formatRelativeTime(selectedPromo.expiresAt), ")")), /* @__PURE__ */ __h("div", { className: "detail-box wide" }, /* @__PURE__ */ __h("span", { className: "label" }, "Claim Status"), selectedPromo.isClaimed && selectedPromo.claimedBy ? /* @__PURE__ */ __h("div", { className: "claimed-user-card" }, /* @__PURE__ */ __h("div", { className: "user-avatar" }, /* @__PURE__ */ __h("img", {
+				src: getUserAvatarUrl(selectedPromo.claimedBy.avatarUrl),
+				alt: selectedPromo.claimedBy.name || selectedPromo.claimedBy.email,
+				onError: handleAvatarError
+			})), /* @__PURE__ */ __h("div", { className: "user-info" }, /* @__PURE__ */ __h("span", { className: "name" }, selectedPromo.claimedBy.name || "Customer"), /* @__PURE__ */ __h("span", { className: "email" }, selectedPromo.claimedBy.email, " • Role: ", selectedPromo.claimedBy.role))) : /* @__PURE__ */ __h("div", { className: "unclaimed-notice" }, /* @__PURE__ */ __h("svg", {
 				viewBox: "0 0 24 24",
 				width: "16",
 				height: "16",

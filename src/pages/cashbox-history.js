@@ -10,6 +10,7 @@
 		const React = __imp_0.default !== undefined ? __imp_0.default : __imp_0;
 		const { useState, useEffect } = __imp_0;
 		const { motion, AnimatePresence } = __require("utils/motion.js");
+		const { getUserAvatarUrl, handleAvatarError } = __require("utils/avatar.js");
 		const CashboxOrderDetailModal = ({ order, isOpen, onClose, onUpdateOrder, t, canEdit = true }) => {
 			const [activeTab, setActiveTab] = useState("info");
 			const [selectedStatus, setSelectedStatus] = useState(order?.status || "Success");
@@ -166,11 +167,12 @@
 				exit: { opacity: 0 },
 				transition: { duration: .15 },
 				className: "cb-tab-pane"
-			}, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-grid" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-top" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.status || "Status"), /* @__PURE__ */ __h("div", { className: "cb-detail-status-inline" }, getStatusBadge(order.status))), /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.payment || "Payment"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val" }, order.payMethod === "Card" ? t?.history?.card || "Card" : t?.history?.cash || "Cash")), /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item cb-detail-meta-item--date" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.date || "Date"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val" }, formattedDate)), order.promoCode && /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.promoCodeLabel || "Promo Code"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val cb-detail-promo-tag" }, order.promoCode))), /* @__PURE__ */ __h("div", { className: "cb-detail-users-row" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.createdBy || t?.history?.cashier || "Cashier"), /* @__PURE__ */ __h("div", { className: "cb-detail-user-pill" }, order.cashierAvatar ? /* @__PURE__ */ __h("img", {
-				src: order.cashierAvatar,
+			}, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-grid" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-top" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.status || "Status"), /* @__PURE__ */ __h("div", { className: "cb-detail-status-inline" }, getStatusBadge(order.status))), /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.payment || "Payment"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val" }, order.payMethod === "Card" ? t?.history?.card || "Card" : t?.history?.cash || "Cash")), /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item cb-detail-meta-item--date" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.date || "Date"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val" }, formattedDate)), order.promoCode && /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.promoCodeLabel || "Promo Code"), /* @__PURE__ */ __h("span", { className: "cb-detail-meta-val cb-detail-promo-tag" }, order.promoCode))), /* @__PURE__ */ __h("div", { className: "cb-detail-users-row" }, /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.createdBy || t?.history?.cashier || "Cashier"), /* @__PURE__ */ __h("div", { className: "cb-detail-user-pill" }, /* @__PURE__ */ __h("img", {
+				src: getUserAvatarUrl(order.cashierAvatar),
 				alt: order.cashierName || "Cashier",
-				className: "cb-detail-user-avatar"
-			}) : /* @__PURE__ */ __h("span", { className: "cb-detail-user-avatar-fallback" }, (order.cashierName || "C")[0]?.toUpperCase()), /* @__PURE__ */ __h("div", { className: "cb-detail-user-info" }, /* @__PURE__ */ __h("span", { className: "cb-detail-user-name" }, order.cashierName || "—"), order.userId && /* @__PURE__ */ __h("button", {
+				className: "cb-detail-user-avatar",
+				onError: handleAvatarError
+			}), /* @__PURE__ */ __h("div", { className: "cb-detail-user-info" }, /* @__PURE__ */ __h("span", { className: "cb-detail-user-name" }, order.cashierName || "—"), order.userId && /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "cb-detail-user-id-btn",
 				onClick: (e) => handleCopyUserId(e, order.userId),
@@ -191,11 +193,12 @@
 				height: "13",
 				rx: "2",
 				ry: "2"
-			}), /* @__PURE__ */ __h("path", { d: "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" })), copiedUserId && /* @__PURE__ */ __h("span", { className: "cb-detail-copied-badge" }, "Copied"))))), order.editedBy && /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.editedBy || "Edited by"), /* @__PURE__ */ __h("div", { className: "cb-detail-user-pill" }, order.editorAvatar ? /* @__PURE__ */ __h("img", {
-				src: order.editorAvatar,
+			}), /* @__PURE__ */ __h("path", { d: "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" })), copiedUserId && /* @__PURE__ */ __h("span", { className: "cb-detail-copied-badge" }, "Copied"))))), order.editedBy && /* @__PURE__ */ __h("div", { className: "cb-detail-meta-item" }, /* @__PURE__ */ __h("span", { className: "cb-detail-meta-label" }, t?.history?.editedBy || "Edited by"), /* @__PURE__ */ __h("div", { className: "cb-detail-user-pill" }, /* @__PURE__ */ __h("img", {
+				src: getUserAvatarUrl(order.editorAvatar),
 				alt: order.editedBy,
-				className: "cb-detail-user-avatar"
-			}) : /* @__PURE__ */ __h("span", { className: "cb-detail-user-avatar-fallback cb-detail-user-avatar-fallback--editor" }, (order.editedBy || "E")[0]?.toUpperCase()), /* @__PURE__ */ __h("div", { className: "cb-detail-user-info" }, /* @__PURE__ */ __h("span", { className: "cb-detail-user-name" }, order.editedBy), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-user-sub" }, new Date(order.editedAt).toLocaleString(undefined, {
+				className: "cb-detail-user-avatar",
+				onError: handleAvatarError
+			}), /* @__PURE__ */ __h("div", { className: "cb-detail-user-info" }, /* @__PURE__ */ __h("span", { className: "cb-detail-user-name" }, order.editedBy), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-user-sub" }, new Date(order.editedAt).toLocaleString(undefined, {
 				month: "short",
 				day: "numeric",
 				hour: "2-digit",
@@ -273,11 +276,12 @@
 				placeholder: t?.history?.addNote || "Add optional note...",
 				value: note,
 				onChange: (e) => setNote(e.target.value)
-			}))), order.editedBy && /* @__PURE__ */ __h("div", { className: "cb-detail-edited-info" }, /* @__PURE__ */ __h("div", { className: "cb-detail-edited-avatar-wrap" }, order.editorAvatar ? /* @__PURE__ */ __h("img", {
-				src: order.editorAvatar,
+			}))), order.editedBy && /* @__PURE__ */ __h("div", { className: "cb-detail-edited-info" }, /* @__PURE__ */ __h("div", { className: "cb-detail-edited-avatar-wrap" }, /* @__PURE__ */ __h("img", {
+				src: getUserAvatarUrl(order.editorAvatar),
 				alt: order.editedBy,
-				className: "cb-detail-edited-mini-avatar"
-			}) : /* @__PURE__ */ __h("span", { className: "cb-detail-edited-mini-fallback" }, (order.editedBy || "E")[0]?.toUpperCase())), /* @__PURE__ */ __h("div", { className: "cb-detail-edited-text" }, /* @__PURE__ */ __h("span", null, t?.history?.editedBy || "Edited by:", " ", /* @__PURE__ */ __h("strong", null, order.editedBy)), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-edited-date" }, " ", "(", new Date(order.editedAt).toLocaleString(), ")"))), updateError && /* @__PURE__ */ __h("div", { className: "cb-detail-error" }, updateError)))), /* @__PURE__ */ __h("div", { className: "cb-detail-footer" }, /* @__PURE__ */ __h("button", {
+				className: "cb-detail-edited-mini-avatar",
+				onError: handleAvatarError
+			})), /* @__PURE__ */ __h("div", { className: "cb-detail-edited-text" }, /* @__PURE__ */ __h("span", null, t?.history?.editedBy || "Edited by:", " ", /* @__PURE__ */ __h("strong", null, order.editedBy)), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-edited-date" }, " ", "(", new Date(order.editedAt).toLocaleString(), ")"))), updateError && /* @__PURE__ */ __h("div", { className: "cb-detail-error" }, updateError)))), /* @__PURE__ */ __h("div", { className: "cb-detail-footer" }, /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "cb-detail-cancel-btn",
 				onClick: onClose
@@ -311,6 +315,7 @@
 		const CashboxTopBar = __imp_1.default !== undefined ? __imp_1.default : __imp_1;
 		const __imp_2 = __require("components/Cashbox/History/CashboxOrderDetailModal.js");
 		const CashboxOrderDetailModal = __imp_2.default !== undefined ? __imp_2.default : __imp_2;
+		const { getUserAvatarUrl, handleAvatarError } = __require("utils/avatar.js");
 		const CashboxHistory = () => {
 			const navigate = useNavigate();
 			const { user } = useAuth();
@@ -569,11 +574,12 @@
 				}, "#", order.id.slice(0, 8))), /* @__PURE__ */ __h("td", { className: "cb-history-cell-date" }, dateStr), /* @__PURE__ */ __h("td", { className: "cb-history-cell-cashier" }, /* @__PURE__ */ __h("div", {
 					className: "cb-history-cashier-pill",
 					title: order.userId ? `User ID: ${order.userId}${order.cashierEmail ? ` (${order.cashierEmail})` : ""}` : order.cashierEmail || ""
-				}, order.cashierAvatar ? /* @__PURE__ */ __h("img", {
-					src: order.cashierAvatar,
+				}, /* @__PURE__ */ __h("img", {
+					src: getUserAvatarUrl(order.cashierAvatar),
 					alt: order.cashierName || "Cashier",
-					className: "cb-history-cashier-avatar"
-				}) : /* @__PURE__ */ __h("span", { className: "cb-history-cashier-avatar-fallback" }, (order.cashierName || "C")[0]?.toUpperCase()), /* @__PURE__ */ __h("span", { className: "cb-history-cashier-name" }, order.cashierName || "—"))), /* @__PURE__ */ __h("td", { className: "cb-history-cell-items" }, /* @__PURE__ */ __h("div", { className: "cb-history-items-summary" }, /* @__PURE__ */ __h("span", { className: "cb-history-items-count" }, t?.history?.itemCount ? t.history.itemCount(order.itemCount) : `${order.itemCount} items`), /* @__PURE__ */ __h("span", { className: "cb-history-items-preview" }, order.products?.map((p) => `${p.name} (${p.quantity})`).join(", ")))), /* @__PURE__ */ __h("td", { className: "cb-history-cell-pay" }, /* @__PURE__ */ __h("span", { className: `cb-hist-pay-badge cb-hist-pay-badge--${order.payMethod.toLowerCase()}` }, order.payMethod === "Card" ? t?.history?.card || "Card" : t?.history?.cash || "Cash")), /* @__PURE__ */ __h("td", { className: "cb-history-cell-status" }, getStatusBadge(order.status)), /* @__PURE__ */ __h("td", { className: "cb-history-cell-total" }, /* @__PURE__ */ __h("div", { className: "cb-history-total-group" }, /* @__PURE__ */ __h("span", { className: "cb-history-amount" }, order.totalAmount?.toFixed(2), " ₼"), order.promoCode && /* @__PURE__ */ __h("span", {
+					className: "cb-history-cashier-avatar",
+					onError: handleAvatarError
+				}), /* @__PURE__ */ __h("span", { className: "cb-history-cashier-name" }, order.cashierName || "—"))), /* @__PURE__ */ __h("td", { className: "cb-history-cell-items" }, /* @__PURE__ */ __h("div", { className: "cb-history-items-summary" }, /* @__PURE__ */ __h("span", { className: "cb-history-items-count" }, t?.history?.itemCount ? t.history.itemCount(order.itemCount) : `${order.itemCount} items`), /* @__PURE__ */ __h("span", { className: "cb-history-items-preview" }, order.products?.map((p) => `${p.name} (${p.quantity})`).join(", ")))), /* @__PURE__ */ __h("td", { className: "cb-history-cell-pay" }, /* @__PURE__ */ __h("span", { className: `cb-hist-pay-badge cb-hist-pay-badge--${order.payMethod.toLowerCase()}` }, order.payMethod === "Card" ? t?.history?.card || "Card" : t?.history?.cash || "Cash")), /* @__PURE__ */ __h("td", { className: "cb-history-cell-status" }, getStatusBadge(order.status)), /* @__PURE__ */ __h("td", { className: "cb-history-cell-total" }, /* @__PURE__ */ __h("div", { className: "cb-history-total-group" }, /* @__PURE__ */ __h("span", { className: "cb-history-amount" }, order.totalAmount?.toFixed(2), " ₼"), order.promoCode && /* @__PURE__ */ __h("span", {
 					className: "cb-history-promo-applied",
 					title: `Promo: ${order.promoCode}`
 				}, order.promoCode))), /* @__PURE__ */ __h("td", {
@@ -613,11 +619,12 @@
 				}, /* @__PURE__ */ __h("div", { className: "cb-history-card__header" }, /* @__PURE__ */ __h("span", { className: "cb-history-id-code" }, "#", order.id.slice(0, 8)), getStatusBadge(order.status)), /* @__PURE__ */ __h("div", { className: "cb-history-card__items-preview" }, order.products?.map((p) => `${p.name} × ${p.quantity}`).join(", ")), /* @__PURE__ */ __h("div", { className: "cb-history-card__footer" }, /* @__PURE__ */ __h("div", { className: "cb-history-card__meta" }, /* @__PURE__ */ __h("div", {
 					className: "cb-history-card__cashier",
 					title: order.userId ? `User ID: ${order.userId}` : ""
-				}, order.cashierAvatar ? /* @__PURE__ */ __h("img", {
-					src: order.cashierAvatar,
+				}, /* @__PURE__ */ __h("img", {
+					src: getUserAvatarUrl(order.cashierAvatar),
 					alt: order.cashierName || "",
-					className: "cb-history-card__cashier-avatar"
-				}) : /* @__PURE__ */ __h("span", { className: "cb-history-card__cashier-avatar-fallback" }, (order.cashierName || "C")[0]?.toUpperCase()), /* @__PURE__ */ __h("span", null, order.cashierName || "—")), /* @__PURE__ */ __h("span", null, "•"), /* @__PURE__ */ __h("span", null, dateStr), /* @__PURE__ */ __h("span", null, "•"), /* @__PURE__ */ __h("span", null, order.payMethod === "Card" ? t?.history?.card || "Card" : t?.history?.cash || "Cash")), /* @__PURE__ */ __h("div", { className: "cb-history-card__amount" }, order.totalAmount?.toFixed(2), " ₼")));
+					className: "cb-history-card__cashier-avatar",
+					onError: handleAvatarError
+				}), /* @__PURE__ */ __h("span", null, order.cashierName || "—")), /* @__PURE__ */ __h("span", null, "•"), /* @__PURE__ */ __h("span", null, dateStr), /* @__PURE__ */ __h("span", null, "•"), /* @__PURE__ */ __h("span", null, order.payMethod === "Card" ? t?.history?.card || "Card" : t?.history?.cash || "Cash")), /* @__PURE__ */ __h("div", { className: "cb-history-card__amount" }, order.totalAmount?.toFixed(2), " ₼")));
 			}))), totalPages > 1 && /* @__PURE__ */ __h("div", { className: "cb-history-pagination" }, /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "cb-page-btn",

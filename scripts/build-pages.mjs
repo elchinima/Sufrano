@@ -142,6 +142,10 @@ const PAGE_CONFIG = {
     entry: 'components/AdminPages/AdminLogs/AdminLogs.js',
     css: ['components/AdminPages/AdminLogs/AdminLogs.css']
   },
+  'admin-footer': {
+    entry: 'components/AdminPages/Footer/Footer.js',
+    css: ['components/AdminPages/Footer/Footer.css']
+  },
   cashbox: {
     entry: 'components/Cashbox/Cashbox.js',
     css: ['components/Cashbox/Cashbox.css']

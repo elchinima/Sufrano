@@ -7,6 +7,7 @@ import { useAuth } from "../../../context/AuthContext.js";
 const loaderIcon = "/assets/icons/loader-animated.svg";
 const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 import AdminTableActions from "../../Elements/AdminTableActions.js";
+import { getUserAvatarUrl, handleAvatarError } from "../../../utils/avatar.js";
 const PAGE_SIZE = 10;
 const formatCurrency = (val) => {
 	const num = typeof val === "number" ? val : parseFloat(val) || 0;
@@ -52,17 +53,6 @@ const formatRelativeTime = (dateStr) => {
 	} catch {
 		return "—";
 	}
-};
-const getInitials = (name, email) => {
-	if (name && name.trim()) {
-		const parts = name.trim().split(/\s+/);
-		if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-		return name.slice(0, 2).toUpperCase();
-	}
-	if (email && email.trim()) {
-		return email.slice(0, 2).toUpperCase();
-	}
-	return "U";
 };
 const ALL_ROLES = [
 	"Customer",
@@ -602,10 +592,11 @@ const Users = () => {
 		variants: fadeUp,
 		initial: "hidden",
 		animate: "show"
-	}, /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-users__user-cell" }, /* @__PURE__ */ __h("div", { className: "admin-users__avatar" }, u.profilePictureUrl ? /* @__PURE__ */ __h("img", {
-		src: u.profilePictureUrl,
-		alt: u.name || u.email
-	}) : /* @__PURE__ */ __h("span", null, getInitials(u.name, u.email))), /* @__PURE__ */ __h("div", { className: "admin-users__user-info" }, /* @__PURE__ */ __h("span", { className: "admin-users__user-name" }, u.name || "Unnamed User"), /* @__PURE__ */ __h("span", { className: "admin-users__user-email" }, u.email), /* @__PURE__ */ __h("button", {
+	}, /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-users__user-cell" }, /* @__PURE__ */ __h("div", { className: "admin-users__avatar" }, /* @__PURE__ */ __h("img", {
+		src: getUserAvatarUrl(u.profilePictureUrl),
+		alt: u.name || u.email,
+		onError: handleAvatarError
+	})), /* @__PURE__ */ __h("div", { className: "admin-users__user-info" }, /* @__PURE__ */ __h("span", { className: "admin-users__user-name" }, u.name || "Unnamed User"), /* @__PURE__ */ __h("span", { className: "admin-users__user-email" }, u.email), /* @__PURE__ */ __h("button", {
 		className: "admin-users__copy-id",
 		onClick: () => copyToClipboard(u.id, u.id),
 		title: "Click to copy User ID"
@@ -687,10 +678,11 @@ const Users = () => {
 		src: loaderIcon,
 		alt: "Loading...",
 		className: "admin-users__spinner"
-	}), /* @__PURE__ */ __h("span", null, "Loading detailed user info...")) : userDetails ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("div", { className: "admin-users__modal-header" }, /* @__PURE__ */ __h("div", { className: "admin-users__modal-identity" }, /* @__PURE__ */ __h("div", { className: "admin-users__avatar admin-users__avatar--lg" }, userDetails.profilePictureUrl ? /* @__PURE__ */ __h("img", {
-		src: userDetails.profilePictureUrl,
-		alt: userDetails.name || userDetails.email
-	}) : /* @__PURE__ */ __h("span", null, getInitials(userDetails.name, userDetails.email))), /* @__PURE__ */ __h("div", { className: "admin-users__modal-meta" }, /* @__PURE__ */ __h("h2", null, userDetails.name || "Unnamed User"), /* @__PURE__ */ __h("p", null, userDetails.email), /* @__PURE__ */ __h("div", { className: "admin-users__modal-chips" }, /* @__PURE__ */ __h("code", null, "ID: ", userDetails.id), /* @__PURE__ */ __h("button", {
+	}), /* @__PURE__ */ __h("span", null, "Loading detailed user info...")) : userDetails ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("div", { className: "admin-users__modal-header" }, /* @__PURE__ */ __h("div", { className: "admin-users__modal-identity" }, /* @__PURE__ */ __h("div", { className: "admin-users__avatar admin-users__avatar--lg" }, /* @__PURE__ */ __h("img", {
+		src: getUserAvatarUrl(userDetails.profilePictureUrl),
+		alt: userDetails.name || userDetails.email,
+		onError: handleAvatarError
+	})), /* @__PURE__ */ __h("div", { className: "admin-users__modal-meta" }, /* @__PURE__ */ __h("h2", null, userDetails.name || "Unnamed User"), /* @__PURE__ */ __h("p", null, userDetails.email), /* @__PURE__ */ __h("div", { className: "admin-users__modal-chips" }, /* @__PURE__ */ __h("code", null, "ID: ", userDetails.id), /* @__PURE__ */ __h("button", {
 		className: "copy-btn",
 		onClick: () => copyToClipboard(userDetails.id, "modal-id")
 	}, copiedId === "modal-id" ? "Copied!" : "Copy")))), /* @__PURE__ */ __h("button", {

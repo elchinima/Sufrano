@@ -270,7 +270,7 @@ public class AdminController : ControllerBase
                 id = u.Id,
                 email = u.Email,
                 name = u.Name,
-                profilePictureUrl = u.ProfilePictureUrl,
+                profilePictureUrl = AvatarHelper.Resolve(u.ProfilePictureUrl),
                 balance = u.Balance,
                 role = u.Role == UserRole.SuperAdmin ? "Super Admin" : (u.Role == UserRole.LeadStaff ? "Lead Staff" : u.Role.ToString()),
                 isActive = u.Session?.IsActive ?? true,
@@ -318,7 +318,7 @@ public class AdminController : ControllerBase
             id = user.Id,
             email = user.Email,
             name = user.Name,
-            profilePictureUrl = user.ProfilePictureUrl,
+            profilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
             balance = user.Balance,
             role = user.Role == UserRole.SuperAdmin ? "Super Admin" : (user.Role == UserRole.LeadStaff ? "Lead Staff" : user.Role.ToString()),
             addresses = user.Addresses ?? new List<UserAddress>(),
@@ -666,7 +666,7 @@ public class AdminController : ControllerBase
                     id = u.Id,
                     name = u.Name,
                     email = u.Email,
-                    profilePictureUrl = u.ProfilePictureUrl,
+                    profilePictureUrl = AvatarHelper.Resolve(u.ProfilePictureUrl),
                     balance = u.Balance
                 } : null,
                 status = o.Status,
@@ -738,7 +738,7 @@ public class AdminController : ControllerBase
                 id = user.Id,
                 name = user.Name,
                 email = user.Email,
-                profilePictureUrl = user.ProfilePictureUrl,
+                profilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
                 balance = user.Balance
             } : null,
             status = order.Status,
@@ -1081,7 +1081,7 @@ public class AdminController : ControllerBase
                     id = u.Id,
                     name = u.Name,
                     email = u.Email,
-                    profilePictureUrl = u.ProfilePictureUrl
+                    profilePictureUrl = AvatarHelper.Resolve(u.ProfilePictureUrl)
                 } : null,
                 orderId = r.OrderId,
                 order = o != null ? new
@@ -1137,7 +1137,7 @@ public class AdminController : ControllerBase
                 id = user.Id,
                 name = user.Name,
                 email = user.Email,
-                profilePictureUrl = user.ProfilePictureUrl
+                profilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl)
             } : null,
             orderId = review.OrderId,
             order = order != null ? new
@@ -1288,7 +1288,7 @@ public class AdminController : ControllerBase
                     id = claimedUser.Id,
                     name = claimedUser.Name,
                     email = claimedUser.Email,
-                    avatarUrl = claimedUser.ProfilePictureUrl,
+                    avatarUrl = AvatarHelper.Resolve(claimedUser.ProfilePictureUrl),
                     role = claimedUser.Role.ToString()
                 } : null
             };
@@ -2425,7 +2425,7 @@ public class AdminController : ControllerBase
 
             var totalCount = await query.CountAsync();
 
-            var logs = await query
+            var rawLogs = await query
                 .OrderByDescending(l => l.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -2447,6 +2447,24 @@ public class AdminController : ControllerBase
                     } : null
                 })
                 .ToListAsync();
+
+            var logs = rawLogs.Select(l => new
+            {
+                l.id,
+                l.userId,
+                l.role,
+                l.page,
+                l.type,
+                l.description,
+                l.createdAt,
+                user = l.user != null ? new
+                {
+                    l.user.id,
+                    l.user.name,
+                    l.user.email,
+                    profilePictureUrl = AvatarHelper.Resolve(l.user.profilePictureUrl)
+                } : null
+            }).ToList();
 
             return Ok(new
             {
@@ -2621,19 +2639,49 @@ public class AdminController : ControllerBase
         }
     }
 
+    [HttpGet("footer")]
+    public async Task<IActionResult> GetFooterAdmin()
+    {
+        var (auth, adminUser) = await GetAdminUserAsync();
+        if (!auth)
+            return Unauthorized(new { message = "Unauthorized." });
+        if (adminUser == null || !IsSuperAdminRole(adminUser.Role))
+            return StatusCode(403, new { message = "Access denied. Super Admin privileges required." });
+
+        var footer = await _context.Footers.AsNoTracking().FirstOrDefaultAsync();
+
+        return Ok(new
+        {
+            exists = footer != null,
+            updatedAt = footer?.UpdatedAt,
+            footerRU = NormalizeFooterContent(footer?.FooterRU),
+            footerEN = NormalizeFooterContent(footer?.FooterEN),
+            footerAZ = NormalizeFooterContent(footer?.FooterAZ)
+        });
+    }
+
     [HttpPut("footer")]
     public async Task<IActionResult> UpdateFooter([FromBody] FooterUpdateRequest request)
     {
         var (auth, adminUser) = await GetAdminUserAsync();
         if (!auth)
             return Unauthorized(new { message = "Unauthorized." });
+        if (adminUser == null || !IsSuperAdminRole(adminUser.Role))
+            return StatusCode(403, new { message = "Access denied. Super Admin privileges required." });
 
         if (request == null || request.FooterRU == null || request.FooterEN == null || request.FooterAZ == null)
-            return BadRequest(new { message = "Invalid footer data." });
+            return BadRequest(new { message = "Invalid footer data. FooterRU, FooterEN, and FooterAZ are required." });
 
-        var ruJson = System.Text.Json.JsonSerializer.Serialize(request.FooterRU);
-        var enJson = System.Text.Json.JsonSerializer.Serialize(request.FooterEN);
-        var azJson = System.Text.Json.JsonSerializer.Serialize(request.FooterAZ);
+        if (!TryNormalizeAndValidateFooterContent("RU", request.FooterRU, out var ruContent, out var ruError))
+            return BadRequest(new { message = ruError });
+        if (!TryNormalizeAndValidateFooterContent("EN", request.FooterEN, out var enContent, out var enError))
+            return BadRequest(new { message = enError });
+        if (!TryNormalizeAndValidateFooterContent("AZ", request.FooterAZ, out var azContent, out var azError))
+            return BadRequest(new { message = azError });
+
+        var ruJson = System.Text.Json.JsonSerializer.Serialize(ruContent);
+        var enJson = System.Text.Json.JsonSerializer.Serialize(enContent);
+        var azJson = System.Text.Json.JsonSerializer.Serialize(azContent);
 
         var affected = await _context.Database.ExecuteSqlRawAsync(
             @"UPDATE ""Footer"" 
@@ -2651,18 +2699,104 @@ public class AdminController : ControllerBase
                 ruJson, enJson, azJson);
         }
 
+        var saved = await _context.Footers.AsNoTracking().FirstOrDefaultAsync();
+
         await LogAdminActionAsync(
-            adminUser?.Id,
-            adminUser?.Role.ToString() ?? "Admin",
+            adminUser.Id,
+            adminUser.Role.ToString(),
             "Footer",
             "PUT",
             new
             {
                 action = "UpdateFooter",
-                target = "Website Footer (RU/EN/AZ)"
+                target = "Website Footer (RU/EN/AZ)",
+                created = affected == 0,
+                ruLinks = ruContent.QuickLinks.Count,
+                enLinks = enContent.QuickLinks.Count,
+                azLinks = azContent.QuickLinks.Count
             });
 
-        return Ok(new { message = "Footer updated successfully." });
+        return Ok(new
+        {
+            message = "Footer updated successfully.",
+            exists = true,
+            updatedAt = saved?.UpdatedAt ?? DateTime.UtcNow,
+            footerRU = ruContent,
+            footerEN = enContent,
+            footerAZ = azContent
+        });
+    }
+
+    private static FooterLanguageContent NormalizeFooterContent(FooterLanguageContent? content)
+    {
+        TryNormalizeAndValidateFooterContent("DEFAULT", content, out var normalized, out _);
+        return normalized;
+    }
+
+    private static bool TryNormalizeAndValidateFooterContent(
+        string langCode,
+        FooterLanguageContent? content,
+        out FooterLanguageContent normalized,
+        out string error)
+    {
+        error = string.Empty;
+        var links = new List<FooterQuickLink>();
+
+        if (content?.QuickLinks != null)
+        {
+            for (var i = 0; i < content.QuickLinks.Count; i++)
+            {
+                var item = content.QuickLinks[i];
+                var title = item?.Title?.Trim() ?? string.Empty;
+                var link = item?.Link?.Trim() ?? string.Empty;
+
+                if (string.IsNullOrEmpty(title) && string.IsNullOrEmpty(link))
+                    continue;
+
+                if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(link))
+                {
+                    error = $"Footer {langCode}: quick link #{i + 1} must specify both a title and a route/URL.";
+                    normalized = new FooterLanguageContent();
+                    return false;
+                }
+
+                links.Add(new FooterQuickLink
+                {
+                    Title = title,
+                    Link = link
+                });
+            }
+        }
+
+        normalized = new FooterLanguageContent
+        {
+            Description = content?.Description?.Trim() ?? string.Empty,
+            QuickLinksTitle = string.IsNullOrWhiteSpace(content?.QuickLinksTitle)
+                ? "Quick Links"
+                : content!.QuickLinksTitle.Trim(),
+            ContactUsTitle = string.IsNullOrWhiteSpace(content?.ContactUsTitle)
+                ? "Contact Us"
+                : content!.ContactUsTitle.Trim(),
+            TermsOfUseTitle = string.IsNullOrWhiteSpace(content?.TermsOfUseTitle)
+                ? "Terms of Use"
+                : content!.TermsOfUseTitle.Trim(),
+            CopyrightText = content?.CopyrightText?.Trim() ?? string.Empty,
+            SocialMedia = new FooterSocialMedia
+            {
+                Instagram = content?.SocialMedia?.Instagram?.Trim() ?? string.Empty,
+                TikTok = content?.SocialMedia?.TikTok?.Trim() ?? string.Empty,
+                WhatsApp = content?.SocialMedia?.WhatsApp?.Trim() ?? string.Empty
+            },
+            QuickLinks = links,
+            ContactUs = new FooterContactUs
+            {
+                Address = content?.ContactUs?.Address?.Trim() ?? string.Empty,
+                Phone = content?.ContactUs?.Phone?.Trim() ?? string.Empty,
+                Email = content?.ContactUs?.Email?.Trim() ?? string.Empty
+            }
+        };
+
+        return true;
     }
 
     private static CookieOptions AdminSessionCookieOptions() => new()

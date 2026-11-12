@@ -28,6 +28,7 @@ const AdminReviews = lazy(() => loadPage("admin-reviews", () => import("../compo
 const AdminPromos = lazy(() => loadPage("admin-promos", () => import("../components/AdminPages/Promos/Promos.js")));
 const AdminNewsletter = lazy(() => loadPage("admin-newsletter", () => import("../components/AdminPages/Newsletter/Newsletter.js")));
 const AdminLogs = lazy(() => loadPage("admin-logs", () => import("../components/AdminPages/AdminLogs/AdminLogs.js")));
+const AdminFooter = lazy(() => loadPage("admin-footer", () => import("../components/AdminPages/Footer/Footer.js")));
 const Cashbox = lazy(() => loadPage("cashbox", () => import("../components/Cashbox/Cashbox.js")));
 const CashboxHistory = lazy(() => loadPage("cashbox-history", () => import("../components/Cashbox/History/CashboxHistory.js")));
 import ProtectedRoute from "./ProtectedRoute.js";
@@ -181,6 +182,12 @@ const AnimatedRoutes = () => {
 	}), /* @__PURE__ */ __h(Route, {
 		path: "/admin/logs",
 		element: /* @__PURE__ */ __h(AdminProtectedRoute, null, /* @__PURE__ */ __h(AdminLogs, null))
+	}), /* @__PURE__ */ __h(Route, {
+		path: "/admin/footer",
+		element: /* @__PURE__ */ __h(AdminProtectedRoute, { requiredRoles: ["superadmin"] }, /* @__PURE__ */ __h(AdminFooter, null))
+	}), /* @__PURE__ */ __h(Route, {
+		path: "/footer",
+		element: /* @__PURE__ */ __h(AdminProtectedRoute, { requiredRoles: ["superadmin"] }, /* @__PURE__ */ __h(AdminFooter, null))
 	}), /* @__PURE__ */ __h(Route, {
 		path: "/cashbox",
 		element: /* @__PURE__ */ __h(CashboxProtectedRoute, null, /* @__PURE__ */ __h(Cashbox, null))

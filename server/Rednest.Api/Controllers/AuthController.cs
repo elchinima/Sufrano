@@ -76,7 +76,7 @@ public class AuthController : ControllerBase
                     id = user.Id,
                     name = user.Name,
                     email = user.Email,
-                    profilePictureUrl = user.ProfilePictureUrl,
+                    profilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
                     balance = user.Balance,
                     role = user.Role == UserRole.SuperAdmin ? "Super Admin" : (user.Role == UserRole.LeadStaff ? "Lead Staff" : user.Role.ToString()),
                     twoFactorEnabled = userSession?.TwoFactorEnabled ?? false
@@ -141,7 +141,7 @@ public class AuthController : ControllerBase
                     id = user.Id,
                     name = user.Name,
                     email = user.Email,
-                    profilePictureUrl = user.ProfilePictureUrl,
+                    profilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
                     balance = user.Balance,
                     role = user.Role == UserRole.SuperAdmin ? "Super Admin" : (user.Role == UserRole.LeadStaff ? "Lead Staff" : user.Role.ToString()),
                     twoFactorEnabled = userSession?.TwoFactorEnabled ?? false
@@ -187,7 +187,7 @@ public class AuthController : ControllerBase
                     id = result.User.Id,
                     name = result.User.Name,
                     email = result.User.Email,
-                    profilePictureUrl = result.User.ProfilePictureUrl,
+                    profilePictureUrl = AvatarHelper.Resolve(result.User.ProfilePictureUrl),
                     balance = result.User.Balance,
                     role = result.User.Role == UserRole.SuperAdmin ? "Super Admin" : (result.User.Role == UserRole.LeadStaff ? "Lead Staff" : result.User.Role.ToString()),
                     twoFactorEnabled = true
@@ -391,7 +391,7 @@ public class AuthController : ControllerBase
                     id = user.Id,
                     name = user.Name,
                     email = user.Email,
-                    profilePictureUrl = user.ProfilePictureUrl,
+                    profilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
                     balance = user.Balance,
                     role = user.Role == UserRole.SuperAdmin ? "Super Admin" : (user.Role == UserRole.LeadStaff ? "Lead Staff" : user.Role.ToString()),
                     twoFactorEnabled = userSession?.TwoFactorEnabled ?? false
@@ -534,7 +534,7 @@ public class AuthController : ControllerBase
                 Id = user.Id, 
                 Name = user.Name,
                 Email = user.Email,
-                ProfilePictureUrl = user.ProfilePictureUrl,
+                ProfilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
                 Balance = user.Balance,
                 Role = user.Role == UserRole.SuperAdmin ? "Super Admin" : (user.Role == UserRole.LeadStaff ? "Lead Staff" : user.Role.ToString()),
                 TwoFactorEnabled = userSession?.TwoFactorEnabled ?? false
@@ -685,6 +685,11 @@ public class AuthController : ControllerBase
                 return NotFound(new { message = "User not found." });
             }
 
+            if (AvatarHelper.IsDefaultOrEmpty(user.ProfilePictureUrl))
+            {
+                return BadRequest(new { message = "Default avatar cannot be deleted." });
+            }
+
             var supabaseUrl = Environment.GetEnvironmentVariable("SUPABASE_URL");
             var serviceKey = Environment.GetEnvironmentVariable("SUPABASE_SERVICE_KEY");
 
@@ -705,7 +710,11 @@ public class AuthController : ControllerBase
             user.ProfilePictureUrl = null;
             await userRepository.UpdateAsync(user);
 
-            return Ok(new { message = "Profile picture deleted." });
+            return Ok(new
+            {
+                message = "Profile picture deleted.",
+                profilePictureUrl = AvatarHelper.DefaultAvatarPath
+            });
         }
         catch (Exception ex)
         {
@@ -756,7 +765,7 @@ public class AuthController : ControllerBase
                 Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
-                ProfilePictureUrl = user.ProfilePictureUrl,
+                ProfilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
                 Balance = user.Balance
             });
         }

@@ -184,6 +184,7 @@
 		let currentInstance = null;
 		const dirtyInstances = new Set();
 		let isFlushing = false;
+		let currentBatchUpdated = null;
 		const pendingEffectInstances = [];
 
 		function scheduleUpdate(instance) {
@@ -197,23 +198,30 @@
 
 		function flushUpdates() {
 		  let guard = 0;
-		  while ((dirtyInstances.size > 0 || pendingEffectInstances.length > 0) && guard < 50) {
-		    guard++;
-		    while (dirtyInstances.size > 0) {
-		      const batch = Array.from(dirtyInstances).sort((a, b) => a.depth - b.depth);
-		      dirtyInstances.clear();
-		      for (const inst of batch) {
-		        if (inst.isMounted && !inst.updatedInPass) {
-		          updateComponent(inst);
+		  isFlushing = true;
+		  try {
+		    while ((dirtyInstances.size > 0 || pendingEffectInstances.length > 0) && guard < 50) {
+		      guard++;
+		      while (dirtyInstances.size > 0) {
+		        const batch = Array.from(dirtyInstances).sort((a, b) => a.depth - b.depth);
+		        dirtyInstances.clear();
+		        const batchUpdated = new Set();
+		        currentBatchUpdated = batchUpdated;
+		        try {
+		          for (const inst of batch) {
+		            if (inst.isMounted && !batchUpdated.has(inst)) {
+		              updateComponent(inst);
+		            }
+		          }
+		        } finally {
+		          currentBatchUpdated = null;
 		        }
 		      }
-		      for (const inst of batch) {
-		        inst.updatedInPass = false;
-		      }
+		      flushEffects();
 		    }
-		    flushEffects();
+		  } finally {
+		    isFlushing = false;
 		  }
-		  isFlushing = false;
 		}
 
 		function flushEffects() {
@@ -711,7 +719,6 @@
 		      isSvg,
 		      depth,
 		      isMounted: true,
-		      updatedInPass: false,
 		      classInstance: null
 		    };
 		    vnode._instance = instance;
@@ -769,7 +776,10 @@
 
 		function updateComponent(instance) {
 		  if (!instance.isMounted) return;
-		  instance.updatedInPass = true;
+		  dirtyInstances.delete(instance);
+		  if (currentBatchUpdated) {
+		    currentBatchUpdated.add(instance);
+		  }
 		  instance.hookIndex = 0;
 
 		  let nextContextMap = instance.contextMap;
@@ -3997,6 +4007,7 @@
 		const AdminPromos = lazy(() => loadPage("admin-promos", null));
 		const AdminNewsletter = lazy(() => loadPage("admin-newsletter", null));
 		const AdminLogs = lazy(() => loadPage("admin-logs", null));
+		const AdminFooter = lazy(() => loadPage("admin-footer", null));
 		const Cashbox = lazy(() => loadPage("cashbox", null));
 		const CashboxHistory = lazy(() => loadPage("cashbox-history", null));
 		const __imp_1 = __require("routes/ProtectedRoute.js");
@@ -4158,6 +4169,12 @@
 			}), /* @__PURE__ */ __h(Route, {
 				path: "/admin/logs",
 				element: /* @__PURE__ */ __h(AdminProtectedRoute, null, /* @__PURE__ */ __h(AdminLogs, null))
+			}), /* @__PURE__ */ __h(Route, {
+				path: "/admin/footer",
+				element: /* @__PURE__ */ __h(AdminProtectedRoute, { requiredRoles: ["superadmin"] }, /* @__PURE__ */ __h(AdminFooter, null))
+			}), /* @__PURE__ */ __h(Route, {
+				path: "/footer",
+				element: /* @__PURE__ */ __h(AdminProtectedRoute, { requiredRoles: ["superadmin"] }, /* @__PURE__ */ __h(AdminFooter, null))
 			}), /* @__PURE__ */ __h(Route, {
 				path: "/cashbox",
 				element: /* @__PURE__ */ __h(CashboxProtectedRoute, null, /* @__PURE__ */ __h(Cashbox, null))
@@ -5287,6 +5304,35 @@
 	});
 	//#endregion
 
+	//#region utils/avatar.js
+	__define("utils/avatar.js", function (exports, __require, module) {
+		const DEFAULT_USER_AVATAR = "/assets/images/user_default_avatar.webp";
+
+		function isDefaultAvatarUrl(url) {
+			if (typeof url !== "string") return true;
+			const trimmed = url.trim();
+			if (!trimmed) return true;
+			const pathWithoutQuery = trimmed.split(/[?#]/)[0].toLowerCase();
+			return pathWithoutQuery === DEFAULT_USER_AVATAR || pathWithoutQuery.endsWith("/user_default_avatar.webp");
+		}
+
+		function getUserAvatarUrl(url) {
+			return isDefaultAvatarUrl(url) ? DEFAULT_USER_AVATAR : url.trim();
+		}
+
+		function handleAvatarError(e) {
+			const img = e?.currentTarget;
+			if (!img || isDefaultAvatarUrl(img.getAttribute("src")) || isDefaultAvatarUrl(img.src)) return;
+			img.src = DEFAULT_USER_AVATAR;
+		}
+
+		Object.defineProperty(exports, "DEFAULT_USER_AVATAR", { enumerable: true, get: function () { return DEFAULT_USER_AVATAR; } });
+		Object.defineProperty(exports, "isDefaultAvatarUrl", { enumerable: true, get: function () { return isDefaultAvatarUrl; } });
+		Object.defineProperty(exports, "getUserAvatarUrl", { enumerable: true, get: function () { return getUserAvatarUrl; } });
+		Object.defineProperty(exports, "handleAvatarError", { enumerable: true, get: function () { return handleAvatarError; } });
+	});
+	//#endregion
+
 	//#region components/Elements/UserNavPills.js
 	__define("components/Elements/UserNavPills.js", function (exports, __require, module) {
 		const { __h, __Fragment } = __require("utils/runtime.js");
@@ -5302,6 +5348,7 @@
 		const LogoutModal = __imp_1.default !== undefined ? __imp_1.default : __imp_1;
 		const loaderIcon = "/assets/icons/loader-animated.svg";
 		const { isAllowedCashboxRole } = __require("routes/CashboxProtectedRoute.js");
+		const { getUserAvatarUrl, handleAvatarError } = __require("utils/avatar.js");
 		const UserNavPills = ({ onMenuClose }) => {
 			const { user, authLoading, logout, isAuthenticated } = useAuth();
 			const { isProfileUnlocked, requireProfileAccess, lockProfile } = useProfileSecurity();
@@ -5357,7 +5404,7 @@
 					onClick: () => onMenuClose && onMenuClose()
 				}, t("user_nav_login"));
 			}
-			const avatarUrl = user?.profilePictureUrl || user?.ProfilePictureUrl || null;
+			const avatarUrl = getUserAvatarUrl(user?.profilePictureUrl || user?.ProfilePictureUrl);
 			const userName = user?.name || user?.Name || "User";
 			const rawBalance = user?.balance ?? user?.Balance ?? 0;
 			const formattedBalance = Number(rawBalance || 0).toFixed(2);
@@ -5379,11 +5426,12 @@
 			}, /* @__PURE__ */ __h("div", {
 				className: "user-nav-capsule__avatar",
 				title: `Profile - ${userName}`
-			}, avatarUrl ? /* @__PURE__ */ __h("img", {
+			}, /* @__PURE__ */ __h("img", {
 				src: avatarUrl,
 				alt: userName,
-				className: "user-nav-capsule__avatar-img"
-			}) : /* @__PURE__ */ __h("span", { className: "user-nav-capsule__avatar-fallback" }, userName ? userName.charAt(0).toUpperCase() : "U")), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__info-row" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__name" }, userName), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__divider" }), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-amount" }, formattedBalance), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-symbol" }, "₼")), /* @__PURE__ */ __h("svg", {
+				className: "user-nav-capsule__avatar-img",
+				onError: handleAvatarError
+			})), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__info-row" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__name" }, userName), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__divider" }), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-amount" }, formattedBalance), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-symbol" }, "₼")), /* @__PURE__ */ __h("svg", {
 				className: `user-nav-capsule__chevron ${isUserMenuOpen ? "open" : ""}`,
 				viewBox: "0 0 24 24",
 				width: "14",
@@ -7219,6 +7267,28 @@
 					rx: "9",
 					ry: "3"
 				}), /* @__PURE__ */ __h("path", { d: "M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" }), /* @__PURE__ */ __h("path", { d: "M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" }))
+			},
+			{
+				to: "/admin/footer",
+				label: "Footer",
+				requiredRoles: ["superadmin"],
+				icon: /* @__PURE__ */ __h("svg", {
+					viewBox: "0 0 24 24",
+					fill: "none",
+					stroke: "currentColor",
+					strokeWidth: "2"
+				}, /* @__PURE__ */ __h("rect", {
+					x: "3",
+					y: "3",
+					width: "18",
+					height: "18",
+					rx: "2"
+				}), /* @__PURE__ */ __h("line", {
+					x1: "3",
+					y1: "15",
+					x2: "21",
+					y2: "15"
+				}))
 			}
 		];
 		const AdminLayout = ({ children }) => {
@@ -7389,9 +7459,12 @@
 					id: `admin-nav-${item.label.toLowerCase()}`,
 					className: ({ isActive }) => `admin-sidebar__link${isActive && !isLocked ? " admin-sidebar__link--active" : ""}${isLocked ? " admin-sidebar__link--locked" : ""}`,
 					onClick: async (e) => {
+						const restrictionText = item.requiredRoles && item.requiredRoles.length === 1 && item.requiredRoles[0] === "superadmin"
+							? "Super Admin only"
+							: "Admin and Super Admin only";
 						if (isLocked) {
 							e.preventDefault();
-							setAccessDeniedToast(`Access to "${item.label}" is restricted (Admin and Super Admin only).`);
+							setAccessDeniedToast(`Access to "${item.label}" is restricted (${restrictionText}).`);
 						} else {
 							setSidebarOpen(false);
 							const res = await verify();
@@ -7399,7 +7472,7 @@
 								const updatedRole = cleanRole(res.role);
 								if (item.requiredRoles && !item.requiredRoles.includes(updatedRole)) {
 									e.preventDefault();
-									setAccessDeniedToast(`Access to "${item.label}" is restricted (Admin and Super Admin only).`);
+									setAccessDeniedToast(`Access to "${item.label}" is restricted (${restrictionText}).`);
 								}
 							}
 						}
@@ -8099,6 +8172,7 @@
 		const { useNavigate } = __require("utils/router.js");
 		const { useAuth } = __require("context/AuthContext.js");
 		const { isAllowedCashboxHistoryRole } = __require("routes/CashboxProtectedRoute.js");
+		const { getUserAvatarUrl, handleAvatarError } = __require("utils/avatar.js");
 		const logo = "/assets/icons/rednest_logo.png";
 		const CashboxTopBar = ({ cashierName, cashierAvatar, searchQuery, setSearchQuery, searchPlaceholder, t, isHistory = false }) => {
 			const navigate = useNavigate();
@@ -8182,19 +8256,12 @@
 				cx: "12",
 				cy: "12",
 				r: "10"
-			}), /* @__PURE__ */ __h("polyline", { points: "12 6 12 12 16 14" })), /* @__PURE__ */ __h("span", { className: "cashbox-topbar__history-text" }, t?.history?.historyButton || "History")), /* @__PURE__ */ __h("div", { className: "cashbox-topbar__chip" }, /* @__PURE__ */ __h("div", { className: "cashbox-topbar__avatar" }, cashierAvatar ? /* @__PURE__ */ __h("img", {
-				src: cashierAvatar,
+			}), /* @__PURE__ */ __h("polyline", { points: "12 6 12 12 16 14" })), /* @__PURE__ */ __h("span", { className: "cashbox-topbar__history-text" }, t?.history?.historyButton || "History")), /* @__PURE__ */ __h("div", { className: "cashbox-topbar__chip" }, /* @__PURE__ */ __h("div", { className: "cashbox-topbar__avatar" }, /* @__PURE__ */ __h("img", {
+				src: getUserAvatarUrl(cashierAvatar),
 				alt: cashierName,
 				className: "cashbox-topbar__avatar-img",
-				onError: (e) => {
-					e.currentTarget.style.display = "none";
-					const fallback = e.currentTarget.parentElement?.querySelector(".cashbox-topbar__avatar-fallback");
-					if (fallback) fallback.style.display = "flex";
-				}
-			}) : null, /* @__PURE__ */ __h("span", {
-				className: "cashbox-topbar__avatar-fallback",
-				style: { display: cashierAvatar ? "none" : "flex" }
-			}, cashierName?.charAt(0)?.toUpperCase() || "C")), /* @__PURE__ */ __h("span", null, /* @__PURE__ */ __h("span", { className: "cashbox-topbar__cashier-label" }, t?.cashier || "Cashier:", " "), /* @__PURE__ */ __h("strong", null, cashierName)))));
+				onError: handleAvatarError
+			})), /* @__PURE__ */ __h("span", null, /* @__PURE__ */ __h("span", { className: "cashbox-topbar__cashier-label" }, t?.cashier || "Cashier:", " "), /* @__PURE__ */ __h("strong", null, cashierName)))));
 		};
 
 		Object.defineProperty(exports, "default", { enumerable: true, get: function () { return CashboxTopBar; } });

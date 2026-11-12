@@ -145,6 +145,28 @@ const NAV_ITEMS = [
 			rx: "9",
 			ry: "3"
 		}), /* @__PURE__ */ __h("path", { d: "M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" }), /* @__PURE__ */ __h("path", { d: "M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" }))
+	},
+	{
+		to: "/admin/footer",
+		label: "Footer",
+		requiredRoles: ["superadmin"],
+		icon: /* @__PURE__ */ __h("svg", {
+			viewBox: "0 0 24 24",
+			fill: "none",
+			stroke: "currentColor",
+			strokeWidth: "2"
+		}, /* @__PURE__ */ __h("rect", {
+			x: "3",
+			y: "3",
+			width: "18",
+			height: "18",
+			rx: "2"
+		}), /* @__PURE__ */ __h("line", {
+			x1: "3",
+			y1: "15",
+			x2: "21",
+			y2: "15"
+		}))
 	}
 ];
 const AdminLayout = ({ children }) => {
@@ -315,9 +337,12 @@ const AdminLayout = ({ children }) => {
 			id: `admin-nav-${item.label.toLowerCase()}`,
 			className: ({ isActive }) => `admin-sidebar__link${isActive && !isLocked ? " admin-sidebar__link--active" : ""}${isLocked ? " admin-sidebar__link--locked" : ""}`,
 			onClick: async (e) => {
+				const restrictionText = item.requiredRoles && item.requiredRoles.length === 1 && item.requiredRoles[0] === "superadmin"
+					? "Super Admin only"
+					: "Admin and Super Admin only";
 				if (isLocked) {
 					e.preventDefault();
-					setAccessDeniedToast(`Access to "${item.label}" is restricted (Admin and Super Admin only).`);
+					setAccessDeniedToast(`Access to "${item.label}" is restricted (${restrictionText}).`);
 				} else {
 					setSidebarOpen(false);
 					const res = await verify();
@@ -325,7 +350,7 @@ const AdminLayout = ({ children }) => {
 						const updatedRole = cleanRole(res.role);
 						if (item.requiredRoles && !item.requiredRoles.includes(updatedRole)) {
 							e.preventDefault();
-							setAccessDeniedToast(`Access to "${item.label}" is restricted (Admin and Super Admin only).`);
+							setAccessDeniedToast(`Access to "${item.label}" is restricted (${restrictionText}).`);
 						}
 					}
 				}
