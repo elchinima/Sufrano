@@ -223,7 +223,7 @@ const HTTP_ERROR_REGISTRY = {
 		badge: "429 • Slow Down",
 		badgeClass: "error-badge--429",
 		title: "Too Many Requests",
-		desc: "You've sent too many requests in a short time. Please take a sip of coffee and wait a moment before trying again.",
+		desc: "You've sent too many requests in a short time. Please take a moment and wait before trying again.",
 		icon: /* @__PURE__ */ __h("svg", {
 			viewBox: "0 0 24 24",
 			fill: "none",

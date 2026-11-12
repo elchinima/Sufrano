@@ -159,7 +159,7 @@ public class ReviewModerationService : BackgroundService
 
         var prompt = $$"""
             You are an AI content moderation and language detection assistant.
-            Analyze the following user review text for a restaurant/coffee ordering service:
+            Analyze the following user review text for a restaurant ordering service:
 
             Review text: "{{comment}}"
 

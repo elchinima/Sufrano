@@ -2,7 +2,7 @@ export const translations = {
 	ru: {
 		"auth_back_home": "На главную",
 		"auth_hero_title": "Пробудите ваши чувства",
-		"auth_hero_subtitle": "Оцените богатый, насыщенный вкус наших фирменных кофейных блендов. Присоединяйтесь к нам сегодня.",
+		"auth_hero_subtitle": "Оцените изысканный вкус наших авторских блюд и неповторимую атмосферу. Присоединяйтесь к нам сегодня.",
 		"auth_step_login_title": "Добро пожаловать в Süfrano",
 		"auth_step_login_subtitle": "Введите email и пароль для входа или создания нового аккаунта.",
 		"auth_step_2fa_title": "Двухфакторная аутентификация",
@@ -56,7 +56,7 @@ export const translations = {
 	en: {
 		"auth_back_home": "Back to Home",
 		"auth_hero_title": "Awaken Your Senses",
-		"auth_hero_subtitle": "Experience the rich, bold flavors of our premium coffee blends. Join our community today.",
+		"auth_hero_subtitle": "Experience the rich, exquisite flavors of our culinary creations. Join our community today.",
 		"auth_step_login_title": "Welcome to Süfrano",
 		"auth_step_login_subtitle": "Enter your email and password to log in or create a new account.",
 		"auth_step_2fa_title": "Two-Factor Authentication",
@@ -110,7 +110,7 @@ export const translations = {
 	az: {
 		"auth_back_home": "Ana səhifəyə",
 		"auth_hero_title": "Hisslərinizi oyadın",
-		"auth_hero_subtitle": "Premium qəhvə çeşidlərimizin zəngin dadını kəşf edin. Bu gün ailəmizə qoşulun.",
+		"auth_hero_subtitle": "Nəfis kulinariya incilərimizin zəngin dadını kəşf edin. Bu gün ailəmizə qoşulun.",
 		"auth_step_login_title": "Süfrano-ya xoş gəlmisiniz",
 		"auth_step_login_subtitle": "Daxil olmaq və ya yeni hesab yaratmaq üçün e-poçt və şifrənizi daxil edin.",
 		"auth_step_2fa_title": "İki faktorlu autentifikasiya",

@@ -40,7 +40,7 @@
 			},
 			{
 				label: "CASHBACK ON PURCHASES",
-				prize: "Cashback on your next coffee purchase!"
+				prize: "Cashback on your next order!"
 			},
 			{
 				label: "DISCOUNT UP TO 50%",

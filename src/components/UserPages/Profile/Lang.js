@@ -28,7 +28,7 @@ export const translations = {
 		"profile_row_addresses_desc": "Добавляйте и редактируйте адреса для быстрой доставки",
 		"profile_row_addresses_btn": "Мои адреса",
 		"profile_row_reviews_title": "Мои отзывы",
-		"profile_row_reviews_desc": "Ваши оценки и впечатления о кофе и сервисе Süfrano",
+		"profile_row_reviews_desc": "Ваши оценки и впечатления о блюдах и сервисе Süfrano",
 		"profile_row_reviews_btn": "Мои отзывы",
 		"profile_row_fortune_title": "Колесо фортуны",
 		"profile_row_fortune_desc": "Вращайте колесо и выигрывайте скидки и подарки",

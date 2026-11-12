@@ -4351,7 +4351,7 @@
 		};
 		const BANNER_CONTENT = {
 			ru: {
-				title: "Скачай приложение — забери кофе в подарок!",
+				title: "Скачай приложение — получи подарок к заказу!",
 				features: [
 					{
 						step: "1",
@@ -4447,7 +4447,7 @@
 					{
 						step: "3",
 						title: "3. Забирай призы и кэшбэк",
-						desc: "До 20% с каждой чашки кофе",
+						desc: "До 20% с каждого заказа",
 						icon: /* @__PURE__ */ __h("svg", {
 							viewBox: "0 0 24 24",
 							fill: "none",
@@ -4478,7 +4478,7 @@
 				}
 			},
 			az: {
-				title: "Tətbiqi yüklə — hədiyyə qəhvə qazan!",
+				title: "Tətbiqi yüklə — sifarişə hədiyyə qazan!",
 				features: [
 					{
 						step: "1",
@@ -4574,7 +4574,7 @@
 					{
 						step: "3",
 						title: "3. Mükafatlar və keşbek qazan",
-						desc: "Hər fincandan 20%-dək keşbek",
+						desc: "Hər sifarişdən 20%-dək keşbek",
 						icon: /* @__PURE__ */ __h("svg", {
 							viewBox: "0 0 24 24",
 							fill: "none",
@@ -4605,7 +4605,7 @@
 				}
 			},
 			en: {
-				title: "Download the app — get a free coffee!",
+				title: "Download the app — get a welcome gift!",
 				features: [
 					{
 						step: "1",
@@ -4822,7 +4822,7 @@
 			};
 			const isWinter = isWinterSeason();
 			const modelImg = isWinter ? winterModel : summerModel;
-			const modelAlt = isWinter ? "Süfrano Winter Coffee App" : "Süfrano Summer Coffee App";
+			const modelAlt = isWinter ? "Süfrano Winter Restaurant App" : "Süfrano Summer Restaurant App";
 			return /* @__PURE__ */ __h(AnimatePresence, null, isVisible && /* @__PURE__ */ __h(motion.section, {
 				className: "rednest-app-banner",
 				initial: {
@@ -5868,7 +5868,7 @@
 			ru: {
 				"auth_back_home": "На главную",
 				"auth_hero_title": "Пробудите ваши чувства",
-				"auth_hero_subtitle": "Оцените богатый, насыщенный вкус наших фирменных кофейных блендов. Присоединяйтесь к нам сегодня.",
+				"auth_hero_subtitle": "Оцените изысканный вкус наших авторских блюд и неповторимую атмосферу. Присоединяйтесь к нам сегодня.",
 				"auth_step_login_title": "Добро пожаловать в Süfrano",
 				"auth_step_login_subtitle": "Введите email и пароль для входа или создания нового аккаунта.",
 				"auth_step_2fa_title": "Двухфакторная аутентификация",
@@ -5922,7 +5922,7 @@
 			en: {
 				"auth_back_home": "Back to Home",
 				"auth_hero_title": "Awaken Your Senses",
-				"auth_hero_subtitle": "Experience the rich, bold flavors of our premium coffee blends. Join our community today.",
+				"auth_hero_subtitle": "Experience the rich, exquisite flavors of our culinary creations. Join our community today.",
 				"auth_step_login_title": "Welcome to Süfrano",
 				"auth_step_login_subtitle": "Enter your email and password to log in or create a new account.",
 				"auth_step_2fa_title": "Two-Factor Authentication",
@@ -5976,7 +5976,7 @@
 			az: {
 				"auth_back_home": "Ana səhifəyə",
 				"auth_hero_title": "Hisslərinizi oyadın",
-				"auth_hero_subtitle": "Premium qəhvə çeşidlərimizin zəngin dadını kəşf edin. Bu gün ailəmizə qoşulun.",
+				"auth_hero_subtitle": "Nəfis kulinariya incilərimizin zəngin dadını kəşf edin. Bu gün ailəmizə qoşulun.",
 				"auth_step_login_title": "Süfrano-ya xoş gəlmisiniz",
 				"auth_step_login_subtitle": "Daxil olmaq və ya yeni hesab yaratmaq üçün e-poçt və şifrənizi daxil edin.",
 				"auth_step_2fa_title": "İki faktorlu autentifikasiya",
@@ -6337,7 +6337,7 @@
 				"reviews_modal_select_order": "Выберите заказ",
 				"reviews_modal_choose_order": "Выберите заказ...",
 				"reviews_modal_your_review": "Ваш отзыв",
-				"reviews_modal_placeholder": "Поделитесь подробностями о вкусе кофе, доставке, сервисе...",
+				"reviews_modal_placeholder": "Поделитесь подробностями о вкусе блюд, доставке, сервисе...",
 				"reviews_modal_cancel": "Отмена",
 				"reviews_modal_submit": "Опубликовать отзыв",
 				"reviews_modal_submitting": "Публикация...",
@@ -6347,7 +6347,7 @@
 			},
 			en: {
 				"reviews_hero_title": "Review",
-				"reviews_hero_subtitle": "Discover authentic thoughts and stories from our coffee community.",
+				"reviews_hero_subtitle": "Discover authentic thoughts and stories from our restaurant guests.",
 				"reviews_count_singular": "review",
 				"reviews_count_few": "reviews",
 				"reviews_count_plural": "reviews",
@@ -6360,7 +6360,7 @@
 				"reviews_loading": "Loading reviews...",
 				"reviews_empty_my_title": "No reviews written yet",
 				"reviews_empty_all_title": "No reviews found",
-				"reviews_empty_my_desc": "Share your experience with Süfrano after completing an order to help fellow coffee lovers!",
+				"reviews_empty_my_desc": "Share your experience with Süfrano after completing an order to help fellow guests!",
 				"reviews_empty_all_desc": "Be the first to share your experience with Süfrano after completing an order!",
 				"reviews_empty_cat_desc": "There are currently no reviews in this category.",
 				"reviews_write_btn": "Write Review",
@@ -6388,7 +6388,7 @@
 				"reviews_modal_select_order": "Select Order",
 				"reviews_modal_choose_order": "Choose order...",
 				"reviews_modal_your_review": "Your Review",
-				"reviews_modal_placeholder": "Share details about the taste, coffee quality, delivery, staff...",
+				"reviews_modal_placeholder": "Share details about the taste, food quality, delivery, staff...",
 				"reviews_modal_cancel": "Cancel",
 				"reviews_modal_submit": "Submit Review",
 				"reviews_modal_submitting": "Submitting...",
@@ -6398,7 +6398,7 @@
 			},
 			az: {
 				"reviews_hero_title": "Rəylər",
-				"reviews_hero_subtitle": "Qəhvə icmamızın səmimi fikirlərini və hekayələrini kəşf edin.",
+				"reviews_hero_subtitle": "Qonaqlarımızın səmimi fikirlərini və hekayələrini kəşf edin.",
 				"reviews_count_singular": "rəy",
 				"reviews_count_few": "rəy",
 				"reviews_count_plural": "rəy",
@@ -6411,7 +6411,7 @@
 				"reviews_loading": "Rəylər yüklənir...",
 				"reviews_empty_my_title": "Hələ rəy yazılmayıb",
 				"reviews_empty_all_title": "Rəy tapılmadı",
-				"reviews_empty_my_desc": "Sifarişi tamamladıqdan sonra digər qəhvəsevərlərə kömək etmək üçün təcrübənizi bölüşün!",
+				"reviews_empty_my_desc": "Sifarişi tamamladıqdan sonra digər qonaqlara kömək etmək üçün təcrübənizi bölüşün!",
 				"reviews_empty_all_desc": "Sifarişi tamamladıqdan sonra Süfrano ilə təcrübənizi bölüşən ilk şəxs olun!",
 				"reviews_empty_cat_desc": "Bu kateqoriyada hələlik heç bir rəy yoxdur.",
 				"reviews_write_btn": "Rəy yaz",
@@ -6439,7 +6439,7 @@
 				"reviews_modal_select_order": "Sifarişi seçin",
 				"reviews_modal_choose_order": "Sifarişi seçin...",
 				"reviews_modal_your_review": "Sizin rəyiniz",
-				"reviews_modal_placeholder": "Qəhvənin dadı, çatdırılma və xidmət haqqında təfərrüatları bölüşün...",
+				"reviews_modal_placeholder": "Təamların dadı, çatdırılma və xidmət haqqında təfərrüatları bölüşün...",
 				"reviews_modal_cancel": "Ləğv et",
 				"reviews_modal_submit": "Rəyi göndər",
 				"reviews_modal_submitting": "Göndərilir...",
@@ -6564,7 +6564,7 @@
 						src: iconUrl,
 						alt: item.name || "Product",
 						className: "order-select-card__item-img"
-					}) : /* @__PURE__ */ __h("span", { className: "order-select-card__item-fallback" }, "☕")), /* @__PURE__ */ __h("span", { className: "order-select-card__item-name" }, item.name || "Coffee Item"), /* @__PURE__ */ __h("span", { className: "order-select-card__item-qty" }, "x", item.quantity || 1));
+					}) : /* @__PURE__ */ __h("span", { className: "order-select-card__item-fallback" }, "🍽️")), /* @__PURE__ */ __h("span", { className: "order-select-card__item-name" }, item.name || "Menu Item"), /* @__PURE__ */ __h("span", { className: "order-select-card__item-qty" }, "x", item.quantity || 1));
 				})));
 			})), /* @__PURE__ */ __h("div", { className: "order-select-modal__footer" }, /* @__PURE__ */ __h("button", {
 				type: "button",
@@ -7701,7 +7701,7 @@
 				clearReceipt: "Təmizlə",
 				clearReceiptTitle: "Qəbzi təmizlə",
 				receiptEmpty: "Qəbz boşdur",
-				receiptEmptyDesc: "Kataloqdan içki və ya desertləri seçin",
+				receiptEmptyDesc: "Kataloqdan təam və ya içkiləri seçin",
 				decreaseQty: "Sayı azalt",
 				increaseQty: "Sayı artır",
 				removeItem: "Məhsulu sil",
@@ -7862,7 +7862,7 @@
 				clearReceipt: "Очистить",
 				clearReceiptTitle: "Очистить чек",
 				receiptEmpty: "Чек пуст",
-				receiptEmptyDesc: "Выберите напитки или десерты из каталога",
+				receiptEmptyDesc: "Выберите блюда или напитки из каталога",
 				decreaseQty: "Уменьшить количество",
 				increaseQty: "Увеличить количество",
 				removeItem: "Удалить позицию",
@@ -8023,7 +8023,7 @@
 				clearReceipt: "Clear",
 				clearReceiptTitle: "Clear receipt",
 				receiptEmpty: "Receipt is empty",
-				receiptEmptyDesc: "Select beverages or desserts from the catalog",
+				receiptEmptyDesc: "Select dishes or beverages from the catalog",
 				decreaseQty: "Decrease quantity",
 				increaseQty: "Increase quantity",
 				removeItem: "Remove item",

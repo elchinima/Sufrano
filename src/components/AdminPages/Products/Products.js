@@ -970,7 +970,7 @@ const Products = () => {
 		"RU"
 	].map((lang) => langTab === lang && /* @__PURE__ */ __h("div", { key: lang }, /* @__PURE__ */ __h("div", { className: "product-modal__form-group" }, /* @__PURE__ */ __h("div", { className: "product-modal__label-row" }, /* @__PURE__ */ __h("label", null, lang === "AZ" && "Ad (Azərbaycan) *", lang === "EN" && "Name (English)", lang === "RU" && "Название (Русский)"), /* @__PURE__ */ __h("span", { className: `product-modal__counter ${form.nameTranslations[lang].length >= 50 ? "limit" : ""}` }, form.nameTranslations[lang].length, "/50")), /* @__PURE__ */ __h("input", {
 		type: "text",
-		placeholder: lang === "AZ" ? "məs. Qırmızı Latte, Kruasan" : lang === "EN" ? "e.g. Red Latte, Croissant" : "напр. Красный Латте, Круассан",
+		placeholder: lang === "AZ" ? "məs. Ribay Steyk, Şef Salatı" : lang === "EN" ? "e.g. Ribeye Steak, Chef's Salad" : "напр. Рибай Стейк, Салат от шефа",
 		value: form.nameTranslations[lang],
 		maxLength: 50,
 		onChange: (e) => setForm({

@@ -11,7 +11,7 @@ const isWinterSeason = () => {
 };
 const BANNER_CONTENT = {
 	ru: {
-		title: "Скачай приложение — забери кофе в подарок!",
+		title: "Скачай приложение — получи подарок к заказу!",
 		features: [
 			{
 				step: "1",
@@ -107,7 +107,7 @@ const BANNER_CONTENT = {
 			{
 				step: "3",
 				title: "3. Забирай призы и кэшбэк",
-				desc: "До 20% с каждой чашки кофе",
+				desc: "До 20% с каждого заказа",
 				icon: /* @__PURE__ */ __h("svg", {
 					viewBox: "0 0 24 24",
 					fill: "none",
@@ -138,7 +138,7 @@ const BANNER_CONTENT = {
 		}
 	},
 	az: {
-		title: "Tətbiqi yüklə — hədiyyə qəhvə qazan!",
+		title: "Tətbiqi yüklə — sifarişə hədiyyə qazan!",
 		features: [
 			{
 				step: "1",
@@ -234,7 +234,7 @@ const BANNER_CONTENT = {
 			{
 				step: "3",
 				title: "3. Mükafatlar və keşbek qazan",
-				desc: "Hər fincandan 20%-dək keşbek",
+				desc: "Hər sifarişdən 20%-dək keşbek",
 				icon: /* @__PURE__ */ __h("svg", {
 					viewBox: "0 0 24 24",
 					fill: "none",
@@ -265,7 +265,7 @@ const BANNER_CONTENT = {
 		}
 	},
 	en: {
-		title: "Download the app — get a free coffee!",
+		title: "Download the app — get a welcome gift!",
 		features: [
 			{
 				step: "1",
@@ -482,7 +482,7 @@ const AppDownloadBanner = () => {
 	};
 	const isWinter = isWinterSeason();
 	const modelImg = isWinter ? winterModel : summerModel;
-	const modelAlt = isWinter ? "Süfrano Winter Coffee App" : "Süfrano Summer Coffee App";
+	const modelAlt = isWinter ? "Süfrano Winter Restaurant App" : "Süfrano Summer Restaurant App";
 	return /* @__PURE__ */ __h(AnimatePresence, null, isVisible && /* @__PURE__ */ __h(motion.section, {
 		className: "rednest-app-banner",
 		initial: {

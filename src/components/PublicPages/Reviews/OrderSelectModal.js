@@ -81,7 +81,7 @@ const OrderSelectModal = ({ isOpen, onClose, orders = [], selectedOrderId, onSel
 				src: iconUrl,
 				alt: item.name || "Product",
 				className: "order-select-card__item-img"
-			}) : /* @__PURE__ */ __h("span", { className: "order-select-card__item-fallback" }, "☕")), /* @__PURE__ */ __h("span", { className: "order-select-card__item-name" }, item.name || "Coffee Item"), /* @__PURE__ */ __h("span", { className: "order-select-card__item-qty" }, "x", item.quantity || 1));
+			}) : /* @__PURE__ */ __h("span", { className: "order-select-card__item-fallback" }, "🍽️")), /* @__PURE__ */ __h("span", { className: "order-select-card__item-name" }, item.name || "Menu Item"), /* @__PURE__ */ __h("span", { className: "order-select-card__item-qty" }, "x", item.quantity || 1));
 		})));
 	})), /* @__PURE__ */ __h("div", { className: "order-select-modal__footer" }, /* @__PURE__ */ __h("button", {
 		type: "button",

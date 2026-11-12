@@ -453,7 +453,7 @@ const Orders = () => {
 				1
 			]
 		}
-	}, /* @__PURE__ */ __h("div", null, /* @__PURE__ */ __h("h1", { className: "admin-orders__title" }, "Orders"), /* @__PURE__ */ __h("p", { className: "admin-orders__subtitle" }, "Real-time feed of customer coffee receipts, orders, and payment statuses"))), /* @__PURE__ */ __h("div", { className: "admin-orders__stats" }, /* @__PURE__ */ __h(motion.div, {
+	}, /* @__PURE__ */ __h("div", null, /* @__PURE__ */ __h("h1", { className: "admin-orders__title" }, "Orders"), /* @__PURE__ */ __h("p", { className: "admin-orders__subtitle" }, "Real-time feed of customer receipts, orders, and payment statuses"))), /* @__PURE__ */ __h("div", { className: "admin-orders__stats" }, /* @__PURE__ */ __h(motion.div, {
 		className: "admin-orders__stat-card",
 		style: { "--accent": "#c5a059" },
 		custom: 0,

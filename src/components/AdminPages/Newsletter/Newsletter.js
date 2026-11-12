@@ -93,11 +93,11 @@ const Newsletter = () => {
 		heading: "A Special Treat For You, {name}!",
 		bodyHtml: `<p>Hello <strong>{name}</strong>,</p>
 <p>As a valued member of the <strong>Süfrano Club</strong>, we are thrilled to offer you an exclusive <strong>20% discount</strong> on our entire premium menu this week!</p>
-<p>Whether you're craving our handcrafted specialty coffee, signature cold brews, or artisanal sweet bites, your member discount is ready to be claimed.</p>
+<p>Whether you're craving our chef's signature dishes, handcrafted specialties, or artisanal desserts, your member discount is ready to be claimed.</p>
 <p style="padding:14px 18px;background:rgba(197, 160, 89,0.12);border-left:4px solid #c5a059;border-radius:6px;margin:20px 0;">
-  Use promo code <strong style="color:#d4b475;letter-spacing:1px;">SUFRANO20</strong> at checkout or show this email to our barista.
+  Use promo code <strong style="color:#d4b475;letter-spacing:1px;">SUFRANO20</strong> at checkout or show this email to our staff.
 </p>
-<p>Thank you for choosing Süfrano. We can't wait to craft your next favorite cup!</p>`,
+<p>Thank you for choosing Süfrano. We can't wait to serve your next unforgettable meal!</p>`,
 		buttonText: "Order Online Now",
 		buttonUrl: baseUrl ? `${baseUrl}/catalog` : "/catalog",
 		senderName: "Süfrano"
