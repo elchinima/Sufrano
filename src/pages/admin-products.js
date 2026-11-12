@@ -19,9 +19,13 @@
 		const __imp_2 = __require("components/Elements/AdminTableActions.js");
 		const AdminTableActions = __imp_2.default !== undefined ? __imp_2.default : __imp_2;
 		const DEFAULT_CATEGORIES = [
-			"Main Drinks",
+			"Starters & Salads",
+			"Soups",
+			"Main Dishes",
+			"Desserts",
+			"Beverages",
 			"Specialty Drinks",
-			"Desserts"
+			"Main Drinks"
 		];
 		const cleanRole = (role) => (role || "").toLowerCase().replace(/\s+/g, "");
 		const Products = () => {
@@ -55,7 +59,7 @@
 				},
 				price: "",
 				discountPrice: "",
-				category: "Main Drinks",
+				category: "Main Dishes",
 				imageUrl: "",
 				iconUrl: "",
 				isActive: true
@@ -122,7 +126,7 @@
 										group.items.forEach((item) => {
 											flat.push({
 												...item,
-												category: item.category || group.category || "Main Drinks"
+												category: item.category || group.category || "Main Dishes"
 											});
 										});
 									}
@@ -209,7 +213,7 @@
 					},
 					price: "",
 					discountPrice: "",
-					category: "Main Drinks",
+					category: "Main Dishes",
 					imageUrl: "",
 					iconUrl: "",
 					isActive: true
@@ -236,7 +240,7 @@
 					},
 					price: rawPrice !== undefined && rawPrice !== null ? String(rawPrice) : "",
 					discountPrice: rawDiscount !== undefined && rawDiscount !== null ? String(rawDiscount) : "",
-					category: product.category || "Main Drinks",
+					category: product.category || "Main Dishes",
 					imageUrl: product.images?.image || product.imageUrl || "",
 					iconUrl: product.images?.icon || product.iconUrl || "",
 					isActive: product.isActive !== false
@@ -347,7 +351,7 @@
 						price: numPrice,
 						discountPrice: numDiscountPrice
 					},
-					category: form.category || "Main Drinks",
+					category: form.category || "Main Dishes",
 					imageUrl: form.imageUrl.trim(),
 					iconUrl: form.iconUrl.trim(),
 					isActive: form.isActive
@@ -397,9 +401,12 @@
 			};
 			const getCategoryClass = (cat) => {
 				const c = (cat || "").toLowerCase();
-				if (c.includes("main")) return "admin-products__category-badge--main";
-				if (c.includes("special")) return "admin-products__category-badge--specialty";
+				if (c.includes("starter") || c.includes("salad")) return "admin-products__category-badge--starters";
+				if (c.includes("soup")) return "admin-products__category-badge--soups";
+				if (c.includes("main") || c.includes("dish")) return "admin-products__category-badge--main";
 				if (c.includes("dessert")) return "admin-products__category-badge--dessert";
+				if (c.includes("beverage") || c.includes("drink")) return "admin-products__category-badge--beverages";
+				if (c.includes("special")) return "admin-products__category-badge--specialty";
 				return "admin-products__category-badge--other";
 			};
 			return /* @__PURE__ */ __h(AdminLayout, null, /* @__PURE__ */ __h("div", { className: "admin-products" }, /* @__PURE__ */ __h(AnimatePresence, null, toast.message && /* @__PURE__ */ __h(motion.div, {
@@ -660,7 +667,7 @@
 					onError: (e) => {
 						e.target.style.display = "none";
 					}
-				}) : /* @__PURE__ */ __h("span", { className: "admin-products__thumb-fallback" }, "☕")), /* @__PURE__ */ __h("div", { className: "admin-products__product-info" }, /* @__PURE__ */ __h("span", { className: "admin-products__product-name" }, prod.name)))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("span", { className: `admin-products__category-badge ${getCategoryClass(prod.category)}` }, prod.category || "Main Drinks")), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-products__price-cell" }, priceInfo.hasDiscount ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("div", { className: "admin-products__price-strikethrough-wrap" }, /* @__PURE__ */ __h("span", { className: "admin-products__old-price" }, priceInfo.formattedBasePrice, " ₼"), /* @__PURE__ */ __h("span", { className: "admin-products__discount-tag" }, "-", priceInfo.discountPercent, "%")), /* @__PURE__ */ __h("span", { className: "admin-products__price-text admin-products__price-text--sale" }, priceInfo.formattedEffectivePrice, " ₼")) : /* @__PURE__ */ __h("span", { className: "admin-products__price-text" }, priceInfo.formattedBasePrice, " ₼"))), /* @__PURE__ */ __h("td", { className: "text-center" }, /* @__PURE__ */ __h("span", { className: "admin-products__sold-pill" }, prod.totalSold ?? 0)), /* @__PURE__ */ __h("td", { className: "text-center" }, /* @__PURE__ */ __h("span", {
+				}) : /* @__PURE__ */ __h("span", { className: "admin-products__thumb-fallback" }, "🍽️")), /* @__PURE__ */ __h("div", { className: "admin-products__product-info" }, /* @__PURE__ */ __h("span", { className: "admin-products__product-name" }, prod.name)))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("span", { className: `admin-products__category-badge ${getCategoryClass(prod.category)}` }, prod.category || "Main Dishes")), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-products__price-cell" }, priceInfo.hasDiscount ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("div", { className: "admin-products__price-strikethrough-wrap" }, /* @__PURE__ */ __h("span", { className: "admin-products__old-price" }, priceInfo.formattedBasePrice, " ₼"), /* @__PURE__ */ __h("span", { className: "admin-products__discount-tag" }, "-", priceInfo.discountPercent, "%")), /* @__PURE__ */ __h("span", { className: "admin-products__price-text admin-products__price-text--sale" }, priceInfo.formattedEffectivePrice, " ₼")) : /* @__PURE__ */ __h("span", { className: "admin-products__price-text" }, priceInfo.formattedBasePrice, " ₼"))), /* @__PURE__ */ __h("td", { className: "text-center" }, /* @__PURE__ */ __h("span", { className: "admin-products__sold-pill" }, prod.totalSold ?? 0)), /* @__PURE__ */ __h("td", { className: "text-center" }, /* @__PURE__ */ __h("span", {
 					className: `admin-products__status-badge ${prod.isActive !== false ? "admin-products__status-badge--active" : "admin-products__status-badge--inactive"}`,
 					onClick: () => handleToggleActive(prod),
 					title: "Click to toggle status"
@@ -741,7 +748,7 @@
 					onError: (e) => {
 						e.target.style.display = "none";
 					}
-				}) : /* @__PURE__ */ __h("span", { className: "admin-products__thumb-fallback" }, "☕")), /* @__PURE__ */ __h("div", { className: "admin-products__mobile-main" }, /* @__PURE__ */ __h("div", { className: "admin-products__mobile-title-row" }, /* @__PURE__ */ __h("span", { className: "admin-products__product-name" }, prod.name), /* @__PURE__ */ __h("div", { className: "admin-products__mobile-price-wrap" }, priceInfo.hasDiscount ? /* @__PURE__ */ __h("div", { style: {
+				}) : /* @__PURE__ */ __h("span", { className: "admin-products__thumb-fallback" }, "🍽️")), /* @__PURE__ */ __h("div", { className: "admin-products__mobile-main" }, /* @__PURE__ */ __h("div", { className: "admin-products__mobile-title-row" }, /* @__PURE__ */ __h("span", { className: "admin-products__product-name" }, prod.name), /* @__PURE__ */ __h("div", { className: "admin-products__mobile-price-wrap" }, priceInfo.hasDiscount ? /* @__PURE__ */ __h("div", { style: {
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "flex-end",
@@ -753,7 +760,7 @@
 				} }, /* @__PURE__ */ __h("span", { className: "admin-products__old-price" }, priceInfo.formattedBasePrice, " ₼"), /* @__PURE__ */ __h("span", { className: "admin-products__discount-tag" }, "-", priceInfo.discountPercent, "%")), /* @__PURE__ */ __h("span", {
 					className: "admin-products__mobile-price",
 					style: { color: "#4ade80" }
-				}, priceInfo.formattedEffectivePrice, " ₼")) : /* @__PURE__ */ __h("span", { className: "admin-products__mobile-price" }, priceInfo.formattedBasePrice, " ₼"))), /* @__PURE__ */ __h("div", { className: "admin-products__mobile-tags" }, /* @__PURE__ */ __h("span", { className: `admin-products__category-badge ${getCategoryClass(prod.category)}` }, prod.category || "Main Drinks"), /* @__PURE__ */ __h("span", {
+				}, priceInfo.formattedEffectivePrice, " ₼")) : /* @__PURE__ */ __h("span", { className: "admin-products__mobile-price" }, priceInfo.formattedBasePrice, " ₼"))), /* @__PURE__ */ __h("div", { className: "admin-products__mobile-tags" }, /* @__PURE__ */ __h("span", { className: `admin-products__category-badge ${getCategoryClass(prod.category)}` }, prod.category || "Main Dishes"), /* @__PURE__ */ __h("span", {
 					className: `admin-products__status-badge ${prod.isActive !== false ? "admin-products__status-badge--active" : "admin-products__status-badge--inactive"}`,
 					onClick: (e) => {
 						e.stopPropagation();
@@ -814,14 +821,14 @@
 					fontSize: "2rem",
 					background: "rgba(255,255,255,0.05)"
 				}
-			}, "☕"), /* @__PURE__ */ __h("div", { className: "product-modal__details-meta" }, /* @__PURE__ */ __h("h4", { style: {
+			}, "🍽️"), /* @__PURE__ */ __h("div", { className: "product-modal__details-meta" }, /* @__PURE__ */ __h("h4", { style: {
 				margin: 0,
 				fontSize: "1.2rem",
 				color: "#fff"
 			} }, activeProduct.name), /* @__PURE__ */ __h("span", {
 				className: `admin-products__category-badge ${getCategoryClass(activeProduct.category)}`,
 				style: { alignSelf: "flex-start" }
-			}, activeProduct.category || "Main Drinks"), (() => {
+			}, activeProduct.category || "Main Dishes"), (() => {
 				const priceInfo = getProductPriceInfo(activeProduct);
 				return /* @__PURE__ */ __h("div", { className: "product-modal__details-price" }, priceInfo.hasDiscount ? /* @__PURE__ */ __h("div", { style: {
 					display: "flex",

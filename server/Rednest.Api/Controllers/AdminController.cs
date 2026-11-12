@@ -1654,7 +1654,7 @@ public class AdminController : ControllerBase
         if (discountPrice.HasValue && discountPrice.Value < 0)
             return BadRequest(new { message = "Discount price cannot be negative." });
 
-        var category = string.IsNullOrWhiteSpace(request.Category) ? "Main Drinks" : request.Category.Trim();
+        var category = string.IsNullOrWhiteSpace(request.Category) ? "Main Dishes" : request.Category.Trim();
 
         var nameAZ = request.NameTranslations?.AZ?.Trim() ?? request.Name?.Trim() ?? string.Empty;
         var nameEN = request.NameTranslations?.EN?.Trim() ?? string.Empty;

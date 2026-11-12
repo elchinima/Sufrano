@@ -123,7 +123,7 @@ public class CashboxController : ControllerBase
             };
         }).ToList();
 
-        var predefinedOrder = new List<string> { "All", "Main Drinks", "Specialty Drinks", "Desserts" };
+        var predefinedOrder = new List<string> { "All", "Starters & Salads", "Soups", "Main Dishes", "Desserts", "Beverages", "Specialty Drinks", "Main Drinks" };
         var foundCategories = productList.Select(p => p.category).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
         var allCategories = new List<string> { "All" };
         foreach (var cat in predefinedOrder.Skip(1))

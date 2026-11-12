@@ -87,7 +87,7 @@ const CategorySection = ({ categoryObj, index, onAddItem, addedAnimations, loade
 			loading: "lazy",
 			onLoad: () => loadedImages.markLoaded?.(item.id),
 			className: `item-image ${loadedImages[item.id] ? "loaded" : ""}`
-		}), !loadedImages[item.id] && /* @__PURE__ */ __h("div", { className: "item-image-placeholder" }, /* @__PURE__ */ __h("span", { className: "placeholder-icon" }, item.icon || "☕"))) : /* @__PURE__ */ __h("div", { className: "item-image-placeholder" }, /* @__PURE__ */ __h("span", { className: "placeholder-icon" }, item.icon || "☕"))), /* @__PURE__ */ __h("div", { className: "card-content" }, /* @__PURE__ */ __h("div", { className: "card-header" }, /* @__PURE__ */ __h(FitText, {
+		}), !loadedImages[item.id] && /* @__PURE__ */ __h("div", { className: "item-image-placeholder" }, /* @__PURE__ */ __h("span", { className: "placeholder-icon" }, item.icon || "🍽️"))) : /* @__PURE__ */ __h("div", { className: "item-image-placeholder" }, /* @__PURE__ */ __h("span", { className: "placeholder-icon" }, item.icon || "🍽️"))), /* @__PURE__ */ __h("div", { className: "card-content" }, /* @__PURE__ */ __h("div", { className: "card-header" }, /* @__PURE__ */ __h(FitText, {
 			as: "h3",
 			className: "item-name",
 			maxFontSize: 1.3,

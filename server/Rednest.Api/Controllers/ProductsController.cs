@@ -43,14 +43,24 @@ public class ProductsController : ControllerBase
             .Where(p => p.IsActive)
             .ToListAsync();
 
-        var categoryOrder = new[] { "Main Drinks", "Specialty Drinks", "Desserts" };
+        var preferredOrder = new[] { "Starters & Salads", "Soups", "Main Dishes", "Desserts", "Beverages", "Specialty Drinks", "Main Drinks" };
 
-        var grouped = categoryOrder
+        var distinctCategories = products
+            .Select(p => p.Category)
+            .Where(c => !string.IsNullOrWhiteSpace(c))
+            .Distinct(StringComparer.OrdinalIgnoreCase);
+
+        var orderedCategories = preferredOrder
+            .Concat(distinctCategories)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        var grouped = orderedCategories
             .Select(cat => new
             {
                 category = cat,
                 items = products
-                    .Where(p => p.Category == cat)
+                    .Where(p => string.Equals(p.Category, cat, StringComparison.OrdinalIgnoreCase))
                     .OrderBy(p => p.Prices != null ? (p.Prices.DiscountPrice ?? p.Prices.Price) : 0m)
                     .Select(p => new
                     {

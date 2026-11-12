@@ -600,9 +600,11 @@
 			const [products, setProducts] = useState([]);
 			const [categories, setCategories] = useState([
 				"All",
-				"Main Drinks",
-				"Specialty Drinks",
-				"Desserts"
+				"Starters & Salads",
+				"Soups",
+				"Main Dishes",
+				"Desserts",
+				"Beverages"
 			]);
 			const [loading, setLoading] = useState(true);
 			const [selectedCategory, setSelectedCategory] = useState("All");
@@ -740,7 +742,7 @@
 				if (pType === "freedrink" || pType === "1" || pName.includes("DRINK")) {
 					const drinks = cartItems.filter((item) => {
 						const cat = (item.category || "").toLowerCase();
-						return cat.includes("drink") || cat.includes("coffee") || cat.includes("tea");
+						return cat.includes("drink") || cat.includes("beverage") || cat.includes("coffee") || cat.includes("tea");
 					});
 					if (drinks.length === 0) return 0;
 					const totalDrinkQty = drinks.reduce((sum, x) => sum + x.qty, 0);

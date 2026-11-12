@@ -97,9 +97,9 @@ public class OrdersController : ControllerBase
 
                     case PrizeType.FreeDrink:
                     {
-                        var drinkCategories = new[] { "Main Drinks", "Specialty Drinks" };
+                        var drinkCategories = new[] { "Beverages", "Drinks", "Main Drinks", "Specialty Drinks" };
                         var drinks = enriched.Where(x => drinkCategories.Contains(x.Product!.Category) || 
-                                                         x.Product.Category.Contains("Drink", StringComparison.OrdinalIgnoreCase)).ToList();
+                                                         (x.Product.Category != null && (x.Product.Category.Contains("Drink", StringComparison.OrdinalIgnoreCase) || x.Product.Category.Contains("Beverage", StringComparison.OrdinalIgnoreCase)))).ToList();
                         if (drinks.Count > 0)
                         {
                             var totalDrinkQty = drinks.Sum(x => x.Item.Quantity);
