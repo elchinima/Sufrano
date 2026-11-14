@@ -29,21 +29,25 @@ const SEGMENTS = [
 	{
 		label: "DISCOUNT UP TO 25%",
 		lines: ["DISCOUNT", "UP TO", "25%"],
+		 isThreeLine: true,
 		prize: "25% discount on your next order!"
 	},
 	{
 		label: "CASHBACK ON PURCHASES",
 		lines: ["CASHBACK ON", "PURCHASES"],
+		isCompact: true,
 		prize: "Cashback on your next order!"
 	},
 	{
 		label: "DISCOUNT UP TO 50%",
 		lines: ["DISCOUNT", "UP TO 50%"],
+		isMedium: true,
 		prize: "50% discount on your next order!"
 	}
 ];
 const NUM_SEGMENTS = SEGMENTS.length;
 const ARC = 2 * Math.PI / NUM_SEGMENTS;
+const RIM_PEGS = Array.from({ length: 12 }, (_, i) => i * 30);
 const Fortune = () => {
 	const navigate = useNavigate();
 	const wheelRef = useRef(null);
@@ -59,6 +63,14 @@ const Fortune = () => {
 	const [showPrize, setShowPrize] = useState(false);
 	const [serverPromo, setServerPromo] = useState(null);
 	const [promoLoading, setPromoLoading] = useState(false);
+	const [copiedCode, setCopiedCode] = useState(false);
+	const handleCopyCode = useCallback((code) => {
+		if (!code || !navigator?.clipboard) return;
+		navigator.clipboard.writeText(code).then(() => {
+			setCopiedCode(true);
+			setTimeout(() => setCopiedCode(false), 2e3);
+		}).catch(() => {});
+	}, []);
 	useEffect(() => {
 		if (!user) return;
 		const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
@@ -264,44 +276,122 @@ const Fortune = () => {
 				1
 			]
 		}
-	}, /* @__PURE__ */ __h("div", { className: "fortune-wheel-wrap" }, /* @__PURE__ */ __h("div", {
+	}, /* @__PURE__ */ __h("div", { className: `fortune-wheel-wrap${spinning ? " fortune-wheel-wrap--spinning" : ""}${canSpin && !spinning && promoChecked ? " fortune-wheel-wrap--ready" : ""}` }, /* @__PURE__ */ __h("div", {
+		className: "fortune-wheel-halo",
+		"aria-hidden": "true"
+	}), /* @__PURE__ */ __h("div", {
 		className: "fortune-pointer",
 		"aria-hidden": "true"
 	}, /* @__PURE__ */ __h("svg", {
-		viewBox: "0 0 36 44",
+		viewBox: "0 0 48 58",
 		xmlns: "http://www.w3.org/2000/svg"
-	}, /* @__PURE__ */ __h("polygon", {
-		points: "18,42 1,5 35,5",
-		fill: "#c5a059",
-		stroke: "#dfc288",
-		strokeWidth: "1.5"
+	}, /* @__PURE__ */ __h("defs", null, /* @__PURE__ */ __h("linearGradient", {
+		id: "ptrGoldLeft",
+		x1: "0%",
+		y1: "0%",
+		x2: "100%",
+		y2: "100%"
+	}, /* @__PURE__ */ __h("stop", {
+		offset: "0%",
+		stopColor: "#f7e7c4"
+	}), /* @__PURE__ */ __h("stop", {
+		offset: "100%",
+		stopColor: "#c5a059"
+	})), /* @__PURE__ */ __h("linearGradient", {
+		id: "ptrGoldRight",
+		x1: "0%",
+		y1: "0%",
+		x2: "100%",
+		y2: "100%"
+	}, /* @__PURE__ */ __h("stop", {
+		offset: "0%",
+		stopColor: "#d4b26f"
+	}), /* @__PURE__ */ __h("stop", {
+		offset: "100%",
+		stopColor: "#8a6623"
+	}))), /* @__PURE__ */ __h("polygon", {
+		points: "24,55 5,12 24,18",
+		fill: "url(#ptrGoldLeft)"
+	}), /* @__PURE__ */ __h("polygon", {
+		points: "24,55 43,12 24,18",
+		fill: "url(#ptrGoldRight)"
+	}), /* @__PURE__ */ __h("polygon", {
+		points: "24,55 5,12 24,6 43,12",
+		fill: "none",
+		stroke: "#f3dfb6",
+		strokeWidth: "1.4",
+		strokeLinejoin: "round"
 	}), /* @__PURE__ */ __h("circle", {
-		cx: "18",
-		cy: "8",
-		r: "4.5",
-		fill: "#24050d"
+		cx: "24",
+		cy: "13",
+		r: "9",
+		fill: "#4a070c",
+		stroke: "#dfc288",
+		strokeWidth: "2.2"
+	}), /* @__PURE__ */ __h("circle", {
+		cx: "24",
+		cy: "13",
+		r: "4",
+		fill: "#dfc288"
 	}))), /* @__PURE__ */ __h("div", {
 		ref: wheelRef,
 		className: "fortune-wheel",
 		role: "img",
-		"aria-label": "Wheel of Fortune"
-	}, /* @__PURE__ */ __h("div", { className: "fortune-wheel__disc" }, /* @__PURE__ */ __h("div", {
+		"aria-label": "Wheel of Fortune",
+		onClick: canSpin && !spinning && promoChecked ? spin : void 0
+	}, /* @__PURE__ */ __h("div", {
+		className: "fortune-wheel__pegs",
+		"aria-hidden": "true"
+	}, RIM_PEGS.map((deg, idx) => /* @__PURE__ */ __h("span", {
+		key: deg,
+		className: `fortune-wheel__peg${idx % 2 === 1 ? " fortune-wheel__peg--major" : ""}`,
+		style: { "--peg-angle": `${deg}deg` }
+	}))), /* @__PURE__ */ __h("div", { className: "fortune-wheel__disc" }, /* @__PURE__ */ __h("div", {
 		className: "fortune-wheel__spokes",
 		"aria-hidden": "true"
 	}, /* @__PURE__ */ __h("span", { className: "fortune-wheel__spoke fortune-wheel__spoke--1" }), /* @__PURE__ */ __h("span", { className: "fortune-wheel__spoke fortune-wheel__spoke--2" }), /* @__PURE__ */ __h("span", { className: "fortune-wheel__spoke fortune-wheel__spoke--3" })), SEGMENTS.map((seg, idx) => /* @__PURE__ */ __h("div", {
 		key: idx,
-		className: `fortune-wheel__segment${seg.hasCrown ? " fortune-wheel__segment--super" : ""}${idx === 4 ? " fortune-wheel__segment--compact" : ""}`,
+		className: `fortune-wheel__segment${seg.hasCrown ? " fortune-wheel__segment--super" : ""}${seg.isCompact ? " fortune-wheel__segment--compact" : ""}${seg.isThreeLine ? " fortune-wheel__segment--three" : ""}${seg.isMedium ? " fortune-wheel__segment--medium" : ""}`,
 		style: { "--seg-angle": `${idx * 60}deg` }
 	}, /* @__PURE__ */ __h("div", { className: "fortune-wheel__segment-content" }, seg.hasCrown && /* @__PURE__ */ __h("span", {
 		className: "fortune-wheel__crown",
 		"aria-hidden": "true"
-	}, /* @__PURE__ */ __h("span", { className: "fortune-wheel__crown-body" }), /* @__PURE__ */ __h("span", { className: "fortune-wheel__crown-base" })), seg.lines.map((line, lineIdx) => /* @__PURE__ */ __h("span", {
+	}, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 64 46",
+		className: "fortune-wheel__crown-svg",
+		xmlns: "http://www.w3.org/2000/svg"
+	}, /* @__PURE__ */ __h("circle", {
+		cx: "8",
+		cy: "13",
+		r: "4.2",
+		fill: "currentColor"
+	}), /* @__PURE__ */ __h("circle", {
+		cx: "32",
+		cy: "6.5",
+		r: "4.6",
+		fill: "currentColor"
+	}), /* @__PURE__ */ __h("circle", {
+		cx: "56",
+		cy: "13",
+		r: "4.2",
+		fill: "currentColor"
+	}), /* @__PURE__ */ __h("path", {
+		d: "M10 17 L21 28 L32 11 L43 28 L54 17 L49 36 H15 Z",
+		fill: "currentColor"
+	}), /* @__PURE__ */ __h("rect", {
+		x: "14",
+		y: "39",
+		width: "36",
+		height: "4.8",
+		rx: "2.4",
+		fill: "currentColor"
+	}))), seg.lines.map((line, lineIdx) => /* @__PURE__ */ __h("span", {
 		key: lineIdx,
 		className: "fortune-wheel__segment-line"
 	}, line))))), /* @__PURE__ */ __h("div", {
 		className: "fortune-wheel__center-hub",
 		"aria-hidden": "true"
-	})))), /* @__PURE__ */ __h(motion.button, {
+	}, /* @__PURE__ */ __h("span", { className: "fortune-wheel__center-cap" }, /* @__PURE__ */ __h("span", { className: "fortune-wheel__center-core" })))))), /* @__PURE__ */ __h(motion.button, {
 		className: `cta-btn fortune-spin-btn lg${spinning ? " fortune-spin-btn--spinning" : ""}${!canSpin && !spinning && promoChecked ? " fortune-spin-btn--used" : ""}`,
 		onClick: spin,
 		disabled: spinning || !canSpin || !promoChecked,
@@ -321,7 +411,11 @@ const Fortune = () => {
 			y: 0
 		},
 		transition: { delay: .2 }
-	}, /* @__PURE__ */ __h("p", { className: "fortune-note" }, serverPromo?.isActive ? "You have an active promo code ✨" : "You have already spun the wheel this week."))))), /* @__PURE__ */ __h(Footer, null), /* @__PURE__ */ __h(AnimatePresence, null, showPrize && prize && /* @__PURE__ */ __h(motion.div, {
+	}, /* @__PURE__ */ __h("p", { className: "fortune-note" }, serverPromo?.isActive ? "You have an active promo code ✨" : "You have already spun the wheel this week."), serverPromo?.isActive && serverPromo?.promoCode && /* @__PURE__ */ __h("div", { className: "fortune-active-promo-pill" }, /* @__PURE__ */ __h("span", { className: "fortune-active-promo-pill__code" }, serverPromo.promoCode), /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "fortune-active-promo-pill__copy",
+		onClick: () => handleCopyCode(serverPromo.promoCode)
+	}, copiedCode ? "Copied!" : "Copy")))))), /* @__PURE__ */ __h(Footer, null), /* @__PURE__ */ __h(AnimatePresence, null, showPrize && prize && /* @__PURE__ */ __h(motion.div, {
 		className: "fortune-prize-overlay",
 		initial: { opacity: 0 },
 		animate: { opacity: 1 },
@@ -372,7 +466,11 @@ const Fortune = () => {
 			width: "32px",
 			height: "32px"
 		}
-	})) : serverPromo?.promoCode ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("p", { className: "prize-code-label" }, "Your promo code"), /* @__PURE__ */ __h("div", { className: "prize-code" }, serverPromo.promoCode), serverPromo.expiresAt && /* @__PURE__ */ __h("p", {
+	})) : serverPromo?.promoCode ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("p", { className: "prize-code-label" }, "Your promo code"), /* @__PURE__ */ __h("div", {
+		className: "prize-code",
+		onClick: () => handleCopyCode(serverPromo.promoCode),
+		title: "Click to copy"
+	}, serverPromo.promoCode, /* @__PURE__ */ __h("span", { className: "prize-code__badge" }, copiedCode ? "Copied!" : "Copy")), serverPromo.expiresAt && /* @__PURE__ */ __h("p", {
 		className: "prize-code-label",
 		style: {
 			marginTop: "6px",
