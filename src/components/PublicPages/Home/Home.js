@@ -391,7 +391,7 @@ const Home = () => {
 		id: "subscribe-btn",
 		disabled: subscribeLoading,
 		"data-id": "home_club_btn"
-	}, subscribeLoading ? t("home_club_btn_loading") : t("home_club_btn"))))), /* @__PURE__ */ __h(SubscribeModal, {
+	}, subscribeLoading ? t("home_club_btn_loading") : !isDesktop && lang === "ru" ? t("home_club_btn_mobile") : t("home_club_btn"))))), /* @__PURE__ */ __h(SubscribeModal, {
 		isOpen: isSubscribeModalOpen,
 		onClose: () => setIsSubscribeModalOpen(false),
 		email: subscribeEmail,

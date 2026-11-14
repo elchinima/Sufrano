@@ -29,6 +29,7 @@
 				"home_club_desc": "Подпишитесь, чтобы первыми получать эксклюзивные предложения, новости о сезонном меню и секреты шеф-повара прямо на почту.",
 				"home_club_placeholder": "Введите ваш email",
 				"home_club_btn": "Подписаться",
+				"home_club_btn_mobile": "Готово",
 				"home_club_btn_loading": "Отправка...",
 				"home_modal_sub_title": "Подтверждение подписки",
 				"home_modal_sub_desc": "Мы отправили 4-значный код на",
@@ -862,7 +863,7 @@
 				id: "subscribe-btn",
 				disabled: subscribeLoading,
 				"data-id": "home_club_btn"
-			}, subscribeLoading ? t("home_club_btn_loading") : t("home_club_btn"))))), /* @__PURE__ */ __h(SubscribeModal, {
+			}, subscribeLoading ? t("home_club_btn_loading") : !isDesktop && lang === "ru" ? t("home_club_btn_mobile") : t("home_club_btn"))))), /* @__PURE__ */ __h(SubscribeModal, {
 				isOpen: isSubscribeModalOpen,
 				onClose: () => setIsSubscribeModalOpen(false),
 				email: subscribeEmail,

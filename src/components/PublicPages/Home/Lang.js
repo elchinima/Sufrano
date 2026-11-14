@@ -22,6 +22,7 @@ export const translations = {
 		"home_club_desc": "Подпишитесь, чтобы первыми получать эксклюзивные предложения, новости о сезонном меню и секреты шеф-повара прямо на почту.",
 		"home_club_placeholder": "Введите ваш email",
 		"home_club_btn": "Подписаться",
+		"home_club_btn_mobile": "Готово",
 		"home_club_btn_loading": "Отправка...",
 		"home_modal_sub_title": "Подтверждение подписки",
 		"home_modal_sub_desc": "Мы отправили 4-значный код на",
