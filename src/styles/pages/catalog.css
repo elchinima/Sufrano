@@ -229,7 +229,7 @@
   min-width: 0;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: clip;
 }
 .catalog-card .card-content .card-header .item-price-container {
   display: flex;

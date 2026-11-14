@@ -15,6 +15,7 @@ import SubscribeErrorModal from "./SubscribeErrorModal.js";
 import SubscribeSuccessModal from "./SubscribeSuccessModal.js";
 import Footer from "../../Footer/Footer.js";
 import Navbar from "../../Elements/Navbar.js";
+import FitText from "../../Elements/FitText.js";
 import { useLang } from "../../../utils/useLang.js";
 import { getHomeTranslation } from "./Lang.js";
 let cachedBlobUrl = null;
@@ -331,7 +332,10 @@ const Home = () => {
 			className: "menu-img-placeholder",
 			style: { objectFit: "cover" },
 			loading: "lazy"
-		}), /* @__PURE__ */ __h("div", { className: "menu-info" }, /* @__PURE__ */ __h("h4", { title: prod.name }, prod.name), /* @__PURE__ */ __h("p", { title: prod.description || "" }, prod.description || "Delicious handcrafted dish made with premium ingredients."), /* @__PURE__ */ __h("div", { className: `home-price-container ${hasDiscount ? "has-discount" : "no-discount"}` }, hasDiscount && /* @__PURE__ */ __h("div", { className: "home-old-price-pill" }, /* @__PURE__ */ __h("span", { className: "discount-tag" }, "-", discountPercent, "%"), /* @__PURE__ */ __h("span", { className: "old-price" }, oldPriceFormatted, " ₼")), /* @__PURE__ */ __h("span", { className: "price" }, effectivePriceFormatted, " ₼"))));
+		}), /* @__PURE__ */ __h("div", { className: "menu-info" }, /* @__PURE__ */ __h(FitText, {
+			as: "h4",
+			title: prod.name
+		}, prod.name), /* @__PURE__ */ __h("p", { title: prod.description || "" }, prod.description || "Delicious handcrafted dish made with premium ingredients."), /* @__PURE__ */ __h("div", { className: `home-price-container ${hasDiscount ? "has-discount" : "no-discount"}` }, hasDiscount && /* @__PURE__ */ __h("div", { className: "home-old-price-pill" }, /* @__PURE__ */ __h("span", { className: "discount-tag" }, "-", discountPercent, "%"), /* @__PURE__ */ __h("span", { className: "old-price" }, oldPriceFormatted, " ₼")), /* @__PURE__ */ __h("span", { className: "price" }, effectivePriceFormatted, " ₼"))));
 	})), /* @__PURE__ */ __h("div", { className: "section-actions" }, /* @__PURE__ */ __h(Link, {
 		to: "/catalog",
 		className: "cta-btn secondary",

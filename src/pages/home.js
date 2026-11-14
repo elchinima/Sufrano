@@ -485,6 +485,8 @@
 		const Footer = __imp_4.default !== undefined ? __imp_4.default : __imp_4;
 		const __imp_5 = __require("components/Elements/Navbar.js");
 		const Navbar = __imp_5.default !== undefined ? __imp_5.default : __imp_5;
+		const __imp_6 = __require("components/Elements/FitText.js");
+		const FitText = __imp_6.default !== undefined ? __imp_6.default : __imp_6;
 		const { useLang } = __require("utils/useLang.js");
 		const { getHomeTranslation } = __require("components/PublicPages/Home/Lang.js");
 		let cachedBlobUrl = null;
@@ -801,7 +803,10 @@
 					className: "menu-img-placeholder",
 					style: { objectFit: "cover" },
 					loading: "lazy"
-				}), /* @__PURE__ */ __h("div", { className: "menu-info" }, /* @__PURE__ */ __h("h4", { title: prod.name }, prod.name), /* @__PURE__ */ __h("p", { title: prod.description || "" }, prod.description || "Delicious handcrafted dish made with premium ingredients."), /* @__PURE__ */ __h("div", { className: `home-price-container ${hasDiscount ? "has-discount" : "no-discount"}` }, hasDiscount && /* @__PURE__ */ __h("div", { className: "home-old-price-pill" }, /* @__PURE__ */ __h("span", { className: "discount-tag" }, "-", discountPercent, "%"), /* @__PURE__ */ __h("span", { className: "old-price" }, oldPriceFormatted, " ₼")), /* @__PURE__ */ __h("span", { className: "price" }, effectivePriceFormatted, " ₼"))));
+				}), /* @__PURE__ */ __h("div", { className: "menu-info" }, /* @__PURE__ */ __h(FitText, {
+					as: "h4",
+					title: prod.name
+				}, prod.name), /* @__PURE__ */ __h("p", { title: prod.description || "" }, prod.description || "Delicious handcrafted dish made with premium ingredients."), /* @__PURE__ */ __h("div", { className: `home-price-container ${hasDiscount ? "has-discount" : "no-discount"}` }, hasDiscount && /* @__PURE__ */ __h("div", { className: "home-old-price-pill" }, /* @__PURE__ */ __h("span", { className: "discount-tag" }, "-", discountPercent, "%"), /* @__PURE__ */ __h("span", { className: "old-price" }, oldPriceFormatted, " ₼")), /* @__PURE__ */ __h("span", { className: "price" }, effectivePriceFormatted, " ₼"))));
 			})), /* @__PURE__ */ __h("div", { className: "section-actions" }, /* @__PURE__ */ __h(Link, {
 				to: "/catalog",
 				className: "cta-btn secondary",

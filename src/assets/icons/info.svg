@@ -1,0 +1,8 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="background: transparent; color-scheme: dark;" xmlns="http://www.w3.org/2000/svg">
+  <!-- Внешний круг -->
+  <circle cx="24" cy="24" r="18" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Точка i -->
+  <circle cx="24" cy="16.5" r="1.75" fill="#c5a059"/>
+  <!-- Линия i -->
+  <path d="M24 22V32.5" stroke="#c5a059" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

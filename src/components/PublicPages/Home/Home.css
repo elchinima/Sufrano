@@ -237,7 +237,7 @@
   margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: clip;
 }
 .popular-menu-section .menu-item-card .menu-info p {
   color: rgba(255, 248, 231, 0.82);

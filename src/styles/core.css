@@ -527,6 +527,37 @@ div:has(> iframe[src*="link.stripe.com"]) {
   display: block;
 }
 
+.fit-text-container {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+
+.fit-text-inner {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.fit-text-inner--sliding {
+  animation: fitTextSlide var(--fit-text-duration, 6s) ease-in-out infinite;
+}
+
+@keyframes fitTextSlide {
+  0%, 18% {
+    transform: translateX(0);
+  }
+  50%, 68% {
+    transform: translateX(var(--fit-text-offset, 0px));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
 /* === components/Elements/AdminTableActions.css === */
 .admin-table-actions {
   position: relative;

@@ -179,7 +179,7 @@
   min-width: 0;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: clip;
 }
 .basket-item-info .basket-item-unit-price {
   font-size: 0.85rem;
