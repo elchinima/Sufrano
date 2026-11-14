@@ -5419,7 +5419,7 @@
 				ref: userMenuRef
 			}, /* @__PURE__ */ __h("button", {
 				type: "button",
-				className: "user-nav-capsule",
+				className: `user-nav-capsule ${isUserMenuOpen ? "open" : ""}`,
 				onClick: () => setIsUserMenuOpen((prev) => !prev),
 				"aria-expanded": isUserMenuOpen,
 				"aria-haspopup": "true"
@@ -5431,7 +5431,7 @@
 				alt: userName,
 				className: "user-nav-capsule__avatar-img",
 				onError: handleAvatarError
-			})), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__info-row" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__name" }, userName), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__divider" }), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-amount" }, formattedBalance), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-symbol" }, "₼")), /* @__PURE__ */ __h("svg", {
+			})), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__info-row" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__name" }, userName), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__divider" }), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance" }, /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-amount" }, formattedBalance), /* @__PURE__ */ __h("span", { className: "user-nav-capsule__balance-symbol" }, "₼"))), /* @__PURE__ */ __h("svg", {
 				className: `user-nav-capsule__chevron ${isUserMenuOpen ? "open" : ""}`,
 				viewBox: "0 0 24 24",
 				width: "14",
@@ -5441,7 +5441,7 @@
 				strokeWidth: "2.5",
 				strokeLinecap: "round",
 				strokeLinejoin: "round"
-			}, /* @__PURE__ */ __h("polyline", { points: "6 9 12 15 18 9" })))), /* @__PURE__ */ __h("div", { className: `user-nav-capsule__dropdown-wrapper ${isUserMenuOpen ? "open" : ""}` }, /* @__PURE__ */ __h("div", { className: "user-nav-capsule__dropdown" }, /* @__PURE__ */ __h("div", { className: "user-nav-capsule__dropdown-inner" }, /* @__PURE__ */ __h("button", {
+			}, /* @__PURE__ */ __h("polyline", { points: "6 9 12 15 18 9" }))), /* @__PURE__ */ __h("div", { className: `user-nav-capsule__dropdown-wrapper ${isUserMenuOpen ? "open" : ""}` }, /* @__PURE__ */ __h("div", { className: "user-nav-capsule__dropdown" }, /* @__PURE__ */ __h("div", { className: "user-nav-capsule__dropdown-inner" }, /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "user-nav-capsule__dropdown-item",
 				onClick: () => {
@@ -5453,27 +5453,116 @@
 						requireProfileAccess("/profile");
 					}
 				}
-			}, t("user_nav_profile")), /* @__PURE__ */ __h(Link, {
+			}, /* @__PURE__ */ __h("svg", {
+				className: "user-nav-capsule__dropdown-icon",
+				viewBox: "0 0 24 24",
+				fill: "none",
+				stroke: "currentColor",
+				strokeWidth: "1.75",
+				strokeLinecap: "round",
+				strokeLinejoin: "round"
+			}, /* @__PURE__ */ __h("path", { d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" }), /* @__PURE__ */ __h("circle", {
+				cx: "12",
+				cy: "7",
+				r: "4"
+			})), /* @__PURE__ */ __h("span", null, t("user_nav_profile"))), /* @__PURE__ */ __h(Link, {
 				to: "/promos",
 				className: "user-nav-capsule__dropdown-item",
 				onClick: handleProfileClick
-			}, t("user_nav_promos")), /* @__PURE__ */ __h(Link, {
+			}, /* @__PURE__ */ __h("svg", {
+				className: "user-nav-capsule__dropdown-icon",
+				viewBox: "0 0 24 24",
+				fill: "none",
+				stroke: "currentColor",
+				strokeWidth: "1.75",
+				strokeLinecap: "round",
+				strokeLinejoin: "round"
+			}, /* @__PURE__ */ __h("path", { d: "M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" }), /* @__PURE__ */ __h("path", { d: "M13 5v2" }), /* @__PURE__ */ __h("path", { d: "M13 17v2" }), /* @__PURE__ */ __h("path", { d: "M13 11v2" })), /* @__PURE__ */ __h("span", null, t("user_nav_promos"))), /* @__PURE__ */ __h(Link, {
 				to: "/admin/dashboard",
 				className: "user-nav-capsule__dropdown-item",
 				onClick: handleProfileClick
-			}, t("user_nav_admin")), canAccessCashbox && /* @__PURE__ */ __h(Link, {
+			}, /* @__PURE__ */ __h("svg", {
+				className: "user-nav-capsule__dropdown-icon",
+				viewBox: "0 0 24 24",
+				fill: "none",
+				stroke: "currentColor",
+				strokeWidth: "1.75",
+				strokeLinecap: "round",
+				strokeLinejoin: "round"
+			}, /* @__PURE__ */ __h("rect", {
+				x: "3",
+				y: "3",
+				width: "7",
+				height: "9",
+				rx: "1"
+			}), /* @__PURE__ */ __h("rect", {
+				x: "14",
+				y: "3",
+				width: "7",
+				height: "5",
+				rx: "1"
+			}), /* @__PURE__ */ __h("rect", {
+				x: "14",
+				y: "12",
+				width: "7",
+				height: "9",
+				rx: "1"
+			}), /* @__PURE__ */ __h("rect", {
+				x: "3",
+				y: "16",
+				width: "7",
+				height: "5",
+				rx: "1"
+			})), /* @__PURE__ */ __h("span", null, t("user_nav_admin"))), canAccessCashbox && /* @__PURE__ */ __h(Link, {
 				to: "/cashbox",
 				className: "user-nav-capsule__dropdown-item",
 				onClick: handleProfileClick
-			}, t("user_nav_pos")), /* @__PURE__ */ __h("button", {
+			}, /* @__PURE__ */ __h("svg", {
+				className: "user-nav-capsule__dropdown-icon",
+				viewBox: "0 0 24 24",
+				fill: "none",
+				stroke: "currentColor",
+				strokeWidth: "1.75",
+				strokeLinecap: "round",
+				strokeLinejoin: "round"
+			}, /* @__PURE__ */ __h("rect", {
+				x: "2",
+				y: "4",
+				width: "20",
+				height: "16",
+				rx: "2"
+			}), /* @__PURE__ */ __h("line", {
+				x1: "2",
+				y1: "10",
+				x2: "22",
+				y2: "10"
+			}), /* @__PURE__ */ __h("line", {
+				x1: "6",
+				y1: "15",
+				x2: "10",
+				y2: "15"
+			})), /* @__PURE__ */ __h("span", null, t("user_nav_pos"))), /* @__PURE__ */ __h("button", {
 				type: "button",
-				className: "user-nav-capsule__dropdown-item",
+				className: "user-nav-capsule__dropdown-item user-nav-capsule__dropdown-item--logout",
 				onClick: () => {
 					setIsUserMenuOpen(false);
 					if (onMenuClose) onMenuClose();
 					setIsLogoutModalOpen(true);
 				}
-			}, t("user_nav_logout")))))), /* @__PURE__ */ __h(LogoutModal, {
+			}, /* @__PURE__ */ __h("svg", {
+				className: "user-nav-capsule__dropdown-icon",
+				viewBox: "0 0 24 24",
+				fill: "none",
+				stroke: "currentColor",
+				strokeWidth: "1.75",
+				strokeLinecap: "round",
+				strokeLinejoin: "round"
+			}, /* @__PURE__ */ __h("path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" }), /* @__PURE__ */ __h("polyline", { points: "16 17 21 12 16 7" }), /* @__PURE__ */ __h("line", {
+				x1: "21",
+				y1: "12",
+				x2: "9",
+				y2: "12"
+			})), /* @__PURE__ */ __h("span", null, t("user_nav_logout"))))))), /* @__PURE__ */ __h(LogoutModal, {
 				isOpen: isLogoutModalOpen,
 				onClose: () => setIsLogoutModalOpen(false),
 				onConfirm: handleLogout,
@@ -5671,89 +5760,25 @@
 
 	//#region components/Elements/FitText.js
 	__define("components/Elements/FitText.js", function (exports, __require, module) {
-		const { __h, __Fragment } = __require("utils/runtime.js");
+		const { __h } = __require("utils/runtime.js");
 		const __imp_0 = __require("utils/runtime.js");
 		const React = __imp_0.default !== undefined ? __imp_0.default : __imp_0;
-		const { useRef, useState, useLayoutEffect, useEffect } = __imp_0;
-		const FitText = ({ children, as: Component = "span", maxFontSize = 1.2, minFontSize = .7, unit = "rem", className = "", style = {}, ...props }) => {
-			const containerRef = useRef(null);
-			const textRef = useRef(null);
-			const [currentFontSize, setCurrentFontSize] = useState(maxFontSize);
-			const calculateSize = () => {
-				const container = containerRef.current;
-				const text = textRef.current;
-				if (!container || !text) return;
-				const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-				const maxPx = unit === "rem" ? maxFontSize * rootFontSize : maxFontSize;
-				const minPx = unit === "rem" ? minFontSize * rootFontSize : minFontSize;
-				const availableWidth = container.clientWidth;
-				if (availableWidth <= 0) return;
-				text.style.fontSize = `${maxPx}px`;
-				text.style.display = "inline-block";
-				text.style.whiteSpace = "nowrap";
-				const naturalWidth = text.scrollWidth;
-				if (naturalWidth <= availableWidth) {
-					setCurrentFontSize(maxFontSize);
-					text.style.fontSize = `${maxPx}px`;
-				} else {
-					const ratio = availableWidth / naturalWidth;
-					const calculatedPx = maxPx * ratio;
-					const clampedPx = Math.max(minPx, Math.min(maxPx, Math.floor(calculatedPx * .98)));
-					const finalValue = unit === "rem" ? clampedPx / rootFontSize : clampedPx;
-					setCurrentFontSize(finalValue);
-					text.style.fontSize = `${clampedPx}px`;
-				}
-			};
-			useLayoutEffect(() => {
-				calculateSize();
-			}, [
-				children,
-				maxFontSize,
-				minFontSize,
-				unit
-			]);
-			useEffect(() => {
-				const container = containerRef.current;
-				if (!container) return;
-				const resizeObserver = new ResizeObserver(() => {
-					calculateSize();
-				});
-				resizeObserver.observe(container);
-				if (document.fonts) {
-					document.fonts.ready.then(calculateSize).catch(() => {});
-				}
-				return () => {
-					resizeObserver.disconnect();
-				};
-			}, [
-				children,
-				maxFontSize,
-				minFontSize,
-				unit
-			]);
+		const FitText = ({ children, as: Component = "span", maxFontSize, minFontSize, unit, className = "", style = {}, ...props }) => {
+			const titleText = typeof children === "string" ? children : undefined;
 			return /* @__PURE__ */ __h(Component, {
-				ref: containerRef,
-				className: `fit-text-container ${className}`,
+				className: `fit-text-container ${className}`.trim(),
+				title: props.title ?? titleText,
 				style: {
 					display: "block",
 					width: "100%",
 					minWidth: 0,
-					overflow: "hidden",
-					...style
-				},
-				...props
-			}, /* @__PURE__ */ __h("span", {
-				ref: textRef,
-				style: {
-					display: "block",
 					whiteSpace: "nowrap",
 					overflow: "hidden",
 					textOverflow: "ellipsis",
-					fontSize: `${currentFontSize}${unit}`,
-					lineHeight: "1.25",
-					transition: "font-size 0.1s ease-out"
-				}
-			}, children));
+					...style
+				},
+				...props
+			}, children);
 		};
 
 		Object.defineProperty(exports, "default", { enumerable: true, get: function () { return FitText; } });

@@ -154,13 +154,26 @@
 }
 @media (max-width: 768px) {
   .home-header .mobile-menu-btn {
-    display: block;
-    background: none;
-    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(36, 5, 13, 0.55);
+    border: 1px solid rgba(197, 160, 89, 0.25);
     color: #ffffff;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     cursor: pointer;
     z-index: 200;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.25s ease;
+  }
+  .home-header .mobile-menu-btn:hover,
+  .home-header .mobile-menu-btn:active {
+    border-color: rgba(197, 160, 89, 0.5);
+    color: #dfc288;
   }
   .home-header .menu-overlay {
     display: block;
@@ -169,7 +182,9 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(10, 1, 4, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     z-index: 140;
     opacity: 0;
     pointer-events: none;
@@ -183,15 +198,19 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 280px;
+    width: 288px;
+    max-width: 85vw;
     height: 100vh;
     height: 100dvh;
-    background: #140307;
+    overflow-y: auto;
+    background: radial-gradient(circle at top right, rgba(197, 160, 89, 0.14) 0%, transparent 48%), linear-gradient(180deg, rgba(36, 5, 13, 0.98) 0%, rgba(20, 3, 7, 0.99) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     flex-direction: column;
-    padding: 85px 24px 28px;
+    padding: 80px 20px 24px;
     gap: 0;
     border-bottom: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    border-right: 1px solid rgba(197, 160, 89, 0.18);
     box-shadow: none;
     z-index: 150;
     justify-content: flex-start;
@@ -204,7 +223,7 @@
   .home-header .nav-menu.open {
     transform: translateX(0);
     pointer-events: auto;
-    box-shadow: 16px 0 48px rgba(0, 0, 0, 0.65);
+    box-shadow: 16px 0 48px rgba(0, 0, 0, 0.75);
   }
   .home-header .nav-menu .nav-links {
     position: relative;
@@ -213,65 +232,72 @@
     flex-direction: column;
     align-items: stretch;
     width: 100%;
-    gap: 8px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 6px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(197, 160, 89, 0.14);
   }
   .home-header .nav-menu .nav-links .nav-link {
     display: flex;
     align-items: center;
-    gap: 14px;
-    font-size: 0.95rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.45);
-    padding: 12px 6px;
-    border-radius: 6px;
+    gap: 12px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: rgba(255, 248, 231, 0.72);
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid transparent;
     position: relative;
     letter-spacing: 0.3px;
-    transition: color 0.25s ease, background 0.25s ease;
+    transition: all 0.25s ease;
   }
   .home-header .nav-menu .nav-links .nav-link::after {
     display: none;
   }
   .home-header .nav-menu .nav-links .nav-link .nav-link__icon {
     display: block;
-    width: 20px;
-    height: 20px;
+    width: 19px;
+    height: 19px;
     flex-shrink: 0;
-    opacity: 0.5;
-    transition: opacity 0.25s ease;
+    opacity: 0.75;
+    color: rgba(223, 194, 136, 0.8);
+    transition: opacity 0.25s ease, color 0.25s ease;
   }
   .home-header .nav-menu .nav-links .nav-link:hover {
-    color: rgba(255, 255, 255, 0.75);
-    background: rgba(255, 255, 255, 0.03);
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(197, 160, 89, 0.14);
   }
   .home-header .nav-menu .nav-links .nav-link:hover .nav-link__icon {
-    opacity: 0.75;
+    opacity: 0.95;
   }
   .home-header .nav-menu .nav-links .nav-link.active {
     color: #ffffff;
-    font-weight: 500;
+    font-weight: 600;
+    background: linear-gradient(135deg, rgba(197, 160, 89, 0.2) 0%, rgba(36, 5, 13, 0.25) 100%);
+    border-color: rgba(197, 160, 89, 0.32);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
   }
   .home-header .nav-menu .nav-links .nav-link.active::before {
     content: "";
     position: absolute;
-    left: -8px;
+    left: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #c5a059;
+    width: 3px;
+    height: 18px;
+    border-radius: 0 4px 4px 0;
+    background: linear-gradient(180deg, #dfc288 0%, #c5a059 100%);
     box-shadow: 0 0 8px rgba(197, 160, 89, 0.6);
   }
   .home-header .nav-menu .nav-links .nav-link.active .nav-link__icon {
     opacity: 1;
+    color: #dfc288;
   }
 }
 @media (max-width: 768px) and (max-width: 480px) {
   .home-header .nav-menu .nav-links .nav-link {
     font-size: 0.88rem;
-    padding: 10px 6px;
+    padding: 11px 12px;
   }
   .home-header .nav-menu .nav-links .nav-link .nav-link__icon {
     width: 18px;
@@ -291,28 +317,35 @@
     justify-content: flex-start;
     width: 100%;
     margin-top: auto;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 18px;
+    border-top: 1px solid rgba(197, 160, 89, 0.14);
   }
   .home-header .nav-menu .nav-menu__social {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
   }
   .home-header .nav-menu .nav-menu__social a {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(255, 255, 255, 0.45);
-    transition: color 0.25s ease, transform 0.25s ease;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(197, 160, 89, 0.18);
+    color: rgba(255, 248, 231, 0.72);
+    transition: all 0.25s ease;
   }
   .home-header .nav-menu .nav-menu__social a:hover {
-    color: #ffffff;
-    transform: translateY(-1px);
+    color: #dfc288;
+    background: rgba(197, 160, 89, 0.12);
+    border-color: rgba(197, 160, 89, 0.42);
+    transform: translateY(-2px);
   }
   .home-header .nav-menu .nav-menu__social a svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 }
 .cta-btn {

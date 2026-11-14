@@ -227,6 +227,9 @@
   color: #ffffff;
   flex: 1;
   min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .catalog-card .card-content .card-header .item-price-container {
   display: flex;
