@@ -487,7 +487,7 @@
   resize: none;
   min-height: 140px;
   line-height: 1.6;
-  font-family: monospace, sans-serif;
+  font-family: monospace;
   font-size: 0.84rem;
 }
 .admin-newsletter__form-row {
@@ -682,7 +682,7 @@
   background: #141416;
   border-radius: 8px;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 .admin-newsletter__frame .email-header-art {
   padding: 20px 18px 16px;

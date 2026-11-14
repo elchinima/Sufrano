@@ -448,7 +448,10 @@ public class BrevoEmailService : IEmailService
             record.EmailsSent.UpdatedAt = utcNow;
             record.UpdatedAt = utcNow;
 
-            context.Entry(record).State = EntityState.Modified;
+            if (record != null && context.Entry(record).State != EntityState.Added)
+            {
+                context.Entry(record).State = EntityState.Modified;
+            }
             await context.SaveChangesAsync();
         }
         catch (Exception ex)

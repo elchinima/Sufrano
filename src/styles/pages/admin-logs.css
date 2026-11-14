@@ -822,7 +822,7 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 4px;
   color: #a7f3d0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: monospace;
   font-size: 0.78rem;
   line-height: 1.5;
   max-height: 240px;
@@ -1087,7 +1087,7 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   color: #6ee7b7;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: monospace;
   font-size: 0.82rem;
   line-height: 1.5;
   max-height: 280px;

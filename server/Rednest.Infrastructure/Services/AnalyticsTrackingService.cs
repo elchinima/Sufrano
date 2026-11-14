@@ -126,6 +126,7 @@ public class AnalyticsTrackingService : BackgroundService, IAnalyticsTrackingSer
         record.EmailsSent ??= new DailyEmailsSentData();
         record.EmailsSent.Days ??= new List<DailyEmailRecord>();
 
+        var emailsChanged = false;
         var todayEmailRecord = record.EmailsSent.Days.FirstOrDefault(d => d.Date == todayDate);
         if (todayEmailRecord == null)
         {
@@ -142,6 +143,7 @@ public class AnalyticsTrackingService : BackgroundService, IAnalyticsTrackingSer
             record.EmailsSent.MonthlyTotal = record.EmailsSent.Days.Sum(d => d.SentCount);
             record.EmailsSent.UpdatedAt = utcNow;
             changed = true;
+            emailsChanged = true;
         }
         else if (record.EmailsSent.TodaySent != todayEmailRecord.SentCount || record.EmailsSent.DailyLimit != 300)
         {
@@ -149,6 +151,7 @@ public class AnalyticsTrackingService : BackgroundService, IAnalyticsTrackingSer
             record.EmailsSent.DailyLimit = 300;
             record.EmailsSent.MonthlyTotal = record.EmailsSent.Days.Sum(d => d.SentCount);
             changed = true;
+            emailsChanged = true;
         }
 
         var startOfBakuMonth = new DateTime(bakuNow.Year, bakuNow.Month, 1, 0, 0, 0, DateTimeKind.Unspecified);
@@ -253,7 +256,13 @@ public class AnalyticsTrackingService : BackgroundService, IAnalyticsTrackingSer
         if (changed)
         {
             record.UpdatedAt = utcNow;
-            context.Entry(record).State = EntityState.Modified;
+            if (!isNew)
+            {
+                // Existing row: mark as modified, but do not overwrite EmailsSent with a stale
+                // snapshot (emails may have been counted by BrevoEmailService during this tick).
+                context.Entry(record).State = EntityState.Modified;
+                context.Entry(record).Property(e => e.EmailsSent).IsModified = emailsChanged;
+            }
             await context.SaveChangesAsync(stoppingToken);
         }
     }

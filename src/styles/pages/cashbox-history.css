@@ -8,7 +8,7 @@
   background-color: #1a0303;
   background-image: radial-gradient(circle at 15% 15%, rgba(74, 14, 28, 0.45) 0%, transparent 45%), radial-gradient(circle at 85% 85%, rgba(36, 5, 13, 0.8) 0%, transparent 55%), linear-gradient(180deg, #130202 0%, #24050d 100%);
   color: #ffffff;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
   user-select: none;
   -webkit-user-select: none;
 }

@@ -308,7 +308,7 @@
   font-weight: 700;
   letter-spacing: 0.5px;
   color: #ffffff;
-  font-family: monospace, monospace;
+  font-family: monospace;
 }
 @media (max-width: 768px) {
   .order-card__id {

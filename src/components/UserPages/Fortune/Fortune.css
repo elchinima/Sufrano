@@ -81,11 +81,164 @@
   pointer-events: none;
 }
 
-.fortune-canvas {
+.fortune-wheel {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  position: relative;
+  box-sizing: border-box;
+  padding: 3.4%;
+  container-type: inline-size;
+  background: radial-gradient(circle at 30% 30%, #6d0d15 0%, #4a070c 60%, #2e0307 100%);
+  border: 2px solid #380408;
+  box-shadow:
+    inset 0 2px 5px rgba(255, 255, 255, 0.22),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.65),
+    0 8px 28px rgba(0, 0, 0, 0.55);
+  will-change: transform;
+  user-select: none;
+}
+
+.fortune-wheel__disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  background: conic-gradient(
+    from -30deg,
+    #dbc8a4 0deg 60deg,
+    #f6f4ef 60deg 120deg,
+    #dbc8a4 120deg 180deg,
+    #f6f4ef 180deg 240deg,
+    #dbc8a4 240deg 300deg,
+    #f6f4ef 300deg 360deg
+  );
+  box-shadow:
+    inset 0 0 0 3px #4d070c,
+    inset 0 0 18px rgba(77, 7, 12, 0.2);
+}
+
+.fortune-wheel__spokes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.fortune-wheel__spoke {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: clamp(2.5px, 0.85cqw, 4px);
+  background: #4d070c;
+  transform-origin: center center;
+}
+
+.fortune-wheel__spoke--1 {
+  transform: translateY(-50%) rotate(0deg);
+}
+
+.fortune-wheel__spoke--2 {
+  transform: translateY(-50%) rotate(60deg);
+}
+
+.fortune-wheel__spoke--3 {
+  transform: translateY(-50%) rotate(-60deg);
+}
+
+.fortune-wheel__segment {
+  position: absolute;
+  inset: 0;
+  transform: rotate(var(--seg-angle, 0deg));
+  pointer-events: none;
+}
+
+.fortune-wheel__segment-content {
+  position: absolute;
+  top: 5.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42%;
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #4d070c;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  font-size: clamp(0.68rem, 4.3cqw, 1.12rem);
+}
+
+.fortune-wheel__segment--super .fortune-wheel__segment-content {
+  font-size: clamp(0.82rem, 5.2cqw, 1.35rem);
+  top: 4.2%;
+}
+
+.fortune-wheel__segment--compact .fortune-wheel__segment-content {
+  font-size: clamp(0.58rem, 3.7cqw, 0.96rem);
+}
+
+.fortune-wheel__segment-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.fortune-wheel__crown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: clamp(18px, 6.2cqw, 28px);
+  margin-bottom: clamp(2px, 0.7cqw, 4px);
+  flex-shrink: 0;
+}
+
+.fortune-wheel__crown-body {
   display: block;
   width: 100%;
-  height: auto;
+  aspect-ratio: 1.45 / 1;
+  background: #4d070c;
+  clip-path: polygon(
+    0% 22%,
+    18% 68%,
+    50% 12%,
+    82% 68%,
+    100% 22%,
+    88% 100%,
+    12% 100%
+  );
+}
+
+.fortune-wheel__crown-base {
+  display: block;
+  width: 78%;
+  height: clamp(2px, 0.65cqw, 3px);
+  margin-top: clamp(1.5px, 0.45cqw, 2.5px);
+  background: #4d070c;
+  border-radius: 999px;
+}
+
+.fortune-wheel__center-hub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 23.5%;
+  height: 23.5%;
   border-radius: 50%;
+  background: radial-gradient(circle at 38% 35%, #6e0e16 0%, #4d070c 60%, #310307 100%);
+  border: 3px solid #5a0b11;
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.25),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.6),
+    0 0 0 2px #380408,
+    0 4px 12px rgba(0, 0, 0, 0.45);
+  z-index: 2;
 }
 
 .fortune-spin-btn {
@@ -248,7 +401,7 @@
   border: 1px dashed rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   padding: 16px 32px;
-  font-family: "Courier New", monospace;
+  font-family: monospace;
   font-size: 1.2rem;
   font-weight: 700;
   color: #ffffff;

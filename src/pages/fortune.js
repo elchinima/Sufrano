@@ -20,55 +20,46 @@
 		const partyPopperIcon = "/assets/icons/party-popper-animated.svg";
 		const smileyIcon = "/assets/icons/smiley-animated.svg";
 		const loaderIcon = "/assets/icons/loader-animated.svg";
-		const fortuneImg = "/assets/images/fortune_image_low.png";
 		const SEGMENTS = [
 			{
 				label: "SUPER PRIZE",
+				lines: ["SUPER", "PRIZE"],
+				hasCrown: true,
 				prize: "Super prize: Special exclusive Süfrano gift!"
 			},
 			{
 				label: "FREE DRINK",
+				lines: ["FREE", "DRINK"],
 				prize: "One free drink of your choice!"
 			},
 			{
 				label: "FREE DESSERT",
+				lines: ["FREE", "DESSERT"],
 				prize: "One free dessert with your next order!"
 			},
 			{
 				label: "DISCOUNT UP TO 25%",
+				lines: ["DISCOUNT", "UP TO", "25%"],
 				prize: "25% discount on your next order!"
 			},
 			{
 				label: "CASHBACK ON PURCHASES",
+				lines: ["CASHBACK ON", "PURCHASES"],
 				prize: "Cashback on your next order!"
 			},
 			{
 				label: "DISCOUNT UP TO 50%",
+				lines: ["DISCOUNT", "UP TO 50%"],
 				prize: "50% discount on your next order!"
 			}
 		];
 		const NUM_SEGMENTS = SEGMENTS.length;
 		const ARC = 2 * Math.PI / NUM_SEGMENTS;
-		function drawWheel(canvas, rotation, image) {
-			const ctx = canvas.getContext("2d");
-			const W = canvas.width;
-			const H = canvas.height;
-			const cx = W / 2;
-			const cy = H / 2;
-			ctx.clearRect(0, 0, W, H);
-			if (!image) return;
-			ctx.save();
-			ctx.translate(cx, cy);
-			ctx.rotate(rotation);
-			ctx.drawImage(image, -cx, -cy, W, H);
-			ctx.restore();
-		}
 		const Fortune = () => {
 			const navigate = useNavigate();
-			const canvasRef = useRef(null);
+			const wheelRef = useRef(null);
 			const rafRef = useRef(null);
 			const rotationRef = useRef(0);
-			const imageRef = useRef(null);
 			const { user } = useAuth();
 			const [spinning, setSpinning] = useState(false);
 			const [canSpin, setCanSpin] = useState(false);
@@ -128,37 +119,12 @@
 				return () => clearInterval(interval);
 			}, [canSpin, cooldownEndsAt]);
 			const drawFrame = useCallback(() => {
-				if (canvasRef.current) {
-					drawWheel(canvasRef.current, rotationRef.current, imageRef.current);
+				if (wheelRef.current) {
+					wheelRef.current.style.transform = `rotate(${rotationRef.current}rad)`;
 				}
 			}, []);
 			useEffect(() => {
-				const img = new Image();
-				img.src = fortuneImg;
-				img.onload = () => {
-					imageRef.current = img;
-					drawFrame();
-				};
-				if (img.complete) {
-					imageRef.current = img;
-					drawFrame();
-				}
-			}, [drawFrame]);
-			useEffect(() => {
-				const canvas = canvasRef.current;
-				if (!canvas) return;
-				const resize = () => {
-					const size = Math.min(canvas.parentElement?.clientWidth ?? 436, 436);
-					const dpr = window.devicePixelRatio || 1;
-					canvas.width = size * dpr;
-					canvas.height = size * dpr;
-					canvas.style.width = `${size}px`;
-					canvas.style.height = `${size}px`;
-					drawFrame();
-				};
-				resize();
-				window.addEventListener("resize", resize);
-				return () => window.removeEventListener("resize", resize);
+				drawFrame();
 			}, [drawFrame]);
 			const spin = useCallback(async () => {
 				if (spinning || !canSpin) return;
@@ -325,10 +291,28 @@
 				cy: "8",
 				r: "4.5",
 				fill: "#24050d"
-			}))), /* @__PURE__ */ __h("canvas", {
-				ref: canvasRef,
-				className: "fortune-canvas"
-			})), /* @__PURE__ */ __h(motion.button, {
+			}))), /* @__PURE__ */ __h("div", {
+				ref: wheelRef,
+				className: "fortune-wheel",
+				role: "img",
+				"aria-label": "Wheel of Fortune"
+			}, /* @__PURE__ */ __h("div", { className: "fortune-wheel__disc" }, /* @__PURE__ */ __h("div", {
+				className: "fortune-wheel__spokes",
+				"aria-hidden": "true"
+			}, /* @__PURE__ */ __h("span", { className: "fortune-wheel__spoke fortune-wheel__spoke--1" }), /* @__PURE__ */ __h("span", { className: "fortune-wheel__spoke fortune-wheel__spoke--2" }), /* @__PURE__ */ __h("span", { className: "fortune-wheel__spoke fortune-wheel__spoke--3" })), SEGMENTS.map((seg, idx) => /* @__PURE__ */ __h("div", {
+				key: idx,
+				className: `fortune-wheel__segment${seg.hasCrown ? " fortune-wheel__segment--super" : ""}${idx === 4 ? " fortune-wheel__segment--compact" : ""}`,
+				style: { "--seg-angle": `${idx * 60}deg` }
+			}, /* @__PURE__ */ __h("div", { className: "fortune-wheel__segment-content" }, seg.hasCrown && /* @__PURE__ */ __h("span", {
+				className: "fortune-wheel__crown",
+				"aria-hidden": "true"
+			}, /* @__PURE__ */ __h("span", { className: "fortune-wheel__crown-body" }), /* @__PURE__ */ __h("span", { className: "fortune-wheel__crown-base" })), seg.lines.map((line, lineIdx) => /* @__PURE__ */ __h("span", {
+				key: lineIdx,
+				className: "fortune-wheel__segment-line"
+			}, line))))), /* @__PURE__ */ __h("div", {
+				className: "fortune-wheel__center-hub",
+				"aria-hidden": "true"
+			})))), /* @__PURE__ */ __h(motion.button, {
 				className: `cta-btn fortune-spin-btn lg${spinning ? " fortune-spin-btn--spinning" : ""}${!canSpin && !spinning && promoChecked ? " fortune-spin-btn--used" : ""}`,
 				onClick: spin,
 				disabled: spinning || !canSpin || !promoChecked,

@@ -239,7 +239,7 @@
   padding: 10px 14px;
 }
 .payment-card__number {
-  font-family: "Courier New", Courier, monospace;
+  font-family: monospace;
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 2px;

@@ -216,7 +216,7 @@
   color: rgba(255, 255, 255, 0.4);
 }
 .card-preview__number {
-  font-family: "Courier New", Courier, monospace;
+  font-family: monospace;
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: 2px;
