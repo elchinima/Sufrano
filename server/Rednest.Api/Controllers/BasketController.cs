@@ -137,33 +137,44 @@ public class BasketController : ControllerBase
         var userId = GetUserId();
         if (userId == null) return Unauthorized();
 
-        if (request.Items == null || request.Items.Count == 0)
+        if (request?.Items == null || request.Items.Count == 0)
             return Ok();
 
+        var validIncoming = request.Items
+            .Where(i => i.ProductId != Guid.Empty && i.Quantity > 0)
+            .ToList();
+
         var basket = await _userRepository.GetBasketByUserIdAsync(userId.Value);
+
+        if (validIncoming.Count == 0)
+        {
+            return Ok(new { items = FormatBasketItems(basket?.Items?.Where(i => i.Quantity > 0) ?? Enumerable.Empty<BasketItem>()) });
+        }
 
         if (basket == null)
         {
             basket = new UserBasket
             {
                 UserId = userId.Value,
-                Items = request.Items.Select(i => new BasketItem
+                Items = validIncoming.Select(i => new BasketItem
                 {
                     ProductId = i.ProductId,
                     AddedAt = i.AddedAt != default ? i.AddedAt : GetBakuTime(),
-                    Quantity = Math.Min(100, Math.Max(1, i.Quantity))
+                    Quantity = Math.Clamp(i.Quantity, 1, 100)
                 }).ToList()
             };
             await _userRepository.AddBasketAsync(basket);
         }
         else
         {
-            foreach (var incoming in request.Items)
+            basket.Items.RemoveAll(i => i.Quantity <= 0 || i.ProductId == Guid.Empty);
+            foreach (var incoming in validIncoming)
             {
+                var safeQty = Math.Clamp(incoming.Quantity, 1, 100);
                 var existing = basket.Items.FirstOrDefault(i => i.ProductId == incoming.ProductId);
                 if (existing != null)
                 {
-                    existing.Quantity = Math.Min(100, existing.Quantity + incoming.Quantity);
+                    existing.Quantity = Math.Clamp(existing.Quantity + safeQty, 1, 100);
                 }
                 else
                 {
@@ -171,7 +182,7 @@ public class BasketController : ControllerBase
                     {
                         ProductId = incoming.ProductId,
                         AddedAt = incoming.AddedAt != default ? incoming.AddedAt : GetBakuTime(),
-                        Quantity = Math.Min(100, Math.Max(1, incoming.Quantity))
+                        Quantity = safeQty
                     });
                 }
             }
@@ -182,11 +193,11 @@ public class BasketController : ControllerBase
     }
 
     private static object FormatBasketItems(IEnumerable<BasketItem> items) =>
-        items.Select(i => new
+        items.Where(i => i.Quantity > 0).Select(i => new
         {
             productId = i.ProductId,
             addedAt = i.AddedAt,
-            quantity = i.Quantity
+            quantity = Math.Clamp(i.Quantity, 1, 100)
         });
 
 
@@ -209,19 +220,32 @@ public class BasketController : ControllerBase
         if (basket == null || basket.Items.Count == 0)
             return Ok(new Rednest.Application.DTOs.ApplyPromoResponse { Applied = false, Message = "Basket is empty." });
 
-        var productIds = basket.Items.Select(i => i.ProductId).ToList();
+        var validBasketItems = basket.Items
+            .Where(i => i.ProductId != Guid.Empty && i.Quantity > 0)
+            .Select(i => new BasketItem
+            {
+                ProductId = i.ProductId,
+                AddedAt = i.AddedAt,
+                Quantity = Math.Clamp(i.Quantity, 1, 100)
+            })
+            .ToList();
+
+        if (validBasketItems.Count == 0)
+            return Ok(new Rednest.Application.DTOs.ApplyPromoResponse { Applied = false, Message = "Basket is empty." });
+
+        var productIds = validBasketItems.Select(i => i.ProductId).Distinct().ToList();
         var products = await db.Products
-            .Where(p => productIds.Contains(p.Id))
+            .Where(p => productIds.Contains(p.Id) && p.IsActive)
             .AsNoTracking()
             .ToListAsync();
 
-        var enriched = basket.Items
+        var enriched = validBasketItems
             .Select(i => new { Item = i, Product = products.FirstOrDefault(p => p.Id == i.ProductId) })
             .Where(x => x.Product != null)
             .ToList();
 
         static decimal GetEffectivePrice(Rednest.Core.Entities.Product p) =>
-            p.Prices?.DiscountPrice ?? p.Prices?.Price ?? 0m;
+            Math.Max(0m, p.Prices?.DiscountPrice ?? p.Prices?.Price ?? 0m);
 
         var grandTotal = enriched.Sum(x => GetEffectivePrice(x.Product!) * x.Item.Quantity);
 

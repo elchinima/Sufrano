@@ -2594,9 +2594,13 @@ public class AdminController : ControllerBase
 
     private static string GetAdminSigningKey()
     {
-        var key = Environment.GetEnvironmentVariable("ADMIN_SECRET") ?? "";
-        var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "";
-        return $"admin_session_{key}_{jwtSecret}";
+        var key = Environment.GetEnvironmentVariable("ADMIN_SECRET");
+        var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET");
+        if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(jwtSecret))
+        {
+            throw new InvalidOperationException("ADMIN_SECRET and JWT_SECRET environment variables must be configured.");
+        }
+        return $"admin_session_{key.Trim()}_{jwtSecret.Trim()}";
     }
 
     private static string GenerateSignedAdminToken(string userId)

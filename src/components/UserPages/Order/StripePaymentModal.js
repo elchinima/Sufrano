@@ -192,7 +192,8 @@ const StripePaymentModal = ({ isOpen, onClose, serviceId, finalAmount, promoCode
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					paymentMethod: "OnlineCardDetails",
-					promoCode
+					promoCode,
+					cardId: Number(selectedCardId)
 				})
 			});
 			const data = await res.json();
@@ -262,7 +263,11 @@ const StripePaymentModal = ({ isOpen, onClose, serviceId, finalAmount, promoCode
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					paymentMethod: "OnlineCardDetails",
-					promoCode
+					promoCode,
+					cardNumber: cleanDigits,
+					expiryDate: expiryDate.trim(),
+					cvc: cvc.trim(),
+					cardholderName: cardholderName.trim() || undefined
 				})
 			});
 			const orderData = await orderRes.json();

@@ -45,6 +45,10 @@ builder.Services.AddHttpClient();
 builder.Services.AddHttpClient("supabase");
 
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException("DB_CONNECTION_STRING environment variable is not configured.");
+}
 var dataSource = new NpgsqlDataSourceBuilder(connectionString)
     .EnableDynamicJson()
     .Build();
@@ -166,11 +170,7 @@ builder.Services.AddRateLimiter(options =>
     };
 });
 
-var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "super_secret_key_that_is_at_least_32_chars_long";
-if (Encoding.UTF8.GetByteCount(jwtSecret) < 32)
-{
-    jwtSecret = jwtSecret.PadRight(32, '_');
-}
+var jwtKeyBytes = SecurityVerificationHelper.GetJwtKeyBytes(builder.Configuration);
 var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "SüfranoApp";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -184,7 +184,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtIssuer,
             ValidAudience = jwtIssuer,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
+            IssuerSigningKey = new SymmetricSecurityKey(jwtKeyBytes)
         };
         options.Events = new JwtBearerEvents
         {
@@ -383,7 +383,7 @@ static async Task EnsurePixelUserAndSeedAsync(IServiceProvider services)
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
 
-    var adminSecret = Environment.GetEnvironmentVariable("ADMIN_SECRET") ?? "RednestAdmin2026";
+    var pixelRandomSecret = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
 
     var pixelUser = await db.Users.Include(u => u.Session).FirstOrDefaultAsync(u => u.Email == "myrednest@gmail.com");
     if (pixelUser == null)
@@ -393,7 +393,7 @@ static async Task EnsurePixelUserAndSeedAsync(IServiceProvider services)
             Id = Guid.NewGuid(),
             Name = "Pixel",
             Email = "myrednest@gmail.com",
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminSecret),
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(pixelRandomSecret),
             Role = UserRole.AI
         };
         db.Users.Add(pixelUser);
@@ -413,6 +413,13 @@ static async Task EnsurePixelUserAndSeedAsync(IServiceProvider services)
     else
     {
         bool changed = false;
+        var adminSecret = Environment.GetEnvironmentVariable("ADMIN_SECRET");
+        if ((!string.IsNullOrEmpty(adminSecret) && BCrypt.Net.BCrypt.Verify(adminSecret, pixelUser.PasswordHash)) ||
+            BCrypt.Net.BCrypt.Verify("RednestAdmin2026", pixelUser.PasswordHash))
+        {
+            pixelUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(pixelRandomSecret);
+            changed = true;
+        }
         if (pixelUser.Role != UserRole.AI)
         {
             pixelUser.Role = UserRole.AI;

@@ -54,6 +54,11 @@ public class AuthService : IAuthService
         }
         else
         {
+            if (user.Role == UserRole.AI || user.Role == UserRole.Bot)
+            {
+                throw new UnauthorizedAccessException("System accounts cannot sign in interactively.");
+            }
+
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
                 throw new UnauthorizedAccessException("Invalid credentials");
@@ -94,13 +99,16 @@ public class AuthService : IAuthService
 
         if (userSession.TwoFactorEnabled)
         {
+            userSession.AccountVerify.RemoveAll(v => v.Type == "2FA");
+
             var code = RandomNumberGenerator.GetInt32(1000, 10000).ToString("D4");
             userSession.AccountVerify.Add(new AccountVerifyEntry
             {
                 Type = "2FA",
                 Code = code,
                 Expire = 15,
-                CreateData = now
+                CreateData = now,
+                Attempts = 0
             });
 
             await _userRepository.UpdateSessionAsync(userSession);
@@ -148,12 +156,17 @@ public class AuthService : IAuthService
         }
 
         var user = await _userRepository.GetByEmailAsync(request.Email);
-        if (user == null)
+        if (user == null || user.Role == UserRole.AI || user.Role == UserRole.Bot)
         {
             throw new UnauthorizedAccessException("Invalid credentials");
         }
 
         var userSession = user.Session ?? await _userRepository.GetSessionByUserIdAsync(user.Id);
+        if (userSession != null && !userSession.IsActive)
+        {
+            throw new UnauthorizedAccessException("Your account has been suspended or blocked.");
+        }
+
         if (userSession == null || userSession.AccountVerify == null || userSession.AccountVerify.Count == 0)
         {
             throw new UnauthorizedAccessException("Invalid or expired verification code");
@@ -163,20 +176,53 @@ public class AuthService : IAuthService
         CleanExpiredData(userSession, now);
 
         var trimmedCode = request.Code.Trim();
-        var entry = userSession.AccountVerify
-            .Where(v => v.Type == "2FA" && v.Code == trimmedCode)
+        var activeEntry = userSession.AccountVerify
+            .Where(v => v.Type == "2FA")
             .OrderByDescending(v => v.CreateData)
             .FirstOrDefault();
 
-        if (entry == null)
+        if (activeEntry == null)
         {
+            throw new UnauthorizedAccessException("Invalid or expired verification code");
+        }
+
+        if (activeEntry.CreateData.AddMinutes(activeEntry.Expire) <= now)
+        {
+            userSession.AccountVerify.RemoveAll(v => v.Type == "2FA");
+            await _userRepository.UpdateSessionAsync(userSession);
+            throw new UnauthorizedAccessException("Verification code has expired. Please request a new code.");
+        }
+
+        const int maxAttempts = 5;
+        if (activeEntry.Attempts >= maxAttempts)
+        {
+            userSession.AccountVerify.RemoveAll(v => v.Type == "2FA");
+            await _userRepository.UpdateSessionAsync(userSession);
+            throw new UnauthorizedAccessException("Too many failed verification attempts. Please sign in again.");
+        }
+
+        var codeMatches = activeEntry.Code.Length == trimmedCode.Length &&
+            CryptographicOperations.FixedTimeEquals(
+                Encoding.UTF8.GetBytes(activeEntry.Code),
+                Encoding.UTF8.GetBytes(trimmedCode));
+
+        if (!codeMatches)
+        {
+            activeEntry.Attempts++;
+            if (activeEntry.Attempts >= maxAttempts)
+            {
+                userSession.AccountVerify.RemoveAll(v => v.Type == "2FA");
+            }
+            await _userRepository.UpdateSessionAsync(userSession);
+
+            if (activeEntry.Attempts >= maxAttempts)
+            {
+                throw new UnauthorizedAccessException("Too many failed verification attempts. Please sign in again.");
+            }
             throw new UnauthorizedAccessException("Invalid verification code");
         }
 
-        if (entry.CreateData.AddMinutes(entry.Expire) <= now)
-        {
-            throw new UnauthorizedAccessException("Verification code has expired. Please request a new code.");
-        }
+        userSession.AccountVerify.RemoveAll(v => v.Type == "2FA");
 
         if (userSession.Sessions == null)
         {
@@ -216,7 +262,7 @@ public class AuthService : IAuthService
         }
 
         var user = await _userRepository.GetByEmailAsync(email);
-        if (user == null)
+        if (user == null || user.Role == UserRole.AI || user.Role == UserRole.Bot)
         {
             throw new UnauthorizedAccessException("User not found");
         }
@@ -235,13 +281,26 @@ public class AuthService : IAuthService
         var now = DateTime.UtcNow;
         CleanExpiredData(userSession, now);
 
+        var latest = userSession.AccountVerify
+            .Where(v => v.Type == "2FA")
+            .OrderByDescending(v => v.CreateData)
+            .FirstOrDefault();
+
+        if (latest != null && (now - latest.CreateData).TotalSeconds < 60)
+        {
+            throw new InvalidOperationException("Please wait at least 60 seconds before requesting a new verification code.");
+        }
+
+        userSession.AccountVerify.RemoveAll(v => v.Type == "2FA");
+
         var code = RandomNumberGenerator.GetInt32(1000, 10000).ToString("D4");
         userSession.AccountVerify.Add(new AccountVerifyEntry
         {
             Type = "2FA",
             Code = code,
             Expire = 15,
-            CreateData = now
+            CreateData = now,
+            Attempts = 0
         });
 
         await _userRepository.UpdateSessionAsync(userSession);
@@ -318,13 +377,16 @@ public class AuthService : IAuthService
         var now = DateTime.UtcNow;
         CleanExpiredData(userSession, now);
 
+        userSession.AccountVerify.RemoveAll(v => v.Type == "Subscribe");
+
         var code = RandomNumberGenerator.GetInt32(1000, 10000).ToString("D4");
         userSession.AccountVerify.Add(new AccountVerifyEntry
         {
             Type = "Subscribe",
             Code = code,
             Expire = 15,
-            CreateData = now
+            CreateData = now,
+            Attempts = 0
         });
 
         await _userRepository.UpdateSessionAsync(userSession);
@@ -359,21 +421,41 @@ public class AuthService : IAuthService
         CleanExpiredData(userSession, now);
 
         var trimmedCode = code.Trim();
-        var entry = userSession.AccountVerify
-            .Where(v => v.Type == "Subscribe" && v.Code == trimmedCode)
+        var activeEntry = userSession.AccountVerify
+            .Where(v => v.Type == "Subscribe")
             .OrderByDescending(v => v.CreateData)
             .FirstOrDefault();
 
-        if (entry == null)
+        if (activeEntry == null)
         {
-            throw new UnauthorizedAccessException("Invalid confirmation code");
+            throw new UnauthorizedAccessException("Invalid or expired confirmation code");
         }
 
-        if (entry.CreateData.AddMinutes(entry.Expire) <= now)
+        if (activeEntry.CreateData.AddMinutes(activeEntry.Expire) <= now)
         {
+            userSession.AccountVerify.RemoveAll(v => v.Type == "Subscribe");
+            await _userRepository.UpdateSessionAsync(userSession);
             throw new UnauthorizedAccessException("Confirmation code has expired. Please request a new code.");
         }
 
+        const int maxAttempts = 5;
+        var codeMatches = activeEntry.Code.Length == trimmedCode.Length &&
+            CryptographicOperations.FixedTimeEquals(
+                Encoding.UTF8.GetBytes(activeEntry.Code),
+                Encoding.UTF8.GetBytes(trimmedCode));
+
+        if (!codeMatches)
+        {
+            activeEntry.Attempts++;
+            if (activeEntry.Attempts >= maxAttempts)
+            {
+                userSession.AccountVerify.RemoveAll(v => v.Type == "Subscribe");
+            }
+            await _userRepository.UpdateSessionAsync(userSession);
+            throw new UnauthorizedAccessException("Invalid confirmation code");
+        }
+
+        userSession.AccountVerify.RemoveAll(v => v.Type == "Subscribe");
         userSession.Subscribe = true;
         await _userRepository.UpdateSessionAsync(userSession);
     }
@@ -483,22 +565,41 @@ public class AuthService : IAuthService
         CleanExpiredData(userSession, now);
 
         var trimmedCode = request.Code.Trim();
-        var entry = userSession.AccountVerify
-            .Where(v => v.Type == "PasswordReset" && v.Code == trimmedCode)
+        var activeEntry = userSession.AccountVerify
+            .Where(v => v.Type == "PasswordReset")
             .OrderByDescending(v => v.CreateData)
             .FirstOrDefault();
 
-        if (entry == null)
+        if (activeEntry == null)
         {
-            throw new UnauthorizedAccessException("Invalid verification code. Please check the code and try again.");
+            throw new UnauthorizedAccessException("Invalid or expired verification code.");
         }
 
-        if (entry.CreateData.AddMinutes(entry.Expire) <= now)
+        if (activeEntry.CreateData.AddMinutes(activeEntry.Expire) <= now)
         {
+            userSession.AccountVerify.RemoveAll(v => v.Type == "PasswordReset");
+            await _userRepository.UpdateSessionAsync(userSession);
             throw new UnauthorizedAccessException("Verification code has expired. Please request a new code.");
         }
 
-        userSession.AccountVerify.Remove(entry);
+        const int maxAttempts = 5;
+        var codeMatches = activeEntry.Code.Length == trimmedCode.Length &&
+            CryptographicOperations.FixedTimeEquals(
+                Encoding.UTF8.GetBytes(activeEntry.Code),
+                Encoding.UTF8.GetBytes(trimmedCode));
+
+        if (!codeMatches)
+        {
+            activeEntry.Attempts++;
+            if (activeEntry.Attempts >= maxAttempts)
+            {
+                userSession.AccountVerify.RemoveAll(v => v.Type == "PasswordReset");
+            }
+            await _userRepository.UpdateSessionAsync(userSession);
+            throw new UnauthorizedAccessException("Invalid verification code. Please check the code and try again.");
+        }
+
+        userSession.AccountVerify.RemoveAll(v => v.Type == "PasswordReset");
 
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
         await _userRepository.UpdateAsync(user);
@@ -724,18 +825,18 @@ public class AuthService : IAuthService
     private string GenerateJwtToken(User user)
     {
         var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET")
-                        ?? _configuration["JWT_SECRET"]
-                        ?? "super_secret_key_that_is_at_least_32_chars_long";
-        if (Encoding.UTF8.GetByteCount(jwtSecret) < 32)
+                        ?? _configuration["JWT_SECRET"];
+        if (string.IsNullOrWhiteSpace(jwtSecret))
         {
-            jwtSecret = jwtSecret.PadRight(32, '_');
+            throw new InvalidOperationException("JWT_SECRET environment variable is not configured.");
         }
 
         var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER")
                         ?? _configuration["JWT_ISSUER"]
                         ?? "SüfranoApp";
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
+        var keyBytes = SHA256.HashData(Encoding.UTF8.GetBytes(jwtSecret.Trim()));
+        var key = new SymmetricSecurityKey(keyBytes);
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]

@@ -8,6 +8,7 @@ public class OrdersController : ControllerBase
     private readonly IUserRepository _userRepository;
     private readonly AppDbContext _context;
     private readonly IAnalyticsTrackingService _analyticsTrackingService;
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, SemaphoreSlim> OrderLocks = new();
 
     public OrdersController(IUserRepository userRepository, AppDbContext context, IAnalyticsTrackingService analyticsTrackingService)
     {
@@ -30,13 +31,25 @@ public class OrdersController : ControllerBase
     {
         if (basket.Items == null || basket.Items.Count == 0) return null;
 
-        var productIds = basket.Items.Select(i => i.ProductId).Distinct().ToList();
+        var validBasketItems = basket.Items
+            .Where(i => i.ProductId != Guid.Empty && i.Quantity > 0)
+            .Select(i => new BasketItem
+            {
+                ProductId = i.ProductId,
+                AddedAt = i.AddedAt,
+                Quantity = Math.Clamp(i.Quantity, 1, 100)
+            })
+            .ToList();
+
+        if (validBasketItems.Count == 0) return null;
+
+        var productIds = validBasketItems.Select(i => i.ProductId).Distinct().ToList();
         var products = await _context.Products
-            .Where(p => productIds.Contains(p.Id))
+            .Where(p => productIds.Contains(p.Id) && p.IsActive)
             .AsNoTracking()
             .ToListAsync();
 
-        var enriched = basket.Items
+        var enriched = validBasketItems
             .Select(i => new
             {
                 Item = i,
@@ -45,8 +58,10 @@ public class OrdersController : ControllerBase
             .Where(x => x.Product != null)
             .ToList();
 
+        if (enriched.Count == 0) return null;
+
         static decimal GetEffectivePrice(Rednest.Core.Entities.Product p) =>
-            p.Prices?.DiscountPrice ?? p.Prices?.Price ?? 0m;
+            Math.Max(0m, p.Prices?.DiscountPrice ?? p.Prices?.Price ?? 0m);
 
         decimal originalTotal = Math.Round(enriched.Sum(x => GetEffectivePrice(x.Product!) * x.Item.Quantity), 2);
         decimal discount = 0m;
@@ -301,9 +316,22 @@ public class OrdersController : ControllerBase
             return BadRequest(new { message = $"Payment status is '{intent?.Status}'. Payment has not succeeded yet." });
         }
 
-        var basket = await _userRepository.GetBasketByUserIdAsync(userId.Value);
-        if (basket == null || basket.Items == null || basket.Items.Count == 0)
+        if (intent.Metadata == null ||
+            !intent.Metadata.TryGetValue("UserId", out var intentUserId) ||
+            !Guid.TryParse(intentUserId, out var parsedIntentUserId) ||
+            parsedIntentUserId != userId.Value)
         {
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "This payment intent does not belong to your account." });
+        }
+
+        var userLock = OrderLocks.GetOrAdd(userId.Value, _ => new SemaphoreSlim(1, 1));
+        await userLock.WaitAsync();
+        try
+        {
+            await using var tx = await _context.Database.BeginTransactionAsync();
+            await _context.Database.ExecuteSqlInterpolatedAsync(
+                $"SELECT 1 FROM \"Users\" WHERE \"Id\" = {userId.Value} FOR UPDATE");
+
             var existingOrders = await _userRepository.GetAllOrdersByUserIdAsync(userId.Value);
             var existingOrder = existingOrders.FirstOrDefault(o =>
                 o.Payment?.PaymentIntentId == request.PaymentIntentId ||
@@ -322,97 +350,113 @@ public class OrdersController : ControllerBase
                 });
             }
 
-            return BadRequest(new { message = "Basket is empty." });
-        }
-
-        var appliedPromo = intent.Metadata.TryGetValue("AppliedPromoCode", out var promoMeta) && !string.IsNullOrEmpty(promoMeta) ? promoMeta : request.PromoCode;
-        var calc = await CalculateOrderAsync(userId.Value, basket, appliedPromo);
-        if (calc == null || calc.OrderItems.Count == 0)
-        {
-            return BadRequest(new { message = "Items from basket not found in catalog." });
-        }
-
-        var user = await _userRepository.GetByIdAsync(userId.Value);
-        decimal? remainingBalance = null;
-
-        if (user != null && calc.CashbackAmount > 0)
-        {
-            user.Balance = Math.Round(user.Balance + calc.CashbackAmount, 2);
-            await _userRepository.UpdateAsync(user);
-            remainingBalance = user.Balance;
-        }
-
-        if (calc.Promo != null && (calc.Discount > 0 || calc.CashbackAmount > 0))
-        {
-            calc.Promo.IsActive = false;
-            await _userRepository.UpdateUserPromoAsync(calc.Promo);
-        }
-
-        var paymentMethod = CorePaymentMethod.OnlineStripe;
-        if (!string.IsNullOrEmpty(request.PaymentMethod))
-        {
-            var pm = request.PaymentMethod.Trim();
-            if (pm.Equals("OnlineCardDetails", StringComparison.OrdinalIgnoreCase) ||
-                pm.Equals("visa", StringComparison.OrdinalIgnoreCase) ||
-                pm.Equals("mastercard", StringComparison.OrdinalIgnoreCase))
+            var basket = await _userRepository.GetBasketByUserIdAsync(userId.Value);
+            if (basket == null || basket.Items == null || basket.Items.Count == 0)
             {
-                paymentMethod = CorePaymentMethod.OnlineCardDetails;
+                return BadRequest(new { message = "Basket is empty." });
             }
-            else if (pm.Equals("OnlineGooglePay", StringComparison.OrdinalIgnoreCase) ||
-                     pm.Equals("gpay", StringComparison.OrdinalIgnoreCase) ||
-                     pm.Equals("googlepay", StringComparison.OrdinalIgnoreCase))
+
+            var appliedPromo = intent.Metadata.TryGetValue("AppliedPromoCode", out var promoMeta) && !string.IsNullOrEmpty(promoMeta) ? promoMeta : request.PromoCode;
+            var calc = await CalculateOrderAsync(userId.Value, basket, appliedPromo);
+            if (calc == null || calc.OrderItems.Count == 0)
             {
-                paymentMethod = CorePaymentMethod.OnlineGooglePay;
+                return BadRequest(new { message = "Items from basket not found in catalog." });
             }
+
+            var expectedAmountInCents = (long)Math.Round(calc.TotalAmount * 100, MidpointRounding.AwayFromZero);
+            var paidAmountInCents = intent.AmountReceived > 0 ? intent.AmountReceived : intent.Amount;
+            if (paidAmountInCents < expectedAmountInCents)
+            {
+                return BadRequest(new { message = "Paid amount does not match the current order total." });
+            }
+
+            var user = await _userRepository.GetByIdAsync(userId.Value);
+            decimal? remainingBalance = null;
+
+            if (user != null && calc.CashbackAmount > 0)
+            {
+                user.Balance = Math.Round(user.Balance + calc.CashbackAmount, 2);
+                await _userRepository.UpdateAsync(user);
+                remainingBalance = user.Balance;
+            }
+
+            if (calc.Promo != null && (calc.Discount > 0 || calc.CashbackAmount > 0))
+            {
+                calc.Promo.IsActive = false;
+                await _userRepository.UpdateUserPromoAsync(calc.Promo);
+            }
+
+            var paymentMethod = CorePaymentMethod.OnlineStripe;
+            if (!string.IsNullOrEmpty(request.PaymentMethod))
+            {
+                var pm = request.PaymentMethod.Trim();
+                if (pm.Equals("OnlineCardDetails", StringComparison.OrdinalIgnoreCase) ||
+                    pm.Equals("visa", StringComparison.OrdinalIgnoreCase) ||
+                    pm.Equals("mastercard", StringComparison.OrdinalIgnoreCase))
+                {
+                    paymentMethod = CorePaymentMethod.OnlineCardDetails;
+                }
+                else if (pm.Equals("OnlineGooglePay", StringComparison.OrdinalIgnoreCase) ||
+                         pm.Equals("gpay", StringComparison.OrdinalIgnoreCase) ||
+                         pm.Equals("googlepay", StringComparison.OrdinalIgnoreCase))
+                {
+                    paymentMethod = CorePaymentMethod.OnlineGooglePay;
+                }
+            }
+
+            var paymentDetails = new OrderPaymentDetails
+            {
+                PaymentMethod = paymentMethod,
+                OriginalTotal = calc.OriginalTotal,
+                DiscountAmount = calc.Discount,
+                TotalAmount = calc.TotalAmount,
+                PromoCode = calc.AppliedPromoCode,
+                PromoPrizeName = calc.AppliedPromoName,
+                PaymentIntentId = request.PaymentIntentId
+            };
+
+            var notes = new OrderNotes
+            {
+                Comment = string.IsNullOrWhiteSpace(request.Notes?.Comment) ? null : request.Notes.Comment.Trim(),
+                CustomerNote = string.IsNullOrWhiteSpace(request.Notes?.CustomerNote) ? null : request.Notes.CustomerNote.Trim(),
+                KitchenNote = string.IsNullOrWhiteSpace(request.Notes?.KitchenNote) ? null : request.Notes.KitchenNote.Trim()
+            };
+
+            var newOrder = new Order
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId.Value,
+                CreatedAt = DateTime.UtcNow,
+                Status = "Paid Online",
+                Items = calc.OrderItems,
+                Payment = paymentDetails,
+                Notes = notes
+            };
+
+            await _userRepository.AddOrderAsync(newOrder);
+            basket.Items.Clear();
+            await _userRepository.UpdateBasketAsync(basket);
+            await tx.CommitAsync();
+
+            _ = Task.Run(() => _analyticsTrackingService.TrackAnalyticsAsync());
+
+            return Ok(new
+            {
+                success = true,
+                id = newOrder.Id,
+                status = newOrder.Status,
+                createdAt = newOrder.CreatedAt,
+                items = newOrder.Items,
+                payment = newOrder.Payment,
+                notes = newOrder.Notes,
+                remainingBalance,
+                cashbackEarned = calc.CashbackAmount
+            });
         }
-
-        var paymentDetails = new OrderPaymentDetails
+        finally
         {
-            PaymentMethod = paymentMethod,
-            OriginalTotal = calc.OriginalTotal,
-            DiscountAmount = calc.Discount,
-            TotalAmount = calc.TotalAmount,
-            PromoCode = calc.AppliedPromoCode,
-            PromoPrizeName = calc.AppliedPromoName,
-            PaymentIntentId = request.PaymentIntentId
-        };
-
-        var notes = new OrderNotes
-        {
-            Comment = string.IsNullOrWhiteSpace(request.Notes?.Comment) ? null : request.Notes.Comment.Trim(),
-            CustomerNote = string.IsNullOrWhiteSpace(request.Notes?.CustomerNote) ? null : request.Notes.CustomerNote.Trim(),
-            KitchenNote = string.IsNullOrWhiteSpace(request.Notes?.KitchenNote) ? null : request.Notes.KitchenNote.Trim()
-        };
-
-        var newOrder = new Order
-        {
-            Id = Guid.NewGuid(),
-            UserId = userId.Value,
-            CreatedAt = DateTime.UtcNow,
-            Status = "Paid Online",
-            Items = calc.OrderItems,
-            Payment = paymentDetails,
-            Notes = notes
-        };
-
-        await _userRepository.AddOrderAsync(newOrder);
-        _ = Task.Run(() => _analyticsTrackingService.TrackAnalyticsAsync());
-
-        basket.Items.Clear();
-        await _userRepository.UpdateBasketAsync(basket);
-
-        return Ok(new
-        {
-            success = true,
-            id = newOrder.Id,
-            status = newOrder.Status,
-            createdAt = newOrder.CreatedAt,
-            items = newOrder.Items,
-            payment = newOrder.Payment,
-            notes = newOrder.Notes,
-            remainingBalance,
-            cashbackEarned = calc.CashbackAmount
-        });
+            userLock.Release();
+        }
     }
 
     [HttpPost("cashier")]
@@ -421,26 +465,19 @@ public class OrdersController : ControllerBase
         var userId = GetUserId();
         if (userId == null) return Unauthorized();
 
-        var basket = await _userRepository.GetBasketByUserIdAsync(userId.Value);
-        if (basket == null || basket.Items == null || basket.Items.Count == 0)
-        {
-            return BadRequest(new { message = "Basket is empty." });
-        }
-
-        var calc = await CalculateOrderAsync(userId.Value, basket, request?.PromoCode);
-        if (calc == null || calc.OrderItems.Count == 0)
-        {
-            return BadRequest(new { message = "Items from basket not found in catalog." });
-        }
-
         var paymentMethod = CorePaymentMethod.CashDeskCash;
         if (request != null && !string.IsNullOrEmpty(request.PaymentMethod))
         {
             var pm = request.PaymentMethod.Trim();
-            if (pm.Equals("card", StringComparison.OrdinalIgnoreCase) ||
-                pm.Equals("CashDeskCard", StringComparison.OrdinalIgnoreCase) ||
-                pm.Equals("nfc", StringComparison.OrdinalIgnoreCase) ||
-                pm.Equals("CashDeskNfc", StringComparison.OrdinalIgnoreCase))
+            if (pm.Equals("cash", StringComparison.OrdinalIgnoreCase) ||
+                pm.Equals("CashDeskCash", StringComparison.OrdinalIgnoreCase))
+            {
+                paymentMethod = CorePaymentMethod.CashDeskCash;
+            }
+            else if (pm.Equals("card", StringComparison.OrdinalIgnoreCase) ||
+                     pm.Equals("CashDeskCard", StringComparison.OrdinalIgnoreCase) ||
+                     pm.Equals("nfc", StringComparison.OrdinalIgnoreCase) ||
+                     pm.Equals("CashDeskNfc", StringComparison.OrdinalIgnoreCase))
             {
                 paymentMethod = CorePaymentMethod.CashDeskCard;
             }
@@ -457,98 +494,155 @@ public class OrdersController : ControllerBase
             {
                 paymentMethod = CorePaymentMethod.OnlineCardDetails;
             }
-            else if (pm.Equals("stripe", StringComparison.OrdinalIgnoreCase) ||
-                     pm.Equals("OnlineStripe", StringComparison.OrdinalIgnoreCase))
+            else
             {
-                paymentMethod = CorePaymentMethod.OnlineStripe;
-            }
-            else if (pm.Equals("gpay", StringComparison.OrdinalIgnoreCase) ||
-                     pm.Equals("googlepay", StringComparison.OrdinalIgnoreCase) ||
-                     pm.Equals("OnlineGooglePay", StringComparison.OrdinalIgnoreCase))
-            {
-                paymentMethod = CorePaymentMethod.OnlineGooglePay;
+                return BadRequest(new { message = "Unsupported payment method for this endpoint. Online Stripe and Google Pay require Stripe confirmation." });
             }
         }
 
-        var user = await _userRepository.GetByIdAsync(userId.Value);
-        decimal? remainingBalance = null;
-        bool balanceChanged = false;
-
-        if (paymentMethod == CorePaymentMethod.OnlineBalance)
+        var userLock = OrderLocks.GetOrAdd(userId.Value, _ => new SemaphoreSlim(1, 1));
+        await userLock.WaitAsync();
+        try
         {
-            if (user == null || user.Balance < calc.TotalAmount)
+            await using var tx = await _context.Database.BeginTransactionAsync();
+            await _context.Database.ExecuteSqlInterpolatedAsync(
+                $"SELECT 1 FROM \"Users\" WHERE \"Id\" = {userId.Value} FOR UPDATE");
+
+            var basket = await _userRepository.GetBasketByUserIdAsync(userId.Value);
+            if (basket == null || basket.Items == null || basket.Items.Count == 0)
             {
-                return BadRequest(new { message = "Insufficient balance on your Süfrano account." });
+                return BadRequest(new { message = "Basket is empty." });
             }
-            user.Balance = Math.Round(user.Balance - calc.TotalAmount, 2);
-            balanceChanged = true;
+
+            var calc = await CalculateOrderAsync(userId.Value, basket, request?.PromoCode);
+            if (calc == null || calc.OrderItems.Count == 0)
+            {
+                return BadRequest(new { message = "Items from basket not found in catalog." });
+            }
+
+            var user = await _userRepository.GetByIdAsync(userId.Value);
+            if (user == null)
+            {
+                return Unauthorized(new { message = "User not found." });
+            }
+
+            if (paymentMethod == CorePaymentMethod.OnlineCardDetails)
+            {
+                bool hasValidCard = false;
+                if (request?.CardId != null)
+                {
+                    var savedCard = user.PaymentMethods?.FirstOrDefault(c => c.Id == request.CardId.Value);
+                    if (savedCard != null && PaymentMethodsController.IsValidExpiry(savedCard.ExpiryDate))
+                    {
+                        hasValidCard = true;
+                    }
+                }
+                else if (!string.IsNullOrWhiteSpace(request?.CardNumber))
+                {
+                    var cleanNumber = Regex.Replace(request.CardNumber, @"\D", "");
+                    var cleanCvc = Regex.Replace(request.Cvc ?? string.Empty, @"\D", "");
+                    var brand = PaymentMethodsController.DetectCardBrand(cleanNumber);
+                    if (cleanNumber.Length >= 13 && cleanNumber.Length <= 19 &&
+                        !string.IsNullOrEmpty(brand) &&
+                        PaymentMethodsController.IsValidLuhn(cleanNumber) &&
+                        !string.IsNullOrWhiteSpace(request.ExpiryDate) &&
+                        PaymentMethodsController.IsValidExpiry(request.ExpiryDate) &&
+                        cleanCvc.Length == 3)
+                    {
+                        hasValidCard = true;
+                    }
+                }
+
+                if (!hasValidCard)
+                {
+                    return BadRequest(new { message = "Valid payment card details or a saved card are required for online card payment." });
+                }
+            }
+
+            decimal? remainingBalance = null;
+            bool balanceChanged = false;
+
+            if (paymentMethod == CorePaymentMethod.OnlineBalance)
+            {
+                if (user.Balance < calc.TotalAmount)
+                {
+                    return BadRequest(new { message = "Insufficient balance on your Süfrano account." });
+                }
+                user.Balance = Math.Round(user.Balance - calc.TotalAmount, 2);
+                balanceChanged = true;
+            }
+
+            if (calc.CashbackAmount > 0 && (paymentMethod == CorePaymentMethod.OnlineBalance || paymentMethod == CorePaymentMethod.OnlineCardDetails))
+            {
+                user.Balance = Math.Round(user.Balance + calc.CashbackAmount, 2);
+                balanceChanged = true;
+            }
+
+            if (balanceChanged)
+            {
+                await _userRepository.UpdateAsync(user);
+                remainingBalance = user.Balance;
+            }
+
+            if (calc.Promo != null && (calc.Discount > 0 || calc.CashbackAmount > 0))
+            {
+                calc.Promo.IsActive = false;
+                await _userRepository.UpdateUserPromoAsync(calc.Promo);
+            }
+
+            var paymentDetails = new OrderPaymentDetails
+            {
+                PaymentMethod = paymentMethod,
+                OriginalTotal = calc.OriginalTotal,
+                DiscountAmount = calc.Discount,
+                TotalAmount = calc.TotalAmount,
+                PromoCode = calc.AppliedPromoCode,
+                PromoPrizeName = calc.AppliedPromoName
+            };
+
+            var orderStatus = (paymentMethod == CorePaymentMethod.OnlineBalance || paymentMethod == CorePaymentMethod.OnlineCardDetails) ? "Paid Online" : "Pending Payment";
+
+            var notes = new OrderNotes
+            {
+                Comment = string.IsNullOrWhiteSpace(request?.Notes?.Comment) ? null : request.Notes.Comment.Trim(),
+                CustomerNote = string.IsNullOrWhiteSpace(request?.Notes?.CustomerNote) ? null : request.Notes.CustomerNote.Trim(),
+                KitchenNote = string.IsNullOrWhiteSpace(request?.Notes?.KitchenNote) ? null : request.Notes.KitchenNote.Trim()
+            };
+
+            var newOrder = new Order
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId.Value,
+                CreatedAt = DateTime.UtcNow,
+                Status = orderStatus,
+                Items = calc.OrderItems,
+                Payment = paymentDetails,
+                Notes = notes
+            };
+            await _userRepository.AddOrderAsync(newOrder);
+            basket.Items.Clear();
+            await _userRepository.UpdateBasketAsync(basket);
+            await tx.CommitAsync();
+
+            _ = Task.Run(() => _analyticsTrackingService.TrackAnalyticsAsync());
+
+            return Ok(new
+            {
+                success = true,
+                id = newOrder.Id,
+                status = newOrder.Status,
+                createdAt = newOrder.CreatedAt,
+                items = newOrder.Items,
+                payment = newOrder.Payment,
+                notes = newOrder.Notes,
+                remainingBalance,
+                cashbackEarned = (paymentMethod == CorePaymentMethod.OnlineBalance || paymentMethod == CorePaymentMethod.OnlineCardDetails ? calc.CashbackAmount : 0m)
+            });
         }
-
-        if (user != null && calc.CashbackAmount > 0 && paymentMethod == CorePaymentMethod.OnlineBalance)
+        finally
         {
-            user.Balance = Math.Round(user.Balance + calc.CashbackAmount, 2);
-            balanceChanged = true;
+            userLock.Release();
         }
-
-        if (user != null && balanceChanged)
-        {
-            await _userRepository.UpdateAsync(user);
-            remainingBalance = user.Balance;
-        }
-
-        if (calc.Promo != null && (calc.Discount > 0 || calc.CashbackAmount > 0))
-        {
-            calc.Promo.IsActive = false;
-            await _userRepository.UpdateUserPromoAsync(calc.Promo);
-        }
-
-        var paymentDetails = new OrderPaymentDetails
-        {
-            PaymentMethod = paymentMethod,
-            OriginalTotal = calc.OriginalTotal,
-            DiscountAmount = calc.Discount,
-            TotalAmount = calc.TotalAmount,
-            PromoCode = calc.AppliedPromoCode,
-            PromoPrizeName = calc.AppliedPromoName
-        };
-
-        var orderStatus = (paymentMethod == CorePaymentMethod.OnlineBalance || paymentMethod == CorePaymentMethod.OnlineCardDetails) ? "Paid Online" : "Pending Payment";
-
-        var notes = new OrderNotes
-        {
-            Comment = string.IsNullOrWhiteSpace(request?.Notes?.Comment) ? null : request.Notes.Comment.Trim(),
-            CustomerNote = string.IsNullOrWhiteSpace(request?.Notes?.CustomerNote) ? null : request.Notes.CustomerNote.Trim(),
-            KitchenNote = string.IsNullOrWhiteSpace(request?.Notes?.KitchenNote) ? null : request.Notes.KitchenNote.Trim()
-        };
-
-        var newOrder = new Order
-        {
-            Id = Guid.NewGuid(),
-            UserId = userId.Value,
-            CreatedAt = DateTime.UtcNow,
-            Status = orderStatus,
-            Items = calc.OrderItems,
-            Payment = paymentDetails,
-            Notes = notes
-        };
-        await _userRepository.AddOrderAsync(newOrder);
-        _ = Task.Run(() => _analyticsTrackingService.TrackAnalyticsAsync());
-
-        basket.Items.Clear();
-        await _userRepository.UpdateBasketAsync(basket);
-
-        return Ok(new
-        {
-            success = true,
-            id = newOrder.Id,
-            status = newOrder.Status,
-            createdAt = newOrder.CreatedAt,
-            items = newOrder.Items,
-            payment = newOrder.Payment,
-            notes = newOrder.Notes,
-            remainingBalance,
-            cashbackEarned = (paymentMethod == CorePaymentMethod.OnlineBalance ? calc.CashbackAmount : 0m)
-        });
     }
 
     [HttpGet("active")]
@@ -670,6 +764,11 @@ public class CashierOrderRequest
 {
     public string? PaymentMethod { get; set; }
     public string? PromoCode { get; set; }
+    public int? CardId { get; set; }
+    public string? CardNumber { get; set; }
+    public string? ExpiryDate { get; set; }
+    public string? Cvc { get; set; }
+    public string? CardholderName { get; set; }
     public OrderNotes? Notes { get; set; }
 }
 

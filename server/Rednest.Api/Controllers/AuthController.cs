@@ -123,10 +123,12 @@ public class AuthController : ControllerBase
 
             if (result.Requires2FA)
             {
+                var twoFactorToken = SecurityVerificationHelper.AppendTwoFactorChallengeCookie(Response, request.Email);
                 return Ok(new
                 {
                     requires2FA = true,
-                    email = request.Email
+                    email = request.Email,
+                    twoFactorToken
                 });
             }
 
@@ -157,11 +159,11 @@ public class AuthController : ControllerBase
         }
         catch (UnauthorizedAccessException ex)
         {
-            return Unauthorized(new { Message = ex.Message });
+            return Unauthorized(new { message = ex.Message, Message = ex.Message });
         }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = ex.Message });
+            return BadRequest(new { message = ex.Message, Message = ex.Message });
         }
     }
 
@@ -170,6 +172,15 @@ public class AuthController : ControllerBase
     {
         try
         {
+            var challengeToken = !string.IsNullOrWhiteSpace(request.TwoFactorToken)
+                ? request.TwoFactorToken
+                : Request.Cookies[SecurityVerificationHelper.TwoFactorChallengeCookieName];
+
+            if (!SecurityVerificationHelper.ValidateTwoFactorChallengeToken(challengeToken, request.Email))
+            {
+                return Unauthorized(new { message = "Two-factor verification session expired or invalid. Please sign in with your password again.", Message = "Two-factor verification session expired or invalid. Please sign in with your password again." });
+            }
+
             var ipAddress = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()?.Split(',')[0].Trim()
                             ?? HttpContext.Connection.RemoteIpAddress?.ToString();
             var userAgent = Request.Headers["User-Agent"].ToString();
@@ -179,6 +190,7 @@ public class AuthController : ControllerBase
                               ?? Request.Headers["X-Device-Model"].FirstOrDefault();
 
             var result = await _authService.VerifyTwoFactorAsync(request, ipAddress, userAgent, platformVersion, deviceModel);
+            SecurityVerificationHelper.DeleteTwoFactorChallengeCookie(Response);
             SetTokenCookies(result.AccessToken, result.RefreshToken);
             if (result.User != null)
             {
@@ -203,11 +215,11 @@ public class AuthController : ControllerBase
         }
         catch (UnauthorizedAccessException ex)
         {
-            return Unauthorized(new { Message = ex.Message });
+            return Unauthorized(new { message = ex.Message, Message = ex.Message });
         }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = ex.Message });
+            return BadRequest(new { message = ex.Message, Message = ex.Message });
         }
     }
 
@@ -216,16 +228,26 @@ public class AuthController : ControllerBase
     {
         try
         {
+            var challengeToken = !string.IsNullOrWhiteSpace(request.TwoFactorToken)
+                ? request.TwoFactorToken
+                : Request.Cookies[SecurityVerificationHelper.TwoFactorChallengeCookieName];
+
+            if (!SecurityVerificationHelper.ValidateTwoFactorChallengeToken(challengeToken, request.Email))
+            {
+                return Unauthorized(new { message = "Two-factor verification session expired or invalid. Please sign in with your password again.", Message = "Two-factor verification session expired or invalid. Please sign in with your password again." });
+            }
+
             await _authService.ResendTwoFactorCodeAsync(request.Email);
-            return Ok(new { message = "Verification code resent successfully." });
+            var newToken = SecurityVerificationHelper.AppendTwoFactorChallengeCookie(Response, request.Email);
+            return Ok(new { message = "Verification code resent successfully.", twoFactorToken = newToken });
         }
         catch (UnauthorizedAccessException ex)
         {
-            return Unauthorized(new { Message = ex.Message });
+            return Unauthorized(new { message = ex.Message, Message = ex.Message });
         }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = ex.Message });
+            return BadRequest(new { message = ex.Message, Message = ex.Message });
         }
     }
 

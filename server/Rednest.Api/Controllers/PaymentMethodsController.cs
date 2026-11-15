@@ -26,7 +26,7 @@ public class PaymentMethodsController : ControllerBase
 
     private static DateTime GetBakuTime() => DateTime.UtcNow.AddHours(4);
 
-    private static string DetectCardBrand(string cleanNumber)
+    internal static string DetectCardBrand(string cleanNumber)
     {
         if (cleanNumber.StartsWith('4'))
         {
@@ -54,7 +54,7 @@ public class PaymentMethodsController : ControllerBase
         return string.Empty;
     }
 
-    private static bool IsValidLuhn(string number)
+    internal static bool IsValidLuhn(string number)
     {
         int sum = 0;
         bool alternate = false;
@@ -73,7 +73,7 @@ public class PaymentMethodsController : ControllerBase
         return sum % 10 == 0;
     }
 
-    private static bool IsValidExpiry(string expiryDate)
+    internal static bool IsValidExpiry(string expiryDate)
     {
         if (string.IsNullOrWhiteSpace(expiryDate)) return false;
         var parts = expiryDate.Trim().Split('/');

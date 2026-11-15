@@ -44,6 +44,7 @@
 				"",
 				""
 			]);
+			const [twoFactorToken, setTwoFactorToken] = useState("");
 			const [twoFactorTimer, setTwoFactorTimer] = useState(900);
 			const inputRefs = [
 				useRef(null),
@@ -415,6 +416,7 @@
 						throw new Error(data.message || "Authorization / Registration Error");
 					}
 					if (data.requires2FA) {
+						setTwoFactorToken(data.twoFactorToken || "");
 						setStep("2fa");
 						setTwoFactorDigits([
 							"",
@@ -462,7 +464,8 @@
 						},
 						body: JSON.stringify({
 							email,
-							code
+							code,
+							twoFactorToken: twoFactorToken || undefined
 						})
 					});
 					const data = await response.json();
