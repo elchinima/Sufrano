@@ -98,10 +98,23 @@ public class UserRepository : IUserRepository
 
     public async Task<UserPromo?> GetUserPromoAsync(Guid userId)
     {
-        return await _context.UserPromos
+        var userPromos = await _context.UserPromos
             .Where(p => p.UserId == userId)
+            .ToListAsync();
+
+        return userPromos
+            .Where(IsWheelPromo)
             .OrderByDescending(p => p.Dates.ActivatedAt)
-            .FirstOrDefaultAsync();
+            .FirstOrDefault();
+    }
+
+    private static bool IsWheelPromo(UserPromo promo)
+    {
+        var source = promo.PrizeInfo?.Source;
+        if (!string.IsNullOrEmpty(source))
+            return string.Equals(source, PrizeInfo.SourceWheel, StringComparison.OrdinalIgnoreCase);
+
+        return promo.PrizeInfo?.Type != PrizeType.DiscountCustom;
     }
 
     public async Task<UserPromo?> GetActiveUserPromoAsync(Guid userId)

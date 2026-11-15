@@ -7,13 +7,20 @@ public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ILogger<AuthController> _logger;
     private static readonly string[] AllowedAvatarExtensions = [".png", ".jpg", ".jpeg"];
     private const long MaxAvatarSizeBytes = 10 * 1024 * 1024;
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, SemaphoreSlim> SpinLocks = new();
+    private static readonly SemaphoreSlim ActivatePromoLock = new(1, 1);
 
-    public AuthController(IAuthService authService, IHttpClientFactory httpClientFactory)
+    public AuthController(
+        IAuthService authService,
+        IHttpClientFactory httpClientFactory,
+        ILogger<AuthController> logger)
     {
         _authService = authService;
         _httpClientFactory = httpClientFactory;
+        _logger = logger;
     }
 
     [HttpGet("google/url")]
@@ -940,7 +947,8 @@ public class AuthController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = ex.Message });
+            _logger.LogError(ex, "Error fetching user promo state.");
+            return StatusCode(500, new { message = "An unexpected error occurred while loading your promo." });
         }
     }
 
@@ -981,7 +989,8 @@ public class AuthController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = ex.Message });
+            _logger.LogError(ex, "Error fetching all user promos.");
+            return StatusCode(500, new { message = "An unexpected error occurred while loading promo codes." });
         }
     }
 
@@ -1004,63 +1013,83 @@ public class AuthController : ControllerBase
 
             var inputCode = request.PromoCode.Trim().ToUpperInvariant();
 
-            var promo = await db.UserPromos.FirstOrDefaultAsync(p => p.Codes.PromoCode.ToUpper() == inputCode);
-            if (promo == null)
+            await ActivatePromoLock.WaitAsync();
+            try
             {
-                return NotFound(new { message = "Promo code not found. Please check the code and try again." });
-            }
+                await using var tx = await db.Database.BeginTransactionAsync();
 
-            var pixel = await db.Users.FirstOrDefaultAsync(u => u.Email == "myrednest@gmail.com");
-
-            if (promo.UserId == userId)
-            {
-                return BadRequest(new { message = "You have already activated this promo code." });
-            }
-
-            if (pixel != null && promo.UserId != pixel.Id)
-            {
-                return BadRequest(new { message = "This promo code has already been activated by another user." });
-            }
-
-            var now = DateTime.UtcNow;
-            if (!promo.IsActive || promo.Dates.ExpiresAt < now)
-            {
-                return BadRequest(new { message = "This promo code has expired or is no longer active." });
-            }
-
-            promo.UserId = userId;
-            await db.SaveChangesAsync();
-
-            return Ok(new
-            {
-                message = "Promo code successfully activated!",
-                promo = new
+                var promo = await db.UserPromos.FirstOrDefaultAsync(p => p.Codes.PromoCode == inputCode);
+                if (promo == null)
                 {
-                    id = promo.Id,
-                    promoCode = promo.Codes.PromoCode,
-                    barCode = promo.Codes.BarCode,
-                    prizeName = promo.PrizeInfo.PrizeName,
-                    prizeDescription = promo.PrizeInfo.PrizeDescription,
-                    prizeType = promo.PrizeInfo.Type.ToString(),
-                    discountPercent = promo.PrizeInfo.DiscountPercent,
-                    cashbackPercent = promo.PrizeInfo.CashbackPercent,
-                    isActive = promo.IsActive,
-                    isExpired = false,
-                    activatedAt = promo.Dates.ActivatedAt,
-                    expiresAt = promo.Dates.ExpiresAt
+                    return NotFound(new { message = "Promo code not found. Please check the code and try again." });
                 }
-            });
+
+                await db.Database.ExecuteSqlInterpolatedAsync(
+                    $"SELECT 1 FROM \"UserPromos\" WHERE \"Id\" = {promo.Id} FOR UPDATE");
+                await db.Entry(promo).ReloadAsync();
+
+                var pixel = await db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == "myrednest@gmail.com");
+
+                if (promo.UserId == userId)
+                {
+                    return BadRequest(new { message = "You have already activated this promo code." });
+                }
+
+                if (pixel != null && promo.UserId != pixel.Id)
+                {
+                    return Conflict(new { message = "This promo code has already been activated by another user." });
+                }
+
+                var now = DateTime.UtcNow;
+                if (!promo.IsActive || promo.Dates.ExpiresAt < now)
+                {
+                    return BadRequest(new { message = "This promo code has expired or is no longer active." });
+                }
+
+                promo.UserId = userId;
+                promo.PrizeInfo.Source = Rednest.Core.Entities.PrizeInfo.SourceAdmin;
+                db.Entry(promo).Property(p => p.PrizeInfo).IsModified = true;
+
+                await db.SaveChangesAsync();
+                await tx.CommitAsync();
+
+                return Ok(new
+                {
+                    message = "Promo code successfully activated!",
+                    promo = new
+                    {
+                        id = promo.Id,
+                        promoCode = promo.Codes.PromoCode,
+                        barCode = promo.Codes.BarCode,
+                        prizeName = promo.PrizeInfo.PrizeName,
+                        prizeDescription = promo.PrizeInfo.PrizeDescription,
+                        prizeType = promo.PrizeInfo.Type.ToString(),
+                        discountPercent = promo.PrizeInfo.DiscountPercent,
+                        cashbackPercent = promo.PrizeInfo.CashbackPercent,
+                        isActive = promo.IsActive,
+                        isExpired = false,
+                        activatedAt = promo.Dates.ActivatedAt,
+                        expiresAt = promo.Dates.ExpiresAt
+                    }
+                });
+            }
+            finally
+            {
+                ActivatePromoLock.Release();
+            }
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            _logger.LogError(ex, "Error activating promo code.");
+            return StatusCode(500, new { message = "An unexpected error occurred while activating the promo code." });
         }
     }
 
     [Microsoft.AspNetCore.Authorization.Authorize]
     [HttpPost("promo")]
     public async Task<IActionResult> SavePromo(
-        [FromServices] IUserRepository userRepository)
+        [FromServices] IUserRepository userRepository,
+        [FromServices] AppDbContext db)
     {
         try
         {
@@ -1068,70 +1097,105 @@ public class AuthController : ControllerBase
             if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
                 return Unauthorized();
 
-            var now = DateTime.UtcNow;
-            var lastPromo = await userRepository.GetUserPromoAsync(userId);
-
-            if (lastPromo != null)
+            var userSpinLock = SpinLocks.GetOrAdd(userId, _ => new SemaphoreSlim(1, 1));
+            await userSpinLock.WaitAsync();
+            try
             {
-                var cooldownEndsAt = lastPromo.Dates.ActivatedAt.AddDays(7);
-                if (now < cooldownEndsAt)
+                await using var tx = await db.Database.BeginTransactionAsync();
+                await db.Database.ExecuteSqlInterpolatedAsync(
+                    $"SELECT 1 FROM \"Users\" WHERE \"Id\" = {userId} FOR UPDATE");
+
+                var now = DateTime.UtcNow;
+                var lastPromo = await userRepository.GetUserPromoAsync(userId);
+
+                if (lastPromo != null)
                 {
-                    return Conflict(new
+                    var cooldownEndsAt = lastPromo.Dates.ActivatedAt.AddDays(7);
+                    if (now < cooldownEndsAt)
                     {
-                        Message = "You can only spin the wheel once a week.",
-                        cooldownEndsAt = cooldownEndsAt
-                    });
+                        return Conflict(new
+                        {
+                            message = "You can only spin the wheel once a week.",
+                            cooldownEndsAt = cooldownEndsAt
+                        });
+                    }
                 }
+
+                var prizeType = PickWeightedPrize();
+                var cashbackPercent = prizeType == Rednest.Core.Entities.PrizeType.CashbackOnPurchases
+                    ? Random.Shared.Next(1, 11)
+                    : 0;
+                var discountPercent = prizeType == Rednest.Core.Entities.PrizeType.Discount25
+                    ? 25
+                    : prizeType == Rednest.Core.Entities.PrizeType.Discount50
+                        ? 50
+                        : 0;
+
+                var (prizeName, prizeDescription) = GetPrizeDetails(prizeType, cashbackPercent);
+                var segmentIndex = (int)prizeType;
+
+                string promoCode;
+                string barCode;
+                int attempts = 0;
+                do
+                {
+                    promoCode = Rednest.Core.Entities.PromoCodeGenerator.GeneratePromoCode();
+                    barCode = Rednest.Core.Entities.PromoCodeGenerator.GenerateBarCode();
+                    attempts++;
+                }
+                while (attempts < 5 && await db.UserPromos.AnyAsync(p => p.Codes.PromoCode == promoCode || p.Codes.BarCode == barCode));
+
+                var promo = new Rednest.Core.Entities.UserPromo
+                {
+                    UserId = userId,
+                    Codes = new Rednest.Core.Entities.PromoCodes
+                    {
+                        PromoCode = promoCode,
+                        BarCode = barCode
+                    },
+                    PrizeInfo = new Rednest.Core.Entities.PrizeInfo
+                    {
+                        Type = prizeType,
+                        PrizeName = prizeName,
+                        PrizeDescription = prizeDescription,
+                        CashbackPercent = cashbackPercent,
+                        DiscountPercent = discountPercent,
+                        Source = Rednest.Core.Entities.PrizeInfo.SourceWheel
+                    },
+                    Dates = new Rednest.Core.Entities.PromoDates
+                    {
+                        ActivatedAt = now,
+                        ExpiresAt = now.AddDays(7)
+                    },
+                    IsActive = true
+                };
+
+                await userRepository.AddUserPromoAsync(promo);
+                await tx.CommitAsync();
+
+                return Ok(new
+                {
+                    segmentIndex,
+                    prizeType = prizeType.ToString(),
+                    prizeName,
+                    prizeDescription,
+                    promoCode,
+                    barCode,
+                    cashbackPercent,
+                    discountPercent,
+                    expiresAt = now.AddDays(7),
+                    cooldownEndsAt = now.AddDays(7)
+                });
             }
-
-            var prizeType = PickWeightedPrize();
-            var cashbackPercent = prizeType == Rednest.Core.Entities.PrizeType.CashbackOnPurchases
-                ? Random.Shared.Next(1, 11)
-                : 0;
-
-            var (prizeName, prizeDescription) = GetPrizeDetails(prizeType, cashbackPercent);
-            var segmentIndex = (int)prizeType;
-
-            var promo = new Rednest.Core.Entities.UserPromo
+            finally
             {
-                UserId = userId,
-                PrizeInfo = new Rednest.Core.Entities.PrizeInfo
-                {
-                    Type = prizeType,
-                    PrizeName = prizeName,
-                    PrizeDescription = prizeDescription,
-                    CashbackPercent = cashbackPercent
-                },
-                Dates = new Rednest.Core.Entities.PromoDates
-                {
-                    ActivatedAt = now,
-                    ExpiresAt = now.AddDays(7)
-                },
-                IsActive = true
-            };
-
-            var barCode = new string(promo.Id.ToString().Where(char.IsDigit).ToArray());
-            var promoCode = promo.Id.ToString("N")[..8].ToUpper();
-            promo.Codes = new Rednest.Core.Entities.PromoCodes { PromoCode = promoCode, BarCode = barCode };
-
-            await userRepository.AddUserPromoAsync(promo);
-
-            return Ok(new
-            {
-                segmentIndex,
-                prizeType = prizeType.ToString(),
-                prizeName,
-                prizeDescription,
-                promoCode,
-                barCode,
-                cashbackPercent,
-                expiresAt = now.AddDays(7),
-                cooldownEndsAt = now.AddDays(7)
-            });
+                userSpinLock.Release();
+            }
         }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = ex.Message });
+            _logger.LogError(ex, "Error spinning the Wheel of Fortune.");
+            return StatusCode(500, new { message = "An unexpected error occurred while spinning the wheel." });
         }
     }
 

@@ -1352,8 +1352,16 @@ public class AdminController : ControllerBase
             };
 
         var promoId = Guid.NewGuid();
-        var barCode = new string(promoId.ToString().Where(char.IsDigit).ToArray());
-        var promoCode = promoId.ToString("N")[..8].ToUpper();
+        string promoCode;
+        string barCode;
+        int attempts = 0;
+        do
+        {
+            promoCode = PromoCodeGenerator.GeneratePromoCode();
+            barCode = PromoCodeGenerator.GenerateBarCode();
+            attempts++;
+        }
+        while (attempts < 5 && await _context.UserPromos.AnyAsync(p => p.Codes.PromoCode == promoCode || p.Codes.BarCode == barCode));
 
         var promo = new UserPromo
         {
@@ -1370,7 +1378,8 @@ public class AdminController : ControllerBase
                 PrizeName = prizeName,
                 PrizeDescription = prizeDescription,
                 DiscountPercent = discountPercent,
-                CashbackPercent = cashbackPercent
+                CashbackPercent = cashbackPercent,
+                Source = PrizeInfo.SourceAdmin
             },
             Dates = new PromoDates
             {

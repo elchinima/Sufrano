@@ -60,7 +60,7 @@ public class OrdersController : ControllerBase
         {
             var code = selectedPromoCode.Trim().ToUpperInvariant();
             promo = await _context.UserPromos
-                .FirstOrDefaultAsync(p => p.UserId == userId && p.Codes.PromoCode.ToUpper() == code && p.IsActive);
+                .FirstOrDefaultAsync(p => p.UserId == userId && p.Codes.PromoCode == code && p.IsActive);
         }
         else
         {

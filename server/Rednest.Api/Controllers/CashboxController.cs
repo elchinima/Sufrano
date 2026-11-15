@@ -247,7 +247,7 @@ public class CashboxController : ControllerBase
             if (promo == null)
             {
                 promo = await _context.UserPromos.FirstOrDefaultAsync(p =>
-                    p.Codes.PromoCode.ToUpper() == codeUpper || p.Codes.BarCode == rawCode);
+                    p.Codes.PromoCode == codeUpper || p.Codes.BarCode == rawCode);
             }
 
             if (promo == null)
