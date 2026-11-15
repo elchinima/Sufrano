@@ -2,6 +2,7 @@
 <html lang="en" style="background-color: #24050d; color-scheme: dark;">
 
 <head>
+  <base href="/" id="base-tag" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#4a0e1c" />
@@ -16,11 +17,14 @@
       if (loc.protocol === 'file:') {
         baseHref = path.substring(0, path.lastIndexOf('/') + 1);
         assetBase = baseHref.replace(/\/$/, '');
+        var baseTag = document.getElementById('base-tag');
+        if (baseTag) baseTag.setAttribute('href', baseHref);
       } else if (path === '/src' || path.indexOf('/src/') === 0) {
         baseHref = '/src/';
         assetBase = '/src';
+        var baseTag = document.getElementById('base-tag');
+        if (baseTag) baseTag.setAttribute('href', baseHref);
       }
-      document.write('<base href="' + baseHref + '" />');
       window.__SUFRANO_BASE__ = assetBase;
 
       var isSeparateLocalDev =

@@ -68,6 +68,9 @@ builder.Services.AddSingleton<IAnalyticsTrackingService>(sp => sp.GetRequiredSer
 builder.Services.AddSingleton<PromoCleanupService>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<PromoCleanupService>());
 builder.Services.AddSingleton<IPromoCleanupService>(sp => sp.GetRequiredService<PromoCleanupService>());
+builder.Services.AddSingleton<AdminLogCleanupService>();
+builder.Services.AddHostedService(sp => sp.GetRequiredService<AdminLogCleanupService>());
+builder.Services.AddSingleton<IAdminLogCleanupService>(sp => sp.GetRequiredService<AdminLogCleanupService>());
 
 builder.Services.AddCors(options =>
 {

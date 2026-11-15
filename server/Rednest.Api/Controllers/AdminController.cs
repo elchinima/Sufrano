@@ -2015,10 +2015,15 @@ public class AdminController : ControllerBase
         if (!await IsFullAdminAuthenticatedAsync())
             return StatusCode(403, new { message = "Access denied. Only Super Admin and Admin roles can view newsletter history." });
 
+        var cutoffTime = DateTime.SpecifyKind(DateTime.UtcNow.AddHours(4).AddDays(-90), DateTimeKind.Utc);
+        await _context.AdminLogs
+            .Where(l => l.CreatedAt <= cutoffTime)
+            .ExecuteDeleteAsync();
+
         var logs = await _context.AdminLogs
             .Include(l => l.User)
             .AsNoTracking()
-            .Where(l => l.Page == "Newsletter" && l.Type == "POST")
+            .Where(l => l.Page == "Newsletter" && l.Type == "POST" && l.CreatedAt > cutoffTime)
             .OrderByDescending(l => l.CreatedAt)
             .ToListAsync();
 
@@ -2392,9 +2397,15 @@ public class AdminController : ControllerBase
 
         try
         {
+            var cutoffTime = DateTime.SpecifyKind(DateTime.UtcNow.AddHours(4).AddDays(-90), DateTimeKind.Utc);
+            await _context.AdminLogs
+                .Where(l => l.CreatedAt <= cutoffTime)
+                .ExecuteDeleteAsync();
+
             var query = _context.AdminLogs
                 .Include(l => l.User)
                 .AsNoTracking()
+                .Where(l => l.CreatedAt > cutoffTime)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(filterPage) && !filterPage.Equals("All", StringComparison.OrdinalIgnoreCase))
