@@ -44,6 +44,8 @@ public interface IAuthService
 
     Task<bool> RevokeSessionAsync(Guid userId, string sessionId, string? currentRefreshToken);
 
+    Task LogoutAsync(Guid? userId, string? refreshToken);
+
     string GetGoogleAuthUrl(string? redirectUri = null);
 
     Task<(string AccessToken, string RefreshToken, bool HasName, User User)> AuthenticateWithGoogleAsync(

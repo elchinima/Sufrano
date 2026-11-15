@@ -543,26 +543,32 @@ public class AdminController : ControllerBase
     [HttpPost("users/{id:guid}/sessions/terminate")]
     public async Task<IActionResult> TerminateUserSessions(Guid id)
     {
-        if (!await IsFullAdminAuthenticatedAsync())
+        var (auth, adminUser) = await GetAdminUserAsync();
+        if (!auth || adminUser == null || !IsFullAdminRole(adminUser.Role))
             return StatusCode(403, new { message = "Access denied. Only Super Admin and Admin roles can terminate user sessions." });
 
-        var currentUserIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (Guid.TryParse(currentUserIdStr, out var currentUserId) && currentUserId == id)
+        if (adminUser.Id == id)
         {
             return BadRequest(new { message = "You cannot terminate your own active sessions from the admin panel." });
         }
 
-        var session = await _context.UserSessions.FirstOrDefaultAsync(s => s.UserId == id);
-        if (session == null)
+        var targetUser = await _context.Users
+            .Include(u => u.Session)
+            .FirstOrDefaultAsync(u => u.Id == id);
+        if (targetUser == null || targetUser.Session == null)
             return NotFound(new { message = "User session record not found." });
 
-        session.Sessions.Clear();
+        var currentUserLevel = GetUserRoleLevel(adminUser.Role);
+        var targetUserLevel = GetUserRoleLevel(targetUser.Role);
+        if (currentUserLevel <= targetUserLevel)
+            return StatusCode(403, new { message = $"Access denied. You cannot terminate sessions of a user with an equal or higher role ({targetUser.Role})." });
+
+        targetUser.Session.Sessions.Clear();
         await _context.SaveChangesAsync();
 
-        var (auth, adminUser) = await GetAdminUserAsync();
         await LogAdminActionAsync(
-            adminUser?.Id,
-            adminUser?.Role.ToString() ?? "Admin",
+            adminUser.Id,
+            adminUser.Role.ToString(),
             "Users",
             "POST",
             new
@@ -577,11 +583,11 @@ public class AdminController : ControllerBase
     [HttpDelete("users/{id:guid}")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
-        if (!await IsFullAdminAuthenticatedAsync())
+        var (auth, adminUser) = await GetAdminUserAsync();
+        if (!auth || adminUser == null || !IsFullAdminRole(adminUser.Role))
             return StatusCode(403, new { message = "Access denied. Only Super Admin and Admin roles can delete users." });
 
-        var currentUserIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (Guid.TryParse(currentUserIdStr, out var currentUserId) && currentUserId == id)
+        if (adminUser.Id == id)
         {
             return BadRequest(new { message = "You cannot delete your own account." });
         }
@@ -590,6 +596,14 @@ public class AdminController : ControllerBase
         if (user == null)
             return NotFound(new { message = "User not found." });
 
+        if (user.Role == UserRole.AI || user.Role == UserRole.Bot)
+            return BadRequest(new { message = "System accounts cannot be deleted." });
+
+        var currentUserLevel = GetUserRoleLevel(adminUser.Role);
+        var targetUserLevel = GetUserRoleLevel(user.Role);
+        if (currentUserLevel <= targetUserLevel)
+            return StatusCode(403, new { message = $"Access denied. You cannot delete a user with an equal or higher role ({user.Role})." });
+
         var targetEmail = user.Email;
         var targetName = user.Name;
         var targetRole = user.Role.ToString();
@@ -597,10 +611,9 @@ public class AdminController : ControllerBase
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
 
-        var (auth, adminUser) = await GetAdminUserAsync();
         await LogAdminActionAsync(
-            adminUser?.Id,
-            adminUser?.Role.ToString() ?? "Admin",
+            adminUser.Id,
+            adminUser.Role.ToString(),
             "Users",
             "DELETE",
             new

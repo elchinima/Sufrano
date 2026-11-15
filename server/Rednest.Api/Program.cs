@@ -209,12 +209,36 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 var userIdStr = context.Principal?.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (Guid.TryParse(userIdStr, out var userId))
                 {
-                    var isBlocked = await dbContext.UserSessions
+                    var userSession = await dbContext.UserSessions
                         .AsNoTracking()
-                        .AnyAsync(s => s.UserId == userId && !s.IsActive);
-                    if (isBlocked)
+                        .FirstOrDefaultAsync(s => s.UserId == userId);
+
+                    if (userSession != null)
                     {
-                        context.Fail("Account suspended");
+                        if (!userSession.IsActive)
+                        {
+                            context.Fail("Account suspended");
+                            return;
+                        }
+
+                        if (userSession.Sessions == null || !userSession.Sessions.Any(s => s.IsActive != false))
+                        {
+                            context.Fail("Session terminated");
+                            return;
+                        }
+
+                        var refreshToken = context.HttpContext.Request.Cookies["refreshToken"];
+                        if (!string.IsNullOrEmpty(refreshToken))
+                        {
+                            var hasActiveSession = userSession.Sessions.Any(s =>
+                                s.IsActive != false &&
+                                (s.RefreshToken == refreshToken || s.PreviousRefreshToken == refreshToken));
+                            if (!hasActiveSession)
+                            {
+                                context.Fail("Session terminated");
+                                return;
+                            }
+                        }
                     }
                 }
             }

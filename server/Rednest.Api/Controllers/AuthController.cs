@@ -854,6 +854,29 @@ public class AuthController : ControllerBase
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
             await userRepository.UpdateAsync(user);
 
+            var currentRefreshToken = Request.Cookies["refreshToken"];
+            var userSession = await userRepository.GetSessionByUserIdAsync(userId);
+            if (userSession?.Sessions != null && userSession.Sessions.Count > 0)
+            {
+                var changed = false;
+                foreach (var s in userSession.Sessions)
+                {
+                    var isCurrentSession = !string.IsNullOrEmpty(currentRefreshToken) &&
+                                           (s.RefreshToken == currentRefreshToken || s.PreviousRefreshToken == currentRefreshToken);
+                    if (!isCurrentSession)
+                    {
+                        s.IsActive = false;
+                        s.PreviousRefreshToken = null;
+                        s.PreviousTokenRotatedAt = null;
+                        changed = true;
+                    }
+                }
+                if (changed)
+                {
+                    await userRepository.UpdateSessionAsync(userSession);
+                }
+            }
+
             return Ok(new { message = "Password updated successfully." });
         }
         catch (Exception ex)
@@ -1254,8 +1277,18 @@ public class AuthController : ControllerBase
     };
 
     [HttpPost("logout")]
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        Guid? userId = Guid.TryParse(userIdStr, out var parsedId) ? parsedId : null;
+        var refreshToken = Request.Cookies["refreshToken"];
+
+        try
+        {
+            await _authService.LogoutAsync(userId, refreshToken);
+        }
+        catch { }
+
         ClearTokenCookies();
         return Ok();
     }
@@ -1271,7 +1304,9 @@ public class AuthController : ControllerBase
         };
         Response.Cookies.Delete("accessToken", cookieOptions);
         Response.Cookies.Delete("refreshToken", cookieOptions);
+        Response.Cookies.Delete("admin_session", cookieOptions);
         SecurityVerificationHelper.DeleteSecurityCookie(Response);
+        SecurityVerificationHelper.DeleteTwoFactorChallengeCookie(Response);
     }
 
     private void SetTokenCookies(string accessToken, string refreshToken)

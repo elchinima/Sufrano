@@ -608,6 +608,15 @@ public class AuthService : IAuthService
         {
             userSession.Sessions = new List<SessionEntry>();
         }
+        else
+        {
+            foreach (var existingSession in userSession.Sessions)
+            {
+                existingSession.IsActive = false;
+                existingSession.PreviousRefreshToken = null;
+                existingSession.PreviousTokenRotatedAt = null;
+            }
+        }
 
         var refreshToken = GenerateRefreshToken();
         var uaInfo = UserAgentParser.Parse(userAgent, platformVersion, deviceModel);
@@ -649,6 +658,10 @@ public class AuthService : IAuthService
             result = await _userRepository.GetByPreviousRefreshTokenAsync(refreshToken);
             if (result != null)
             {
+                if (result.Value.Session.IsActive == false || result.Value.Entry.IsActive == false || IsSessionExpired(result.Value.Entry, now))
+                {
+                    throw new UnauthorizedAccessException("Invalid, terminated or expired refresh token");
+                }
                 var rotatedAt = result.Value.Entry.PreviousTokenRotatedAt;
                 if (!rotatedAt.HasValue || (now - rotatedAt.Value).TotalSeconds > 30)
                 {
@@ -774,8 +787,59 @@ public class AuthService : IAuthService
         }
 
         targetSession.IsActive = false;
+        targetSession.PreviousRefreshToken = null;
+        targetSession.PreviousTokenRotatedAt = null;
         await _userRepository.UpdateSessionAsync(userSession);
         return true;
+    }
+
+    public async Task LogoutAsync(Guid? userId, string? refreshToken)
+    {
+        if (string.IsNullOrWhiteSpace(refreshToken) && !userId.HasValue)
+        {
+            return;
+        }
+
+        UserSession? userSession = null;
+        if (userId.HasValue)
+        {
+            userSession = await _userRepository.GetSessionByUserIdAsync(userId.Value);
+        }
+
+        if (userSession == null && !string.IsNullOrWhiteSpace(refreshToken))
+        {
+            var found = await _userRepository.GetByRefreshTokenAsync(refreshToken)
+                        ?? await _userRepository.GetByPreviousRefreshTokenAsync(refreshToken);
+            if (found != null)
+            {
+                userSession = found.Value.Session;
+            }
+        }
+
+        if (userSession?.Sessions == null || userSession.Sessions.Count == 0)
+        {
+            return;
+        }
+
+        var changed = false;
+        if (!string.IsNullOrWhiteSpace(refreshToken))
+        {
+            foreach (var s in userSession.Sessions)
+            {
+                if (s.RefreshToken == refreshToken || s.PreviousRefreshToken == refreshToken)
+                {
+                    s.IsActive = false;
+                    s.PreviousRefreshToken = null;
+                    s.PreviousTokenRotatedAt = null;
+                    changed = true;
+                }
+            }
+        }
+
+        if (changed)
+        {
+            await _userRepository.UpdateSessionAsync(userSession);
+        }
     }
 
     private static bool CleanExpiredData(UserSession userSession, DateTime now)
