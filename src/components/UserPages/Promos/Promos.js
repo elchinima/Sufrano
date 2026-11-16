@@ -20,7 +20,7 @@ const ticketAnimatedIcon = "/assets/icons/ticket-animated.svg";
 const fortuneWheelDarkIcon = "/assets/icons/fortune-wheel-dark.svg";
 import { useLang } from "../../../utils/useLang.js";
 import { translateError } from "../../../utils/errorTranslator.js";
-import { getPromosTranslation } from "./Lang.js";
+import { getPromosTranslation, formatPromoPrizeTitle, formatPromoPrizeDescription } from "./Lang.js";
 const PRIZE_TYPE_ICONS = {
 	SuperPrize: superPrizeIcon,
 	FreeDrink: freeDrinkIcon,
@@ -379,7 +379,7 @@ const Promos = () => {
 			src: icon,
 			alt: promo.prizeName,
 			className: "promo-ticket__icon-img"
-		})), /* @__PURE__ */ __h("div", { className: "promo-ticket__title-group" }, /* @__PURE__ */ __h("span", { className: `promo-status-badge ${isActive ? "badge-active" : "badge-expired"}` }, isActive ? t("promos_status_active") : t("promos_status_expired")), /* @__PURE__ */ __h("h3", { className: "promo-ticket__name" }, promo.prizeName), /* @__PURE__ */ __h("p", { className: "promo-ticket__desc" }, promo.prizeDescription))), /* @__PURE__ */ __h("div", { className: "promo-ticket__divider" }, /* @__PURE__ */ __h("span", { className: "promo-ticket__notch promo-ticket__notch--left" }), /* @__PURE__ */ __h("span", { className: "promo-ticket__dashed-line" }), /* @__PURE__ */ __h("span", { className: "promo-ticket__notch promo-ticket__notch--right" })), /* @__PURE__ */ __h("div", { className: "promo-ticket__body" }, /* @__PURE__ */ __h("div", { className: "promo-code-box" }, /* @__PURE__ */ __h("div", { className: "promo-code-text-group" }, /* @__PURE__ */ __h("span", { className: "promo-code-label" }, t("promos_label_code")), /* @__PURE__ */ __h("span", { className: "promo-code-value" }, promo.promoCode)), /* @__PURE__ */ __h("button", {
+		})), /* @__PURE__ */ __h("div", { className: "promo-ticket__title-group" }, /* @__PURE__ */ __h("span", { className: `promo-status-badge ${isActive ? "badge-active" : "badge-expired"}` }, isActive ? t("promos_status_active") : t("promos_status_expired")), /* @__PURE__ */ __h("h3", { className: "promo-ticket__name" }, formatPromoPrizeTitle(promo, lang)), /* @__PURE__ */ __h("p", { className: "promo-ticket__desc" }, formatPromoPrizeDescription(promo, lang)))), /* @__PURE__ */ __h("div", { className: "promo-ticket__divider" }, /* @__PURE__ */ __h("span", { className: "promo-ticket__notch promo-ticket__notch--left" }), /* @__PURE__ */ __h("span", { className: "promo-ticket__dashed-line" }), /* @__PURE__ */ __h("span", { className: "promo-ticket__notch promo-ticket__notch--right" })), /* @__PURE__ */ __h("div", { className: "promo-ticket__body" }, /* @__PURE__ */ __h("div", { className: "promo-code-box" }, /* @__PURE__ */ __h("div", { className: "promo-code-text-group" }, /* @__PURE__ */ __h("span", { className: "promo-code-label" }, t("promos_label_code")), /* @__PURE__ */ __h("span", { className: "promo-code-value" }, promo.promoCode)), /* @__PURE__ */ __h("button", {
 			type: "button",
 			className: `promo-copy-btn ${isCopied ? "copied" : ""}`,
 			onClick: () => handleCopy(promo.promoCode),

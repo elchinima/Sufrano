@@ -355,8 +355,9 @@
 				if (n.includes("free drink")) return t?.freeDrink || name;
 				if (n.includes("free dessert")) return t?.freeDessert || name;
 				if (n.includes("super prize")) return t?.superPrize || name;
+				if (n.includes("15%")) return t?.discount15 || "15% Off";
 				if (n.includes("25%")) return t?.discount25 || name;
-				if (n.includes("50%")) return t?.discount50 || name;
+				if (n.includes("50%")) return t?.discount25 || name;
 				return name;
 			};
 			return /* @__PURE__ */ __h(AnimatePresence, null, isOpen && /* @__PURE__ */ __h(motion.div, {
@@ -732,33 +733,51 @@
 				if (!appliedPromo || cartItems.length === 0 || subtotal <= 0) return 0;
 				const pType = String(appliedPromo.prizeType || "").toLowerCase();
 				const pName = String(appliedPromo.prizeName || "").toUpperCase();
-				const discPercent = appliedPromo.discountPercent || (pType === "discount25" || pName.includes("25%") ? 25 : pType === "discount50" || pName.includes("50%") ? 50 : 0);
+				if (pType === "cashbackonpurchases" || pType === "4" || pName.includes("CASHBACK")) {
+					return 0;
+				}
+				if (pType === "discount25" || pType === "3") {
+					if (subtotal < 50) return 0;
+					return Number(Math.min(15, Math.min(subtotal, subtotal * 15 / 100)).toFixed(2));
+				}
+				if (pType === "discount50" || pType === "5") {
+					if (subtotal < 50) return 0;
+					return Number(Math.min(25, Math.min(subtotal, subtotal * 25 / 100)).toFixed(2));
+				}
+				const discPercent = Number(appliedPromo.discountPercent) || (pName.includes("15%") ? 15 : pName.includes("25%") || pName.includes("50%") ? 25 : 0);
 				if (discPercent > 0) {
-					return Number(Math.min(subtotal, subtotal * discPercent / 100).toFixed(2));
+					if ((discPercent === 15 || discPercent === 25) && subtotal < 50) return 0;
+					let val = subtotal * discPercent / 100;
+					if (discPercent === 15) val = Math.min(15, val);
+					else if (discPercent === 25) val = Math.min(25, val);
+					return Number(Math.min(subtotal, val).toFixed(2));
 				}
 				if (pType === "superprize" || pType === "0" || pName.includes("SUPER")) {
-					return Number(Math.min(subtotal, 25).toFixed(2));
+					if (subtotal < 100) return 0;
+					return Number(Math.min(subtotal, 30).toFixed(2));
 				}
 				if (pType === "freedrink" || pType === "1" || pName.includes("DRINK")) {
 					const drinks = cartItems.filter((item) => {
 						const cat = (item.category || "").toLowerCase();
-						return cat.includes("drink") || cat.includes("beverage") || cat.includes("coffee") || cat.includes("tea");
+						return cat.includes("drink") || cat.includes("beverage") || cat.includes("coffee") || cat.includes("tea") || cat.includes("içki") || cat.includes("напит");
 					});
 					if (drinks.length === 0) return 0;
 					const totalDrinkQty = drinks.reduce((sum, x) => sum + x.qty, 0);
 					const totalDrinkPrice = drinks.reduce((sum, x) => sum + x.price * x.qty, 0);
-					const avgDrinkPrice = totalDrinkPrice / totalDrinkQty;
+					const avgDrinkPrice = Math.round(totalDrinkPrice / totalDrinkQty * 100) / 100;
+					if (subtotal - avgDrinkPrice < 10) return 0;
 					return Number(Math.min(subtotal, avgDrinkPrice).toFixed(2));
 				}
 				if (pType === "freedessert" || pType === "2" || pName.includes("DESSERT")) {
 					const desserts = cartItems.filter((item) => {
 						const cat = (item.category || "").toLowerCase();
-						return cat.includes("dessert") || cat.includes("sweet") || cat.includes("cake") || cat.includes("bakery");
+						return cat.includes("dessert") || cat.includes("desert") || cat.includes("десерт") || cat.includes("sweet") || cat.includes("cake") || cat.includes("bakery");
 					});
 					if (desserts.length === 0) return 0;
 					const totalDessertQty = desserts.reduce((sum, x) => sum + x.qty, 0);
 					const totalDessertPrice = desserts.reduce((sum, x) => sum + x.price * x.qty, 0);
-					const avgDessertPrice = totalDessertPrice / totalDessertQty;
+					const avgDessertPrice = Math.round(totalDessertPrice / totalDessertQty * 100) / 100;
+					if (subtotal - avgDessertPrice < 10) return 0;
 					return Number(Math.min(subtotal, avgDessertPrice).toFixed(2));
 				}
 				return 0;

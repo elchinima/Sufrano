@@ -71,7 +71,11 @@ public class OrdersController : ControllerBase
         string? appliedPromoName = null;
 
         UserPromo? promo = null;
-        if (!string.IsNullOrWhiteSpace(selectedPromoCode))
+        if (string.Equals(selectedPromoCode?.Trim(), "NONE", StringComparison.OrdinalIgnoreCase))
+        {
+            promo = null;
+        }
+        else if (!string.IsNullOrWhiteSpace(selectedPromoCode))
         {
             var code = selectedPromoCode.Trim().ToUpperInvariant();
             promo = await _context.UserPromos
@@ -84,87 +88,136 @@ public class OrdersController : ControllerBase
 
         if (promo != null && promo.IsActive && promo.Dates.ExpiresAt >= DateTime.UtcNow)
         {
-            if (promo.PrizeInfo.DiscountPercent > 0)
+            switch (promo.PrizeInfo.Type)
             {
-                discount = Math.Round(originalTotal * (promo.PrizeInfo.DiscountPercent / 100m), 2);
-            }
-            else
-            {
-                switch (promo.PrizeInfo.Type)
+                case PrizeType.Discount25:
+                    if (originalTotal >= 50.00m)
+                    {
+                        discount = Math.Min(Math.Round(originalTotal * 0.15m, 2), 15.00m);
+                    }
+                    break;
+
+                case PrizeType.Discount50:
+                    if (originalTotal >= 50.00m)
+                    {
+                        discount = Math.Min(Math.Round(originalTotal * 0.25m, 2), 25.00m);
+                    }
+                    break;
+
+                case PrizeType.DiscountCustom:
+                    if (promo.PrizeInfo.DiscountPercent > 0)
+                    {
+                        if ((promo.PrizeInfo.DiscountPercent == 15 || promo.PrizeInfo.DiscountPercent == 25) && originalTotal < 50.00m)
+                        {
+                            discount = 0m;
+                        }
+                        else
+                        {
+                            var rawDiscount = Math.Round(originalTotal * (promo.PrizeInfo.DiscountPercent / 100m), 2);
+                            if (promo.PrizeInfo.DiscountPercent == 15) rawDiscount = Math.Min(rawDiscount, 15.00m);
+                            else if (promo.PrizeInfo.DiscountPercent == 25) rawDiscount = Math.Min(rawDiscount, 25.00m);
+                            discount = rawDiscount;
+                        }
+                    }
+                    break;
+
+                case PrizeType.SuperPrize:
+                    if (originalTotal >= 100.00m)
+                    {
+                        discount = Math.Min(originalTotal, 30.00m);
+                    }
+                    break;
+
+                case PrizeType.FreeDrink:
                 {
-                    case PrizeType.DiscountCustom:
-                        discount = promo.PrizeInfo.DiscountPercent > 0
-                            ? Math.Round(originalTotal * (promo.PrizeInfo.DiscountPercent / 100m), 2)
-                            : 0m;
-                        break;
-
-                    case PrizeType.Discount25:
-                        discount = Math.Round(originalTotal * 0.25m, 2);
-                        break;
-
-                    case PrizeType.Discount50:
-                        discount = Math.Round(originalTotal * 0.50m, 2);
-                        break;
-
-                    case PrizeType.SuperPrize:
-                        discount = Math.Min(originalTotal, 25.00m);
-                        break;
-
-                    case PrizeType.FreeDrink:
+                    var drinkCategories = new[] { "Beverages", "Drinks", "Main Drinks", "Specialty Drinks" };
+                    var drinks = enriched.Where(x =>
+                        drinkCategories.Contains(x.Product!.Category, StringComparer.OrdinalIgnoreCase) ||
+                        (x.Product.Category != null && (
+                            x.Product.Category.Contains("Drink", StringComparison.OrdinalIgnoreCase) ||
+                            x.Product.Category.Contains("Beverage", StringComparison.OrdinalIgnoreCase) ||
+                            x.Product.Category.Contains("Coffee", StringComparison.OrdinalIgnoreCase) ||
+                            x.Product.Category.Contains("Tea", StringComparison.OrdinalIgnoreCase) ||
+                            x.Product.Category.Contains("İçki", StringComparison.OrdinalIgnoreCase) ||
+                            x.Product.Category.Contains("Напит", StringComparison.OrdinalIgnoreCase)
+                        ))).ToList();
+                    if (drinks.Count > 0)
                     {
-                        var drinkCategories = new[] { "Beverages", "Drinks", "Main Drinks", "Specialty Drinks" };
-                        var drinks = enriched.Where(x => drinkCategories.Contains(x.Product!.Category) || 
-                                                         (x.Product.Category != null && (x.Product.Category.Contains("Drink", StringComparison.OrdinalIgnoreCase) || x.Product.Category.Contains("Beverage", StringComparison.OrdinalIgnoreCase)))).ToList();
-                        if (drinks.Count > 0)
+                        var totalDrinkQty = drinks.Sum(x => x.Item.Quantity);
+                        var totalDrinkPrice = drinks.Sum(x => GetEffectivePrice(x.Product!) * x.Item.Quantity);
+                        var avgDrinkPrice = Math.Round(totalDrinkPrice / totalDrinkQty, 2);
+                        if (originalTotal - avgDrinkPrice >= 10.00m)
                         {
-                            var totalDrinkQty = drinks.Sum(x => x.Item.Quantity);
-                            var totalDrinkPrice = drinks.Sum(x => GetEffectivePrice(x.Product!) * x.Item.Quantity);
-                            var avgDrinkPrice = totalDrinkPrice / totalDrinkQty;
-                            discount = Math.Round(avgDrinkPrice, 2);
+                            discount = avgDrinkPrice;
                         }
-                        break;
                     }
-
-                    case PrizeType.FreeDessert:
-                    {
-                        var desserts = enriched.Where(x => x.Product!.Category == "Desserts" ||
-                                                           x.Product.Category.Contains("Dessert", StringComparison.OrdinalIgnoreCase)).ToList();
-                        if (desserts.Count > 0)
-                        {
-                            var totalDessertQty = desserts.Sum(x => x.Item.Quantity);
-                            var totalDessertPrice = desserts.Sum(x => GetEffectivePrice(x.Product!) * x.Item.Quantity);
-                            var avgDessertPrice = totalDessertPrice / totalDessertQty;
-                            discount = Math.Round(avgDessertPrice, 2);
-                        }
-                        break;
-                    }
-
-                    case PrizeType.CashbackOnPurchases:
-                        discount = 0m;
-                        cashbackPercent = promo.PrizeInfo.CashbackPercent > 0 ? promo.PrizeInfo.CashbackPercent : 10;
-                        break;
-
-                    default:
-                        discount = 0m;
-                        break;
+                    break;
                 }
+
+                case PrizeType.FreeDessert:
+                {
+                    var desserts = enriched.Where(x =>
+                        string.Equals(x.Product!.Category, "Desserts", StringComparison.OrdinalIgnoreCase) ||
+                        (x.Product.Category != null && (
+                            x.Product.Category.Contains("Dessert", StringComparison.OrdinalIgnoreCase) ||
+                            x.Product.Category.Contains("Desert", StringComparison.OrdinalIgnoreCase) ||
+                            x.Product.Category.Contains("Десерт", StringComparison.OrdinalIgnoreCase) ||
+                            x.Product.Category.Contains("Sweet", StringComparison.OrdinalIgnoreCase) ||
+                            x.Product.Category.Contains("Cake", StringComparison.OrdinalIgnoreCase) ||
+                            x.Product.Category.Contains("Bakery", StringComparison.OrdinalIgnoreCase)
+                        ))).ToList();
+                    if (desserts.Count > 0)
+                    {
+                        var totalDessertQty = desserts.Sum(x => x.Item.Quantity);
+                        var totalDessertPrice = desserts.Sum(x => GetEffectivePrice(x.Product!) * x.Item.Quantity);
+                        var avgDessertPrice = Math.Round(totalDessertPrice / totalDessertQty, 2);
+                        if (originalTotal - avgDessertPrice >= 10.00m)
+                        {
+                            discount = avgDessertPrice;
+                        }
+                    }
+                    break;
+                }
+
+                case PrizeType.CashbackOnPurchases:
+                    discount = 0m;
+                    cashbackPercent = promo.PrizeInfo.CashbackPercent;
+                    if (cashbackPercent <= 0 && !string.IsNullOrEmpty(promo.PrizeInfo.PrizeDescription))
+                    {
+                        var m = Regex.Match(promo.PrizeInfo.PrizeDescription, @"(\d+)\s*%");
+                        if (m.Success && int.TryParse(m.Groups[1].Value, out var parsedCb))
+                            cashbackPercent = parsedCb;
+                    }
+                    if (cashbackPercent <= 0) cashbackPercent = 10;
+                    break;
+
+                default:
+                    discount = 0m;
+                    break;
             }
 
             if (discount > 0)
             {
                 discount = Math.Min(discount, originalTotal);
                 appliedPromoCode = promo.Codes.PromoCode;
-                appliedPromoName = promo.PrizeInfo.PrizeName;
+                appliedPromoName = promo.PrizeInfo.Type switch
+                {
+                    PrizeType.Discount25 => "DISCOUNT UP TO 15%",
+                    PrizeType.Discount50 => "DISCOUNT UP TO 25%",
+                    PrizeType.SuperPrize => "SUPER PRIZE",
+                    _ => promo.PrizeInfo.PrizeName
+                };
             }
             else if (promo.PrizeInfo.Type == PrizeType.CashbackOnPurchases || promo.PrizeInfo.CashbackPercent > 0)
             {
-                cashbackPercent = promo.PrizeInfo.CashbackPercent > 0 ? promo.PrizeInfo.CashbackPercent : 10;
+                if (cashbackPercent <= 0)
+                {
+                    cashbackPercent = promo.PrizeInfo.CashbackPercent > 0 ? promo.PrizeInfo.CashbackPercent : 10;
+                }
                 var payable = Math.Max(0m, Math.Round(originalTotal - discount, 2));
                 cashbackAmount = Math.Round(payable * (cashbackPercent / 100m), 2);
                 appliedPromoCode = promo.Codes.PromoCode;
-                appliedPromoName = !string.IsNullOrEmpty(promo.PrizeInfo.PrizeName)
-                    ? promo.PrizeInfo.PrizeName
-                    : $"{cashbackPercent}% Cashback";
+                appliedPromoName = $"{cashbackPercent}% CASHBACK ON PURCHASES";
             }
         }
 
@@ -572,7 +625,7 @@ public class OrdersController : ControllerBase
                 balanceChanged = true;
             }
 
-            if (calc.CashbackAmount > 0 && (paymentMethod == CorePaymentMethod.OnlineBalance || paymentMethod == CorePaymentMethod.OnlineCardDetails))
+            if (calc.CashbackAmount > 0)
             {
                 user.Balance = Math.Round(user.Balance + calc.CashbackAmount, 2);
                 balanceChanged = true;
@@ -636,7 +689,7 @@ public class OrdersController : ControllerBase
                 payment = newOrder.Payment,
                 notes = newOrder.Notes,
                 remainingBalance,
-                cashbackEarned = (paymentMethod == CorePaymentMethod.OnlineBalance || paymentMethod == CorePaymentMethod.OnlineCardDetails ? calc.CashbackAmount : 0m)
+                cashbackEarned = calc.CashbackAmount
             });
         }
         finally

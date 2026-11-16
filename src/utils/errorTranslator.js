@@ -7,6 +7,41 @@ const ERROR_ENTRIES = [
 		en: "Insufficient balance on your Süfrano account."
 	},
 	{
+		az: "15% endirim tətbiq edildi (maks. 15 AZN).",
+		ru: "Применена скидка 15% (макс. 15 AZN).",
+		en: "15% discount applied (max 15 AZN)"
+	},
+	{
+		az: "25% endirim tətbiq edildi (maks. 25 AZN).",
+		ru: "Применена скидка 25% (макс. 25 AZN).",
+		en: "25% discount applied (max 25 AZN)"
+	},
+	{
+		az: "15% endirim tətbiq edildi.",
+		ru: "Применена скидка 15%.",
+		en: "15% discount applied"
+	},
+	{
+		az: "25% endirim tətbiq edildi.",
+		ru: "Применена скидка 25%.",
+		en: "25% discount applied"
+	},
+	{
+		az: "Super hədiyyə: 30 AZN endirim tətbiq edildi.",
+		ru: "Суперприз: применена скидка 30 AZN.",
+		en: "Super prize: 30 AZN discount applied"
+	},
+	{
+		az: "Pulsuz içki tətbiq edildi.",
+		ru: "Бесплатный напиток применён.",
+		en: "Free drink applied"
+	},
+	{
+		az: "Pulsuz desert tətbiq edildi.",
+		ru: "Бесплатный десерт применён.",
+		en: "Free dessert applied"
+	},
+	{
 		az: "Səbətiniz boşdur.",
 		ru: "Корзина пуста.",
 		en: "Basket is empty."

@@ -195,16 +195,36 @@ public class CashboxController : ControllerBase
                 ? "Unclaimed (Public Promo)"
                 : (!string.IsNullOrWhiteSpace(p.User?.Name) ? p.User.Name : (p.User?.Email ?? "Anonymous Customer"));
 
+            var pType = p.PrizeInfo?.Type ?? PrizeType.DiscountCustom;
+            var discPct = pType == PrizeType.Discount25
+                ? 15
+                : pType == PrizeType.Discount50
+                    ? 25
+                    : (p.PrizeInfo?.DiscountPercent ?? 0);
+            var cbPct = p.PrizeInfo?.CashbackPercent ?? 0;
+            if (pType == PrizeType.CashbackOnPurchases && cbPct <= 0) cbPct = 10;
+
+            var pName = pType switch
+            {
+                PrizeType.Discount25 => "DISCOUNT UP TO 15%",
+                PrizeType.Discount50 => "DISCOUNT UP TO 25%",
+                PrizeType.SuperPrize => "SUPER PRIZE",
+                PrizeType.FreeDrink => "FREE DRINK",
+                PrizeType.FreeDessert => "FREE DESSERT",
+                PrizeType.CashbackOnPurchases => $"{cbPct}% CASHBACK ON PURCHASES",
+                _ => !string.IsNullOrWhiteSpace(p.PrizeInfo?.PrizeName) ? p.PrizeInfo.PrizeName : "Promo Discount"
+            };
+
             return new
             {
                 id = p.Id,
                 promoCode = p.Codes.PromoCode,
                 barCode = p.Codes.BarCode,
-                prizeName = !string.IsNullOrWhiteSpace(p.PrizeInfo?.PrizeName) ? p.PrizeInfo.PrizeName : "Promo Discount",
+                prizeName = pName,
                 prizeDescription = p.PrizeInfo?.PrizeDescription ?? string.Empty,
-                prizeType = p.PrizeInfo?.Type.ToString() ?? "DiscountCustom",
-                discountPercent = p.PrizeInfo?.DiscountPercent ?? 0,
-                cashbackPercent = p.PrizeInfo?.CashbackPercent ?? 0,
+                prizeType = pType.ToString(),
+                discountPercent = discPct,
+                cashbackPercent = cbPct,
                 isActive = p.IsActive,
                 isExpired = isExpired,
                 status = status,
@@ -258,6 +278,21 @@ public class CashboxController : ControllerBase
             if (!promo.IsActive || promo.Dates.ExpiresAt < DateTime.UtcNow)
             {
                 return BadRequest(new { message = "Promo code is expired or has already been used." });
+            }
+
+            if (promo.PrizeInfo.Type == PrizeType.CashbackOnPurchases || promo.PrizeInfo.CashbackPercent > 0)
+            {
+                var cbPct = promo.PrizeInfo.CashbackPercent > 0 ? promo.PrizeInfo.CashbackPercent : 10;
+                var cbAmount = Math.Round(Math.Max(0m, request.TotalAmount) * (cbPct / 100m), 2);
+                if (cbAmount > 0)
+                {
+                    var promoOwner = await _context.Users.FirstOrDefaultAsync(u => u.Id == promo.UserId);
+                    if (promoOwner != null && !string.Equals(promoOwner.Email, "myrednest@gmail.com", StringComparison.OrdinalIgnoreCase))
+                    {
+                        promoOwner.Balance = Math.Round(promoOwner.Balance + cbAmount, 2);
+                        _context.Users.Update(promoOwner);
+                    }
+                }
             }
 
             promo.IsActive = false;

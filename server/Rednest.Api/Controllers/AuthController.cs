@@ -974,14 +974,17 @@ public class AuthController : ControllerBase
             var cooldownEndsAt = lastPromo.Dates.ActivatedAt.AddDays(7);
             bool canSpin = now >= cooldownEndsAt;
 
+            var (normName, normDesc, normDisc, normCb) = NormalizePromoPrizeInfo(lastPromo.PrizeInfo);
+
             return Ok(new
             {
                 hasPromo = true,
                 promoCode = lastPromo.Codes.PromoCode,
-                prizeName = lastPromo.PrizeInfo.PrizeName,
-                prizeDescription = lastPromo.PrizeInfo.PrizeDescription,
+                prizeName = normName,
+                prizeDescription = normDesc,
                 prizeType = lastPromo.PrizeInfo.Type.ToString(),
-                cashbackPercent = lastPromo.PrizeInfo.CashbackPercent,
+                discountPercent = normDisc,
+                cashbackPercent = normCb,
                 barCode = lastPromo.Codes.BarCode,
                 isActive = lastPromo.IsActive,
                 activatedAt = lastPromo.Dates.ActivatedAt,
@@ -1013,16 +1016,17 @@ public class AuthController : ControllerBase
             var list = promos.Select(promo =>
             {
                 bool isExpired = promo.Dates.ExpiresAt < now;
+                var (normName, normDesc, normDisc, normCb) = NormalizePromoPrizeInfo(promo.PrizeInfo);
                 return new
                 {
                     id = promo.Id,
                     promoCode = promo.Codes.PromoCode,
                     barCode = promo.Codes.BarCode,
-                    prizeName = promo.PrizeInfo.PrizeName,
-                    prizeDescription = promo.PrizeInfo.PrizeDescription,
+                    prizeName = normName,
+                    prizeDescription = normDesc,
                     prizeType = promo.PrizeInfo.Type.ToString(),
-                    discountPercent = promo.PrizeInfo.DiscountPercent,
-                    cashbackPercent = promo.PrizeInfo.CashbackPercent,
+                    discountPercent = normDisc,
+                    cashbackPercent = normCb,
                     isActive = promo.IsActive && !isExpired,
                     isExpired = isExpired,
                     activatedAt = promo.Dates.ActivatedAt,
@@ -1098,6 +1102,8 @@ public class AuthController : ControllerBase
                 await db.SaveChangesAsync();
                 await tx.CommitAsync();
 
+                var (normName, normDesc, normDisc, normCb) = NormalizePromoPrizeInfo(promo.PrizeInfo);
+
                 return Ok(new
                 {
                     message = "Promo code successfully activated!",
@@ -1106,11 +1112,11 @@ public class AuthController : ControllerBase
                         id = promo.Id,
                         promoCode = promo.Codes.PromoCode,
                         barCode = promo.Codes.BarCode,
-                        prizeName = promo.PrizeInfo.PrizeName,
-                        prizeDescription = promo.PrizeInfo.PrizeDescription,
+                        prizeName = normName,
+                        prizeDescription = normDesc,
                         prizeType = promo.PrizeInfo.Type.ToString(),
-                        discountPercent = promo.PrizeInfo.DiscountPercent,
-                        cashbackPercent = promo.PrizeInfo.CashbackPercent,
+                        discountPercent = normDisc,
+                        cashbackPercent = normCb,
                         isActive = promo.IsActive,
                         isExpired = false,
                         activatedAt = promo.Dates.ActivatedAt,
@@ -1171,9 +1177,9 @@ public class AuthController : ControllerBase
                     ? Random.Shared.Next(1, 11)
                     : 0;
                 var discountPercent = prizeType == Rednest.Core.Entities.PrizeType.Discount25
-                    ? 25
+                    ? 15
                     : prizeType == Rednest.Core.Entities.PrizeType.Discount50
-                        ? 50
+                        ? 25
                         : 0;
 
                 var (prizeName, prizeDescription) = GetPrizeDetails(prizeType, cashbackPercent);
@@ -1249,12 +1255,12 @@ public class AuthController : ControllerBase
         var roll = Random.Shared.Next(1, 101);
         return roll switch
         {
-            <= 1  => Rednest.Core.Entities.PrizeType.SuperPrize,
-            <= 11 => Rednest.Core.Entities.PrizeType.FreeDrink,
-            <= 21 => Rednest.Core.Entities.PrizeType.FreeDessert,
-            <= 36 => Rednest.Core.Entities.PrizeType.Discount25,
-            <= 90 => Rednest.Core.Entities.PrizeType.CashbackOnPurchases,
-            _     => Rednest.Core.Entities.PrizeType.Discount50
+            <= 1  => Rednest.Core.Entities.PrizeType.SuperPrize,          // 1%
+            <= 6  => Rednest.Core.Entities.PrizeType.FreeDrink,           // 5%
+            <= 11 => Rednest.Core.Entities.PrizeType.FreeDessert,         // 5%
+            <= 21 => Rednest.Core.Entities.PrizeType.Discount25,          // 10% (15% Discount)
+            <= 95 => Rednest.Core.Entities.PrizeType.CashbackOnPurchases, // 74%
+            _     => Rednest.Core.Entities.PrizeType.Discount50           // 5%  (25% Discount)
         };
     }
 
@@ -1262,19 +1268,59 @@ public class AuthController : ControllerBase
         Rednest.Core.Entities.PrizeType prizeType, int cashbackPercent) => prizeType switch
     {
         Rednest.Core.Entities.PrizeType.SuperPrize =>
-            ("SUPER PRIZE", "Free order up to 25 AZN!"),
+            ("SUPER PRIZE", "30 AZN discount on orders of 100 AZN or more!"),
         Rednest.Core.Entities.PrizeType.FreeDrink =>
-            ("FREE DRINK", "One free drink with your next order!"),
+            ("FREE DRINK", "One free drink on orders with at least 10 AZN to pay!"),
         Rednest.Core.Entities.PrizeType.FreeDessert =>
-            ("FREE DESSERT", "One free dessert with your next order!"),
+            ("FREE DESSERT", "One free dessert on orders with at least 10 AZN to pay!"),
         Rednest.Core.Entities.PrizeType.Discount25 =>
-            ("DISCOUNT UP TO 25%", "25% discount on your next order!"),
+            ("DISCOUNT UP TO 15%", "15% discount (max 15 AZN) on orders of 50 AZN or more!"),
         Rednest.Core.Entities.PrizeType.CashbackOnPurchases =>
-            ("CASHBACK ON PURCHASES", $"{cashbackPercent}% cashback on your next order!"),
+            ($"{(cashbackPercent > 0 ? cashbackPercent : 10)}% CASHBACK ON PURCHASES", $"{(cashbackPercent > 0 ? cashbackPercent : 10)}% cashback on your next order!"),
         Rednest.Core.Entities.PrizeType.Discount50 =>
-            ("DISCOUNT UP TO 50%", "50% discount on your next order!"),
+            ("DISCOUNT UP TO 25%", "25% discount (max 25 AZN) on orders of 50 AZN or more!"),
         _ => ("Prize", "Congratulations!")
     };
+
+    private static (string Name, string Description, int DiscountPercent, int CashbackPercent) NormalizePromoPrizeInfo(
+        Rednest.Core.Entities.PrizeInfo? info)
+    {
+        if (info == null)
+            return ("Prize", "Congratulations!", 0, 0);
+
+        switch (info.Type)
+        {
+            case Rednest.Core.Entities.PrizeType.SuperPrize:
+                return ("SUPER PRIZE", "30 AZN discount on orders of 100 AZN or more!", 0, 0);
+            case Rednest.Core.Entities.PrizeType.FreeDrink:
+                return ("FREE DRINK", "One free drink on orders with at least 10 AZN to pay!", 0, 0);
+            case Rednest.Core.Entities.PrizeType.FreeDessert:
+                return ("FREE DESSERT", "One free dessert on orders with at least 10 AZN to pay!", 0, 0);
+            case Rednest.Core.Entities.PrizeType.Discount25:
+                return ("DISCOUNT UP TO 15%", "15% discount (max 15 AZN) on orders of 50 AZN or more!", 15, 0);
+            case Rednest.Core.Entities.PrizeType.Discount50:
+                return ("DISCOUNT UP TO 25%", "25% discount (max 25 AZN) on orders of 50 AZN or more!", 25, 0);
+            case Rednest.Core.Entities.PrizeType.CashbackOnPurchases:
+            {
+                var cb = info.CashbackPercent;
+                if (cb <= 0 && !string.IsNullOrEmpty(info.PrizeDescription))
+                {
+                    var m = Regex.Match(info.PrizeDescription, @"(\d+)\s*%");
+                    if (m.Success && int.TryParse(m.Groups[1].Value, out var parsedCb))
+                        cb = parsedCb;
+                }
+                if (cb <= 0) cb = 10;
+                return ($"{cb}% CASHBACK ON PURCHASES", $"{cb}% cashback on your next order!", 0, cb);
+            }
+            default:
+                return (
+                    !string.IsNullOrWhiteSpace(info.PrizeName) ? info.PrizeName : $"{info.DiscountPercent}% Discount",
+                    !string.IsNullOrWhiteSpace(info.PrizeDescription) ? info.PrizeDescription : $"Get {info.DiscountPercent}% off your order.",
+                    info.DiscountPercent,
+                    info.CashbackPercent
+                );
+        }
+    }
 
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()

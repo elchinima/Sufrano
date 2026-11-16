@@ -3,99 +3,6 @@
 	var __require = window.__SUFRANO_REQUIRE__;
 	var __pages = (window.__SUFRANO_PAGES__ = window.__SUFRANO_PAGES__ || {});
 
-	//#region components/PublicPages/Basket/Lang.js
-	__define("components/PublicPages/Basket/Lang.js", function (exports, __require, module) {
-		const translations = {
-			ru: {
-				"basket_hero_title": "Ваша корзина",
-				"basket_hero_subtitle": "Проверьте выбранные позиции перед оформлением заказа.",
-				"basket_empty_title": "Ваша корзина пуста",
-				"basket_empty_subtitle": "Похоже, вы еще ничего не добавили. Откройте наше меню и выберите ваши любимые блюда.",
-				"basket_empty_btn": "Смотреть меню",
-				"basket_unit_price": "за шт.",
-				"basket_summary_title": "Сумма заказа",
-				"basket_promo_label": "Применить промокод",
-				"basket_promo_active": "активно",
-				"basket_promo_none": "Не использовать промокод",
-				"basket_subtotal": "Подытог",
-				"basket_total": "Итого",
-				"basket_btn_checkout": "Оформить заказ",
-				"basket_btn_continue": "Продолжить покупки",
-				"prize_super_prize": "Супер приз",
-				"prize_free_drink": "Бесплатный напиток",
-				"prize_free_dessert": "Бесплатный десерт",
-				"prize_discount_25": "Скидка до 25%",
-				"prize_cashback": "Кэшбэк на покупки",
-				"prize_discount_50": "Скидка до 50%"
-			},
-			en: {
-				"basket_hero_title": "Your Basket",
-				"basket_hero_subtitle": "Review your selections before placing an order.",
-				"basket_empty_title": "Your basket is empty",
-				"basket_empty_subtitle": "Looks like you haven't added anything yet. Browse our menu and find your favorite dishes.",
-				"basket_empty_btn": "Explore Menu",
-				"basket_unit_price": "each",
-				"basket_summary_title": "Order Summary",
-				"basket_promo_label": "Apply Promo Code",
-				"basket_promo_active": "active",
-				"basket_promo_none": "Don't use any promo code",
-				"basket_subtotal": "Subtotal",
-				"basket_total": "Total",
-				"basket_btn_checkout": "Place Order",
-				"basket_btn_continue": "Continue Shopping",
-				"prize_super_prize": "Super Prize",
-				"prize_free_drink": "Free Drink",
-				"prize_free_dessert": "Free Dessert",
-				"prize_discount_25": "Discount up to 25%",
-				"prize_cashback": "Cashback on Purchases",
-				"prize_discount_50": "Discount up to 50%"
-			},
-			az: {
-				"basket_hero_title": "Səbətiniz",
-				"basket_hero_subtitle": "Sifariş verməzdən əvvəl seçimlərinizi nəzərdən keçirin.",
-				"basket_empty_title": "Səbətiniz boşdur",
-				"basket_empty_subtitle": "Deyəsən, hələ heç bir məhsul əlavə etməmisiniz. Menyumuzu kəşf edin və sevimli təamlarınızı seçin.",
-				"basket_empty_btn": "Menyuya baxın",
-				"basket_unit_price": "ədəd",
-				"basket_summary_title": "Sifarişin xülasəsi",
-				"basket_promo_label": "Promokod tətbiq et",
-				"basket_promo_active": "aktiv",
-				"basket_promo_none": "Promokod istifadə etmə",
-				"basket_subtotal": "Aralıq cəmi",
-				"basket_total": "Yekun",
-				"basket_btn_checkout": "Sifarişi rəsmiləşdir",
-				"basket_btn_continue": "Alış-verişə davam et",
-				"prize_super_prize": "Super hədiyyə",
-				"prize_free_drink": "Pulsuz içki",
-				"prize_free_dessert": "Pulsuz desert",
-				"prize_discount_25": "25%-dək endirim",
-				"prize_cashback": "Alışlara keşbek",
-				"prize_discount_50": "50%-dək endirim"
-			}
-		};
-		const getBasketTranslation = (lang, dataId) => {
-			const dict = translations[lang] || translations.az || translations.ru;
-			return dict[dataId] || translations.en[dataId] || dataId;
-		};
-		const formatLocalizedPrizeName = (name, lang) => {
-			if (!name) return "";
-			const upper = name.trim().toUpperCase();
-			const t = (id) => getBasketTranslation(lang, id);
-			if (upper.includes("SUPER PRIZE")) return t("prize_super_prize");
-			if (upper.includes("FREE DRINK")) return t("prize_free_drink");
-			if (upper.includes("FREE DESSERT")) return t("prize_free_dessert");
-			if (upper.includes("25%")) return t("prize_discount_25");
-			if (upper.includes("CASHBACK")) return t("prize_cashback");
-			if (upper.includes("50%")) return t("prize_discount_50");
-			return name;
-		};
-
-		Object.defineProperty(exports, "translations", { enumerable: true, get: function () { return translations; } });
-		Object.defineProperty(exports, "getBasketTranslation", { enumerable: true, get: function () { return getBasketTranslation; } });
-		Object.defineProperty(exports, "formatLocalizedPrizeName", { enumerable: true, get: function () { return formatLocalizedPrizeName; } });
-	});
-	//#endregion
-
 	//#region components/PublicPages/Basket/Basket.js
 	__define("components/PublicPages/Basket/Basket.js", function (exports, __require, module) {
 		const { __h, __Fragment } = __require("utils/runtime.js");
@@ -242,38 +149,108 @@
 				if (numericTotal <= 0) return 0;
 				const pType = String(activePromo.prizeType || "").toLowerCase();
 				const pName = String(activePromo.prizeName || "").toUpperCase();
-				const discPercent = activePromo.discountPercent || (pType === "discount25" || pName.includes("25%") ? 25 : pType === "discount50" || pName.includes("50%") ? 50 : 0);
+				if (pType === "cashbackonpurchases" || pType === "4" || pName.includes("CASHBACK")) {
+					return 0;
+				}
+				if (pType === "discount25" || pType === "3") {
+					if (numericTotal < 50) return 0;
+					return Math.min(15, Math.round(numericTotal * 15) / 100);
+				}
+				if (pType === "discount50" || pType === "5") {
+					if (numericTotal < 50) return 0;
+					return Math.min(25, Math.round(numericTotal * 25) / 100);
+				}
+				const discPercent = Number(activePromo.discountPercent) || (pName.includes("15%") ? 15 : pName.includes("25%") || pName.includes("50%") ? 25 : 0);
 				if (discPercent > 0) {
-					return Math.round(numericTotal * discPercent) / 100;
+					if ((discPercent === 15 || discPercent === 25) && numericTotal < 50) return 0;
+					let discVal = Math.round(numericTotal * discPercent) / 100;
+					if (discPercent === 15) discVal = Math.min(15, discVal);
+					else if (discPercent === 25) discVal = Math.min(25, discVal);
+					return discVal;
 				}
 				if (pType === "superprize" || pType === "0" || pName.includes("SUPER")) {
-					return Math.min(numericTotal, 25);
+					if (numericTotal < 100) return 0;
+					return Math.min(numericTotal, 30);
 				}
 				if (pType === "freedrink" || pType === "1" || pName.includes("DRINK")) {
 					const drinks = enrichedItems.filter((x) => {
 						const cat = (x.product?.category || "").toLowerCase();
-						return cat.includes("drink");
+						return cat.includes("drink") || cat.includes("beverage") || cat.includes("coffee") || cat.includes("tea") || cat.includes("içki") || cat.includes("напит");
 					});
 					if (drinks.length === 0) return 0;
 					const totalQty = drinks.reduce((sum, x) => sum + x.quantity, 0);
 					const totalPrice = drinks.reduce((sum, x) => sum + x.unitPrice * x.quantity, 0);
-					return Math.round(totalPrice / totalQty * 100) / 100;
+					const avgDrinkPrice = Math.round(totalPrice / totalQty * 100) / 100;
+					if (numericTotal - avgDrinkPrice < 10) return 0;
+					return avgDrinkPrice;
 				}
 				if (pType === "freedessert" || pType === "2" || pName.includes("DESSERT")) {
 					const desserts = enrichedItems.filter((x) => {
 						const cat = (x.product?.category || "").toLowerCase();
-						return cat.includes("dessert");
+						return cat.includes("dessert") || cat.includes("desert") || cat.includes("десерт") || cat.includes("sweet") || cat.includes("cake") || cat.includes("bakery");
 					});
 					if (desserts.length === 0) return 0;
 					const totalQty = desserts.reduce((sum, x) => sum + x.quantity, 0);
 					const totalPrice = desserts.reduce((sum, x) => sum + x.unitPrice * x.quantity, 0);
-					return Math.round(totalPrice / totalQty * 100) / 100;
+					const avgDessertPrice = Math.round(totalPrice / totalQty * 100) / 100;
+					if (numericTotal - avgDessertPrice < 10) return 0;
+					return avgDessertPrice;
 				}
 				return 0;
 			}, [
 				activePromo,
 				enrichedItems,
 				grandTotal
+			]);
+			const promoCashbackAmount = useMemo(() => {
+				if (!activePromo || !activePromo.isActive || enrichedItems.length === 0) return 0;
+				const numericTotal = parseFloat(grandTotal) || 0;
+				if (numericTotal <= 0) return 0;
+				const pType = String(activePromo.prizeType || "").toLowerCase();
+				const pName = String(activePromo.prizeName || "").toUpperCase();
+				if (pType === "cashbackonpurchases" || pType === "4" || pName.includes("CASHBACK") || Number(activePromo.cashbackPercent) > 0) {
+					let cbPercent = Number(activePromo.cashbackPercent) || 0;
+					if (cbPercent <= 0) {
+						const m = pName.match(/(\d+)\s*%/);
+						cbPercent = m ? Number(m[1]) : 10;
+					}
+					const payable = Math.max(0, numericTotal - promoDiscountAmount);
+					return Math.round(payable * cbPercent) / 100;
+				}
+				return 0;
+			}, [
+				activePromo,
+				enrichedItems,
+				grandTotal,
+				promoDiscountAmount
+			]);
+			const promoConditionHint = useMemo(() => {
+				if (!activePromo || !activePromo.isActive || enrichedItems.length === 0) return "";
+				if (promoDiscountAmount > 0 || promoCashbackAmount > 0) return "";
+				const pType = String(activePromo.prizeType || "").toLowerCase();
+				const pName = String(activePromo.prizeName || "").toUpperCase();
+				if (pType === "superprize" || pType === "0" || pName.includes("SUPER")) {
+					return t("basket_promo_hint_super");
+				}
+				if (pType === "discount25" || pName.includes("15%")) {
+					return t("basket_promo_hint_15");
+				}
+				if (pType === "discount50" || pType === "3" || pType === "5" || pName.includes("25%") || pName.includes("50%")) {
+					return t("basket_promo_hint_25");
+				}
+				if (pType === "freedrink" || pType === "1" || pName.includes("DRINK")) {
+					return t("basket_promo_hint_drink");
+				}
+				if (pType === "freedessert" || pType === "2" || pName.includes("DESSERT")) {
+					return t("basket_promo_hint_dessert");
+				}
+				return "";
+			}, [
+				activePromo,
+				enrichedItems,
+				promoDiscountAmount,
+				promoCashbackAmount,
+				lang
 			]);
 			const discountedTotal = Math.max(0, parseFloat(grandTotal) - promoDiscountAmount).toFixed(2);
 			return /* @__PURE__ */ __h(motion.div, {
@@ -389,14 +366,22 @@
 			}, /* @__PURE__ */ __h("h2", null, t("basket_summary_title")), /* @__PURE__ */ __h("div", { className: "summary-lines" }, enrichedItems.map((item) => /* @__PURE__ */ __h("div", {
 				key: item.productId,
 				className: "summary-line"
-			}, /* @__PURE__ */ __h("span", { className: "summary-line-name" }, item.product.name, /* @__PURE__ */ __h("span", { className: "summary-line-qty" }, " × ", item.quantity)), /* @__PURE__ */ __h("span", { className: "summary-line-price" }, item.totalPrice, " ₼")))), userPromos.length >= 2 && /* @__PURE__ */ __h("div", { className: "basket-promo-selector" }, /* @__PURE__ */ __h("div", { className: "promo-selector-label" }, /* @__PURE__ */ __h("span", null, t("basket_promo_label")), /* @__PURE__ */ __h("span", { className: "promo-count" }, userPromos.length, " ", t("basket_promo_active"))), /* @__PURE__ */ __h("select", {
+			}, /* @__PURE__ */ __h("span", { className: "summary-line-name" }, item.product.name, /* @__PURE__ */ __h("span", { className: "summary-line-qty" }, " × ", item.quantity)), /* @__PURE__ */ __h("span", { className: "summary-line-price" }, item.totalPrice, " ₼")))), userPromos.length >= 1 && /* @__PURE__ */ __h("div", { className: "basket-promo-selector" }, /* @__PURE__ */ __h("div", { className: "promo-selector-label" }, /* @__PURE__ */ __h("span", null, t("basket_promo_label")), /* @__PURE__ */ __h("span", { className: "promo-count" }, userPromos.length, " ", t("basket_promo_active"))), /* @__PURE__ */ __h("select", {
 				value: selectedPromoCode,
 				onChange: (e) => setSelectedPromoCode(e.target.value),
 				className: "basket-promo-select"
 			}, userPromos.map((p) => /* @__PURE__ */ __h("option", {
 				key: p.id,
 				value: p.promoCode
-			}, p.promoCode, " — ", formatLocalizedPrizeName(p.prizeName, lang))), /* @__PURE__ */ __h("option", { value: "NONE" }, t("basket_promo_none")))), /* @__PURE__ */ __h("div", { className: "summary-divider" }), promoDiscountAmount > 0 && /* @__PURE__ */ __h("div", { className: "summary-subtotal" }, /* @__PURE__ */ __h("span", null, t("basket_subtotal")), /* @__PURE__ */ __h("span", null, grandTotal, " ₼")), promoDiscountAmount > 0 && /* @__PURE__ */ __h(AnimatePresence, null, /* @__PURE__ */ __h(motion.div, {
+			}, p.promoCode, " — ", formatLocalizedPrizeName(p.prizeName, lang, p))), /* @__PURE__ */ __h("option", { value: "NONE" }, t("basket_promo_none"))), promoConditionHint && /* @__PURE__ */ __h("div", {
+				className: "basket-promo-hint",
+				style: {
+					marginTop: "8px",
+					fontSize: "0.82rem",
+					color: "#e2b86b",
+					lineHeight: "1.35"
+				}
+			}, "ℹ️ ", promoConditionHint)), /* @__PURE__ */ __h("div", { className: "summary-divider" }), promoDiscountAmount > 0 && /* @__PURE__ */ __h("div", { className: "summary-subtotal" }, /* @__PURE__ */ __h("span", null, t("basket_subtotal")), /* @__PURE__ */ __h("span", null, grandTotal, " ₼")), promoDiscountAmount > 0 && /* @__PURE__ */ __h(AnimatePresence, null, /* @__PURE__ */ __h(motion.div, {
 				className: "summary-promo-row",
 				initial: {
 					opacity: 0,
@@ -412,9 +397,28 @@
 				src: giftAnimated,
 				alt: "Promo gift",
 				className: "summary-promo-icon"
-			}), /* @__PURE__ */ __h("span", null, formatLocalizedPrizeName(activePromo?.prizeName, lang))), /* @__PURE__ */ __h("span", { className: "summary-promo-discount" }, "−", promoDiscountAmount.toFixed(2), " ₼"))), /* @__PURE__ */ __h("div", { className: "summary-total" }, /* @__PURE__ */ __h("span", null, t("basket_total")), /* @__PURE__ */ __h("span", { className: "summary-total-price" }, discountedTotal, " ₼")), /* @__PURE__ */ __h("button", {
+			}), /* @__PURE__ */ __h("span", null, formatLocalizedPrizeName(activePromo?.prizeName, lang, activePromo))), /* @__PURE__ */ __h("span", { className: "summary-promo-discount" }, "−", promoDiscountAmount.toFixed(2), " ₼"))), promoCashbackAmount > 0 && /* @__PURE__ */ __h(AnimatePresence, null, /* @__PURE__ */ __h(motion.div, {
+				className: "summary-promo-row",
+				initial: {
+					opacity: 0,
+					y: -6
+				},
+				animate: {
+					opacity: 1,
+					y: 0
+				},
+				exit: { opacity: 0 },
+				transition: { duration: .3 }
+			}, /* @__PURE__ */ __h("span", { className: "summary-promo-label" }, /* @__PURE__ */ __h("img", {
+				src: giftAnimated,
+				alt: "Cashback",
+				className: "summary-promo-icon"
+			}), /* @__PURE__ */ __h("span", null, formatLocalizedPrizeName(activePromo?.prizeName, lang, activePromo))), /* @__PURE__ */ __h("span", {
+				className: "summary-promo-discount",
+				style: { color: "#4ade80" }
+			}, "+", promoCashbackAmount.toFixed(2), " ₼"))), /* @__PURE__ */ __h("div", { className: "summary-total" }, /* @__PURE__ */ __h("span", null, t("basket_total")), /* @__PURE__ */ __h("span", { className: "summary-total-price" }, discountedTotal, " ₼")), /* @__PURE__ */ __h("button", {
 				className: "cta-btn basket-checkout-btn",
-				onClick: () => navigate("/order", { state: { selectedPromoCode: activePromo ? activePromo.promoCode : null } })
+				onClick: () => navigate("/order", { state: { selectedPromoCode: selectedPromoCode === "NONE" ? "NONE" : (activePromo ? activePromo.promoCode : "NONE") } })
 			}, t("basket_btn_checkout")), /* @__PURE__ */ __h(Link, {
 				to: "/catalog",
 				className: "cta-btn secondary basket-continue-btn"

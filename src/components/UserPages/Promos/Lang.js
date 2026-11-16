@@ -100,3 +100,53 @@ export const getPromosTranslation = (lang, dataId) => {
 	const dict = translations[lang] || translations.az || translations.ru;
 	return dict[dataId] || translations.en && translations.en[dataId] || dataId;
 };
+export const formatPromoPrizeTitle = (promo, lang) => {
+	if (!promo) return "";
+	const pType = String(promo.prizeType || "").toLowerCase();
+	const pName = String(promo.prizeName || "").toUpperCase();
+	if (pType === "superprize" || pName.includes("SUPER")) {
+		return lang === "ru" ? "СУПЕРПРИЗ (−30 ₼)" : lang === "en" ? "SUPER PRIZE (−30 ₼)" : "SUPER HƏDİYYƏ (−30 ₼)";
+	}
+	if (pType === "freedrink" || pName.includes("DRINK")) {
+		return lang === "ru" ? "БЕСПЛАТНЫЙ НАПИТОК" : lang === "en" ? "FREE DRINK" : "PULSUZ İÇKİ";
+	}
+	if (pType === "freedessert" || pName.includes("DESSERT")) {
+		return lang === "ru" ? "БЕСПЛАТНЫЙ ДЕСЕРТ" : lang === "en" ? "FREE DESSERT" : "PULSUZ DESERT";
+	}
+	if (pType === "discount25" || pName.includes("15%")) {
+		return lang === "ru" ? "СКИДКА 15%" : lang === "en" ? "15% DISCOUNT" : "15% ENDİRİM";
+	}
+	if (pType === "discount50" || pName.includes("25%") || pName.includes("50%")) {
+		return lang === "ru" ? "СКИДКА 25%" : lang === "en" ? "25% DISCOUNT" : "25% ENDİRİM";
+	}
+	if (pType === "cashbackonpurchases" || pName.includes("CASHBACK")) {
+		const cb = Number(promo.cashbackPercent) || (pName.match(/(\d+)\s*%/) ? Number(pName.match(/(\d+)\s*%/)[1]) : 10);
+		return lang === "ru" ? `КЭШБЭК ${cb}% НА ПОКУПКИ` : lang === "en" ? `${cb}% CASHBACK ON PURCHASES` : `ALIŞLARA ${cb}% KEŞBEK`;
+	}
+	return promo.prizeName || "";
+};
+export const formatPromoPrizeDescription = (promo, lang) => {
+	if (!promo) return "";
+	const pType = String(promo.prizeType || "").toLowerCase();
+	const pName = String(promo.prizeName || "").toUpperCase();
+	if (pType === "superprize" || pName.includes("SUPER")) {
+		return lang === "ru" ? "Скидка 30 ₼ при заказе от 100 ₼!" : lang === "en" ? "30 AZN discount on orders of 100 AZN or more!" : "100 ₼ və daha çox sifarişdə 30 ₼ endirim!";
+	}
+	if (pType === "freedrink" || pName.includes("DRINK")) {
+		return lang === "ru" ? "Один бесплатный напиток при заказе от 10 ₼ к оплате!" : lang === "en" ? "One free drink on orders with at least 10 AZN to pay!" : "Ödəniləcək məbləği ən azı 10 ₼ olan sifarişdə 1 pulsuz içki!";
+	}
+	if (pType === "freedessert" || pName.includes("DESSERT")) {
+		return lang === "ru" ? "Один бесплатный десерт при заказе от 10 ₼ к оплате!" : lang === "en" ? "One free dessert on orders with at least 10 AZN to pay!" : "Ödəniləcək məbləği ən azı 10 ₼ olan sifarişdə 1 pulsuz desert!";
+	}
+	if (pType === "discount25" || pName.includes("15%")) {
+		return lang === "ru" ? "Скидка 15% (макс. 15 ₼) при заказе от 50 ₼!" : lang === "en" ? "15% discount (max 15 AZN) on orders of 50 AZN or more!" : "50 ₼ və daha çox sifarişdə 15% (maks. 15 ₼) endirim!";
+	}
+	if (pType === "discount50" || pName.includes("25%") || pName.includes("50%")) {
+		return lang === "ru" ? "Скидка 25% (макс. 25 ₼) при заказе от 50 ₼!" : lang === "en" ? "25% discount (max 25 AZN) on orders of 50 AZN or more!" : "50 ₼ və daha çox sifarişdə 25% (maks. 25 ₼) endirim!";
+	}
+	if (pType === "cashbackonpurchases" || pName.includes("CASHBACK")) {
+		const cb = Number(promo.cashbackPercent) || (pName.match(/(\d+)\s*%/) ? Number(pName.match(/(\d+)\s*%/)[1]) : 10);
+		return lang === "ru" ? `Кэшбэк ${cb}% на баланс с вашего следующего заказа!` : lang === "en" ? `${cb}% cashback on your next order!` : `Növbəti sifarişinizdən balansa ${cb}% keşbek!`;
+	}
+	return promo.prizeDescription || "";
+};

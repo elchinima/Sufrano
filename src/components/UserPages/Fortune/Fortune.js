@@ -4,45 +4,51 @@ import { motion, AnimatePresence } from "../../../utils/motion.js";
 import { Link, useNavigate } from "../../../utils/router.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import { fetchWithRefresh } from "../../../utils/fetchWithRefresh.js";
+import { useLang } from "../../../utils/useLang.js";
+import { getFortuneTranslation } from "./Lang.js";
+import { formatPromoPrizeTitle, formatPromoPrizeDescription } from "../Promos/Lang.js";
 import Footer from "../../Footer/Footer.js";
 import Navbar from "../../Elements/Navbar.js";
 const partyPopperIcon = "/assets/icons/party-popper-animated.svg";
 const smileyIcon = "/assets/icons/smiley-animated.svg";
 const loaderIcon = "/assets/icons/loader-animated.svg";
+const superPrizeIcon = "/assets/icons/super-prize.svg";
+const freeDrinkIcon = "/assets/icons/free-drink.svg";
+const freeDessertIcon = "/assets/icons/free-dessert.svg";
+const discount15Icon = "/assets/icons/discount-15.svg";
+const cashbackIcon = "/assets/icons/cashback.svg";
+const discount25Icon = "/assets/icons/discount-50.svg";
+
 const SEGMENTS = [
 	{
 		label: "SUPER PRIZE",
-		lines: ["SUPER", "PRIZE"],
-		hasCrown: true,
-		prize: "Super prize: Special exclusive Süfrano gift!"
+		icon: superPrizeIcon,
+		prize: "30 AZN discount on orders of 100 AZN or more!"
 	},
 	{
 		label: "FREE DRINK",
-		lines: ["FREE", "DRINK"],
-		prize: "One free drink of your choice!"
+		icon: freeDrinkIcon,
+		prize: "One free drink on orders with at least 10 AZN to pay!"
 	},
 	{
 		label: "FREE DESSERT",
-		lines: ["FREE", "DESSERT"],
-		prize: "One free dessert with your next order!"
+		icon: freeDessertIcon,
+		prize: "One free dessert on orders with at least 10 AZN to pay!"
 	},
 	{
-		label: "DISCOUNT UP TO 25%",
-		lines: ["DISCOUNT", "UP TO", "25%"],
-		 isThreeLine: true,
-		prize: "25% discount on your next order!"
+		label: "DISCOUNT UP TO 15%",
+		icon: discount15Icon,
+		prize: "15% discount (max 15 AZN) on orders of 50 AZN or more!"
 	},
 	{
 		label: "CASHBACK ON PURCHASES",
-		lines: ["CASHBACK ON", "PURCHASES"],
-		isCompact: true,
+		icon: cashbackIcon,
 		prize: "Cashback on your next order!"
 	},
 	{
-		label: "DISCOUNT UP TO 50%",
-		lines: ["DISCOUNT", "UP TO 50%"],
-		isMedium: true,
-		prize: "50% discount on your next order!"
+		label: "DISCOUNT UP TO 25%",
+		icon: discount25Icon,
+		prize: "25% discount (max 25 AZN) on orders of 50 AZN or more!"
 	}
 ];
 const NUM_SEGMENTS = SEGMENTS.length;
@@ -54,6 +60,8 @@ const Fortune = () => {
 	const rafRef = useRef(null);
 	const rotationRef = useRef(0);
 	const { user } = useAuth();
+	const lang = useLang();
+	const t = (k, params) => getFortuneTranslation(lang, k, params);
 	const [spinning, setSpinning] = useState(false);
 	const [canSpin, setCanSpin] = useState(false);
 	const [cooldownEndsAt, setCooldownEndsAt] = useState(null);
@@ -110,7 +118,11 @@ const Fortune = () => {
 			const minutes = Math.floor(diff % (1e3 * 60 * 60) / (1e3 * 60));
 			const seconds = Math.floor(diff % (1e3 * 60) / 1e3);
 			if (days > 0) {
-				setTimeLeftStr(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+				const dStr = t("time_days");
+				const hStr = t("time_hours");
+				const mStr = t("time_minutes");
+				const sStr = t("time_seconds");
+				setTimeLeftStr(`${days}${dStr} ${hours}${hStr} ${minutes}${mStr} ${seconds}${sStr}`);
 			} else {
 				setTimeLeftStr(`${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`);
 			}
@@ -256,7 +268,7 @@ const Fortune = () => {
 				1
 			]
 		}
-	}, /* @__PURE__ */ __h("h1", null, user?.name ? `Hey, ${user.name}!` : "🎡 Wheel of Fortune"), /* @__PURE__ */ __h("p", null, "Spin the wheel and win an exclusive Süfrano reward!")), /* @__PURE__ */ __h(motion.div, {
+	}, /* @__PURE__ */ __h("h1", null, user?.name ? t("hey_user", { name: user.name }) : t("hero_title")), /* @__PURE__ */ __h("p", null, t("hero_desc"))), /* @__PURE__ */ __h(motion.div, {
 		className: "fortune-wheel-area",
 		initial: {
 			opacity: 0,
@@ -351,44 +363,16 @@ const Fortune = () => {
 		"aria-hidden": "true"
 	}, /* @__PURE__ */ __h("span", { className: "fortune-wheel__spoke fortune-wheel__spoke--1" }), /* @__PURE__ */ __h("span", { className: "fortune-wheel__spoke fortune-wheel__spoke--2" }), /* @__PURE__ */ __h("span", { className: "fortune-wheel__spoke fortune-wheel__spoke--3" })), SEGMENTS.map((seg, idx) => /* @__PURE__ */ __h("div", {
 		key: idx,
-		className: `fortune-wheel__segment${seg.hasCrown ? " fortune-wheel__segment--super" : ""}${seg.isCompact ? " fortune-wheel__segment--compact" : ""}${seg.isThreeLine ? " fortune-wheel__segment--three" : ""}${seg.isMedium ? " fortune-wheel__segment--medium" : ""}`,
+		className: "fortune-wheel__segment",
 		style: { "--seg-angle": `${idx * 60}deg` }
-	}, /* @__PURE__ */ __h("div", { className: "fortune-wheel__segment-content" }, seg.hasCrown && /* @__PURE__ */ __h("span", {
-		className: "fortune-wheel__crown",
-		"aria-hidden": "true"
-	}, /* @__PURE__ */ __h("svg", {
-		viewBox: "0 0 64 46",
-		className: "fortune-wheel__crown-svg",
-		xmlns: "http://www.w3.org/2000/svg"
-	}, /* @__PURE__ */ __h("circle", {
-		cx: "8",
-		cy: "13",
-		r: "4.2",
-		fill: "currentColor"
-	}), /* @__PURE__ */ __h("circle", {
-		cx: "32",
-		cy: "6.5",
-		r: "4.6",
-		fill: "currentColor"
-	}), /* @__PURE__ */ __h("circle", {
-		cx: "56",
-		cy: "13",
-		r: "4.2",
-		fill: "currentColor"
-	}), /* @__PURE__ */ __h("path", {
-		d: "M10 17 L21 28 L32 11 L43 28 L54 17 L49 36 H15 Z",
-		fill: "currentColor"
-	}), /* @__PURE__ */ __h("rect", {
-		x: "14",
-		y: "39",
-		width: "36",
-		height: "4.8",
-		rx: "2.4",
-		fill: "currentColor"
-	}))), seg.lines.map((line, lineIdx) => /* @__PURE__ */ __h("span", {
-		key: lineIdx,
-		className: "fortune-wheel__segment-line"
-	}, line))))), /* @__PURE__ */ __h("div", {
+	}, /* @__PURE__ */ __h("div", { className: "fortune-wheel__segment-content" }, /* @__PURE__ */ __h("div", {
+		className: "fortune-wheel__icon-badge"
+	}, /* @__PURE__ */ __h("img", {
+		src: seg.icon,
+		alt: seg.label,
+		className: "fortune-wheel__icon",
+		draggable: false
+	})))))), /* @__PURE__ */ __h("div", {
 		className: "fortune-wheel__center-hub",
 		"aria-hidden": "true"
 	}, /* @__PURE__ */ __h("span", { className: "fortune-wheel__center-cap" }, /* @__PURE__ */ __h("span", { className: "fortune-wheel__center-core" })))))), /* @__PURE__ */ __h(motion.button, {
@@ -400,7 +384,7 @@ const Fortune = () => {
 			y: -2
 		} : {},
 		whileTap: canSpin && !spinning && promoChecked ? { scale: .97 } : {}
-	}, spinning ? /* @__PURE__ */ __h("span", { className: "fortune-spin-btn__inner" }, /* @__PURE__ */ __h("span", { className: "fortune-spin-dot" }), "Spinning...") : !promoChecked ? /* @__PURE__ */ __h("span", { className: "fortune-spin-btn__inner" }, /* @__PURE__ */ __h("span", { className: "fortune-spin-dot" }), "Loading...") : !canSpin ? timeLeftStr || (serverPromo?.isActive ? "Promo already active!" : "1 spin per week") : "Spin the Wheel!"), !canSpin && !spinning && promoChecked && /* @__PURE__ */ __h(motion.div, {
+	}, spinning ? /* @__PURE__ */ __h("span", { className: "fortune-spin-btn__inner" }, /* @__PURE__ */ __h("span", { className: "fortune-spin-dot" }), t("btn_spinning")) : !promoChecked ? /* @__PURE__ */ __h("span", { className: "fortune-spin-btn__inner" }, /* @__PURE__ */ __h("span", { className: "fortune-spin-dot" }), t("btn_loading")) : !canSpin ? timeLeftStr || (serverPromo?.isActive ? t("btn_cooldown_active") : t("btn_cooldown_weekly")) : t("btn_spin")), !canSpin && !spinning && promoChecked && /* @__PURE__ */ __h(motion.div, {
 		className: "fortune-cooldown-box",
 		initial: {
 			opacity: 0,
@@ -411,11 +395,11 @@ const Fortune = () => {
 			y: 0
 		},
 		transition: { delay: .2 }
-	}, /* @__PURE__ */ __h("p", { className: "fortune-note" }, serverPromo?.isActive ? "You have an active promo code ✨" : "You have already spun the wheel this week."), serverPromo?.isActive && serverPromo?.promoCode && /* @__PURE__ */ __h("div", { className: "fortune-active-promo-pill" }, /* @__PURE__ */ __h("span", { className: "fortune-active-promo-pill__code" }, serverPromo.promoCode), /* @__PURE__ */ __h("button", {
+	}, /* @__PURE__ */ __h("p", { className: "fortune-note" }, serverPromo?.isActive ? t("note_active_promo") : t("note_already_spun")), serverPromo?.isActive && serverPromo?.promoCode && /* @__PURE__ */ __h("div", { className: "fortune-active-promo-pill" }, /* @__PURE__ */ __h("span", { className: "fortune-active-promo-pill__code" }, serverPromo.promoCode), /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "fortune-active-promo-pill__copy",
 		onClick: () => handleCopyCode(serverPromo.promoCode)
-	}, copiedCode ? "Copied!" : "Copy")))))), /* @__PURE__ */ __h(Footer, null), /* @__PURE__ */ __h(AnimatePresence, null, showPrize && prize && /* @__PURE__ */ __h(motion.div, {
+	}, copiedCode ? t("btn_copied") : t("btn_copy"))))))), /* @__PURE__ */ __h(Footer, null), /* @__PURE__ */ __h(AnimatePresence, null, showPrize && prize && /* @__PURE__ */ __h(motion.div, {
 		className: "fortune-prize-overlay",
 		initial: { opacity: 0 },
 		animate: { opacity: 1 },
@@ -455,7 +439,7 @@ const Fortune = () => {
 			width: "70px",
 			height: "70px"
 		}
-	})), /* @__PURE__ */ __h("h2", { className: "prize-heading" }, "Congratulations!"), /* @__PURE__ */ __h("p", { className: "prize-label" }, prize.label), /* @__PURE__ */ __h("p", { className: "prize-desc" }, prize.prize), promoLoading ? /* @__PURE__ */ __h("div", { style: {
+	})), /* @__PURE__ */ __h("h2", { className: "prize-heading" }, t("prize_congratulations")), /* @__PURE__ */ __h("p", { className: "prize-label" }, formatPromoPrizeTitle(serverPromo || prize, lang)), /* @__PURE__ */ __h("p", { className: "prize-desc" }, formatPromoPrizeDescription(serverPromo || prize, lang)), promoLoading ? /* @__PURE__ */ __h("div", { style: {
 		display: "flex",
 		justifyContent: "center",
 		margin: "12px 0"
@@ -466,27 +450,37 @@ const Fortune = () => {
 			width: "32px",
 			height: "32px"
 		}
-	})) : serverPromo?.promoCode ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("p", { className: "prize-code-label" }, "Your promo code"), /* @__PURE__ */ __h("div", {
+	})) : serverPromo?.promoCode ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("p", { className: "prize-code-label" }, t("prize_your_code")), /* @__PURE__ */ __h("div", {
 		className: "prize-code",
 		onClick: () => handleCopyCode(serverPromo.promoCode),
-		title: "Click to copy"
-	}, serverPromo.promoCode, /* @__PURE__ */ __h("span", { className: "prize-code__badge" }, copiedCode ? "Copied!" : "Copy")), serverPromo.expiresAt && /* @__PURE__ */ __h("p", {
+		title: t("prize_copy_tooltip")
+	}, serverPromo.promoCode, /* @__PURE__ */ __h("span", { className: "prize-code__badge" }, copiedCode ? t("btn_copied") : t("btn_copy"))), serverPromo.expiresAt && /* @__PURE__ */ __h("p", {
 		className: "prize-code-label",
 		style: {
 			marginTop: "6px",
 			fontSize: "0.75rem",
 			opacity: .6
 		}
-	}, "Valid until ", new Date(serverPromo.expiresAt).toLocaleDateString())) : null) : /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("div", { className: "prize-emoji" }, /* @__PURE__ */ __h("img", {
+	}, t("prize_valid_until"), new Date(serverPromo.expiresAt).toLocaleDateString(lang === "ru" ? "ru-RU" : lang === "az" ? "az-AZ" : "en-US")), /* @__PURE__ */ __h(Link, {
+		to: "/promos",
+		className: "cta-btn primary prize-view-promos-btn",
+		style: {
+			width: "100%",
+			marginTop: "16px",
+			marginBottom: "10px",
+			display: "inline-block",
+			textAlign: "center"
+		}
+	}, t("prize_btn_view_promos"))) : null) : /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("div", { className: "prize-emoji" }, /* @__PURE__ */ __h("img", {
 		src: smileyIcon,
 		alt: "Smiley",
 		style: {
 			width: "70px",
 			height: "70px"
 		}
-	})), /* @__PURE__ */ __h("h2", { className: "prize-heading" }, "Better luck next time!"), /* @__PURE__ */ __h("p", { className: "prize-desc" }, "Don't worry — there's always tomorrow's spin!")), /* @__PURE__ */ __h("button", {
+	})), /* @__PURE__ */ __h("h2", { className: "prize-heading" }, t("prize_fallback_heading")), /* @__PURE__ */ __h("p", { className: "prize-desc" }, t("prize_fallback_desc"))), /* @__PURE__ */ __h("button", {
 		className: "cta-btn secondary prize-close-btn",
 		onClick: () => setShowPrize(false)
-	}, "Close")))));
+	}, t("prize_btn_close")))))));
 };
 export default Fortune;

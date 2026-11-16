@@ -10,6 +10,41 @@ public static class ErrorLocalizer
                 "Недостаточно средств на балансе вашего аккаунта Süfrano.",
                 "Insufficient balance on your Süfrano account."
             ),
+            ["15% discount applied (max 15 AZN)"] = (
+                "15% endirim tətbiq edildi (maks. 15 AZN).",
+                "Применена скидка 15% (макс. 15 AZN).",
+                "15% discount applied (max 15 AZN)."
+            ),
+            ["25% discount applied (max 25 AZN)"] = (
+                "25% endirim tətbiq edildi (maks. 25 AZN).",
+                "Применена скидка 25% (макс. 25 AZN).",
+                "25% discount applied (max 25 AZN)."
+            ),
+            ["15% discount applied"] = (
+                "15% endirim tətbiq edildi.",
+                "Применена скидка 15%.",
+                "15% discount applied."
+            ),
+            ["25% discount applied"] = (
+                "25% endirim tətbiq edildi.",
+                "Применена скидка 25%.",
+                "25% discount applied."
+            ),
+            ["Super prize: 30 AZN discount applied"] = (
+                "Super hədiyyə: 30 AZN endirim tətbiq edildi.",
+                "Суперприз: применена скидка 30 AZN.",
+                "Super prize: 30 AZN discount applied."
+            ),
+            ["Free drink applied"] = (
+                "Pulsuz içki tətbiq edildi.",
+                "Бесплатный напиток применён.",
+                "Free drink applied."
+            ),
+            ["Free dessert applied"] = (
+                "Pulsuz desert tətbiq edildi.",
+                "Бесплатный десерт применён.",
+                "Free dessert applied."
+            ),
             ["Basket is empty."] = (
                 "Səbətiniz boşdur.",
                 "Корзина пуста.",

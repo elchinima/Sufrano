@@ -4355,6 +4355,41 @@
 				en: "Insufficient balance on your Süfrano account."
 			},
 			{
+				az: "15% endirim tətbiq edildi (maks. 15 AZN).",
+				ru: "Применена скидка 15% (макс. 15 AZN).",
+				en: "15% discount applied (max 15 AZN)"
+			},
+			{
+				az: "25% endirim tətbiq edildi (maks. 25 AZN).",
+				ru: "Применена скидка 25% (макс. 25 AZN).",
+				en: "25% discount applied (max 25 AZN)"
+			},
+			{
+				az: "15% endirim tətbiq edildi.",
+				ru: "Применена скидка 15%.",
+				en: "15% discount applied"
+			},
+			{
+				az: "25% endirim tətbiq edildi.",
+				ru: "Применена скидка 25%.",
+				en: "25% discount applied"
+			},
+			{
+				az: "Super hədiyyə: 30 AZN endirim tətbiq edildi.",
+				ru: "Суперприз: применена скидка 30 AZN.",
+				en: "Super prize: 30 AZN discount applied"
+			},
+			{
+				az: "Pulsuz içki tətbiq edildi.",
+				ru: "Бесплатный напиток применён.",
+				en: "Free drink applied"
+			},
+			{
+				az: "Pulsuz desert tətbiq edildi.",
+				ru: "Бесплатный десерт применён.",
+				en: "Free dessert applied"
+			},
+			{
 				az: "Səbətiniz boşdur.",
 				ru: "Корзина пуста.",
 				en: "Basket is empty."
@@ -6695,6 +6730,128 @@
 	});
 	//#endregion
 
+	//#region components/PublicPages/Basket/Lang.js
+	__define("components/PublicPages/Basket/Lang.js", function (exports, __require, module) {
+		const translations = {
+			ru: {
+				"basket_hero_title": "Ваша корзина",
+				"basket_hero_subtitle": "Проверьте выбранные позиции перед оформлением заказа.",
+				"basket_empty_title": "Ваша корзина пуста",
+				"basket_empty_subtitle": "Похоже, вы еще ничего не добавили. Откройте наше меню и выберите ваши любимые блюда.",
+				"basket_empty_btn": "Смотреть меню",
+				"basket_unit_price": "за шт.",
+				"basket_summary_title": "Сумма заказа",
+				"basket_promo_label": "Применить промокод",
+				"basket_promo_active": "активно",
+				"basket_promo_none": "Не использовать промокод",
+				"basket_subtotal": "Подытог",
+				"basket_total": "Итого",
+				"basket_btn_checkout": "Оформить заказ",
+				"basket_btn_continue": "Продолжить покупки",
+				"prize_super_prize": "Суперприз (−30 ₼ от 100 ₼)",
+				"prize_free_drink": "Бесплатный напиток",
+				"prize_free_dessert": "Бесплатный десерт",
+				"prize_discount_15": "Скидка 15%",
+				"prize_discount_25": "Скидка 25%",
+				"prize_cashback": "Кэшбэк на покупки",
+				"prize_discount_50": "Скидка 25%",
+				"basket_cashback_label": "Кэшбэк на баланс",
+				"basket_promo_hint_super": "Промокод действует при заказе от 100 ₼",
+				"basket_promo_hint_15": "Промокод действует при заказе от 50 ₼ (макс. 15 ₼ скидки)",
+				"basket_promo_hint_25": "Промокод действует при заказе от 50 ₼ (макс. 25 ₼ скидки)",
+				"basket_promo_hint_50": "Промокод действует при заказе от 50 ₼",
+				"basket_promo_hint_drink": "Добавьте напиток и наберите заказ минимум на 10 ₼ к оплате",
+				"basket_promo_hint_dessert": "Добавьте десерт и наберите заказ минимум на 10 ₼ к оплате"
+			},
+			en: {
+				"basket_hero_title": "Your Basket",
+				"basket_hero_subtitle": "Review your selections before placing an order.",
+				"basket_empty_title": "Your basket is empty",
+				"basket_empty_subtitle": "Looks like you haven't added anything yet. Browse our menu and find your favorite dishes.",
+				"basket_empty_btn": "Explore Menu",
+				"basket_unit_price": "each",
+				"basket_summary_title": "Order Summary",
+				"basket_promo_label": "Apply Promo Code",
+				"basket_promo_active": "active",
+				"basket_promo_none": "Don't use any promo code",
+				"basket_subtotal": "Subtotal",
+				"basket_total": "Total",
+				"basket_btn_checkout": "Place Order",
+				"basket_btn_continue": "Continue Shopping",
+				"prize_super_prize": "Super Prize (−30 ₼ from 100 ₼)",
+				"prize_free_drink": "Free Drink",
+				"prize_free_dessert": "Free Dessert",
+				"prize_discount_15": "15% Discount",
+				"prize_discount_25": "25% Discount",
+				"prize_cashback": "Cashback on Purchases",
+				"prize_discount_50": "25% Discount",
+				"basket_cashback_label": "Cashback to balance",
+				"basket_promo_hint_super": "Promo code is valid on orders of 100 ₼ or more",
+				"basket_promo_hint_15": "Promo code is valid on orders of 50 ₼ or more (max 15 ₼ discount)",
+				"basket_promo_hint_25": "Promo code is valid on orders of 50 ₼ or more (max 25 ₼ discount)",
+				"basket_promo_hint_50": "Promo code is valid on orders of 50 ₼ or more",
+				"basket_promo_hint_drink": "Add a drink and have at least 10 ₼ to pay",
+				"basket_promo_hint_dessert": "Add a dessert and have at least 10 ₼ to pay"
+			},
+			az: {
+				"basket_hero_title": "Səbətiniz",
+				"basket_hero_subtitle": "Sifariş verməzdən əvvəl seçimlərinizi nəzərdən keçirin.",
+				"basket_empty_title": "Səbətiniz boşdur",
+				"basket_empty_subtitle": "Deyəsən, hələ heç bir məhsul əlavə etməmisiniz. Menyumuzu kəşf edin və sevimli təamlarınızı seçin.",
+				"basket_empty_btn": "Menyuya baxın",
+				"basket_unit_price": "ədəd",
+				"basket_summary_title": "Sifarişin xülasəsi",
+				"basket_promo_label": "Promokod tətbiq et",
+				"basket_promo_active": "aktiv",
+				"basket_promo_none": "Promokod istifadə etmə",
+				"basket_subtotal": "Aralıq cəmi",
+				"basket_total": "Yekun",
+				"basket_btn_checkout": "Sifarişi rəsmiləşdir",
+				"basket_btn_continue": "Alış-verişə davam et",
+				"prize_super_prize": "Super hədiyyə (100 ₼+ üçün −30 ₼)",
+				"prize_free_drink": "Pulsuz içki",
+				"prize_free_dessert": "Pulsuz desert",
+				"prize_discount_15": "15% endirim",
+				"prize_discount_25": "25% endirim",
+				"prize_cashback": "Alışlara keşbek",
+				"prize_discount_50": "25% endirim",
+				"basket_cashback_label": "Balansa keşbek",
+				"basket_promo_hint_super": "Promokod 100 ₼ və daha çox sifarişlərdə keçərlidir",
+				"basket_promo_hint_15": "Promokod 50 ₼ və daha çox sifarişlərdə keçərlidir (maks. 15 ₼ endirim)",
+				"basket_promo_hint_25": "Promokod 50 ₼ və daha çox sifarişlərdə keçərlidir (maks. 25 ₼ endirim)",
+				"basket_promo_hint_50": "Promokod 50 ₼ və daha çox sifarişlərdə keçərlidir",
+				"basket_promo_hint_drink": "Səbətə içki əlavə edin və ödəniləcək məbləğ ən azı 10 ₼ olsun",
+				"basket_promo_hint_dessert": "Səbətə desert əlavə edin və ödəniləcək məbləğ ən azı 10 ₼ olsun"
+			}
+		};
+		const getBasketTranslation = (lang, dataId) => {
+			const dict = translations[lang] || translations.az || translations.ru;
+			return dict[dataId] || translations.en[dataId] || dataId;
+		};
+		const formatLocalizedPrizeName = (name, lang, promo = null) => {
+			if (!name && !promo) return "";
+			const upper = String(name || "").trim().toUpperCase();
+			const pType = String(promo?.prizeType || "").toLowerCase();
+			const t = (id) => getBasketTranslation(lang, id);
+			if (pType === "superprize" || upper.includes("SUPER PRIZE") || upper.includes("SUPER")) return t("prize_super_prize");
+			if (pType === "freedrink" || upper.includes("FREE DRINK")) return t("prize_free_drink");
+			if (pType === "freedessert" || upper.includes("FREE DESSERT")) return t("prize_free_dessert");
+			if (pType === "discount25" || upper.includes("15%")) return t("prize_discount_15");
+			if (pType === "discount50" || upper.includes("25%") || upper.includes("50%")) return t("prize_discount_25");
+			if (pType === "cashbackonpurchases" || upper.includes("CASHBACK")) {
+				const cb = Number(promo?.cashbackPercent) || (upper.match(/(\d+)\s*%/) ? Number(upper.match(/(\d+)\s*%/)[1]) : 0);
+				const base = t("prize_cashback");
+				return cb > 0 ? `${base} (${cb}%)` : base;
+			}
+			return name;
+		};
+
+		Object.defineProperty(exports, "translations", { enumerable: true, get: function () { return translations; } });
+		Object.defineProperty(exports, "getBasketTranslation", { enumerable: true, get: function () { return getBasketTranslation; } });
+		Object.defineProperty(exports, "formatLocalizedPrizeName", { enumerable: true, get: function () { return formatLocalizedPrizeName; } });
+	});
+	//#endregion
+
 	//#region components/PublicPages/Reviews/reviewsData.js
 	__define("components/PublicPages/Reviews/reviewsData.js", function (exports, __require, module) {
 		const REVIEW_CATEGORIES = [
@@ -7486,6 +7643,168 @@
 		};
 
 		Object.defineProperty(exports, "default", { enumerable: true, get: function () { return WriteReviewModal; } });
+	});
+	//#endregion
+
+	//#region components/UserPages/Promos/Lang.js
+	__define("components/UserPages/Promos/Lang.js", function (exports, __require, module) {
+		const translations = {
+			ru: {
+				"promos_hero_title": "Мои промокоды",
+				"promos_hero_desc": "Ваши эксклюзивные награды, скидки и бонусы за вращение Колеса Фортуны",
+				"promos_badge_redeem": "Активация",
+				"promos_card_title": "Есть промокод?",
+				"promos_card_desc": "Введите промокод или подарочный код для получения скидки или подарка.",
+				"promos_input_placeholder": "Введите код (напр. RED-DISC-7X9K)",
+				"promos_btn_activate": "Активировать",
+				"promos_btn_activating": "Активация...",
+				"promos_activate_success": "Промокод успешно активирован! Теперь вы можете использовать его в заказе.",
+				"promos_activate_error": "Не удалось активировать промокод. Пожалуйста, проверьте правильность кода.",
+				"promos_activate_network_error": "Ошибка подключения. Пожалуйста, попробуйте снова.",
+				"promos_filter_all": "Все",
+				"promos_filter_active": "Активные",
+				"promos_filter_expired": "Истекшие",
+				"promos_loading": "Загрузка ваших промокодов...",
+				"promos_try_again": "Попробовать снова",
+				"promos_empty_active_title": "Сейчас нет активных промокодов",
+				"promos_empty_expired_title": "Нет истекших промокодов",
+				"promos_empty_all_title": "У вас пока нет промокодов",
+				"promos_empty_active_desc": "Вращайте Колесо Фортуны, чтобы выигрывать бесплатные напитки, десерты и скидки!",
+				"promos_empty_all_desc": "Участвуйте в мини-игре Колесо Фортуны и открывайте эксклюзивные бонусы Süfrano.",
+				"promos_empty_btn_spin": "Вращать Колесо Фортуны",
+				"promos_status_active": "● Активен",
+				"promos_status_expired": "Истек / Использован",
+				"promos_label_code": "ПРОМОКОД",
+				"promos_btn_copy": "Копировать",
+				"promos_btn_copied": "Скопировано!",
+				"promos_date_activated": "Активирован:",
+				"promos_date_expires": "Действует до:",
+				"promos_btn_use": "Перейти в меню →"
+			},
+			en: {
+				"promos_hero_title": "My Promo Codes",
+				"promos_hero_desc": "Your exclusive rewards, discounts, and wheel spin bonuses",
+				"promos_badge_redeem": "Redeem Code",
+				"promos_card_title": "Have a Promo Code?",
+				"promos_card_desc": "Enter your gift or event promo code to claim your special discount or reward.",
+				"promos_input_placeholder": "Enter code (e.g. RED-DISC-7X9K)",
+				"promos_btn_activate": "Activate",
+				"promos_btn_activating": "Activating...",
+				"promos_activate_success": "Promo code successfully activated! You can now use it on your next order.",
+				"promos_activate_error": "Failed to activate promo code. Please check the code.",
+				"promos_activate_network_error": "Network error occurred. Please try again.",
+				"promos_filter_all": "All",
+				"promos_filter_active": "Active",
+				"promos_filter_expired": "Expired",
+				"promos_loading": "Loading your promo codes...",
+				"promos_try_again": "Try Again",
+				"promos_empty_active_title": "No active promo codes right now",
+				"promos_empty_expired_title": "No expired promo codes",
+				"promos_empty_all_title": "No promo codes yet",
+				"promos_empty_active_desc": "Spin the Wheel of Fortune to win free drinks, desserts, and discounts!",
+				"promos_empty_all_desc": "Play the Fortune mini-game to unlock exclusive Süfrano perks and discounts.",
+				"promos_empty_btn_spin": "Spin Fortune Wheel",
+				"promos_status_active": "● Active",
+				"promos_status_expired": "Expired / Used",
+				"promos_label_code": "PROMO CODE",
+				"promos_btn_copy": "Copy",
+				"promos_btn_copied": "Copied!",
+				"promos_date_activated": "Activated:",
+				"promos_date_expires": "Expires:",
+				"promos_btn_use": "Use in Menu →"
+			},
+			az: {
+				"promos_hero_title": "Promokodlarım",
+				"promos_hero_desc": "Hədiyyə Çarxından qazandığınız xüsusi mükafatlar, endirimlər və bonuslar",
+				"promos_badge_redeem": "Aktivasiya",
+				"promos_card_title": "Promokodunuz var?",
+				"promos_card_desc": "Xüsusi endirim və ya hədiyyə əldə etmək üçün tədbir və ya hədiyyə promokodunuzu daxil edin.",
+				"promos_input_placeholder": "Kodu daxil edin (məs: RED-DISC-7X9K)",
+				"promos_btn_activate": "Aktivləşdir",
+				"promos_btn_activating": "Aktivləşdirilir...",
+				"promos_activate_success": "Promokod uğurla aktivləşdirildi! Növbəti sifarişinizdə istifadə edə bilərsiniz.",
+				"promos_activate_error": "Promokodu aktivləşdirmək mümkün olmadı. Kodu yoxlayın.",
+				"promos_activate_network_error": "Şəbəkə xətası baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+				"promos_filter_all": "Hamısı",
+				"promos_filter_active": "Aktiv",
+				"promos_filter_expired": "Müddəti bitmiş",
+				"promos_loading": "Promokodlarınız yüklənir...",
+				"promos_try_again": "Yenidən cəhd edin",
+				"promos_empty_active_title": "Hazırda aktiv promokodunuz yoxdur",
+				"promos_empty_expired_title": "Müddəti bitmiş promokod yoxdur",
+				"promos_empty_all_title": "Hələ ki promokodunuz yoxdur",
+				"promos_empty_active_desc": "Pulsuz içkilər, desertlər və endirimlər qazanmaq üçün Hədiyyə Çarxını fırladın!",
+				"promos_empty_all_desc": "Eksklüziv Süfrano üstünlüklərini əldə etmək üçün Hədiyyə Çarxını sınayın.",
+				"promos_empty_btn_spin": "Hədiyyə Çarxını Fırlat",
+				"promos_status_active": "● Aktiv",
+				"promos_status_expired": "Bitib / İstifadə olunub",
+				"promos_label_code": "PROMOKOD",
+				"promos_btn_copy": "Kopyala",
+				"promos_btn_copied": "Kopyalandı!",
+				"promos_date_activated": "Aktivləşdirilib:",
+				"promos_date_expires": "Bitmə vaxtı:",
+				"promos_btn_use": "Menyuda istifadə et →"
+			}
+		};
+		const getPromosTranslation = (lang, dataId) => {
+			const dict = translations[lang] || translations.az || translations.ru;
+			return dict[dataId] || translations.en && translations.en[dataId] || dataId;
+		};
+		const formatPromoPrizeTitle = (promo, lang) => {
+			if (!promo) return "";
+			const pType = String(promo.prizeType || "").toLowerCase();
+			const pName = String(promo.prizeName || "").toUpperCase();
+			if (pType === "superprize" || pName.includes("SUPER")) {
+				return lang === "ru" ? "СУПЕРПРИЗ (−30 ₼)" : lang === "en" ? "SUPER PRIZE (−30 ₼)" : "SUPER HƏDİYYƏ (−30 ₼)";
+			}
+			if (pType === "freedrink" || pName.includes("DRINK")) {
+				return lang === "ru" ? "БЕСПЛАТНЫЙ НАПИТОК" : lang === "en" ? "FREE DRINK" : "PULSUZ İÇKİ";
+			}
+			if (pType === "freedessert" || pName.includes("DESSERT")) {
+				return lang === "ru" ? "БЕСПЛАТНЫЙ ДЕСЕРТ" : lang === "en" ? "FREE DESSERT" : "PULSUZ DESERT";
+			}
+			if (pType === "discount25" || pName.includes("15%")) {
+				return lang === "ru" ? "СКИДКА 15%" : lang === "en" ? "15% DISCOUNT" : "15% ENDİRİM";
+			}
+			if (pType === "discount50" || pName.includes("25%") || pName.includes("50%")) {
+				return lang === "ru" ? "СКИДКА 25%" : lang === "en" ? "25% DISCOUNT" : "25% ENDİRİM";
+			}
+			if (pType === "cashbackonpurchases" || pName.includes("CASHBACK")) {
+				const cb = Number(promo.cashbackPercent) || (pName.match(/(\d+)\s*%/) ? Number(pName.match(/(\d+)\s*%/)[1]) : 10);
+				return lang === "ru" ? `КЭШБЭК ${cb}% НА ПОКУПКИ` : lang === "en" ? `${cb}% CASHBACK ON PURCHASES` : `ALIŞLARA ${cb}% KEŞBEK`;
+			}
+			return promo.prizeName || "";
+		};
+		const formatPromoPrizeDescription = (promo, lang) => {
+			if (!promo) return "";
+			const pType = String(promo.prizeType || "").toLowerCase();
+			const pName = String(promo.prizeName || "").toUpperCase();
+			if (pType === "superprize" || pName.includes("SUPER")) {
+				return lang === "ru" ? "Скидка 30 ₼ при заказе от 100 ₼!" : lang === "en" ? "30 AZN discount on orders of 100 AZN or more!" : "100 ₼ və daha çox sifarişdə 30 ₼ endirim!";
+			}
+			if (pType === "freedrink" || pName.includes("DRINK")) {
+				return lang === "ru" ? "Один бесплатный напиток при заказе от 10 ₼ к оплате!" : lang === "en" ? "One free drink on orders with at least 10 AZN to pay!" : "Ödəniləcək məbləği ən azı 10 ₼ olan sifarişdə 1 pulsuz içki!";
+			}
+			if (pType === "freedessert" || pName.includes("DESSERT")) {
+				return lang === "ru" ? "Один бесплатный десерт при заказе от 10 ₼ к оплате!" : lang === "en" ? "One free dessert on orders with at least 10 AZN to pay!" : "Ödəniləcək məbləği ən azı 10 ₼ olan sifarişdə 1 pulsuz desert!";
+			}
+			if (pType === "discount25" || pName.includes("15%")) {
+				return lang === "ru" ? "Скидка 15% (макс. 15 ₼) при заказе от 50 ₼!" : lang === "en" ? "15% discount (max 15 AZN) on orders of 50 AZN or more!" : "50 ₼ və daha çox sifarişdə 15% (maks. 15 ₼) endirim!";
+			}
+			if (pType === "discount50" || pName.includes("25%") || pName.includes("50%")) {
+				return lang === "ru" ? "Скидка 25% (макс. 25 ₼) при заказе от 50 ₼!" : lang === "en" ? "25% discount (max 25 AZN) on orders of 50 AZN or more!" : "50 ₼ və daha çox sifarişdə 25% (maks. 25 ₼) endirim!";
+			}
+			if (pType === "cashbackonpurchases" || pName.includes("CASHBACK")) {
+				const cb = Number(promo.cashbackPercent) || (pName.match(/(\d+)\s*%/) ? Number(pName.match(/(\d+)\s*%/)[1]) : 10);
+				return lang === "ru" ? `Кэшбэк ${cb}% на баланс с вашего следующего заказа!` : lang === "en" ? `${cb}% cashback on your next order!` : `Növbəti sifarişinizdən balansa ${cb}% keşbek!`;
+			}
+			return promo.prizeDescription || "";
+		};
+
+		Object.defineProperty(exports, "translations", { enumerable: true, get: function () { return translations; } });
+		Object.defineProperty(exports, "getPromosTranslation", { enumerable: true, get: function () { return getPromosTranslation; } });
+		Object.defineProperty(exports, "formatPromoPrizeTitle", { enumerable: true, get: function () { return formatPromoPrizeTitle; } });
+		Object.defineProperty(exports, "formatPromoPrizeDescription", { enumerable: true, get: function () { return formatPromoPrizeDescription; } });
 	});
 	//#endregion
 
@@ -8348,9 +8667,10 @@
 				promoNetworkError: "Promokod axtarışı zamanı şəbəkə xətası baş verdi.",
 				freeDrink: "Pulsuz içki",
 				freeDessert: "Pulsuz desert",
-				superPrize: "Super hədiyyə",
+				superPrize: "Super hədiyyə (30 ₼)",
+				discount15: "15% endirim",
 				discount25: "25% endirim",
-				discount50: "50% endirim",
+				discount50: "25% endirim",
 				receiptEmptyToast: "Qəbz boşdur! Zəhmət olmasa məhsul əlavə edin.",
 				promoAppliedToast: (code) => `${code} promokodu tətbiq edildi!`,
 				promoRemovedToast: "Promokod qəbzdən silindi.",
@@ -8513,9 +8833,10 @@
 				promoNetworkError: "Ошибка сети при поиске промокодов.",
 				freeDrink: "Бесплатный напиток",
 				freeDessert: "Бесплатный десерт",
-				superPrize: "Суперприз",
+				superPrize: "Суперприз (30 ₼)",
+				discount15: "Скидка 15%",
 				discount25: "Скидка 25%",
-				discount50: "Скидка 50%",
+				discount50: "Скидка 25%",
 				receiptEmptyToast: "Чек пуст! Пожалуйста, добавьте товары.",
 				promoAppliedToast: (code) => `Промокод ${code} применен!`,
 				promoRemovedToast: "Промокод удален из чека.",
@@ -8678,9 +8999,10 @@
 				promoNetworkError: "Network error while searching promo codes.",
 				freeDrink: "Free Drink",
 				freeDessert: "Free Dessert",
-				superPrize: "Super Prize",
+				superPrize: "Super Prize (30 ₼)",
+				discount15: "15% Off Order",
 				discount25: "25% Off Order",
-				discount50: "50% Off Order",
+				discount50: "25% Off Order",
 				receiptEmptyToast: "Receipt is empty! Please add products.",
 				promoAppliedToast: (code) => `Promo code ${code} applied!`,
 				promoRemovedToast: "Promo code removed from receipt.",

@@ -255,46 +255,96 @@ public class BasketController : ControllerBase
         switch (promo.PrizeInfo.Type)
         {
             case Rednest.Core.Entities.PrizeType.Discount25:
-                discount = Math.Round(grandTotal * 0.25m, 2);
-                message = "25% discount applied";
+                if (grandTotal >= 50.00m)
+                {
+                    discount = Math.Min(Math.Round(grandTotal * 0.15m, 2), 15.00m);
+                    message = "15% discount applied (max 15 AZN)";
+                }
                 break;
 
             case Rednest.Core.Entities.PrizeType.Discount50:
-                discount = Math.Round(grandTotal * 0.50m, 2);
-                message = "50% discount applied";
+                if (grandTotal >= 50.00m)
+                {
+                    discount = Math.Min(Math.Round(grandTotal * 0.25m, 2), 25.00m);
+                    message = "25% discount applied (max 25 AZN)";
+                }
+                break;
+
+            case Rednest.Core.Entities.PrizeType.DiscountCustom:
+                if (promo.PrizeInfo.DiscountPercent > 0)
+                {
+                    if ((promo.PrizeInfo.DiscountPercent == 15 || promo.PrizeInfo.DiscountPercent == 25) && grandTotal < 50.00m)
+                    {
+                        discount = 0m;
+                    }
+                    else
+                    {
+                        var rawDiscount = Math.Round(grandTotal * (promo.PrizeInfo.DiscountPercent / 100m), 2);
+                        if (promo.PrizeInfo.DiscountPercent == 15) rawDiscount = Math.Min(rawDiscount, 15.00m);
+                        else if (promo.PrizeInfo.DiscountPercent == 25) rawDiscount = Math.Min(rawDiscount, 25.00m);
+                        discount = rawDiscount;
+                        message = $"{promo.PrizeInfo.DiscountPercent}% discount applied";
+                    }
+                }
                 break;
 
             case Rednest.Core.Entities.PrizeType.SuperPrize:
-                discount = Math.Min(grandTotal, 25.00m);
-                message = "Super prize: free order up to 25 AZN";
+                if (grandTotal >= 100.00m)
+                {
+                    discount = Math.Min(grandTotal, 30.00m);
+                    message = "Super prize: 30 AZN discount applied";
+                }
                 break;
 
             case Rednest.Core.Entities.PrizeType.FreeDrink:
             {
                 var drinkCategories = new[] { "Beverages", "Drinks", "Main Drinks", "Specialty Drinks" };
-                var drinks = enriched.Where(x => drinkCategories.Contains(x.Product!.Category) ||
-                                                 (x.Product.Category != null && (x.Product.Category.Contains("Drink", StringComparison.OrdinalIgnoreCase) || x.Product.Category.Contains("Beverage", StringComparison.OrdinalIgnoreCase)))).ToList();
+                var drinks = enriched.Where(x =>
+                    drinkCategories.Contains(x.Product!.Category, StringComparer.OrdinalIgnoreCase) ||
+                    (x.Product.Category != null && (
+                        x.Product.Category.Contains("Drink", StringComparison.OrdinalIgnoreCase) ||
+                        x.Product.Category.Contains("Beverage", StringComparison.OrdinalIgnoreCase) ||
+                        x.Product.Category.Contains("Coffee", StringComparison.OrdinalIgnoreCase) ||
+                        x.Product.Category.Contains("Tea", StringComparison.OrdinalIgnoreCase) ||
+                        x.Product.Category.Contains("İçki", StringComparison.OrdinalIgnoreCase) ||
+                        x.Product.Category.Contains("Напит", StringComparison.OrdinalIgnoreCase)
+                    ))).ToList();
                 if (drinks.Count > 0)
                 {
                     var totalDrinkQty = drinks.Sum(x => x.Item.Quantity);
                     var totalDrinkPrice = drinks.Sum(x => GetEffectivePrice(x.Product!) * x.Item.Quantity);
-                    var avgDrinkPrice = totalDrinkPrice / totalDrinkQty;
-                    discount = Math.Round(avgDrinkPrice, 2);
-                    message = "Free drink applied";
+                    var avgDrinkPrice = Math.Round(totalDrinkPrice / totalDrinkQty, 2);
+                    if (grandTotal - avgDrinkPrice >= 10.00m)
+                    {
+                        discount = avgDrinkPrice;
+                        message = "Free drink applied";
+                    }
                 }
                 break;
             }
 
             case Rednest.Core.Entities.PrizeType.FreeDessert:
             {
-                var desserts = enriched.Where(x => x.Product!.Category == "Desserts").ToList();
+                var desserts = enriched.Where(x =>
+                    string.Equals(x.Product!.Category, "Desserts", StringComparison.OrdinalIgnoreCase) ||
+                    (x.Product.Category != null && (
+                        x.Product.Category.Contains("Dessert", StringComparison.OrdinalIgnoreCase) ||
+                        x.Product.Category.Contains("Desert", StringComparison.OrdinalIgnoreCase) ||
+                        x.Product.Category.Contains("Десерт", StringComparison.OrdinalIgnoreCase) ||
+                        x.Product.Category.Contains("Sweet", StringComparison.OrdinalIgnoreCase) ||
+                        x.Product.Category.Contains("Cake", StringComparison.OrdinalIgnoreCase) ||
+                        x.Product.Category.Contains("Bakery", StringComparison.OrdinalIgnoreCase)
+                    ))).ToList();
                 if (desserts.Count > 0)
                 {
                     var totalDessertQty = desserts.Sum(x => x.Item.Quantity);
                     var totalDessertPrice = desserts.Sum(x => GetEffectivePrice(x.Product!) * x.Item.Quantity);
-                    var avgDessertPrice = totalDessertPrice / totalDessertQty;
-                    discount = Math.Round(avgDessertPrice, 2);
-                    message = "Free dessert applied";
+                    var avgDessertPrice = Math.Round(totalDessertPrice / totalDessertQty, 2);
+                    if (grandTotal - avgDessertPrice >= 10.00m)
+                    {
+                        discount = avgDessertPrice;
+                        message = "Free dessert applied";
+                    }
                 }
                 break;
             }

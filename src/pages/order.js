@@ -41,6 +41,13 @@
 				itemsCount: "Məhsullar:",
 				itemsSuffix: "məhsul",
 				discountLabel: "Endirim:",
+				cashbackLabel: "Keşbek:",
+				promoHintSuper: "Promokod 100 ₼ və daha çox sifarişlərdə keçərlidir",
+				promoHint15: "Promokod 50 ₼ və daha çox sifarişlərdə keçərlidir (maks. 15 ₼ endirim)",
+				promoHint25: "Promokod 50 ₼ və daha çox sifarişlərdə keçərlidir (maks. 25 ₼ endirim)",
+				promoHint50: "Promokod 50 ₼ və daha çox sifarişlərdə keçərlidir",
+				promoHintDrink: "Pulsuz içki üçün səbətdə içki olmalı və ödəniləcək məbləğ ən azı 10 ₼ olmalıdır",
+				promoHintDessert: "Pulsuz desert üçün səbətdə desert olmalı və ödəniləcək məbləğ ən azı 10 ₼ olmalıdır",
 				totalToPay: "Ödəniləcək yekun:",
 				confirmOrder: "Sifarişi təsdiqlə və rəsmiləşdir",
 				continueOnline: "Onlayn ödənişə keç",
@@ -155,6 +162,13 @@
 				itemsCount: "Товары:",
 				itemsSuffix: "тов.",
 				discountLabel: "Скидка:",
+				cashbackLabel: "Кэшбэк:",
+				promoHintSuper: "Промокод действует при заказе от 100 ₼",
+				promoHint15: "Промокод действует при заказе от 50 ₼ (макс. 15 ₼ скидки)",
+				promoHint25: "Промокод действует при заказе от 50 ₼ (макс. 25 ₼ скидки)",
+				promoHint50: "Промокод действует при заказе от 50 ₼",
+				promoHintDrink: "Для бесплатного напитка в корзине должен быть напиток и сумма к оплате от 10 ₼",
+				promoHintDessert: "Для бесплатного десерта в корзине должен быть десерт и сумма к оплате от 10 ₼",
 				totalToPay: "Итого к оплате:",
 				confirmOrder: "Подтвердить и заказать",
 				continueOnline: "Перейти к онлайн-оплате",
@@ -269,6 +283,13 @@
 				itemsCount: "Items:",
 				itemsSuffix: "items",
 				discountLabel: "Discount:",
+				cashbackLabel: "Cashback:",
+				promoHintSuper: "Promo code is valid on orders of 100 ₼ or more",
+				promoHint15: "Promo code is valid on orders of 50 ₼ or more (max 15 ₼ discount)",
+				promoHint25: "Promo code is valid on orders of 50 ₼ or more (max 25 ₼ discount)",
+				promoHint50: "Promo code is valid on orders of 50 ₼ or more",
+				promoHintDrink: "For a free drink, add a drink to your basket and have at least 10 ₼ to pay",
+				promoHintDessert: "For a free dessert, add a dessert to your basket and have at least 10 ₼ to pay",
 				totalToPay: "Total to Pay:",
 				confirmOrder: "Confirm & Place Order",
 				continueOnline: "Continue to Online Payment",
@@ -884,6 +905,7 @@
 		const { useLang } = __require("utils/useLang.js");
 		const { translateError } = __require("utils/errorTranslator.js");
 		const { getOrderTranslation } = __require("components/UserPages/Order/Lang.js");
+		const { formatLocalizedPrizeName } = __require("components/PublicPages/Basket/Lang.js");
 		const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 		const featureCashIcon = "/assets/icons/feature-cash.svg";
 		const featureWalletIcon = "/assets/icons/feature-wallet.svg";
@@ -1111,41 +1133,108 @@
 				if (numericTotal <= 0) return 0;
 				const pType = String(activePromo.prizeType || "").toLowerCase();
 				const pName = String(activePromo.prizeName || "").toUpperCase();
-				const discPercent = activePromo.discountPercent || (pType === "discount25" || pName.includes("25%") ? 25 : pType === "discount50" || pName.includes("50%") ? 50 : 0);
-				if (discPercent > 0) {
-					return Math.round(numericTotal * discPercent) / 100;
-				}
 				if (pType === "cashbackonpurchases" || pType === "4" || pName.includes("CASHBACK")) {
 					return 0;
 				}
+				if (pType === "discount25" || pType === "3") {
+					if (numericTotal < 50) return 0;
+					return Math.min(15, Math.round(numericTotal * 15) / 100);
+				}
+				if (pType === "discount50" || pType === "5") {
+					if (numericTotal < 50) return 0;
+					return Math.min(25, Math.round(numericTotal * 25) / 100);
+				}
+				const discPercent = Number(activePromo.discountPercent) || (pName.includes("15%") ? 15 : pName.includes("25%") || pName.includes("50%") ? 25 : 0);
+				if (discPercent > 0) {
+					if ((discPercent === 15 || discPercent === 25) && numericTotal < 50) return 0;
+					let discVal = Math.round(numericTotal * discPercent) / 100;
+					if (discPercent === 15) discVal = Math.min(15, discVal);
+					else if (discPercent === 25) discVal = Math.min(25, discVal);
+					return discVal;
+				}
 				if (pType === "superprize" || pType === "0" || pName.includes("SUPER")) {
-					return Math.min(numericTotal, 25);
+					if (numericTotal < 100) return 0;
+					return Math.min(numericTotal, 30);
 				}
 				if (pType === "freedrink" || pType === "1" || pName.includes("DRINK")) {
 					const drinks = enrichedItems.filter((x) => {
 						const cat = (x.product?.category || "").toLowerCase();
-						return cat.includes("drink");
+						return cat.includes("drink") || cat.includes("beverage") || cat.includes("coffee") || cat.includes("tea") || cat.includes("içki") || cat.includes("напит");
 					});
 					if (drinks.length === 0) return 0;
 					const totalQty = drinks.reduce((sum, x) => sum + x.quantity, 0);
 					const totalPrice = drinks.reduce((sum, x) => sum + x.unitPrice * x.quantity, 0);
-					return Math.round(totalPrice / totalQty * 100) / 100;
+					const avgDrinkPrice = Math.round(totalPrice / totalQty * 100) / 100;
+					if (numericTotal - avgDrinkPrice < 10) return 0;
+					return avgDrinkPrice;
 				}
 				if (pType === "freedessert" || pType === "2" || pName.includes("DESSERT")) {
 					const desserts = enrichedItems.filter((x) => {
 						const cat = (x.product?.category || "").toLowerCase();
-						return cat.includes("dessert");
+						return cat.includes("dessert") || cat.includes("desert") || cat.includes("десерт") || cat.includes("sweet") || cat.includes("cake") || cat.includes("bakery");
 					});
 					if (desserts.length === 0) return 0;
 					const totalQty = desserts.reduce((sum, x) => sum + x.quantity, 0);
 					const totalPrice = desserts.reduce((sum, x) => sum + x.unitPrice * x.quantity, 0);
-					return Math.round(totalPrice / totalQty * 100) / 100;
+					const avgDessertPrice = Math.round(totalPrice / totalQty * 100) / 100;
+					if (numericTotal - avgDessertPrice < 10) return 0;
+					return avgDessertPrice;
 				}
 				return 0;
 			}, [
 				activePromo,
 				enrichedItems,
 				grandTotal
+			]);
+			const promoCashbackAmount = useMemo(() => {
+				if (!activePromo || !activePromo.isActive || enrichedItems.length === 0) return 0;
+				const numericTotal = parseFloat(grandTotal) || 0;
+				if (numericTotal <= 0) return 0;
+				const pType = String(activePromo.prizeType || "").toLowerCase();
+				const pName = String(activePromo.prizeName || "").toUpperCase();
+				if (pType === "cashbackonpurchases" || pType === "4" || pName.includes("CASHBACK") || Number(activePromo.cashbackPercent) > 0) {
+					let cbPercent = Number(activePromo.cashbackPercent) || 0;
+					if (cbPercent <= 0) {
+						const m = pName.match(/(\d+)\s*%/);
+						cbPercent = m ? Number(m[1]) : 10;
+					}
+					const payable = Math.max(0, numericTotal - promoDiscountAmount);
+					return Math.round(payable * cbPercent) / 100;
+				}
+				return 0;
+			}, [
+				activePromo,
+				enrichedItems,
+				grandTotal,
+				promoDiscountAmount
+			]);
+			const promoConditionHint = useMemo(() => {
+				if (!activePromo || !activePromo.isActive || enrichedItems.length === 0) return "";
+				if (promoDiscountAmount > 0 || promoCashbackAmount > 0) return "";
+				const pType = String(activePromo.prizeType || "").toLowerCase();
+				const pName = String(activePromo.prizeName || "").toUpperCase();
+				if (pType === "superprize" || pType === "0" || pName.includes("SUPER")) {
+					return t("promoHintSuper");
+				}
+				if (pType === "discount25" || pName.includes("15%")) {
+					return t("promoHint15");
+				}
+				if (pType === "discount50" || pType === "3" || pType === "5" || pName.includes("25%") || pName.includes("50%")) {
+					return t("promoHint25");
+				}
+				if (pType === "freedrink" || pType === "1" || pName.includes("DRINK")) {
+					return t("promoHintDrink");
+				}
+				if (pType === "freedessert" || pType === "2" || pName.includes("DESSERT")) {
+					return t("promoHintDessert");
+				}
+				return "";
+			}, [
+				activePromo,
+				enrichedItems,
+				promoDiscountAmount,
+				promoCashbackAmount,
+				lang
 			]);
 			const finalAmount = Math.max(0, parseFloat(grandTotal) - promoDiscountAmount).toFixed(2);
 			const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -1165,7 +1254,7 @@
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
 							paymentMethod,
-							promoCode: activePromo ? activePromo.promoCode : null
+							promoCode: selectedPromoCode === "NONE" ? "NONE" : (activePromo ? activePromo.promoCode : "NONE")
 						})
 					});
 					const data = await response.json();
@@ -1417,14 +1506,25 @@
 				type: "button",
 				className: "order-change-btn",
 				onClick: () => setSelectedMethod(null)
-			}, t("changeMethod"))), userPromos.length >= 2 && /* @__PURE__ */ __h("div", { className: "order-promo-selector" }, /* @__PURE__ */ __h("div", { className: "order-promo-label" }, /* @__PURE__ */ __h("span", null, t("selectPromo")), /* @__PURE__ */ __h("span", { className: "count" }, t("promosAvailable", { count: userPromos.length }))), /* @__PURE__ */ __h("select", {
+			}, t("changeMethod"))), userPromos.length >= 1 && /* @__PURE__ */ __h("div", { className: "order-promo-selector" }, /* @__PURE__ */ __h("div", { className: "order-promo-label" }, /* @__PURE__ */ __h("span", null, t("selectPromo")), /* @__PURE__ */ __h("span", { className: "count" }, t("promosAvailable", { count: userPromos.length }))), /* @__PURE__ */ __h("select", {
 				value: selectedPromoCode,
 				onChange: (e) => setSelectedPromoCode(e.target.value),
 				className: "order-promo-select"
 			}, userPromos.map((p) => /* @__PURE__ */ __h("option", {
 				key: p.id,
 				value: p.promoCode
-			}, p.promoCode, " — ", p.prizeName)), /* @__PURE__ */ __h("option", { value: "NONE" }, t("dontUsePromo")))), /* @__PURE__ */ __h("div", { className: "order-summary-pill-row" }, /* @__PURE__ */ __h("div", { className: "order-summary-pill" }, /* @__PURE__ */ __h("span", { className: "label" }, t("itemsCount")), /* @__PURE__ */ __h("span", { className: "value" }, itemCount, " ", t("itemsSuffix"))), promoDiscountAmount > 0 && /* @__PURE__ */ __h("div", { className: "order-summary-pill promo" }, /* @__PURE__ */ __h("span", { className: "label" }, t("discountLabel")), /* @__PURE__ */ __h("span", { className: "value" }, "−", promoDiscountAmount.toFixed(2), " ₼")), /* @__PURE__ */ __h("div", { className: "order-summary-pill total" }, /* @__PURE__ */ __h("span", { className: "label" }, t("totalToPay")), /* @__PURE__ */ __h("span", { className: "value" }, finalAmount, " ₼"))), errorMessage && /* @__PURE__ */ __h("div", { className: "order-error-message" }, "⚠️ ", translateError(errorMessage, lang)), /* @__PURE__ */ __h("div", { className: "order-actions-row" }, /* @__PURE__ */ __h("button", {
+			}, p.promoCode, " — ", formatLocalizedPrizeName(p.prizeName, lang, p))), /* @__PURE__ */ __h("option", { value: "NONE" }, t("dontUsePromo"))), promoConditionHint && /* @__PURE__ */ __h("div", {
+				className: "order-promo-hint",
+				style: {
+					marginTop: "8px",
+					fontSize: "0.82rem",
+					color: "#e2b86b",
+					lineHeight: "1.35"
+				}
+			}, "ℹ️ ", promoConditionHint)), /* @__PURE__ */ __h("div", { className: "order-summary-pill-row" }, /* @__PURE__ */ __h("div", { className: "order-summary-pill" }, /* @__PURE__ */ __h("span", { className: "label" }, t("itemsCount")), /* @__PURE__ */ __h("span", { className: "value" }, itemCount, " ", t("itemsSuffix"))), promoDiscountAmount > 0 && /* @__PURE__ */ __h("div", { className: "order-summary-pill promo" }, /* @__PURE__ */ __h("span", { className: "label" }, t("discountLabel")), /* @__PURE__ */ __h("span", { className: "value" }, "−", promoDiscountAmount.toFixed(2), " ₼")), promoCashbackAmount > 0 && /* @__PURE__ */ __h("div", { className: "order-summary-pill promo" }, /* @__PURE__ */ __h("span", { className: "label" }, t("cashbackLabel")), /* @__PURE__ */ __h("span", {
+				className: "value",
+				style: { color: "#4ade80" }
+			}, "+", promoCashbackAmount.toFixed(2), " ₼")), /* @__PURE__ */ __h("div", { className: "order-summary-pill total" }, /* @__PURE__ */ __h("span", { className: "label" }, t("totalToPay")), /* @__PURE__ */ __h("span", { className: "value" }, finalAmount, " ₼"))), errorMessage && /* @__PURE__ */ __h("div", { className: "order-error-message" }, "⚠️ ", translateError(errorMessage, lang)), /* @__PURE__ */ __h("div", { className: "order-actions-row" }, /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "order-confirm-btn",
 				disabled: isSubmitting || itemCount === 0,
@@ -1561,7 +1661,7 @@
 				onClose: () => setIsStripeModalOpen(false),
 				serviceId: selectedOnlineService,
 				finalAmount,
-				promoCode: activePromo ? activePromo.promoCode : null,
+				promoCode: selectedPromoCode === "NONE" ? "NONE" : (activePromo ? activePromo.promoCode : "NONE"),
 				onOrderSuccess: handleStripeOrderSuccess
 			})), /* @__PURE__ */ __h(Footer, null));
 		};

@@ -85,8 +85,9 @@ const CashboxPromoModal = ({ isOpen, onClose, appliedPromo = null, onApplyPromo,
 		if (n.includes("free drink")) return t?.freeDrink || name;
 		if (n.includes("free dessert")) return t?.freeDessert || name;
 		if (n.includes("super prize")) return t?.superPrize || name;
+		if (n.includes("15%")) return t?.discount15 || "15% Off";
 		if (n.includes("25%")) return t?.discount25 || name;
-		if (n.includes("50%")) return t?.discount50 || name;
+		if (n.includes("50%")) return t?.discount25 || name;
 		return name;
 	};
 	return /* @__PURE__ */ __h(AnimatePresence, null, isOpen && /* @__PURE__ */ __h(motion.div, {

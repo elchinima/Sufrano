@@ -229,25 +229,25 @@ const Promos = () => {
 			name = `${disc}% Discount`;
 			desc = `Get ${disc}% off your entire order.`;
 		} else if (type === "Discount25") {
+			disc = 15;
+			name = "15% Discount";
+			desc = "15% discount on orders of 50 AZN or more!";
+		} else if (type === "Discount50") {
 			disc = 25;
 			name = "25% Discount";
-			desc = "Get 25% off your next order.";
-		} else if (type === "Discount50") {
-			disc = 50;
-			name = "50% Discount";
-			desc = "Get 50% off your next order.";
+			desc = "25% discount on orders of 50 AZN or more!";
 		} else if (type === "CashbackOnPurchases") {
 			name = `${cash}% Cashback`;
 			desc = `Earn ${cash}% cashback on your purchase.`;
 		} else if (type === "FreeDrink") {
 			name = "Free Drink";
-			desc = "Enjoy one free drink with your next order.";
+			desc = "One free drink on orders with at least 10 AZN to pay!";
 		} else if (type === "FreeDessert") {
 			name = "Free Dessert";
-			desc = "Enjoy one free dessert with your next order.";
+			desc = "One free dessert on orders with at least 10 AZN to pay!";
 		} else if (type === "SuperPrize") {
 			name = "Super Prize";
-			desc = "Exclusive Super Prize bonus on your order.";
+			desc = "30 AZN discount on orders of 100 AZN or more!";
 		}
 		setCreateForm((prev) => ({
 			...prev,
@@ -754,7 +754,7 @@ const Promos = () => {
 		id: "promo-reward-type",
 		value: createForm.prizeType,
 		onChange: (e) => handlePrizeTypeChange(e.target.value)
-	}, /* @__PURE__ */ __h("option", { value: "DiscountCustom" }, "Custom Percentage Discount (%)"), /* @__PURE__ */ __h("option", { value: "Discount25" }, "25% Discount"), /* @__PURE__ */ __h("option", { value: "Discount50" }, "50% Discount"), /* @__PURE__ */ __h("option", { value: "CashbackOnPurchases" }, "Cashback on Purchases (%)"), /* @__PURE__ */ __h("option", { value: "FreeDrink" }, "Free Drink"), /* @__PURE__ */ __h("option", { value: "FreeDessert" }, "Free Dessert"), /* @__PURE__ */ __h("option", { value: "SuperPrize" }, "Super Prize (Free Order up to 25 AZN)"))), createForm.prizeType === "DiscountCustom" && /* @__PURE__ */ __h("div", { className: "form-group" }, /* @__PURE__ */ __h("div", { className: "label-row" }, /* @__PURE__ */ __h("label", null, "Discount Percentage: ", /* @__PURE__ */ __h("strong", null, createForm.discountPercent, "%"))), /* @__PURE__ */ __h("input", {
+	}, /* @__PURE__ */ __h("option", { value: "DiscountCustom" }, "Custom Percentage Discount (%)"), /* @__PURE__ */ __h("option", { value: "Discount25" }, "15% Discount (Orders from 50 AZN, Max 15 AZN)"), /* @__PURE__ */ __h("option", { value: "Discount50" }, "25% Discount (Orders from 50 AZN, Max 25 AZN)"), /* @__PURE__ */ __h("option", { value: "CashbackOnPurchases" }, "Cashback on Purchases (%)"), /* @__PURE__ */ __h("option", { value: "FreeDrink" }, "Free Drink (Min 10 AZN to pay)"), /* @__PURE__ */ __h("option", { value: "FreeDessert" }, "Free Dessert (Min 10 AZN to pay)"), /* @__PURE__ */ __h("option", { value: "SuperPrize" }, "Super Prize (30 AZN off from 100 AZN)"))), createForm.prizeType === "DiscountCustom" && /* @__PURE__ */ __h("div", { className: "form-group" }, /* @__PURE__ */ __h("div", { className: "label-row" }, /* @__PURE__ */ __h("label", null, "Discount Percentage: ", /* @__PURE__ */ __h("strong", null, createForm.discountPercent, "%"))), /* @__PURE__ */ __h("input", {
 		type: "number",
 		min: "1",
 		max: "99",

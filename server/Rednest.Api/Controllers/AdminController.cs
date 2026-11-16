@@ -1333,16 +1333,16 @@ public class AdminController : ControllerBase
         int discountPercent = Math.Clamp(request.DiscountPercent ?? 0, 0, 100);
         int cashbackPercent = Math.Clamp(request.CashbackPercent ?? 0, 0, 100);
 
-        if (pType == PrizeType.Discount25 && discountPercent == 0) discountPercent = 25;
-        if (pType == PrizeType.Discount50 && discountPercent == 0) discountPercent = 50;
+        if (pType == PrizeType.Discount25) discountPercent = 15;
+        if (pType == PrizeType.Discount50) discountPercent = 25;
 
         string prizeName = !string.IsNullOrWhiteSpace(request.PrizeName)
             ? request.PrizeName.Trim()
             : pType switch
             {
                 PrizeType.DiscountCustom => $"{discountPercent}% Discount",
-                PrizeType.Discount25 => "25% Discount",
-                PrizeType.Discount50 => "50% Discount",
+                PrizeType.Discount25 => "15% Discount",
+                PrizeType.Discount50 => "25% Discount",
                 PrizeType.CashbackOnPurchases => $"{cashbackPercent}% Cashback",
                 PrizeType.FreeDrink => "Free Drink",
                 PrizeType.FreeDessert => "Free Dessert",
@@ -1355,12 +1355,12 @@ public class AdminController : ControllerBase
             : pType switch
             {
                 PrizeType.DiscountCustom => $"Get {discountPercent}% off your entire order.",
-                PrizeType.Discount25 => "Get 25% off your next order.",
-                PrizeType.Discount50 => "Get 50% off your next order.",
+                PrizeType.Discount25 => "15% discount (max 15 AZN) on orders of 50 AZN or more!",
+                PrizeType.Discount50 => "25% discount (max 25 AZN) on orders of 50 AZN or more!",
                 PrizeType.CashbackOnPurchases => $"Earn {cashbackPercent}% cashback on your purchase.",
-                PrizeType.FreeDrink => "Enjoy one free drink with your next order.",
-                PrizeType.FreeDessert => "Enjoy one free dessert with your next order.",
-                PrizeType.SuperPrize => "Exclusive Super Prize bonus on your order.",
+                PrizeType.FreeDrink => "One free drink on orders with at least 10 AZN to pay!",
+                PrizeType.FreeDessert => "One free dessert on orders with at least 10 AZN to pay!",
+                PrizeType.SuperPrize => "30 AZN discount on orders of 100 AZN or more!",
                 _ => "Exclusive reward from Süfrano."
             };
 
