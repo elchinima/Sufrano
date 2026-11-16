@@ -592,7 +592,7 @@
 			})), /* @__PURE__ */ __h("h2", { className: "prize-heading" }, t("prize_fallback_heading")), /* @__PURE__ */ __h("p", { className: "prize-desc" }, t("prize_fallback_desc"))), /* @__PURE__ */ __h("button", {
 				className: "cta-btn secondary prize-close-btn",
 				onClick: () => setShowPrize(false)
-			}, t("prize_btn_close")))))));
+			}, t("prize_btn_close")))));
 		};
 
 		Object.defineProperty(exports, "default", { enumerable: true, get: function () { return Fortune; } });
