@@ -4,6 +4,7 @@ const logo = "/assets/icons/rednest_logo.png";
 const loaderIcon = "/assets/icons/loader-animated.svg";
 import AnimatedModalWrapper from "../../Elements/AnimatedModalWrapper.js";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getHomeTranslation } from "./Lang.js";
 const LoaderIcon = () => /* @__PURE__ */ __h("img", {
 	src: loaderIcon,
@@ -136,7 +137,7 @@ const SubscribeModal = ({ isOpen, onClose, email, onSuccess }) => {
 			onSuccess(data.message || "Successfully subscribed to the Süfrano Club!");
 			onClose();
 		} catch (err) {
-			setError(err.message);
+			setError(translateError(err.message, lang));
 		} finally {
 			setLoading(false);
 		}
@@ -186,7 +187,7 @@ const SubscribeModal = ({ isOpen, onClose, email, onSuccess }) => {
 		onKeyDown: (e) => handleKeyDown(idx, e),
 		className: "two-factor-digit",
 		autoComplete: "one-time-code"
-	}))), /* @__PURE__ */ __h("div", { className: "subscribe-timer-info" }, timer > 0 ? /* @__PURE__ */ __h("span", null, "Code expires in ", /* @__PURE__ */ __h("strong", { className: "timer-value" }, formatTimer(timer))) : /* @__PURE__ */ __h("span", { className: "timer-expired" }, "Code has expired. Please enter your email again.")), error && /* @__PURE__ */ __h("div", { className: "subscribe-error-msg" }, error), /* @__PURE__ */ __h("button", {
+	}))), /* @__PURE__ */ __h("div", { className: "subscribe-timer-info" }, timer > 0 ? /* @__PURE__ */ __h("span", null, "Code expires in ", /* @__PURE__ */ __h("strong", { className: "timer-value" }, formatTimer(timer))) : /* @__PURE__ */ __h("span", { className: "timer-expired" }, "Code has expired. Please enter your email again.")), error && /* @__PURE__ */ __h("div", { className: "subscribe-error-msg" }, translateError(error, lang)), /* @__PURE__ */ __h("button", {
 		type: "submit",
 		className: "cta-btn subscribe-submit-btn",
 		disabled: loading || digits.join("").length < 4 || timer === 0,

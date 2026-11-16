@@ -19,6 +19,7 @@ const defaultGiftIcon = "/assets/icons/gift-animated.svg";
 const ticketAnimatedIcon = "/assets/icons/ticket-animated.svg";
 const fortuneWheelDarkIcon = "/assets/icons/fortune-wheel-dark.svg";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getPromosTranslation } from "./Lang.js";
 const PRIZE_TYPE_ICONS = {
 	SuperPrize: superPrizeIcon,
@@ -146,7 +147,7 @@ const Promos = () => {
 			if (!res.ok) {
 				setActivationMessage({
 					type: "error",
-					text: data.message || t("promos_activate_error")
+					text: translateError(data.message, lang) || t("promos_activate_error")
 				});
 				return;
 			}
@@ -159,7 +160,7 @@ const Promos = () => {
 		} catch (err) {
 			setActivationMessage({
 				type: "error",
-				text: err.message || t("promos_activate_network_error")
+				text: translateError(err.message, lang) || t("promos_activate_network_error")
 			});
 		} finally {
 			setIsActivating(false);
@@ -299,7 +300,7 @@ const Promos = () => {
 		y1: "16",
 		x2: "12.01",
 		y2: "16"
-	})), /* @__PURE__ */ __h("span", null, activationMessage.text), /* @__PURE__ */ __h("button", {
+	})), /* @__PURE__ */ __h("span", null, translateError(activationMessage.text, lang)), /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "close-msg",
 		onClick: () => setActivationMessage(null)

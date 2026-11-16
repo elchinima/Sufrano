@@ -6,6 +6,7 @@ const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 const featureCardVisaMcIcon = "/assets/icons/feature-card-visa-mc.svg";
 import { fetchWithRefresh } from "../../../utils/fetchWithRefresh.js";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getOrderTranslation } from "./Lang.js";
 import AnimatedModalWrapper from "../../Elements/AnimatedModalWrapper.js";
 import PaymentErrorModal from "../PaymentMethods/PaymentErrorModal.js";
@@ -200,12 +201,14 @@ const StripePaymentModal = ({ isOpen, onClose, serviceId, finalAmount, promoCode
 			if (res.ok && data.success) {
 				onOrderSuccess(data);
 			} else {
-				const msg = data.message || t("errPaymentFailed");
+				const raw = data.message || t("errPaymentFailed");
+				const msg = translateError(raw, lang);
 				setErrorMessage(msg);
 				setIsErrorModalOpen(true);
 			}
 		} catch (err) {
-			const msg = err.message || t("errProcessingGeneral");
+			const raw = err.message || t("errProcessingGeneral");
+			const msg = translateError(raw, lang);
 			setErrorMessage(msg);
 			setIsErrorModalOpen(true);
 		} finally {
@@ -248,7 +251,7 @@ const StripePaymentModal = ({ isOpen, onClose, serviceId, finalAmount, promoCode
 					if (!saveRes.ok) {
 						const errData = await saveRes.json().catch(() => ({}));
 						if (errData.message) {
-							setErrorMessage(errData.message);
+							setErrorMessage(translateError(errData.message, lang));
 							setIsErrorModalOpen(true);
 							setIsProcessing(false);
 							return;
@@ -274,12 +277,14 @@ const StripePaymentModal = ({ isOpen, onClose, serviceId, finalAmount, promoCode
 			if (orderRes.ok && orderData.success) {
 				onOrderSuccess(orderData);
 			} else {
-				const msg = orderData.message || t("errPaymentCheckInfo");
+				const raw = orderData.message || t("errPaymentCheckInfo");
+				const msg = translateError(raw, lang);
 				setErrorMessage(msg);
 				setIsErrorModalOpen(true);
 			}
 		} catch (err) {
-			const msg = err.message || t("errProcessingGeneral");
+			const raw = err.message || t("errProcessingGeneral");
+			const msg = translateError(raw, lang);
 			setErrorMessage(msg);
 			setIsErrorModalOpen(true);
 		} finally {
@@ -490,7 +495,7 @@ const StripePaymentModal = ({ isOpen, onClose, serviceId, finalAmount, promoCode
 	}), t("processing")) : t("payAmount", { amount: finalAmount })))))), /* @__PURE__ */ __h(PaymentErrorModal, {
 		isOpen: isErrorModalOpen,
 		onClose: () => setIsErrorModalOpen(false),
-		message: errorMessage,
+		message: translateError(errorMessage, lang),
 		title: t("paymentErrorTitle")
 	}));
 };

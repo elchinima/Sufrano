@@ -16,6 +16,8 @@
 		const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 		const { useAdminAuth } = __require("context/AdminAuthContext.js");
 		const { useAuth } = __require("context/AuthContext.js");
+		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const LoaderIcon = () => /* @__PURE__ */ __h("img", {
 			src: loaderIconRed,
 			alt: "Loading...",
@@ -36,6 +38,7 @@
 			return ALLOWED_ADMIN_ROLES.includes(clean);
 		};
 		const AdminLogin = () => {
+			const lang = useLang();
 			const { adminLogin, isAdminAuth, loading: adminLoading } = useAdminAuth();
 			const { isAuthenticated, user, authLoading } = useAuth();
 			const navigate = useNavigate();
@@ -78,7 +81,7 @@
 					if (res && res.ok) {
 						navigate("/admin/dashboard", { replace: true });
 					} else {
-						setError(res?.message || "Incorrect password. Please try again.");
+						setError(translateError(res?.message, lang) || "Incorrect password. Please try again.");
 					}
 				} catch {
 					setError("Connection error. Please try again.");
@@ -137,7 +140,7 @@
 					minHeight: "24px",
 					marginBottom: "0.5rem"
 				}
-			}, error && /* @__PURE__ */ __h("div", { className: "admin-login-error" }, error)), /* @__PURE__ */ __h("button", {
+			}, error && /* @__PURE__ */ __h("div", { className: "admin-login-error" }, translateError(error, lang))), /* @__PURE__ */ __h("button", {
 				id: "admin-login-submit",
 				type: "submit",
 				className: "cta-btn admin-login-submit",

@@ -424,6 +424,7 @@
 		const __imp_5 = __require("components/UserPages/PaymentMethods/PaymentErrorModal.js");
 		const PaymentErrorModal = __imp_5.default !== undefined ? __imp_5.default : __imp_5;
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getAddressesTranslation } = __require("components/UserPages/Addresses/Lang.js");
 		const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
 		const formatBakuDate = (dateStr) => {
@@ -554,7 +555,7 @@
 					setIsAddressModalOpen(false);
 					setAddressToEdit(null);
 				} catch (err) {
-					setErrorModalMessage(err.message || "Error saving address.");
+					setErrorModalMessage(translateError(err.message, lang) || "Error saving address.");
 					setIsErrorModalOpen(true);
 				} finally {
 					setModalLoading(false);
@@ -768,7 +769,7 @@
 			}), /* @__PURE__ */ __h(PaymentErrorModal, {
 				isOpen: isErrorModalOpen,
 				onClose: () => setIsErrorModalOpen(false),
-				message: errorModalMessage,
+				message: translateError(errorModalMessage, lang),
 				title: t("addr_limit_title")
 			}), /* @__PURE__ */ __h("div", { className: "addresses-toast-container" }, /* @__PURE__ */ __h(AnimatePresence, null, toastMessage && /* @__PURE__ */ __h(motion.div, {
 				className: `addresses-toast ${toastType === "error" ? "addresses-toast--error" : ""}`,

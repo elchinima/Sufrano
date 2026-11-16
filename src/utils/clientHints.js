@@ -1,3 +1,5 @@
+import { getStoredLanguage } from "./useLang.js";
+
 let cachedHints = {
 	platformVersion: null,
 	model: null
@@ -13,7 +15,11 @@ if (typeof navigator !== "undefined" && navigator.userAgentData && navigator.use
 	}).catch(() => cachedHints);
 }
 export function getClientHintsHeaders() {
-	const headers = {};
+	const currentLang = getStoredLanguage() || "az";
+	const headers = {
+		"Accept-Language": currentLang,
+		"X-Language": currentLang
+	};
 	if (cachedHints.platformVersion) {
 		headers["X-Platform-Version"] = cachedHints.platformVersion;
 	}

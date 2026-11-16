@@ -21,6 +21,7 @@ import Navbar from "../../Elements/Navbar.js";
 import Footer from "../../Footer/Footer.js";
 import AnimatedModalWrapper from "../../Elements/AnimatedModalWrapper.js";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getOrdersTranslation } from "./Lang.js";
 const getPaymentMethods = (t) => ({
 	0: {
@@ -193,7 +194,7 @@ const Orders = () => {
 			setOrders(list);
 		} catch (err) {
 			console.error("Error fetching orders:", err);
-			setError(err.message || t("loadError"));
+			setError(translateError(err.message, lang) || t("loadError"));
 		} finally {
 			setLoading(false);
 		}
@@ -348,7 +349,7 @@ const Orders = () => {
 		y1: "16",
 		x2: "12.01",
 		y2: "16"
-	})), /* @__PURE__ */ __h("p", null, error), /* @__PURE__ */ __h("button", {
+	})), /* @__PURE__ */ __h("p", null, translateError(error, lang)), /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "cta-btn sm",
 		onClick: () => fetchOrders()

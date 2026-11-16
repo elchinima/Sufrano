@@ -10,6 +10,7 @@ import { useAuth } from "../../../context/AuthContext.js";
 import { fetchWithRefresh } from "../../../utils/fetchWithRefresh.js";
 import { REVIEW_CATEGORIES, getAvatarGradient, formatBakuDateTime, formatTimeAgo, sortReviewsByLanguage } from "./reviewsData.js";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getReviewsTranslation, getReviewCategoryLabel } from "./Lang.js";
 import { getUserAvatarUrl, handleAvatarError } from "../../../utils/avatar.js";
 const loaderIcon = "/assets/icons/loader-animated.svg";
@@ -135,7 +136,7 @@ const Reviews = () => {
 					});
 				} else {
 					const errData = await res.json().catch(() => ({}));
-					showToast(errData.message || "Failed to like review.");
+					showToast(translateError(errData.message, lang) || "Failed to like review.");
 				}
 			} catch {
 				showToast("Failed to like review. Please try again.");
@@ -154,7 +155,7 @@ const Reviews = () => {
 				showToast("🗑️ Review deleted. You can now leave a new review for this order whenever you like.");
 			} else {
 				const errData = await res.json().catch(() => ({}));
-				showToast(errData.message || "Failed to delete review.");
+				showToast(translateError(errData.message, lang) || "Failed to delete review.");
 			}
 		} catch {
 			showToast("Failed to delete review. Please try again.");

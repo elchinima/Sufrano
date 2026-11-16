@@ -11,6 +11,7 @@ import DeleteConfirmModal from "../../Elements/DeleteConfirmModal.js";
 import AddressModal from "./AddressModal.js";
 import PaymentErrorModal from "../PaymentMethods/PaymentErrorModal.js";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getAddressesTranslation } from "./Lang.js";
 const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
 const formatBakuDate = (dateStr) => {
@@ -141,7 +142,7 @@ const Addresses = () => {
 			setIsAddressModalOpen(false);
 			setAddressToEdit(null);
 		} catch (err) {
-			setErrorModalMessage(err.message || "Error saving address.");
+			setErrorModalMessage(translateError(err.message, lang) || "Error saving address.");
 			setIsErrorModalOpen(true);
 		} finally {
 			setModalLoading(false);
@@ -355,7 +356,7 @@ const Addresses = () => {
 	}), /* @__PURE__ */ __h(PaymentErrorModal, {
 		isOpen: isErrorModalOpen,
 		onClose: () => setIsErrorModalOpen(false),
-		message: errorModalMessage,
+		message: translateError(errorModalMessage, lang),
 		title: t("addr_limit_title")
 	}), /* @__PURE__ */ __h("div", { className: "addresses-toast-container" }, /* @__PURE__ */ __h(AnimatePresence, null, toastMessage && /* @__PURE__ */ __h(motion.div, {
 		className: `addresses-toast ${toastType === "error" ? "addresses-toast--error" : ""}`,

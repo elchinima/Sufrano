@@ -23,6 +23,7 @@
 		const { fetchWithRefresh } = __require("utils/fetchWithRefresh.js");
 		const { REVIEW_CATEGORIES, getAvatarGradient, formatBakuDateTime, formatTimeAgo, sortReviewsByLanguage } = __require("components/PublicPages/Reviews/reviewsData.js");
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getReviewsTranslation, getReviewCategoryLabel } = __require("components/PublicPages/Reviews/Lang.js");
 		const { getUserAvatarUrl, handleAvatarError } = __require("utils/avatar.js");
 		const loaderIcon = "/assets/icons/loader-animated.svg";
@@ -148,7 +149,7 @@
 							});
 						} else {
 							const errData = await res.json().catch(() => ({}));
-							showToast(errData.message || "Failed to like review.");
+							showToast(translateError(errData.message, lang) || "Failed to like review.");
 						}
 					} catch {
 						showToast("Failed to like review. Please try again.");
@@ -167,7 +168,7 @@
 						showToast("🗑️ Review deleted. You can now leave a new review for this order whenever you like.");
 					} else {
 						const errData = await res.json().catch(() => ({}));
-						showToast(errData.message || "Failed to delete review.");
+						showToast(translateError(errData.message, lang) || "Failed to delete review.");
 					}
 				} catch {
 					showToast("Failed to delete review. Please try again.");

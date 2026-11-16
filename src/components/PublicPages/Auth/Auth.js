@@ -7,6 +7,7 @@ const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 import { useAuth } from "../../../context/AuthContext.js";
 import { ensureClientHintsHeaders } from "../../../utils/clientHints.js";
 import { useLang, setStoredLanguage } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getAuthTranslation } from "./Lang.js";
 const LoaderIcon = () => /* @__PURE__ */ __h("img", {
 	src: loaderIconRed,
@@ -577,7 +578,7 @@ const Auth = () => {
 	}), /* @__PURE__ */ __h("label", { htmlFor: "agree" }, t("auth_agree_terms"), " ", /* @__PURE__ */ __h(Link, {
 		to: "/rules",
 		className: "terms-link"
-	}, t("auth_terms_link")))), /* @__PURE__ */ __h("div", { className: "error-wrapper" }, error && /* @__PURE__ */ __h("div", { className: "auth-error" }, error)), /* @__PURE__ */ __h("div", { className: "auth-buttons-row" }, /* @__PURE__ */ __h("button", {
+	}, t("auth_terms_link")))), /* @__PURE__ */ __h("div", { className: "error-wrapper" }, error && /* @__PURE__ */ __h("div", { className: "auth-error" }, translateError(error, lang))), /* @__PURE__ */ __h("div", { className: "auth-buttons-row" }, /* @__PURE__ */ __h("button", {
 		type: "submit",
 		className: "cta-btn auth-submit-btn",
 		disabled: loading
@@ -631,7 +632,7 @@ const Auth = () => {
 		onKeyDown: (e) => handleKeyDown(idx, e),
 		className: "two-factor-digit",
 		autoComplete: "one-time-code"
-	}))), /* @__PURE__ */ __h("div", { className: "two-factor-info" }, twoFactorTimer > 0 ? /* @__PURE__ */ __h("span", null, lang === "az" ? "Kodun vaxtı bitir:" : lang === "en" ? "Code expires in" : "Код истекает через", " ", /* @__PURE__ */ __h("strong", { className: "two-factor-timer" }, formatTimer(twoFactorTimer))) : /* @__PURE__ */ __h("span", { className: "two-factor-expired" }, lang === "az" ? "Kodun vaxtı bitdi. Yenisini istəyin." : lang === "en" ? "Code has expired. Please request a new one." : "Срок действия кода истек. Запросите новый код.")), successInfo && /* @__PURE__ */ __h("div", { className: "two-factor-success" }, successInfo), /* @__PURE__ */ __h("div", { className: "error-wrapper" }, error && /* @__PURE__ */ __h("div", { className: "auth-error" }, error)), /* @__PURE__ */ __h("button", {
+	}))), /* @__PURE__ */ __h("div", { className: "two-factor-info" }, twoFactorTimer > 0 ? /* @__PURE__ */ __h("span", null, lang === "az" ? "Kodun vaxtı bitir:" : lang === "en" ? "Code expires in" : "Код истекает через", " ", /* @__PURE__ */ __h("strong", { className: "two-factor-timer" }, formatTimer(twoFactorTimer))) : /* @__PURE__ */ __h("span", { className: "two-factor-expired" }, lang === "az" ? "Kodun vaxtı bitdi. Yenisini istəyin." : lang === "en" ? "Code has expired. Please request a new one." : "Срок действия кода истек. Запросите новый код.")), successInfo && /* @__PURE__ */ __h("div", { className: "two-factor-success" }, successInfo), /* @__PURE__ */ __h("div", { className: "error-wrapper" }, error && /* @__PURE__ */ __h("div", { className: "auth-error" }, translateError(error, lang))), /* @__PURE__ */ __h("button", {
 		type: "submit",
 		className: "cta-btn auth-submit-btn",
 		disabled: loading || twoFactorDigits.join("").length < 4
@@ -656,7 +657,7 @@ const Auth = () => {
 		onChange: (e) => setName(e.target.value),
 		required: true,
 		autoFocus: true
-	})), /* @__PURE__ */ __h("div", { className: "error-wrapper" }, error && /* @__PURE__ */ __h("div", { className: "auth-error" }, error)), /* @__PURE__ */ __h("button", {
+	})), /* @__PURE__ */ __h("div", { className: "error-wrapper" }, error && /* @__PURE__ */ __h("div", { className: "auth-error" }, translateError(error, lang))), /* @__PURE__ */ __h("button", {
 		type: "submit",
 		className: "cta-btn auth-submit-btn",
 		disabled: loading
@@ -673,7 +674,7 @@ const Auth = () => {
 		onChange: (e) => setForgotEmail(e.target.value),
 		required: true,
 		autoFocus: true
-	})), /* @__PURE__ */ __h("div", { className: "error-wrapper" }, error && /* @__PURE__ */ __h("div", { className: "auth-error" }, error)), /* @__PURE__ */ __h("button", {
+	})), /* @__PURE__ */ __h("div", { className: "error-wrapper" }, error && /* @__PURE__ */ __h("div", { className: "auth-error" }, translateError(error, lang))), /* @__PURE__ */ __h("button", {
 		type: "submit",
 		className: "cta-btn auth-submit-btn",
 		disabled: loading || !forgotEmail.trim()
@@ -720,7 +721,7 @@ const Auth = () => {
 		value: confirmPassword,
 		onChange: (e) => setConfirmPassword(e.target.value),
 		required: true
-	})), successInfo && /* @__PURE__ */ __h("div", { className: "two-factor-success" }, successInfo), /* @__PURE__ */ __h("div", { className: "error-wrapper" }, error && /* @__PURE__ */ __h("div", { className: "auth-error" }, error)), /* @__PURE__ */ __h("button", {
+	})), successInfo && /* @__PURE__ */ __h("div", { className: "two-factor-success" }, successInfo), /* @__PURE__ */ __h("div", { className: "error-wrapper" }, error && /* @__PURE__ */ __h("div", { className: "auth-error" }, translateError(error, lang))), /* @__PURE__ */ __h("button", {
 		type: "submit",
 		className: "cta-btn auth-submit-btn",
 		disabled: loading || forgotDigits.join("").length < 7 || !newPassword || !confirmPassword

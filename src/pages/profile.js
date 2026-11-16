@@ -501,6 +501,7 @@
 		const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 		const { fetchWithRefresh } = __require("utils/fetchWithRefresh.js");
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getProfileTranslation } = __require("components/UserPages/Profile/Lang.js");
 		const ButtonSpinner = () => /* @__PURE__ */ __h("img", {
 			src: loaderIconRed,
@@ -604,7 +605,7 @@
 						onSuccess(data.message || t("pwd_success"));
 						onClose();
 					} else {
-						setError(data.message || "Failed to change password.");
+						setError(translateError(data.message, lang) || "Failed to change password.");
 					}
 				} catch (err) {
 					console.error("Password change error:", err);
@@ -679,7 +680,7 @@
 				y1: "16",
 				x2: "12.01",
 				y2: "16"
-			})), /* @__PURE__ */ __h("span", null, error)), /* @__PURE__ */ __h("div", { className: "pwd-input-group" }, /* @__PURE__ */ __h("label", { htmlFor: "current-password" }, t("pwd_modal_current")), /* @__PURE__ */ __h("div", { className: "pwd-input-wrap" }, /* @__PURE__ */ __h("input", {
+			})), /* @__PURE__ */ __h("span", null, translateError(error, lang))), /* @__PURE__ */ __h("div", { className: "pwd-input-group" }, /* @__PURE__ */ __h("label", { htmlFor: "current-password" }, t("pwd_modal_current")), /* @__PURE__ */ __h("div", { className: "pwd-input-wrap" }, /* @__PURE__ */ __h("input", {
 				id: "current-password",
 				type: showCurrent ? "text" : "password",
 				placeholder: t("pwd_modal_current_placeholder"),
@@ -768,6 +769,7 @@
 		const loaderIcon = "/assets/icons/loader-animated.svg";
 		const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getProfileTranslation } = __require("components/UserPages/Profile/Lang.js");
 		const { DEFAULT_USER_AVATAR, getUserAvatarUrl, handleAvatarError, isDefaultAvatarUrl } = __require("utils/avatar.js");
 		const ALLOWED_TYPES = [
@@ -818,7 +820,7 @@
 				setTimeout(() => setSuccess(""), 3500);
 			};
 			const showError = (msg) => {
-				setError(msg);
+				setError(translateError(msg, lang));
 				setTimeout(() => setError(""), 4e3);
 			};
 			const validateFile = (file) => {
@@ -1213,7 +1215,7 @@
 				y1: "16",
 				x2: "12.01",
 				y2: "16"
-			})), /* @__PURE__ */ __h("span", null, error), /* @__PURE__ */ __h("button", {
+			})), /* @__PURE__ */ __h("span", null, translateError(error, lang)), /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "profile-toast__close",
 				onClick: () => setError(""),

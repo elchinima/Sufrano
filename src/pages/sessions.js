@@ -125,6 +125,7 @@
 		const __imp_2 = __require("components/Footer/Footer.js");
 		const Footer = __imp_2.default !== undefined ? __imp_2.default : __imp_2;
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getSessionsTranslation } = __require("components/UserPages/Sessions/Lang.js");
 		const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
 		const DeviceIcon = ({ type }) => {
@@ -273,7 +274,7 @@
 					} : s));
 					showToast(t("sessions_toast_revoked"));
 				} catch (err) {
-					showToast(err.message || t("sessions_toast_revoke_error"));
+					showToast(translateError(err.message, lang) || t("sessions_toast_revoke_error"));
 				} finally {
 					setRevokingId(null);
 				}

@@ -277,6 +277,7 @@
 		const ticketAnimatedIcon = "/assets/icons/ticket-animated.svg";
 		const fortuneWheelDarkIcon = "/assets/icons/fortune-wheel-dark.svg";
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getPromosTranslation } = __require("components/UserPages/Promos/Lang.js");
 		const PRIZE_TYPE_ICONS = {
 			SuperPrize: superPrizeIcon,
@@ -404,7 +405,7 @@
 					if (!res.ok) {
 						setActivationMessage({
 							type: "error",
-							text: data.message || t("promos_activate_error")
+							text: translateError(data.message, lang) || t("promos_activate_error")
 						});
 						return;
 					}
@@ -417,7 +418,7 @@
 				} catch (err) {
 					setActivationMessage({
 						type: "error",
-						text: err.message || t("promos_activate_network_error")
+						text: translateError(err.message, lang) || t("promos_activate_network_error")
 					});
 				} finally {
 					setIsActivating(false);
@@ -557,7 +558,7 @@
 				y1: "16",
 				x2: "12.01",
 				y2: "16"
-			})), /* @__PURE__ */ __h("span", null, activationMessage.text), /* @__PURE__ */ __h("button", {
+			})), /* @__PURE__ */ __h("span", null, translateError(activationMessage.text, lang)), /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "close-msg",
 				onClick: () => setActivationMessage(null)

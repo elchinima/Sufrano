@@ -5,6 +5,7 @@ import OrderSelectModal from "./OrderSelectModal.js";
 import { REVIEW_CATEGORIES, formatBakuDateTime } from "./reviewsData.js";
 import { fetchWithRefresh } from "../../../utils/fetchWithRefresh.js";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getReviewsTranslation, getReviewCategoryLabel, getReviewRatingLabel } from "./Lang.js";
 const loaderIcon = "/assets/icons/loader-animated.svg";
 const loaderIconRed = "/assets/icons/loader-animated-red.svg";
@@ -99,7 +100,7 @@ const WriteReviewModal = ({ isOpen, onClose, onSubmitReview }) => {
 				onSubmitReview(data);
 				onClose();
 			} else {
-				setError(data.message || "Failed to submit review. Please try again.");
+				setError(translateError(data.message, lang) || "Failed to submit review. Please try again.");
 			}
 		} catch (err) {
 			setError("A network error occurred. Please try again.");
@@ -200,7 +201,7 @@ const WriteReviewModal = ({ isOpen, onClose, onSubmitReview }) => {
 		y1: "16",
 		x2: "12.01",
 		y2: "16"
-	})), /* @__PURE__ */ __h("span", null, error)), /* @__PURE__ */ __h("div", { className: "review-modal__field review-modal__field--rating-top" }, /* @__PURE__ */ __h("div", { className: "review-modal__rating-header" }, /* @__PURE__ */ __h("span", {
+	})), /* @__PURE__ */ __h("span", null, translateError(error, lang))), /* @__PURE__ */ __h("div", { className: "review-modal__field review-modal__field--rating-top" }, /* @__PURE__ */ __h("div", { className: "review-modal__rating-header" }, /* @__PURE__ */ __h("span", {
 		className: "review-modal__label-title",
 		"data-id": "reviews_modal_rating_label"
 	}, t("reviews_modal_rating_label"), " ", /* @__PURE__ */ __h("span", { className: "review-modal__required" }, "*")), /* @__PURE__ */ __h("div", { className: "review-modal__rating-pill" }, /* @__PURE__ */ __h("span", { className: "review-modal__rating-val" }, Math.round(rating)), /* @__PURE__ */ __h("svg", {

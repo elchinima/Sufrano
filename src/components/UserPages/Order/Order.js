@@ -6,6 +6,7 @@ import { useAuth } from "../../../context/AuthContext.js";
 import { useBasket } from "../../../context/BasketContext.js";
 import { fetchWithRefresh } from "../../../utils/fetchWithRefresh.js";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getOrderTranslation } from "./Lang.js";
 const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 const featureCashIcon = "/assets/icons/feature-cash.svg";
@@ -305,13 +306,15 @@ const Order = () => {
 					cashbackEarned: data.cashbackEarned || 0
 				});
 			} else {
-				const msg = data.message || t("orderFailed");
+				const raw = data.message || t("orderFailed");
+				const msg = translateError(raw, lang);
 				setErrorMessage(msg);
 				setOnlineModalError(msg);
 			}
 		} catch (err) {
 			console.error("Error placing order:", err);
-			const msg = t("orderNetworkError");
+			const raw = err.message || t("orderNetworkError");
+			const msg = translateError(raw, lang);
 			setErrorMessage(msg);
 			setOnlineModalError(msg);
 		} finally {
@@ -542,7 +545,7 @@ const Order = () => {
 	}, userPromos.map((p) => /* @__PURE__ */ __h("option", {
 		key: p.id,
 		value: p.promoCode
-	}, p.promoCode, " — ", p.prizeName)), /* @__PURE__ */ __h("option", { value: "NONE" }, t("dontUsePromo")))), /* @__PURE__ */ __h("div", { className: "order-summary-pill-row" }, /* @__PURE__ */ __h("div", { className: "order-summary-pill" }, /* @__PURE__ */ __h("span", { className: "label" }, t("itemsCount")), /* @__PURE__ */ __h("span", { className: "value" }, itemCount, " ", t("itemsSuffix"))), promoDiscountAmount > 0 && /* @__PURE__ */ __h("div", { className: "order-summary-pill promo" }, /* @__PURE__ */ __h("span", { className: "label" }, t("discountLabel")), /* @__PURE__ */ __h("span", { className: "value" }, "−", promoDiscountAmount.toFixed(2), " ₼")), /* @__PURE__ */ __h("div", { className: "order-summary-pill total" }, /* @__PURE__ */ __h("span", { className: "label" }, t("totalToPay")), /* @__PURE__ */ __h("span", { className: "value" }, finalAmount, " ₼"))), errorMessage && /* @__PURE__ */ __h("div", { className: "order-error-message" }, "⚠️ ", errorMessage), /* @__PURE__ */ __h("div", { className: "order-actions-row" }, /* @__PURE__ */ __h("button", {
+	}, p.promoCode, " — ", p.prizeName)), /* @__PURE__ */ __h("option", { value: "NONE" }, t("dontUsePromo")))), /* @__PURE__ */ __h("div", { className: "order-summary-pill-row" }, /* @__PURE__ */ __h("div", { className: "order-summary-pill" }, /* @__PURE__ */ __h("span", { className: "label" }, t("itemsCount")), /* @__PURE__ */ __h("span", { className: "value" }, itemCount, " ", t("itemsSuffix"))), promoDiscountAmount > 0 && /* @__PURE__ */ __h("div", { className: "order-summary-pill promo" }, /* @__PURE__ */ __h("span", { className: "label" }, t("discountLabel")), /* @__PURE__ */ __h("span", { className: "value" }, "−", promoDiscountAmount.toFixed(2), " ₼")), /* @__PURE__ */ __h("div", { className: "order-summary-pill total" }, /* @__PURE__ */ __h("span", { className: "label" }, t("totalToPay")), /* @__PURE__ */ __h("span", { className: "value" }, finalAmount, " ₼"))), errorMessage && /* @__PURE__ */ __h("div", { className: "order-error-message" }, "⚠️ ", translateError(errorMessage, lang)), /* @__PURE__ */ __h("div", { className: "order-actions-row" }, /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "order-confirm-btn",
 		disabled: isSubmitting || itemCount === 0,

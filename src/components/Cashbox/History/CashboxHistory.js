@@ -6,6 +6,7 @@ import { API_URL } from "../../../utils/config.js";
 import { fetchWithRefresh } from "../../../utils/fetchWithRefresh.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getCashboxTranslation } from "../Lang.js";
 const loaderIcon = "/assets/icons/loader-animated.svg";
 import CashboxTopBar from "../components/CashboxTopBar.js";
@@ -55,7 +56,7 @@ const CashboxHistory = () => {
 			setSummary(data.summary || null);
 		} catch (err) {
 			console.error("Failed to fetch cashbox history:", err);
-			setError(err.message || t?.history?.loadError || "Failed to load history");
+			setError(translateError(err.message, lang) || t?.history?.loadError || "Failed to load history");
 		} finally {
 			setLoading(false);
 		}

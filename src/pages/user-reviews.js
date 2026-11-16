@@ -25,6 +25,7 @@
 		const WriteReviewModal = __imp_4.default !== undefined ? __imp_4.default : __imp_4;
 		const { REVIEW_CATEGORIES, getAvatarGradient, formatBakuDateTime, sortReviewsByLanguage } = __require("components/PublicPages/Reviews/reviewsData.js");
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getUserAvatarUrl, handleAvatarError } = __require("utils/avatar.js");
 		const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
 		const Reviews = () => {
@@ -57,7 +58,7 @@
 					setReviews(myReviews);
 				} catch (err) {
 					console.error("Error fetching personal reviews:", err);
-					setError(err.message || "Could not load your reviews. Please try again.");
+					setError(translateError(err.message, lang) || "Could not load your reviews. Please try again.");
 				} finally {
 					setLoading(false);
 				}
@@ -86,7 +87,7 @@
 						showToast("🗑️ Review deleted successfully. You can write a new review for this order whenever you like.");
 					} else {
 						const errData = await res.json().catch(() => ({}));
-						showToast(errData.message || "Failed to delete review.");
+						showToast(translateError(errData.message, lang) || "Failed to delete review.");
 					}
 				} catch {
 					showToast("Failed to delete review. Please try again.");

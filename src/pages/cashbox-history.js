@@ -11,7 +11,10 @@
 		const { useState, useEffect } = __imp_0;
 		const { motion, AnimatePresence } = __require("utils/motion.js");
 		const { getUserAvatarUrl, handleAvatarError } = __require("utils/avatar.js");
+		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const CashboxOrderDetailModal = ({ order, isOpen, onClose, onUpdateOrder, t, canEdit = true }) => {
+			const lang = useLang();
 			const [activeTab, setActiveTab] = useState("info");
 			const [selectedStatus, setSelectedStatus] = useState(order?.status || "Success");
 			const [note, setNote] = useState(order?.note || "");
@@ -43,7 +46,7 @@
 					});
 					onClose();
 				} catch (err) {
-					setUpdateError(err.message || "Failed to update order");
+					setUpdateError(translateError(err.message, lang) || "Failed to update order");
 				} finally {
 					setIsUpdating(false);
 				}
@@ -281,7 +284,7 @@
 				alt: order.editedBy,
 				className: "cb-detail-edited-mini-avatar",
 				onError: handleAvatarError
-			})), /* @__PURE__ */ __h("div", { className: "cb-detail-edited-text" }, /* @__PURE__ */ __h("span", null, t?.history?.editedBy || "Edited by:", " ", /* @__PURE__ */ __h("strong", null, order.editedBy)), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-edited-date" }, " ", "(", new Date(order.editedAt).toLocaleString(), ")"))), updateError && /* @__PURE__ */ __h("div", { className: "cb-detail-error" }, updateError)))), /* @__PURE__ */ __h("div", { className: "cb-detail-footer" }, /* @__PURE__ */ __h("button", {
+			})), /* @__PURE__ */ __h("div", { className: "cb-detail-edited-text" }, /* @__PURE__ */ __h("span", null, t?.history?.editedBy || "Edited by:", " ", /* @__PURE__ */ __h("strong", null, order.editedBy)), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-edited-date" }, " ", "(", new Date(order.editedAt).toLocaleString(), ")"))), updateError && /* @__PURE__ */ __h("div", { className: "cb-detail-error" }, translateError(updateError, lang))))), /* @__PURE__ */ __h("div", { className: "cb-detail-footer" }, /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "cb-detail-cancel-btn",
 				onClick: onClose
@@ -309,6 +312,7 @@
 		const { fetchWithRefresh } = __require("utils/fetchWithRefresh.js");
 		const { useAuth } = __require("context/AuthContext.js");
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getCashboxTranslation } = __require("components/Cashbox/Lang.js");
 		const loaderIcon = "/assets/icons/loader-animated.svg";
 		const __imp_1 = __require("components/Cashbox/components/CashboxTopBar.js");
@@ -360,7 +364,7 @@
 					setSummary(data.summary || null);
 				} catch (err) {
 					console.error("Failed to fetch cashbox history:", err);
-					setError(err.message || t?.history?.loadError || "Failed to load history");
+					setError(translateError(err.message, lang) || t?.history?.loadError || "Failed to load history");
 				} finally {
 					setLoading(false);
 				}

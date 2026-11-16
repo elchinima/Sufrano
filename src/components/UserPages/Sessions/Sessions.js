@@ -10,6 +10,7 @@ const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 import Navbar from "../../Elements/Navbar.js";
 import Footer from "../../Footer/Footer.js";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getSessionsTranslation } from "./Lang.js";
 const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
 const DeviceIcon = ({ type }) => {
@@ -158,7 +159,7 @@ const Sessions = () => {
 			} : s));
 			showToast(t("sessions_toast_revoked"));
 		} catch (err) {
-			showToast(err.message || t("sessions_toast_revoke_error"));
+			showToast(translateError(err.message, lang) || t("sessions_toast_revoke_error"));
 		} finally {
 			setRevokingId(null);
 		}

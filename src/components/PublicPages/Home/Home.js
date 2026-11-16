@@ -17,6 +17,7 @@ import Footer from "../../Footer/Footer.js";
 import Navbar from "../../Elements/Navbar.js";
 import FitText from "../../Elements/FitText.js";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getHomeTranslation } from "./Lang.js";
 let cachedBlobUrl = null;
 let blobFetchPromise = null;
@@ -232,7 +233,8 @@ const Home = () => {
 			}
 			setIsSubscribeModalOpen(true);
 		} catch (err) {
-			setErrorMessage(err.message || "This email is not registered. Please create an account first.");
+			const raw = err.message || "This email is not registered. Please create an account first.";
+			setErrorMessage(translateError(raw, lang));
 			setErrorType(err.errorType || (err.message?.toLowerCase().includes("already") ? "ALREADY_SUBSCRIBED" : "ACCOUNT_NOT_FOUND"));
 			setIsErrorModalOpen(true);
 		} finally {
@@ -403,7 +405,7 @@ const Home = () => {
 	}), /* @__PURE__ */ __h(SubscribeErrorModal, {
 		isOpen: isErrorModalOpen,
 		onClose: () => setIsErrorModalOpen(false),
-		message: errorMessage,
+		message: translateError(errorMessage, lang),
 		errorType,
 		onOpenRegister: () => navigate("/login")
 	}), /* @__PURE__ */ __h(SubscribeSuccessModal, {

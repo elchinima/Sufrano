@@ -1,5 +1,6 @@
 import { handleBackendErrorResponse } from "./rateLimitInterceptor.js";
 import { ensureClientHintsHeaders } from "./clientHints.js";
+import { getStoredLanguage } from "./useLang.js";
 import { API_URL } from "./config.js";
 const apiUrl = API_URL;
 let isRefreshing = false;
@@ -25,10 +26,13 @@ async function doRefresh() {
 export async function fetchWithRefresh(url, options = {}) {
 	const skipAuthRedirect = options.skipAuthRedirect || false;
 	const clientHeaders = await ensureClientHintsHeaders();
+	const currentLang = getStoredLanguage() || "az";
 	const opts = {
 		...options,
 		credentials: "include",
 		headers: {
+			"Accept-Language": currentLang,
+			"X-Language": currentLang,
 			...clientHeaders,
 			...options.headers || {}
 		}

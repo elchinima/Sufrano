@@ -220,6 +220,7 @@
 		const __imp_3 = __require("components/Elements/AnimatedModalWrapper.js");
 		const AnimatedModalWrapper = __imp_3.default !== undefined ? __imp_3.default : __imp_3;
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getOrdersTranslation } = __require("components/UserPages/Orders/Lang.js");
 		const getPaymentMethods = (t) => ({
 			0: {
@@ -392,7 +393,7 @@
 					setOrders(list);
 				} catch (err) {
 					console.error("Error fetching orders:", err);
-					setError(err.message || t("loadError"));
+					setError(translateError(err.message, lang) || t("loadError"));
 				} finally {
 					setLoading(false);
 				}
@@ -547,7 +548,7 @@
 				y1: "16",
 				x2: "12.01",
 				y2: "16"
-			})), /* @__PURE__ */ __h("p", null, error), /* @__PURE__ */ __h("button", {
+			})), /* @__PURE__ */ __h("p", null, translateError(error, lang)), /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "cta-btn sm",
 				onClick: () => fetchOrders()

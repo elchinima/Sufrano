@@ -11,6 +11,7 @@ import ChangePasswordModal from "./ChangePasswordModal.js";
 const loaderIcon = "/assets/icons/loader-animated.svg";
 const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getProfileTranslation } from "./Lang.js";
 import { DEFAULT_USER_AVATAR, getUserAvatarUrl, handleAvatarError, isDefaultAvatarUrl } from "../../../utils/avatar.js";
 const ALLOWED_TYPES = [
@@ -61,7 +62,7 @@ const Profile = () => {
 		setTimeout(() => setSuccess(""), 3500);
 	};
 	const showError = (msg) => {
-		setError(msg);
+		setError(translateError(msg, lang));
 		setTimeout(() => setError(""), 4e3);
 	};
 	const validateFile = (file) => {
@@ -456,7 +457,7 @@ const Profile = () => {
 		y1: "16",
 		x2: "12.01",
 		y2: "16"
-	})), /* @__PURE__ */ __h("span", null, error), /* @__PURE__ */ __h("button", {
+	})), /* @__PURE__ */ __h("span", null, translateError(error, lang)), /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "profile-toast__close",
 		onClick: () => setError(""),

@@ -329,6 +329,7 @@
 		const __imp_5 = __require("components/UserPages/PaymentMethods/PaymentErrorModal.js");
 		const PaymentErrorModal = __imp_5.default !== undefined ? __imp_5.default : __imp_5;
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getPaymentMethodsTranslation } = __require("components/UserPages/PaymentMethods/Lang.js");
 		const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
 		const formatBakuDate = (dateStr) => {
@@ -435,7 +436,7 @@
 					await fetchCards();
 					showToast(t("pm_toast_added"));
 				} catch (err) {
-					setErrorModalMessage(err.message || "Failed to add card.");
+					setErrorModalMessage(translateError(err.message, lang) || "Failed to add card.");
 					setIsErrorModalOpen(true);
 				} finally {
 					setAddLoading(false);
@@ -646,7 +647,7 @@
 			}), /* @__PURE__ */ __h(PaymentErrorModal, {
 				isOpen: isErrorModalOpen,
 				onClose: () => setIsErrorModalOpen(false),
-				message: errorModalMessage,
+				message: translateError(errorModalMessage, lang),
 				title: t("pm_limit_title")
 			}), /* @__PURE__ */ __h("div", { className: "payment-methods-toast-container" }, /* @__PURE__ */ __h(AnimatePresence, null, toastMessage && /* @__PURE__ */ __h(motion.div, {
 				className: `payment-methods-toast ${toastType === "error" ? "payment-methods-toast--error" : ""}`,

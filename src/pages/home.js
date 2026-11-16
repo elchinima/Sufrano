@@ -134,6 +134,7 @@
 		const __imp_1 = __require("components/Elements/AnimatedModalWrapper.js");
 		const AnimatedModalWrapper = __imp_1.default !== undefined ? __imp_1.default : __imp_1;
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getHomeTranslation } = __require("components/PublicPages/Home/Lang.js");
 		const LoaderIcon = () => /* @__PURE__ */ __h("img", {
 			src: loaderIcon,
@@ -266,7 +267,7 @@
 					onSuccess(data.message || "Successfully subscribed to the Süfrano Club!");
 					onClose();
 				} catch (err) {
-					setError(err.message);
+					setError(translateError(err.message, lang));
 				} finally {
 					setLoading(false);
 				}
@@ -316,7 +317,7 @@
 				onKeyDown: (e) => handleKeyDown(idx, e),
 				className: "two-factor-digit",
 				autoComplete: "one-time-code"
-			}))), /* @__PURE__ */ __h("div", { className: "subscribe-timer-info" }, timer > 0 ? /* @__PURE__ */ __h("span", null, "Code expires in ", /* @__PURE__ */ __h("strong", { className: "timer-value" }, formatTimer(timer))) : /* @__PURE__ */ __h("span", { className: "timer-expired" }, "Code has expired. Please enter your email again.")), error && /* @__PURE__ */ __h("div", { className: "subscribe-error-msg" }, error), /* @__PURE__ */ __h("button", {
+			}))), /* @__PURE__ */ __h("div", { className: "subscribe-timer-info" }, timer > 0 ? /* @__PURE__ */ __h("span", null, "Code expires in ", /* @__PURE__ */ __h("strong", { className: "timer-value" }, formatTimer(timer))) : /* @__PURE__ */ __h("span", { className: "timer-expired" }, "Code has expired. Please enter your email again.")), error && /* @__PURE__ */ __h("div", { className: "subscribe-error-msg" }, translateError(error, lang)), /* @__PURE__ */ __h("button", {
 				type: "submit",
 				className: "cta-btn subscribe-submit-btn",
 				disabled: loading || digits.join("").length < 4 || timer === 0,
@@ -489,6 +490,7 @@
 		const __imp_6 = __require("components/Elements/FitText.js");
 		const FitText = __imp_6.default !== undefined ? __imp_6.default : __imp_6;
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getHomeTranslation } = __require("components/PublicPages/Home/Lang.js");
 		let cachedBlobUrl = null;
 		let blobFetchPromise = null;
@@ -704,7 +706,8 @@
 					}
 					setIsSubscribeModalOpen(true);
 				} catch (err) {
-					setErrorMessage(err.message || "This email is not registered. Please create an account first.");
+					const raw = err.message || "This email is not registered. Please create an account first.";
+					setErrorMessage(translateError(raw, lang));
 					setErrorType(err.errorType || (err.message?.toLowerCase().includes("already") ? "ALREADY_SUBSCRIBED" : "ACCOUNT_NOT_FOUND"));
 					setIsErrorModalOpen(true);
 				} finally {
@@ -875,7 +878,7 @@
 			}), /* @__PURE__ */ __h(SubscribeErrorModal, {
 				isOpen: isErrorModalOpen,
 				onClose: () => setIsErrorModalOpen(false),
-				message: errorMessage,
+				message: translateError(errorMessage, lang),
 				errorType,
 				onOpenRegister: () => navigate("/login")
 			}), /* @__PURE__ */ __h(SubscribeSuccessModal, {

@@ -37,7 +37,10 @@ foreach (var p in possibleEnvPaths)
     }
 }
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ErrorLocalizationFilter>();
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -162,12 +165,16 @@ builder.Services.AddRateLimiter(options =>
 
         context.HttpContext.Response.Headers.RetryAfter = ((int)retryAfter).ToString();
 
+        var lang = ErrorLocalizer.GetLanguage(context.HttpContext);
+        var rawMsg = "You have made too many requests in a short period. Please wait a moment before trying again.";
+        var localizedMsg = ErrorLocalizer.Localize(rawMsg, lang);
+
         await context.HttpContext.Response.WriteAsJsonAsync(new
         {
             statusCode = 429,
             title = "Too Many Requests",
             error = "Too Many Requests",
-            message = "You have made too many requests in a short period. Please wait a moment before trying again.",
+            message = localizedMsg,
             retryAfterSeconds = (int)retryAfter
         }, cancellationToken);
     };

@@ -2,7 +2,10 @@ import { __h, __Fragment } from '../../../utils/runtime.js';
 import React, { useState, useEffect } from "../../../utils/runtime.js";
 import { motion, AnimatePresence } from "../../../utils/motion.js";
 import { getUserAvatarUrl, handleAvatarError } from "../../../utils/avatar.js";
+import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 const CashboxOrderDetailModal = ({ order, isOpen, onClose, onUpdateOrder, t, canEdit = true }) => {
+	const lang = useLang();
 	const [activeTab, setActiveTab] = useState("info");
 	const [selectedStatus, setSelectedStatus] = useState(order?.status || "Success");
 	const [note, setNote] = useState(order?.note || "");
@@ -34,7 +37,7 @@ const CashboxOrderDetailModal = ({ order, isOpen, onClose, onUpdateOrder, t, can
 			});
 			onClose();
 		} catch (err) {
-			setUpdateError(err.message || "Failed to update order");
+			setUpdateError(translateError(err.message, lang) || "Failed to update order");
 		} finally {
 			setIsUpdating(false);
 		}
@@ -272,7 +275,7 @@ const CashboxOrderDetailModal = ({ order, isOpen, onClose, onUpdateOrder, t, can
 		alt: order.editedBy,
 		className: "cb-detail-edited-mini-avatar",
 		onError: handleAvatarError
-	})), /* @__PURE__ */ __h("div", { className: "cb-detail-edited-text" }, /* @__PURE__ */ __h("span", null, t?.history?.editedBy || "Edited by:", " ", /* @__PURE__ */ __h("strong", null, order.editedBy)), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-edited-date" }, " ", "(", new Date(order.editedAt).toLocaleString(), ")"))), updateError && /* @__PURE__ */ __h("div", { className: "cb-detail-error" }, updateError)))), /* @__PURE__ */ __h("div", { className: "cb-detail-footer" }, /* @__PURE__ */ __h("button", {
+	})), /* @__PURE__ */ __h("div", { className: "cb-detail-edited-text" }, /* @__PURE__ */ __h("span", null, t?.history?.editedBy || "Edited by:", " ", /* @__PURE__ */ __h("strong", null, order.editedBy)), order.editedAt && /* @__PURE__ */ __h("span", { className: "cb-detail-edited-date" }, " ", "(", new Date(order.editedAt).toLocaleString(), ")"))), updateError && /* @__PURE__ */ __h("div", { className: "cb-detail-error" }, translateError(updateError, lang))))), /* @__PURE__ */ __h("div", { className: "cb-detail-footer" }, /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "cb-detail-cancel-btn",
 		onClick: onClose

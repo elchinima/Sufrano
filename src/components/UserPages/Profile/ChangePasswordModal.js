@@ -4,6 +4,7 @@ import AnimatedModalWrapper from "../../Elements/AnimatedModalWrapper.js";
 const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 import { fetchWithRefresh } from "../../../utils/fetchWithRefresh.js";
 import { useLang } from "../../../utils/useLang.js";
+import { translateError } from "../../../utils/errorTranslator.js";
 import { getProfileTranslation } from "./Lang.js";
 const ButtonSpinner = () => /* @__PURE__ */ __h("img", {
 	src: loaderIconRed,
@@ -107,7 +108,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onSuccess }) => {
 				onSuccess(data.message || t("pwd_success"));
 				onClose();
 			} else {
-				setError(data.message || "Failed to change password.");
+				setError(translateError(data.message, lang) || "Failed to change password.");
 			}
 		} catch (err) {
 			console.error("Password change error:", err);
@@ -182,7 +183,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onSuccess }) => {
 		y1: "16",
 		x2: "12.01",
 		y2: "16"
-	})), /* @__PURE__ */ __h("span", null, error)), /* @__PURE__ */ __h("div", { className: "pwd-input-group" }, /* @__PURE__ */ __h("label", { htmlFor: "current-password" }, t("pwd_modal_current")), /* @__PURE__ */ __h("div", { className: "pwd-input-wrap" }, /* @__PURE__ */ __h("input", {
+	})), /* @__PURE__ */ __h("span", null, translateError(error, lang))), /* @__PURE__ */ __h("div", { className: "pwd-input-group" }, /* @__PURE__ */ __h("label", { htmlFor: "current-password" }, t("pwd_modal_current")), /* @__PURE__ */ __h("div", { className: "pwd-input-wrap" }, /* @__PURE__ */ __h("input", {
 		id: "current-password",
 		type: showCurrent ? "text" : "password",
 		placeholder: t("pwd_modal_current_placeholder"),

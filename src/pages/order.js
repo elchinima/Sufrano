@@ -370,6 +370,7 @@
 		const featureCardVisaMcIcon = "/assets/icons/feature-card-visa-mc.svg";
 		const { fetchWithRefresh } = __require("utils/fetchWithRefresh.js");
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getOrderTranslation } = __require("components/UserPages/Order/Lang.js");
 		const __imp_1 = __require("components/Elements/AnimatedModalWrapper.js");
 		const AnimatedModalWrapper = __imp_1.default !== undefined ? __imp_1.default : __imp_1;
@@ -566,12 +567,14 @@
 					if (res.ok && data.success) {
 						onOrderSuccess(data);
 					} else {
-						const msg = data.message || t("errPaymentFailed");
+						const raw = data.message || t("errPaymentFailed");
+						const msg = translateError(raw, lang);
 						setErrorMessage(msg);
 						setIsErrorModalOpen(true);
 					}
 				} catch (err) {
-					const msg = err.message || t("errProcessingGeneral");
+					const raw = err.message || t("errProcessingGeneral");
+					const msg = translateError(raw, lang);
 					setErrorMessage(msg);
 					setIsErrorModalOpen(true);
 				} finally {
@@ -614,7 +617,7 @@
 							if (!saveRes.ok) {
 								const errData = await saveRes.json().catch(() => ({}));
 								if (errData.message) {
-									setErrorMessage(errData.message);
+									setErrorMessage(translateError(errData.message, lang));
 									setIsErrorModalOpen(true);
 									setIsProcessing(false);
 									return;
@@ -640,12 +643,14 @@
 					if (orderRes.ok && orderData.success) {
 						onOrderSuccess(orderData);
 					} else {
-						const msg = orderData.message || t("errPaymentCheckInfo");
+						const raw = orderData.message || t("errPaymentCheckInfo");
+						const msg = translateError(raw, lang);
 						setErrorMessage(msg);
 						setIsErrorModalOpen(true);
 					}
 				} catch (err) {
-					const msg = err.message || t("errProcessingGeneral");
+					const raw = err.message || t("errProcessingGeneral");
+					const msg = translateError(raw, lang);
 					setErrorMessage(msg);
 					setIsErrorModalOpen(true);
 				} finally {
@@ -856,7 +861,7 @@
 			}), t("processing")) : t("payAmount", { amount: finalAmount })))))), /* @__PURE__ */ __h(PaymentErrorModal, {
 				isOpen: isErrorModalOpen,
 				onClose: () => setIsErrorModalOpen(false),
-				message: errorMessage,
+				message: translateError(errorMessage, lang),
 				title: t("paymentErrorTitle")
 			}));
 		};
@@ -877,6 +882,7 @@
 		const { useBasket } = __require("context/BasketContext.js");
 		const { fetchWithRefresh } = __require("utils/fetchWithRefresh.js");
 		const { useLang } = __require("utils/useLang.js");
+		const { translateError } = __require("utils/errorTranslator.js");
 		const { getOrderTranslation } = __require("components/UserPages/Order/Lang.js");
 		const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 		const featureCashIcon = "/assets/icons/feature-cash.svg";
@@ -1179,13 +1185,15 @@
 							cashbackEarned: data.cashbackEarned || 0
 						});
 					} else {
-						const msg = data.message || t("orderFailed");
+						const raw = data.message || t("orderFailed");
+						const msg = translateError(raw, lang);
 						setErrorMessage(msg);
 						setOnlineModalError(msg);
 					}
 				} catch (err) {
 					console.error("Error placing order:", err);
-					const msg = t("orderNetworkError");
+					const raw = err.message || t("orderNetworkError");
+					const msg = translateError(raw, lang);
 					setErrorMessage(msg);
 					setOnlineModalError(msg);
 				} finally {
@@ -1416,7 +1424,7 @@
 			}, userPromos.map((p) => /* @__PURE__ */ __h("option", {
 				key: p.id,
 				value: p.promoCode
-			}, p.promoCode, " — ", p.prizeName)), /* @__PURE__ */ __h("option", { value: "NONE" }, t("dontUsePromo")))), /* @__PURE__ */ __h("div", { className: "order-summary-pill-row" }, /* @__PURE__ */ __h("div", { className: "order-summary-pill" }, /* @__PURE__ */ __h("span", { className: "label" }, t("itemsCount")), /* @__PURE__ */ __h("span", { className: "value" }, itemCount, " ", t("itemsSuffix"))), promoDiscountAmount > 0 && /* @__PURE__ */ __h("div", { className: "order-summary-pill promo" }, /* @__PURE__ */ __h("span", { className: "label" }, t("discountLabel")), /* @__PURE__ */ __h("span", { className: "value" }, "−", promoDiscountAmount.toFixed(2), " ₼")), /* @__PURE__ */ __h("div", { className: "order-summary-pill total" }, /* @__PURE__ */ __h("span", { className: "label" }, t("totalToPay")), /* @__PURE__ */ __h("span", { className: "value" }, finalAmount, " ₼"))), errorMessage && /* @__PURE__ */ __h("div", { className: "order-error-message" }, "⚠️ ", errorMessage), /* @__PURE__ */ __h("div", { className: "order-actions-row" }, /* @__PURE__ */ __h("button", {
+			}, p.promoCode, " — ", p.prizeName)), /* @__PURE__ */ __h("option", { value: "NONE" }, t("dontUsePromo")))), /* @__PURE__ */ __h("div", { className: "order-summary-pill-row" }, /* @__PURE__ */ __h("div", { className: "order-summary-pill" }, /* @__PURE__ */ __h("span", { className: "label" }, t("itemsCount")), /* @__PURE__ */ __h("span", { className: "value" }, itemCount, " ", t("itemsSuffix"))), promoDiscountAmount > 0 && /* @__PURE__ */ __h("div", { className: "order-summary-pill promo" }, /* @__PURE__ */ __h("span", { className: "label" }, t("discountLabel")), /* @__PURE__ */ __h("span", { className: "value" }, "−", promoDiscountAmount.toFixed(2), " ₼")), /* @__PURE__ */ __h("div", { className: "order-summary-pill total" }, /* @__PURE__ */ __h("span", { className: "label" }, t("totalToPay")), /* @__PURE__ */ __h("span", { className: "value" }, finalAmount, " ₼"))), errorMessage && /* @__PURE__ */ __h("div", { className: "order-error-message" }, "⚠️ ", translateError(errorMessage, lang)), /* @__PURE__ */ __h("div", { className: "order-actions-row" }, /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "order-confirm-btn",
 				disabled: isSubmitting || itemCount === 0,
