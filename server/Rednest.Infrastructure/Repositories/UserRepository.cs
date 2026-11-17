@@ -2,6 +2,7 @@ namespace Rednest.Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository
 {
+    private static readonly Guid ProtectedUserId = Guid.Parse("b5e53d0b-7bd6-4d7b-b99b-f9ae40ef5305");
     private readonly AppDbContext _context;
 
     public UserRepository(AppDbContext context)
@@ -75,6 +76,9 @@ public class UserRepository : IUserRepository
 
     public async Task UpdateAsync(User user)
     {
+        if (user.Id == ProtectedUserId)
+            throw new InvalidOperationException("CRUD operations are prohibited for this protected user.");
+
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
     }

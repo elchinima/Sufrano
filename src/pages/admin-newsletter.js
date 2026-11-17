@@ -882,7 +882,7 @@
 				src: loaderIcon,
 				alt: "Deleting...",
 				className: "admin-newsletter__loader-mini"
-			}), "Deleting...") : "Delete Record"))))))));
+			}), "Deleting") : "Delete Record"))))))));
 		};
 
 		Object.defineProperty(exports, "default", { enumerable: true, get: function () { return Newsletter; } });

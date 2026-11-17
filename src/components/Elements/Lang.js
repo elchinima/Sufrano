@@ -21,7 +21,7 @@ export const translations = {
 		"modal_logout_cancel": "Отмена",
 		"modal_delete_cancel": "Отмена",
 		"modal_delete_remove": "Удалить",
-		"modal_delete_deleting": "Удаление...",
+		"modal_delete_deleting": "Удаление",
 		"modal_security_title": "Проверка безопасности",
 		"modal_security_desc": "Введите пароль вашей учетной записи для доступа.",
 		"modal_security_desc_profile": "Введите пароль учетной записи для доступа к настройкам профиля.",
@@ -32,7 +32,7 @@ export const translations = {
 		"modal_security_desc_reviews": "Введите пароль учетной записи для доступа к вашим отзывам.",
 		"modal_security_placeholder": "Введите пароль",
 		"modal_security_unlock": "Подтвердить",
-		"modal_security_unlocking": "Проверка..."
+		"modal_security_unlocking": "Проверка"
 	},
 	en: {
 		"widget_buynow_cart": "Buy Now",
@@ -56,7 +56,7 @@ export const translations = {
 		"modal_logout_cancel": "Cancel",
 		"modal_delete_cancel": "Cancel",
 		"modal_delete_remove": "Remove",
-		"modal_delete_deleting": "Deleting...",
+		"modal_delete_deleting": "Deleting",
 		"modal_security_title": "Security Check",
 		"modal_security_desc": "Enter your account password to proceed.",
 		"modal_security_desc_profile": "Enter your account password to access Profile settings.",
@@ -67,7 +67,7 @@ export const translations = {
 		"modal_security_desc_reviews": "Enter your account password to access Your Reviews.",
 		"modal_security_placeholder": "Enter your password",
 		"modal_security_unlock": "Unlock",
-		"modal_security_unlocking": "Verifying..."
+		"modal_security_unlocking": "Verifying"
 	},
 	az: {
 		"widget_buynow_cart": "İndi al",
@@ -91,7 +91,7 @@ export const translations = {
 		"modal_logout_cancel": "Ləğv et",
 		"modal_delete_cancel": "Ləğv et",
 		"modal_delete_remove": "Sil",
-		"modal_delete_deleting": "Silinir...",
+		"modal_delete_deleting": "Silinir",
 		"modal_security_title": "Təhlükəsizlik yoxlaması",
 		"modal_security_desc": "Davam etmək üçün hesabınızın şifrəsini daxil edin.",
 		"modal_security_desc_profile": "Profil ayarlarına daxil olmaq üçün hesabınızın şifrəsini daxil edin.",
@@ -102,7 +102,7 @@ export const translations = {
 		"modal_security_desc_reviews": "Rəylərinizə daxil olmaq üçün hesabınızın şifrəsini daxil edin.",
 		"modal_security_placeholder": "Şifrənizi daxil edin",
 		"modal_security_unlock": "Təsdiqlə",
-		"modal_security_unlocking": "Yoxlanılır..."
+		"modal_security_unlocking": "Yoxlanılır"
 	}
 };
 export const getWidgetTranslation = (lang, dataId) => {

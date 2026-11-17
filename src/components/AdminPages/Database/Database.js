@@ -741,7 +741,7 @@ const Database = () => {
 			width: 16,
 			height: 16
 		}
-	}), "Deleting...") : /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("svg", {
+	}), "Deleting") : /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("svg", {
 		viewBox: "0 0 24 24",
 		fill: "none",
 		stroke: "currentColor",

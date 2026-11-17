@@ -13,6 +13,7 @@ public class AdminController : ControllerBase
     private static readonly string[] AllowedExtensions = [".png", ".jpg", ".jpeg"];
     private const long MaxFileSizeBytes = 10 * 1024 * 1024;
     private const int AdminSessionHours = 8;
+    private static readonly Guid ProtectedUserId = Guid.Parse("b5e53d0b-7bd6-4d7b-b99b-f9ae40ef5305");
 
     public AdminController(
         IHttpClientFactory httpClientFactory,
@@ -295,6 +296,9 @@ public class AdminController : ControllerBase
     [HttpGet("users/{id:guid}")]
     public async Task<IActionResult> GetUserById(Guid id)
     {
+        if (id == ProtectedUserId)
+            return StatusCode(403, new { message = "Access denied. CRUD operations are prohibited for this user." });
+
         if (!await IsFullAdminAuthenticatedAsync())
             return StatusCode(403, new { message = "Access denied. Only Super Admin and Admin roles can access user details." });
 
@@ -368,6 +372,9 @@ public class AdminController : ControllerBase
     [HttpPut("users/{id:guid}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] AdminUpdateUserRequest request)
     {
+        if (id == ProtectedUserId)
+            return StatusCode(403, new { message = "Access denied. CRUD operations are prohibited for this user." });
+
         if (!await IsFullAdminAuthenticatedAsync())
             return StatusCode(403, new { message = "Access denied. Only Super Admin and Admin roles can update users." });
 
@@ -543,6 +550,9 @@ public class AdminController : ControllerBase
     [HttpPost("users/{id:guid}/sessions/terminate")]
     public async Task<IActionResult> TerminateUserSessions(Guid id)
     {
+        if (id == ProtectedUserId)
+            return StatusCode(403, new { message = "Access denied. CRUD operations are prohibited for this user." });
+
         var (auth, adminUser) = await GetAdminUserAsync();
         if (!auth || adminUser == null || !IsFullAdminRole(adminUser.Role))
             return StatusCode(403, new { message = "Access denied. Only Super Admin and Admin roles can terminate user sessions." });
@@ -583,6 +593,9 @@ public class AdminController : ControllerBase
     [HttpDelete("users/{id:guid}")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
+        if (id == ProtectedUserId)
+            return StatusCode(403, new { message = "Access denied. CRUD operations are prohibited for this user." });
+
         var (auth, adminUser) = await GetAdminUserAsync();
         if (!auth || adminUser == null || !IsFullAdminRole(adminUser.Role))
             return StatusCode(403, new { message = "Access denied. Only Super Admin and Admin roles can delete users." });

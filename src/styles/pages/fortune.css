@@ -210,11 +210,11 @@
 
 .fortune-wheel__segment-content {
   position: absolute;
-  top: 9.5%;
+  top: 7.5%;
   left: 50%;
   transform: translateX(-50%);
-  width: clamp(52px, 15.5cqw, 82px);
-  height: clamp(52px, 15.5cqw, 82px);
+  width: clamp(65px, 19.4cqw, 102px);
+  height: clamp(65px, 19.4cqw, 102px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -230,7 +230,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(7px, 2.2cqw, 12px);
+  padding: clamp(5px, 1.8cqw, 10px);
   box-sizing: border-box;
 }
 

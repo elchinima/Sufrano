@@ -45,7 +45,7 @@ export const translations = {
 		"profile_delete_avatar_text": "Это навсегда удалит ваше фото и вернет стандартный аватар. Вы сможете загрузить новое фото в любое время.",
 		"profile_delete_avatar_cancel": "Отмена",
 		"profile_delete_avatar_confirm": "Удалить",
-		"profile_delete_avatar_deleting": "Удаление...",
+		"profile_delete_avatar_deleting": "Удаление",
 		"profile_toast_avatar_updated": "Фотография профиля успешно обновлена.",
 		"profile_toast_avatar_deleted": "Фотография профиля удалена.",
 		"profile_toast_password_changed": "Пароль успешно изменен.",
@@ -59,7 +59,7 @@ export const translations = {
 		"pwd_modal_confirm_placeholder": "Повторите новый пароль",
 		"pwd_modal_btn_cancel": "Отмена",
 		"pwd_modal_btn_submit": "Обновить пароль",
-		"pwd_modal_btn_updating": "Обновление...",
+		"pwd_modal_btn_updating": "Обновление",
 		"pwd_err_current_required": "Пожалуйста, введите текущий пароль.",
 		"pwd_err_new_required": "Пожалуйста, введите новый пароль.",
 		"pwd_err_length": "Новый пароль должен содержать минимум 6 символов.",
@@ -71,7 +71,7 @@ export const translations = {
 		"crop_modal_hint": "Перетащите и настройте масштаб в квадратной области",
 		"crop_modal_cancel": "Отмена",
 		"crop_modal_apply": "Применить",
-		"crop_modal_saving": "Сохранение..."
+		"crop_modal_saving": "Сохранение"
 	},
 	en: {
 		"profile_hero_title": "My Profile",
@@ -119,7 +119,7 @@ export const translations = {
 		"profile_delete_avatar_text": "This will permanently remove your photo and restore the default avatar. You can upload a new one anytime.",
 		"profile_delete_avatar_cancel": "Cancel",
 		"profile_delete_avatar_confirm": "Delete",
-		"profile_delete_avatar_deleting": "Deleting...",
+		"profile_delete_avatar_deleting": "Deleting",
 		"profile_toast_avatar_updated": "Profile photo updated successfully.",
 		"profile_toast_avatar_deleted": "Profile photo removed.",
 		"profile_toast_password_changed": "Password changed successfully.",
@@ -133,7 +133,7 @@ export const translations = {
 		"pwd_modal_confirm_placeholder": "Repeat new password",
 		"pwd_modal_btn_cancel": "Cancel",
 		"pwd_modal_btn_submit": "Update Password",
-		"pwd_modal_btn_updating": "Updating...",
+		"pwd_modal_btn_updating": "Updating",
 		"pwd_err_current_required": "Please enter your current password.",
 		"pwd_err_new_required": "Please enter a new password.",
 		"pwd_err_length": "New password must be at least 6 characters long.",
@@ -145,7 +145,7 @@ export const translations = {
 		"crop_modal_hint": "Drag to move and use slider to zoom into square",
 		"crop_modal_cancel": "Cancel",
 		"crop_modal_apply": "Apply",
-		"crop_modal_saving": "Saving..."
+		"crop_modal_saving": "Saving"
 	},
 	az: {
 		"profile_hero_title": "Mənim profilim",
@@ -193,7 +193,7 @@ export const translations = {
 		"profile_delete_avatar_text": "Bu əməliyyat profil şəklinizi həmişəlik siləcək və standart avatarı bərpa edəcək. İstənilən vaxt yeni şəkil yükləyə bilərsiniz.",
 		"profile_delete_avatar_cancel": "Ləğv et",
 		"profile_delete_avatar_confirm": "Sil",
-		"profile_delete_avatar_deleting": "Silinir...",
+		"profile_delete_avatar_deleting": "Silinir",
 		"profile_toast_avatar_updated": "Profil şəkli uğurla yeniləndi.",
 		"profile_toast_avatar_deleted": "Profil şəkli silindi.",
 		"profile_toast_password_changed": "Şifrə uğurla dəyişdirildi.",
@@ -207,7 +207,7 @@ export const translations = {
 		"pwd_modal_confirm_placeholder": "Yeni şifrəni təkrarlayın",
 		"pwd_modal_btn_cancel": "Ləğv et",
 		"pwd_modal_btn_submit": "Şifrəni yenilə",
-		"pwd_modal_btn_updating": "Yenilənir...",
+		"pwd_modal_btn_updating": "Yenilənir",
 		"pwd_err_current_required": "Zəhmət olmasa cari şifrənizi daxil edin.",
 		"pwd_err_new_required": "Zəhmət olmasa yeni şifrə daxil edin.",
 		"pwd_err_length": "Yeni şifrə ən azı 6 simvoldan ibarət olmalıdır.",
@@ -219,7 +219,7 @@ export const translations = {
 		"crop_modal_hint": "Şəkli tənzimləmək üçün sürükləyin və miqyası dəyişin",
 		"crop_modal_cancel": "Ləğv et",
 		"crop_modal_apply": "Tətbiq et",
-		"crop_modal_saving": "Saxlanılır..."
+		"crop_modal_saving": "Saxlanılır"
 	}
 };
 export const getProfileTranslation = (lang, dataId) => {

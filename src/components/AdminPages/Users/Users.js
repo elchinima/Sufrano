@@ -54,6 +54,8 @@ const formatRelativeTime = (dateStr) => {
 		return "—";
 	}
 };
+const PROTECTED_USER_ID = "b5e53d0b-7bd6-4d7b-b99b-f9ae40ef5305";
+const isProtectedUser = (id) => String(id || "").toLowerCase() === PROTECTED_USER_ID;
 const ALL_ROLES = [
 	"Customer",
 	"Bot",
@@ -188,6 +190,10 @@ const Users = () => {
 		fetchUsers();
 	}, [fetchUsers]);
 	const loadUserDetails = async (userId) => {
+		if (isProtectedUser(userId)) {
+			showToast("CRUD operations are prohibited for this user.", "error");
+			return;
+		}
 		setSelectedUserId(userId);
 		setDetailsTab("overview");
 		setLoadingDetails(true);
@@ -206,6 +212,10 @@ const Users = () => {
 		}
 	};
 	const openEditModal = (user) => {
+		if (!user || isProtectedUser(user.id)) {
+			showToast("CRUD operations are prohibited for this user.", "error");
+			return;
+		}
 		setEditingUser(user);
 		const is2Fa = user.twoFactorEnabled !== undefined ? user.twoFactorEnabled : user.session?.twoFactorEnabled ?? false;
 		const isSub = user.subscribe !== undefined ? user.subscribe : user.session?.subscribe ?? false;
@@ -249,6 +259,10 @@ const Users = () => {
 	const handleSaveUser = async (e) => {
 		e.preventDefault();
 		if (!editingUser) return;
+		if (isProtectedUser(editingUser.id)) {
+			showToast("CRUD operations are prohibited for this user.", "error");
+			return;
+		}
 		if (isTargetEqualOrHigherRole) {
 			showToast(`You cannot modify data of a user with an equal or higher role (${editingUser.role}).`, "error");
 			return;
@@ -612,6 +626,9 @@ const Users = () => {
 		height: "13",
 		rx: "2"
 	}), /* @__PURE__ */ __h("path", { d: "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" })))))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("span", { className: `badge ${getRoleBadgeClass(u.role)}` }, u.role || "Customer")), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-users__badges" }, u.isActive !== false ? /* @__PURE__ */ __h("span", { className: "badge badge--success" }, "Active") : /* @__PURE__ */ __h("span", { className: "badge badge--danger" }, "Blocked"))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-users__balance-cell" }, /* @__PURE__ */ __h("span", { className: "admin-users__balance-val" }, formatCurrency(u.balance)))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-users__orders-cell" }, /* @__PURE__ */ __h("span", { className: "admin-users__orders-count" }, u.ordersCount, " ", u.ordersCount === 1 ? "order" : "orders"), /* @__PURE__ */ __h("span", { className: "admin-users__orders-spent" }, "Spent: ", formatCurrency(u.totalSpent)))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-users__last-active-cell" }, /* @__PURE__ */ __h("span", { className: "admin-users__date-main" }, formatDate(u.lastActiveAt || u.createdAt)), /* @__PURE__ */ __h("span", { className: "admin-users__date-rel" }, formatRelativeTime(u.lastActiveAt || u.createdAt)))), /* @__PURE__ */ __h("td", { className: "text-right" }, (() => {
+		if (isProtectedUser(u.id)) {
+			return null;
+		}
 		const isSelf = Boolean(currentUser && (currentUser.id && String(currentUser.id).toLowerCase() === String(u.id).toLowerCase() || currentUser.Id && String(currentUser.Id).toLowerCase() === String(u.id).toLowerCase() || currentUser.email && u.email && currentUser.email.toLowerCase() === u.email.toLowerCase()));
 		const targetLevel = getRoleLevel(u.role);
 		const canEdit = isSelf || currentUserLevel > targetLevel;
@@ -720,6 +737,9 @@ const Users = () => {
 		className: `tab-btn${detailsTab === "promos" ? " active" : ""}`,
 		onClick: () => setDetailsTab("promos")
 	}, /* @__PURE__ */ __h("span", null, "Promos"), /* @__PURE__ */ __h("span", { className: "tab-badge" }, userDetails.promos?.length || 0)))), /* @__PURE__ */ __h("div", { className: "admin-users__modal-body" }, detailsTab === "overview" && /* @__PURE__ */ __h("div", { className: "admin-users__details-overview" }, /* @__PURE__ */ __h("div", { className: "admin-users__info-grid" }, /* @__PURE__ */ __h("div", { className: "info-item" }, /* @__PURE__ */ __h("span", { className: "label" }, "Current Balance"), /* @__PURE__ */ __h("span", { className: "value highlight" }, formatCurrency(userDetails.balance))), /* @__PURE__ */ __h("div", { className: "info-item" }, /* @__PURE__ */ __h("span", { className: "label" }, "Account Status"), /* @__PURE__ */ __h("span", { className: "value" }, userDetails.session?.isActive !== false ? /* @__PURE__ */ __h("span", { className: "badge badge--success" }, "Active") : /* @__PURE__ */ __h("span", { className: "badge badge--danger" }, "Blocked / Suspended"))), /* @__PURE__ */ __h("div", { className: "info-item" }, /* @__PURE__ */ __h("span", { className: "label" }, "Two-Factor Auth"), /* @__PURE__ */ __h("span", { className: "value" }, userDetails.session?.twoFactorEnabled ? /* @__PURE__ */ __h("span", { className: "badge badge--success" }, "Enabled") : /* @__PURE__ */ __h("span", { className: "badge badge--muted" }, "Disabled"))), /* @__PURE__ */ __h("div", { className: "info-item" }, /* @__PURE__ */ __h("span", { className: "label" }, "Newsletter"), /* @__PURE__ */ __h("span", { className: "value" }, userDetails.session?.subscribe ? /* @__PURE__ */ __h("span", { className: "badge badge--info" }, "Subscribed") : /* @__PURE__ */ __h("span", { className: "badge badge--muted" }, "Not Subscribed"))), /* @__PURE__ */ __h("div", { className: "info-item" }, /* @__PURE__ */ __h("span", { className: "label" }, "Total Orders"), /* @__PURE__ */ __h("span", { className: "value" }, userDetails.orders?.length || 0)), /* @__PURE__ */ __h("div", { className: "info-item" }, /* @__PURE__ */ __h("span", { className: "label" }, "Registration IP"), /* @__PURE__ */ __h("span", { className: "value" }, userDetails.session?.registrationIp || "Not recorded"))), /* @__PURE__ */ __h("div", { className: "admin-users__quick-actions" }, /* @__PURE__ */ __h("div", { className: "actions-row" }, (() => {
+		if (isProtectedUser(userDetails.id)) {
+			return null;
+		}
 		const isSelf = Boolean(currentUser && (currentUser.id && String(currentUser.id).toLowerCase() === String(userDetails.id).toLowerCase() || currentUser.Id && String(currentUser.Id).toLowerCase() === String(userDetails.id).toLowerCase() || currentUser.email && userDetails.email && currentUser.email.toLowerCase() === userDetails.email.toLowerCase()));
 		const targetLevel = getRoleLevel(userDetails.role);
 		const canEdit = isSelf || currentUserLevel > targetLevel;
@@ -935,6 +955,6 @@ const Users = () => {
 		src: loaderIconRed,
 		alt: "Saving...",
 		className: "btn-loader__icon"
-	}), "Saving Changes...") : "Save User"))))))));
+	}), "Saving Changes") : "Save User"))))))));
 };
 export default Users;

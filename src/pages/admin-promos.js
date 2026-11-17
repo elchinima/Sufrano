@@ -885,7 +885,7 @@
 				src: loaderIconRed,
 				alt: "",
 				className: "spinner-inline"
-			}), /* @__PURE__ */ __h("span", null, "Creating...")) : /* @__PURE__ */ __h("span", null, "Create Promo"))))))), /* @__PURE__ */ __h(AnimatePresence, null, selectedPromo && /* @__PURE__ */ __h(motion.div, {
+			}), /* @__PURE__ */ __h("span", null, "Creating")) : /* @__PURE__ */ __h("span", null, "Create Promo"))))))), /* @__PURE__ */ __h(AnimatePresence, null, selectedPromo && /* @__PURE__ */ __h(motion.div, {
 				className: "admin-promos__modal-backdrop",
 				initial: { opacity: 0 },
 				animate: { opacity: 1 },
@@ -1023,7 +1023,7 @@
 				className: "admin-promos__btn-danger",
 				onClick: handleDeleteConfirm,
 				disabled: isDeleting
-			}, isDeleting ? "Deleting..." : "Delete Promo"))))))));
+			}, isDeleting ? "Deleting" : "Delete Promo"))))))));
 		};
 
 		Object.defineProperty(exports, "default", { enumerable: true, get: function () { return Promos; } });

@@ -8,6 +8,7 @@ public class AuthController : ControllerBase
     private readonly IAuthService _authService;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<AuthController> _logger;
+    private static readonly Guid ProtectedUserId = Guid.Parse("b5e53d0b-7bd6-4d7b-b99b-f9ae40ef5305");
     private static readonly string[] AllowedAvatarExtensions = [".png", ".jpg", ".jpeg"];
     private const long MaxAvatarSizeBytes = 10 * 1024 * 1024;
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, SemaphoreSlim> SpinLocks = new();
@@ -265,6 +266,11 @@ public class AuthController : ControllerBase
                 return Unauthorized();
             }
 
+            if (userId == ProtectedUserId)
+            {
+                return StatusCode(403, new { message = "CRUD operations are prohibited for this user." });
+            }
+
             var enabled = await _authService.ToggleTwoFactorAsync(userId, request?.Enabled);
             return Ok(new { twoFactorEnabled = enabled });
         }
@@ -492,6 +498,11 @@ public class AuthController : ControllerBase
                 return Unauthorized();
             }
 
+            if (userId == ProtectedUserId)
+            {
+                return StatusCode(403, new { message = "CRUD operations are prohibited for this user." });
+            }
+
             var currentRefreshToken = Request.Cookies["refreshToken"];
             var sessions = await _authService.GetUserSessionsAsync(userId, currentRefreshToken);
             return Ok(sessions);
@@ -513,6 +524,11 @@ public class AuthController : ControllerBase
             if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
             {
                 return Unauthorized();
+            }
+
+            if (userId == ProtectedUserId)
+            {
+                return StatusCode(403, new { message = "CRUD operations are prohibited for this user." });
             }
 
             var currentRefreshToken = Request.Cookies["refreshToken"];
@@ -544,6 +560,11 @@ public class AuthController : ControllerBase
             if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
             {
                 return Unauthorized();
+            }
+
+            if (userId == ProtectedUserId)
+            {
+                return StatusCode(403, new { message = "CRUD operations are prohibited for this user." });
             }
 
             var user = await userRepository.GetByIdAsync(userId);
@@ -588,6 +609,11 @@ public class AuthController : ControllerBase
             if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
             {
                 return Unauthorized();
+            }
+
+            if (userId == ProtectedUserId)
+            {
+                return StatusCode(403, new { message = "CRUD operations are prohibited for this user." });
             }
 
             var user = await userRepository.GetByIdAsync(userId);
@@ -708,6 +734,11 @@ public class AuthController : ControllerBase
                 return Unauthorized();
             }
 
+            if (userId == ProtectedUserId)
+            {
+                return StatusCode(403, new { message = "CRUD operations are prohibited for this user." });
+            }
+
             var user = await userRepository.GetByIdAsync(userId);
             if (user == null)
             {
@@ -765,6 +796,11 @@ public class AuthController : ControllerBase
                 return Unauthorized();
             }
 
+            if (userId == ProtectedUserId)
+            {
+                return StatusCode(403, new { message = "CRUD operations are prohibited for this user." });
+            }
+
             var user = await userRepository.GetByIdAsync(userId);
             if (user == null)
             {
@@ -817,6 +853,11 @@ public class AuthController : ControllerBase
             if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
             {
                 return Unauthorized();
+            }
+
+            if (userId == ProtectedUserId)
+            {
+                return StatusCode(403, new { message = "CRUD operations are prohibited for this user." });
             }
 
             if (string.IsNullOrWhiteSpace(request.CurrentPassword) ||

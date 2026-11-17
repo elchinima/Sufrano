@@ -872,6 +872,6 @@ const Newsletter = () => {
 		src: loaderIcon,
 		alt: "Deleting...",
 		className: "admin-newsletter__loader-mini"
-	}), "Deleting...") : "Delete Record"))))))));
+	}), "Deleting") : "Delete Record"))))))));
 };
 export default Newsletter;

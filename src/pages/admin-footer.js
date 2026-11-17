@@ -774,7 +774,7 @@
 										/* @__PURE__ */ __h("polyline", { points: "17 21 17 13 7 13 7 21" }),
 										/* @__PURE__ */ __h("polyline", { points: "7 3 7 8 15 8" })
 									], 15),
-								saving ? "Saving..." : (dbExists ? "Save Footer" : "Create Footer Row")
+								saving ? "Saving" : (dbExists ? "Save Footer" : "Create Footer Row")
 							)
 						)
 					),

@@ -839,6 +839,6 @@ const Orders = () => {
 		className: "delete-confirm-btn",
 		onClick: handleDeleteOrder,
 		disabled: isDeleting
-	}, isDeleting ? "Deleting..." : "Delete Order"))))))));
+	}, isDeleting ? "Deleting" : "Delete Order"))))))));
 };
 export default Orders;

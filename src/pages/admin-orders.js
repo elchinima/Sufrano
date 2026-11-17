@@ -850,7 +850,7 @@
 				className: "delete-confirm-btn",
 				onClick: handleDeleteOrder,
 				disabled: isDeleting
-			}, isDeleting ? "Deleting..." : "Delete Order"))))))));
+			}, isDeleting ? "Deleting" : "Delete Order"))))))));
 		};
 
 		Object.defineProperty(exports, "default", { enumerable: true, get: function () { return Orders; } });

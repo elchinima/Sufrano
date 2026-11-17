@@ -1121,7 +1121,7 @@ const Products = () => {
 			width: 16,
 			height: 16
 		}
-	}), "Saving...") : activeProduct ? "Save Changes" : "Create Product")))))), /* @__PURE__ */ __h(AnimatePresence, null, isDeleteModalOpen && activeProduct && /* @__PURE__ */ __h("div", {
+	}), "Saving") : activeProduct ? "Save Changes" : "Create Product")))))), /* @__PURE__ */ __h(AnimatePresence, null, isDeleteModalOpen && activeProduct && /* @__PURE__ */ __h("div", {
 		className: "animated-modal-overlay",
 		style: {
 			position: "fixed",
@@ -1193,6 +1193,6 @@ const Products = () => {
 			width: 16,
 			height: 16
 		}
-	}), "Deleting...") : "Delete Product")))))));
+	}), "Deleting") : "Delete Product")))))));
 };
 export default Products;

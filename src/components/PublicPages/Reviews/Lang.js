@@ -45,7 +45,7 @@ export const translations = {
 		"reviews_modal_placeholder": "Поделитесь подробностями о вкусе блюд, доставке, сервисе...",
 		"reviews_modal_cancel": "Отмена",
 		"reviews_modal_submit": "Опубликовать отзыв",
-		"reviews_modal_submitting": "Публикация...",
+		"reviews_modal_submitting": "Публикация",
 		"reviews_order_select_title": "Выберите выполненный заказ",
 		"reviews_order_select_desc": "Выберите, какой выполненный заказ вы хотите оценить",
 		"reviews_order_card_order": "Заказ"
@@ -96,7 +96,7 @@ export const translations = {
 		"reviews_modal_placeholder": "Share details about the taste, food quality, delivery, staff...",
 		"reviews_modal_cancel": "Cancel",
 		"reviews_modal_submit": "Submit Review",
-		"reviews_modal_submitting": "Submitting...",
+		"reviews_modal_submitting": "Submitting",
 		"reviews_order_select_title": "Select Completed Order",
 		"reviews_order_select_desc": "Choose which completed order you would like to evaluate",
 		"reviews_order_card_order": "Order"
@@ -147,7 +147,7 @@ export const translations = {
 		"reviews_modal_placeholder": "Təamların dadı, çatdırılma və xidmət haqqında təfərrüatları bölüşün...",
 		"reviews_modal_cancel": "Ləğv et",
 		"reviews_modal_submit": "Rəyi göndər",
-		"reviews_modal_submitting": "Göndərilir...",
+		"reviews_modal_submitting": "Göndərilir",
 		"reviews_order_select_title": "Tamamlanmış sifarişi seçin",
 		"reviews_order_select_desc": "Hansı tamamlanmış sifarişi qiymətləndirmək istədiyinizi seçin",
 		"reviews_order_card_order": "Sifariş"
