@@ -2099,11 +2099,15 @@
 		const { useEffect, useRef } = __imp_0;
 		const { Navigate, useLocation } = __require("utils/router.js");
 		const { useAuth } = __require("context/AuthContext.js");
+
+		const loaderIcon = "/assets/icons/loader-animated.svg";
 		const AUTH_CHECK_TTL_MS = 5 * 60 * 1e3;
+
 		const ProtectedRoute = ({ children }) => {
 			const { isAuthenticated, authLoading, checkAuthStatus } = useAuth();
 			const location = useLocation();
 			const lastCheckRef = useRef(0);
+
 			useEffect(() => {
 				if (checkAuthStatus) {
 					const now = Date.now();
@@ -2113,9 +2117,22 @@
 					}
 				}
 			}, [location.pathname, checkAuthStatus]);
+
 			if (authLoading) {
-				return null;
+				return /* @__PURE__ */ __h("div", {
+					style: {
+						minHeight: "100vh",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center"
+					}
+				}, /* @__PURE__ */ __h("img", {
+					src: loaderIcon,
+					alt: "Loading...",
+					style: { width: 48, height: 48 }
+				}));
 			}
+
 			if (!isAuthenticated) {
 				return /* @__PURE__ */ __h(Navigate, {
 					to: "/login",
@@ -2123,8 +2140,10 @@
 					replace: true
 				});
 			}
+
 			return children;
 		};
+
 
 		Object.defineProperty(exports, "default", { enumerable: true, get: function () { return ProtectedRoute; } });
 	});
