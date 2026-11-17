@@ -189,10 +189,17 @@ const ProfilePasswordModal = ({ isOpen, onClose, onSuccess, title, description }
 		type: "submit",
 		className: "profile-auth-submit-btn",
 		disabled: loading
-	}, loading ? /* @__PURE__ */ __h("img", {
+	}, loading ? /* @__PURE__ */ __h("span", {
+		style: {
+			display: "inline-flex",
+			alignItems: "center",
+			justifyContent: "center",
+			gap: "8px"
+		}
+	}, /* @__PURE__ */ __h("img", {
 		src: loaderIconRed,
 		alt: "Loading...",
 		className: "profile-auth-btn-spinner"
-	}) : t("modal_security_unlock")))))));
+	}), t("modal_security_unlocking")) : t("modal_security_unlock")))))));
 };
 export default ProfilePasswordModal;

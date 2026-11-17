@@ -582,7 +582,7 @@ const Auth = () => {
 		type: "submit",
 		className: "cta-btn auth-submit-btn",
 		disabled: loading
-	}, loading ? /* @__PURE__ */ __h("span", { className: "auth-btn-loader" }, /* @__PURE__ */ __h(LoaderIcon, null), "...") : t("auth_btn_continue")), /* @__PURE__ */ __h("button", {
+	}, loading ? /* @__PURE__ */ __h("span", { className: "auth-btn-loader" }, /* @__PURE__ */ __h(LoaderIcon, null), t("auth_btn_checking")) : t("auth_btn_continue")), /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "auth-google-btn",
 		title: !agree ? t("auth_err_agree") : t("auth_btn_google"),
@@ -636,7 +636,7 @@ const Auth = () => {
 		type: "submit",
 		className: "cta-btn auth-submit-btn",
 		disabled: loading || twoFactorDigits.join("").length < 4
-	}, loading ? /* @__PURE__ */ __h("span", { className: "auth-btn-loader" }, /* @__PURE__ */ __h(LoaderIcon, null), "...") : t("auth_btn_verify")), /* @__PURE__ */ __h("div", { className: "two-factor-actions" }, /* @__PURE__ */ __h("button", {
+	}, loading ? /* @__PURE__ */ __h("span", { className: "auth-btn-loader" }, /* @__PURE__ */ __h(LoaderIcon, null), t("auth_btn_verifying")) : t("auth_btn_verify")), /* @__PURE__ */ __h("div", { className: "two-factor-actions" }, /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "two-factor-back-btn",
 		onClick: () => {
@@ -661,7 +661,7 @@ const Auth = () => {
 		type: "submit",
 		className: "cta-btn auth-submit-btn",
 		disabled: loading
-	}, loading ? /* @__PURE__ */ __h("span", { className: "auth-btn-loader" }, /* @__PURE__ */ __h(LoaderIcon, null), "...") : t("auth_btn_complete"))), step === "forgot_email" && /* @__PURE__ */ __h("form", {
+	}, loading ? /* @__PURE__ */ __h("span", { className: "auth-btn-loader" }, /* @__PURE__ */ __h(LoaderIcon, null), t("auth_btn_completing")) : t("auth_btn_complete"))), step === "forgot_email" && /* @__PURE__ */ __h("form", {
 		className: "auth-form",
 		onSubmit: handleRequestReset
 	}, /* @__PURE__ */ __h("div", { className: "input-group" }, /* @__PURE__ */ __h("label", { htmlFor: "forgot-email" }, t("auth_label_email")), /* @__PURE__ */ __h("input", {
@@ -678,7 +678,7 @@ const Auth = () => {
 		type: "submit",
 		className: "cta-btn auth-submit-btn",
 		disabled: loading || !forgotEmail.trim()
-	}, loading ? /* @__PURE__ */ __h("span", { className: "auth-btn-loader" }, /* @__PURE__ */ __h(LoaderIcon, null), "...") : t("auth_btn_send_code")), /* @__PURE__ */ __h("div", { className: "two-factor-actions" }, /* @__PURE__ */ __h("button", {
+	}, loading ? /* @__PURE__ */ __h("span", { className: "auth-btn-loader" }, /* @__PURE__ */ __h(LoaderIcon, null), t("auth_btn_sending")) : t("auth_btn_send_code")), /* @__PURE__ */ __h("div", { className: "two-factor-actions" }, /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "two-factor-back-btn",
 		onClick: () => {
@@ -725,7 +725,7 @@ const Auth = () => {
 		type: "submit",
 		className: "cta-btn auth-submit-btn",
 		disabled: loading || forgotDigits.join("").length < 7 || !newPassword || !confirmPassword
-	}, loading ? /* @__PURE__ */ __h("span", { className: "auth-btn-loader" }, /* @__PURE__ */ __h(LoaderIcon, null), "...") : t("auth_btn_reset_password")), /* @__PURE__ */ __h("div", { className: "two-factor-actions" }, /* @__PURE__ */ __h("button", {
+	}, loading ? /* @__PURE__ */ __h("span", { className: "auth-btn-loader" }, /* @__PURE__ */ __h(LoaderIcon, null), t("auth_btn_resetting")) : t("auth_btn_reset_password")), /* @__PURE__ */ __h("div", { className: "two-factor-actions" }, /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "two-factor-resend-btn",
 		onClick: handleResendResetCode,

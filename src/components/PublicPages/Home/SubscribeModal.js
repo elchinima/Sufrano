@@ -197,6 +197,6 @@ const SubscribeModal = ({ isOpen, onClose, email, onSuccess }) => {
 		alignItems: "center",
 		justifyContent: "center",
 		gap: "8px"
-	} }, /* @__PURE__ */ __h(LoaderIcon, null), " Confirming...") : t("home_modal_sub_confirm_btn")))));
+	} }, /* @__PURE__ */ __h(LoaderIcon, null), t("home_modal_sub_confirming")) : t("home_modal_sub_confirm_btn")))));
 };
 export default SubscribeModal;

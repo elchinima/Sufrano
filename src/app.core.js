@@ -2686,11 +2686,18 @@
 				type: "submit",
 				className: "profile-auth-submit-btn",
 				disabled: loading
-			}, loading ? /* @__PURE__ */ __h("img", {
+			}, loading ? /* @__PURE__ */ __h("span", {
+				style: {
+					display: "inline-flex",
+					alignItems: "center",
+					justifyContent: "center",
+					gap: "8px"
+				}
+			}, /* @__PURE__ */ __h("img", {
 				src: loaderIconRed,
 				alt: "Loading...",
 				className: "profile-auth-btn-spinner"
-			}) : t("modal_security_unlock")))))));
+			}), t("modal_security_unlocking")) : t("modal_security_unlock")))))));
 		};
 
 		Object.defineProperty(exports, "default", { enumerable: true, get: function () { return ProfilePasswordModal; } });
@@ -6537,8 +6544,11 @@
 				"auth_agree_terms": "Я принимаю",
 				"auth_terms_link": "Условия использования и политику",
 				"auth_btn_continue": "Продолжить",
+				"auth_btn_checking": "Проверка...",
 				"auth_btn_verify": "Подтвердить код",
+				"auth_btn_verifying": "Проверка кода...",
 				"auth_btn_complete": "Завершить регистрацию",
+				"auth_btn_completing": "Завершение...",
 				"auth_btn_resend_wait": "Отправить снова через",
 				"auth_btn_resend": "Отправить код повторно",
 				"auth_or_divider": "или",
@@ -6564,7 +6574,9 @@
 				"auth_label_confirm_password": "Подтвердите пароль",
 				"auth_placeholder_confirm_password": "Повторите новый пароль",
 				"auth_btn_send_code": "Отправить код",
+				"auth_btn_sending": "Отправка...",
 				"auth_btn_reset_password": "Сбросить пароль",
+				"auth_btn_resetting": "Сброс пароля...",
 				"auth_btn_back_login": "Назад ко входу",
 				"auth_err_code_7_length": "Пожалуйста, введите полный 7-значный код.",
 				"auth_err_password_mismatch": "Пароли не совпадают.",
@@ -6591,8 +6603,11 @@
 				"auth_agree_terms": "I agree to the",
 				"auth_terms_link": "Terms of Use & Privacy Policy",
 				"auth_btn_continue": "Continue",
+				"auth_btn_checking": "Checking...",
 				"auth_btn_verify": "Verify Code",
+				"auth_btn_verifying": "Verifying code...",
 				"auth_btn_complete": "Complete Registration",
+				"auth_btn_completing": "Completing...",
 				"auth_btn_resend_wait": "Resend code in",
 				"auth_btn_resend": "Resend code",
 				"auth_or_divider": "or",
@@ -6618,7 +6633,9 @@
 				"auth_label_confirm_password": "Confirm Password",
 				"auth_placeholder_confirm_password": "Repeat new password",
 				"auth_btn_send_code": "Send Reset Code",
+				"auth_btn_sending": "Sending...",
 				"auth_btn_reset_password": "Reset Password",
+				"auth_btn_resetting": "Resetting...",
 				"auth_btn_back_login": "Back to login",
 				"auth_err_code_7_length": "Please enter the full 7-digit code.",
 				"auth_err_password_mismatch": "Passwords do not match.",
@@ -6645,8 +6662,11 @@
 				"auth_agree_terms": "Qəbul edirəm:",
 				"auth_terms_link": "İstifadə qaydaları və gizlilik siyasəti",
 				"auth_btn_continue": "Davam et",
+				"auth_btn_checking": "Yoxlanılır...",
 				"auth_btn_verify": "Kodu təsdiqlə",
+				"auth_btn_verifying": "Təsdiqlənir...",
 				"auth_btn_complete": "Qeydiyyatı tamamla",
+				"auth_btn_completing": "Tamamlanır...",
 				"auth_btn_resend_wait": "Yenidən göndər:",
 				"auth_btn_resend": "Kodu yenidən göndər",
 				"auth_or_divider": "və ya",
@@ -6672,7 +6692,9 @@
 				"auth_label_confirm_password": "Şifrəni təsdiqləyin",
 				"auth_placeholder_confirm_password": "Yeni şifrəni təkrar edin",
 				"auth_btn_send_code": "Kodu göndər",
+				"auth_btn_sending": "Göndərilir...",
 				"auth_btn_reset_password": "Şifrəni yenilə",
+				"auth_btn_resetting": "Yenilənir...",
 				"auth_btn_back_login": "Girişə qayıt",
 				"auth_err_code_7_length": "Zəhmət olmasa 7 rəqəmli kodu tam daxil edin.",
 				"auth_err_password_mismatch": "Şifrələr uyğun gəlmir.",

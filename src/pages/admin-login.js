@@ -145,7 +145,7 @@
 				type: "submit",
 				className: "cta-btn admin-login-submit",
 				disabled: loading
-			}, loading ? /* @__PURE__ */ __h("span", { className: "admin-login-submit__loader" }, /* @__PURE__ */ __h(LoaderIcon, null), "Signing in...") : "Sign In"))))));
+			}, loading ? /* @__PURE__ */ __h("span", { className: "admin-login-submit__loader" }, /* @__PURE__ */ __h(LoaderIcon, null), (lang === "az" ? "Daxil olunur..." : lang === "ru" ? "Вход..." : "Signing in...")) : lang === "az" ? "Daxil ol" : lang === "ru" ? "Войти" : "Sign In"))))));
 		};
 
 		Object.defineProperty(exports, "default", { enumerable: true, get: function () { return AdminLogin; } });

@@ -34,6 +34,7 @@
 				"home_modal_sub_title": "Подтверждение подписки",
 				"home_modal_sub_desc": "Мы отправили 4-значный код на",
 				"home_modal_sub_confirm_btn": "Подтвердить",
+				"home_modal_sub_confirming": "Подтверждение...",
 				"home_modal_sub_resend_btn": "Отправить снова",
 				"home_modal_sub_cancel_btn": "Отмена",
 				"home_modal_err_title": "Ошибка подписки",
@@ -69,6 +70,7 @@
 				"home_modal_sub_title": "Confirm Subscription",
 				"home_modal_sub_desc": "We sent a 4-digit code to",
 				"home_modal_sub_confirm_btn": "Confirm",
+				"home_modal_sub_confirming": "Confirming...",
 				"home_modal_sub_resend_btn": "Resend Code",
 				"home_modal_sub_cancel_btn": "Cancel",
 				"home_modal_err_title": "Subscription Error",
@@ -104,6 +106,7 @@
 				"home_modal_sub_title": "Abunəliyi təsdiqləyin",
 				"home_modal_sub_desc": "4 rəqəmli kodu göndərdik:",
 				"home_modal_sub_confirm_btn": "Təsdiqlə",
+				"home_modal_sub_confirming": "Təsdiqlənir...",
 				"home_modal_sub_resend_btn": "Kodu yenidən göndər",
 				"home_modal_sub_cancel_btn": "Ləğv et",
 				"home_modal_err_title": "Abunəlik xətası",
@@ -327,7 +330,7 @@
 				alignItems: "center",
 				justifyContent: "center",
 				gap: "8px"
-			} }, /* @__PURE__ */ __h(LoaderIcon, null), " Confirming...") : t("home_modal_sub_confirm_btn")))));
+			} }, /* @__PURE__ */ __h(LoaderIcon, null), t("home_modal_sub_confirming")) : t("home_modal_sub_confirm_btn")))));
 		};
 
 		Object.defineProperty(exports, "default", { enumerable: true, get: function () { return SubscribeModal; } });
