@@ -97,6 +97,21 @@ public class PaymentMethodsController : ControllerBase
         return true;
     }
 
+    internal static bool IsValidCardholderName(string? cardholderName)
+    {
+        if (string.IsNullOrEmpty(cardholderName))
+            return true;
+
+        if (cardholderName.Contains(' '))
+            return false;
+
+        var trimmed = cardholderName.Trim();
+        if (trimmed.Length < 3 || trimmed.Length > 30)
+            return false;
+
+        return Regex.IsMatch(trimmed, @"^[a-zA-Z]+$");
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetPaymentMethods()
     {
@@ -171,6 +186,20 @@ public class PaymentMethodsController : ControllerBase
         if (cleanCvc.Length != 3)
         {
             return BadRequest(new { message = "CVC code must be exactly 3 digits." });
+        }
+
+        if (!IsValidCardholderName(request.CardholderName))
+        {
+            return BadRequest(new
+            {
+                message = "Cardholder name must contain only English letters without spaces (3-30 characters).",
+                messages = new
+                {
+                    az = "Kart sahibinin adı yalnız boşluqsuz ingilis hərflərindən ibarət olmalıdır (3-30 simvol).",
+                    ru = "Имя владельца карты должно содержать только английские буквы без пробелов (от 3 до 30 символов).",
+                    en = "Cardholder name must contain only English letters without spaces (3-30 characters)."
+                }
+            });
         }
 
         var user = await _userRepository.GetByIdAsync(userId.Value);

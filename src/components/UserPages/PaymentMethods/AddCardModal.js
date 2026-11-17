@@ -77,7 +77,7 @@ const AddCardModal = ({ isOpen, onClose, onSave, loading }) => {
 		setCvc(raw);
 	};
 	const handleCardholderChange = (e) => {
-		const val = e.target.value.toUpperCase();
+		const val = e.target.value.replace(/[^a-zA-Z]/g, "").slice(0, 30).toUpperCase();
 		setCardholderName(val);
 	};
 	const handleBlur = (field) => {
@@ -119,7 +119,7 @@ const AddCardModal = ({ isOpen, onClose, onSave, loading }) => {
 		} else if (cvc.length !== 3) {
 			newErrors.cvc = t("card_err_cvc_len");
 		}
-		if (cardholderName && cardholderName.trim().length < 3) {
+		if (cardholderName && !/^[a-zA-Z]{3,30}$/.test(cardholderName)) {
 			newErrors.cardholderName = t("card_err_holder");
 		}
 		if (!agreedToRules) {
@@ -226,6 +226,12 @@ const AddCardModal = ({ isOpen, onClose, onSave, loading }) => {
 		placeholder: t("card_holder_ph"),
 		value: cardholderName,
 		onChange: handleCardholderChange,
+		onKeyDown: (e) => {
+			if (e.key === " ") {
+				e.preventDefault();
+			}
+		},
+		maxLength: 30,
 		onBlur: () => handleBlur("cardholderName"),
 		className: "form-input",
 		autoComplete: "cc-name",

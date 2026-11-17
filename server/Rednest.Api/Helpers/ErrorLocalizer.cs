@@ -5,6 +5,16 @@ public static class ErrorLocalizer
     private static readonly Dictionary<string, (string Az, string Ru, string En)> Translations =
         new(StringComparer.OrdinalIgnoreCase)
         {
+            ["Cardholder name must contain only English letters without spaces (3-30 characters)."] = (
+                "Kart sahibinin adı yalnız boşluqsuz ingilis hərflərindən ibarət olmalıdır (3-30 simvol).",
+                "Имя владельца карты должно содержать только английские буквы без пробелов (от 3 до 30 символов).",
+                "Cardholder name must contain only English letters without spaces (3-30 characters)."
+            ),
+            ["Cardholder name must contain only English letters without spaces."] = (
+                "Kart sahibinin adı yalnız boşluqsuz ingilis hərflərindən ibarət olmalıdır.",
+                "Имя владельца карты должно содержать только английские буквы без пробелов.",
+                "Cardholder name must contain only English letters without spaces."
+            ),
             ["Insufficient balance on your Süfrano account."] = (
                 "Süfrano hesabınızda kifayət qədər balans yoxdur.",
                 "Недостаточно средств на балансе вашего аккаунта Süfrano.",

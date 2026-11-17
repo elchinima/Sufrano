@@ -4369,6 +4369,16 @@
 
 		const ERROR_ENTRIES = [
 			{
+				az: "Kart sahibinin adı yalnız boşluqsuz ingilis hərflərindən ibarət olmalıdır (3-30 simvol).",
+				ru: "Имя владельца карты должно содержать только английские буквы без пробелов (от 3 до 30 символов).",
+				en: "Cardholder name must contain only English letters without spaces (3-30 characters)."
+			},
+			{
+				az: "Kart sahibinin adı yalnız boşluqsuz ingilis hərflərindən ibarət olmalıdır.",
+				ru: "Имя владельца карты должно содержать только английские буквы без пробелов.",
+				en: "Cardholder name must contain only English letters without spaces."
+			},
+			{
 				az: "Süfrano hesabınızda kifayət qədər balans yoxdur.",
 				ru: "Недостаточно средств на балансе вашего аккаунта Süfrano.",
 				en: "Insufficient balance on your Süfrano account."
@@ -7876,7 +7886,7 @@
 				"card_err_exp_past": "Срок действия карты истек.",
 				"card_err_cvc_req": "CVC обязателен.",
 				"card_err_cvc_len": "Должно быть 3 цифры.",
-				"card_err_holder": "Пожалуйста, введите корректное имя владельца.",
+				"card_err_holder": "Имя владельца карты должно содержать только английские буквы без пробелов (от 3 до 30 символов).",
 				"card_err_rules": "Необходимо согласиться с правилами оплаты.",
 				"modal_understand": "Понятно"
 			},
@@ -7926,7 +7936,7 @@
 				"card_err_exp_past": "Card has expired.",
 				"card_err_cvc_req": "CVC is required.",
 				"card_err_cvc_len": "Must be 3 digits.",
-				"card_err_holder": "Please enter a valid cardholder name.",
+				"card_err_holder": "Cardholder name must contain only English letters without spaces (3-30 characters).",
 				"card_err_rules": "You must agree to the payment rules.",
 				"modal_understand": "Understand"
 			},
@@ -7976,7 +7986,7 @@
 				"card_err_exp_past": "Kartın etibarlılıq müddəti bitib.",
 				"card_err_cvc_req": "CVC mütləqdir.",
 				"card_err_cvc_len": "3 rəqəm olmalıdır.",
-				"card_err_holder": "Zəhmət olmasa kart sahibinin düzgün adını qeyd edin.",
+				"card_err_holder": "Kart sahibinin adı yalnız boşluqsuz ingilis hərflərindən ibarət olmalıdır (3-30 simvol).",
 				"card_err_rules": "Ödəniş qaydaları ilə razılaşmaq mütləqdir.",
 				"modal_understand": "Aydındır"
 			}

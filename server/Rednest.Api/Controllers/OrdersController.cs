@@ -610,6 +610,20 @@ public class OrdersController : ControllerBase
                 {
                     return BadRequest(new { message = "Valid payment card details or a saved card are required for online card payment." });
                 }
+
+                if (!PaymentMethodsController.IsValidCardholderName(request?.CardholderName))
+                {
+                    return BadRequest(new
+                    {
+                        message = "Cardholder name must contain only English letters without spaces (3-30 characters).",
+                        messages = new
+                        {
+                            az = "Kart sahibinin adı yalnız boşluqsuz ingilis hərflərindən ibarət olmalıdır (3-30 simvol).",
+                            ru = "Имя владельца карты должно содержать только английские буквы без пробелов (от 3 до 30 символов).",
+                            en = "Cardholder name must contain only English letters without spaces (3-30 characters)."
+                        }
+                    });
+                }
             }
 
             decimal? remainingBalance = null;

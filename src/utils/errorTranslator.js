@@ -2,6 +2,16 @@ import { getStoredLanguage } from "./useLang.js";
 
 const ERROR_ENTRIES = [
 	{
+		az: "Kart sahibinin adı yalnız boşluqsuz ingilis hərflərindən ibarət olmalıdır (3-30 simvol).",
+		ru: "Имя владельца карты должно содержать только английские буквы без пробелов (от 3 до 30 символов).",
+		en: "Cardholder name must contain only English letters without spaces (3-30 characters)."
+	},
+	{
+		az: "Kart sahibinin adı yalnız boşluqsuz ingilis hərflərindən ibarət olmalıdır.",
+		ru: "Имя владельца карты должно содержать только английские буквы без пробелов.",
+		en: "Cardholder name must contain only English letters without spaces."
+	},
+	{
 		az: "Süfrano hesabınızda kifayət qədər balans yoxdur.",
 		ru: "Недостаточно средств на балансе вашего аккаунта Süfrano.",
 		en: "Insufficient balance on your Süfrano account."

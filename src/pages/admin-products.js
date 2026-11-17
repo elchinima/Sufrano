@@ -28,6 +28,7 @@
 			"Main Drinks"
 		];
 		const cleanRole = (role) => (role || "").toLowerCase().replace(/\s+/g, "");
+		const PAGE_SIZE = 10;
 		const Products = () => {
 			const { user } = useAuth();
 			const [products, setProducts] = useState([]);
@@ -36,6 +37,7 @@
 			const [selectedCategory, setSelectedCategory] = useState("all");
 			const [selectedStatus, setSelectedStatus] = useState("all");
 			const [sortBy, setSortBy] = useState("name-asc");
+			const [currentPage, setCurrentPage] = useState(1);
 			const [toast, setToast] = useState({
 				message: "",
 				type: "success"
@@ -183,6 +185,19 @@
 				selectedStatus,
 				sortBy
 			]);
+			const totalPages = Math.ceil(filteredProducts.length / PAGE_SIZE) || 1;
+			useEffect(() => {
+				setCurrentPage(1);
+			}, [searchQuery, selectedCategory, selectedStatus, sortBy]);
+			useEffect(() => {
+				if (currentPage > totalPages) {
+					setCurrentPage(totalPages);
+				}
+			}, [currentPage, totalPages]);
+			const paginatedProducts = useMemo(() => {
+				const start = (currentPage - 1) * PAGE_SIZE;
+				return filteredProducts.slice(start, start + PAGE_SIZE);
+			}, [filteredProducts, currentPage]);
 			const stats = useMemo(() => {
 				const total = products.length;
 				const catCount = allCategories.length;
@@ -598,7 +613,7 @@
 				y1: "1",
 				x2: "14",
 				y2: "4"
-			})), /* @__PURE__ */ __h("h3", null, "No products found"), /* @__PURE__ */ __h("p", null, searchQuery || selectedCategory !== "all" ? "Try adjusting your search query or category filter." : "Your catalog is empty. Click \"Add Product\" above to create the first item.")) : /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("div", { className: "admin-products__table-wrapper" }, /* @__PURE__ */ __h("table", { className: "admin-products__table" }, /* @__PURE__ */ __h("thead", null, /* @__PURE__ */ __h("tr", null, /* @__PURE__ */ __h("th", null, "Product"), /* @__PURE__ */ __h("th", null, "Category"), /* @__PURE__ */ __h("th", null, "Price"), /* @__PURE__ */ __h("th", { className: "text-center" }, "Sold"), /* @__PURE__ */ __h("th", { className: "text-center" }, "Status"), /* @__PURE__ */ __h("th", null, "Actions"))), /* @__PURE__ */ __h("tbody", null, filteredProducts.map((prod, idx) => {
+			})), /* @__PURE__ */ __h("h3", null, "No products found"), /* @__PURE__ */ __h("p", null, searchQuery || selectedCategory !== "all" ? "Try adjusting your search query or category filter." : "Your catalog is empty. Click \"Add Product\" above to create the first item.")) : /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("div", { className: "admin-products__table-wrapper" }, /* @__PURE__ */ __h("table", { className: "admin-products__table" }, /* @__PURE__ */ __h("thead", null, /* @__PURE__ */ __h("tr", null, /* @__PURE__ */ __h("th", null, "Product"), /* @__PURE__ */ __h("th", null, "Category"), /* @__PURE__ */ __h("th", null, "Price"), /* @__PURE__ */ __h("th", { className: "text-center" }, "Sold"), /* @__PURE__ */ __h("th", { className: "text-center" }, "Status"), /* @__PURE__ */ __h("th", null, "Actions"))), /* @__PURE__ */ __h("tbody", null, paginatedProducts.map((prod, idx) => {
 				const priceInfo = getProductPriceInfo(prod);
 				const iconUrl = prod.images?.icon || prod.images?.image || prod.imageUrl;
 				const actions = [
@@ -674,9 +689,9 @@
 				}, prod.isActive !== false ? "Active" : "Inactive")), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h(AdminTableActions, {
 					actions,
 					index: idx,
-					total: filteredProducts.length
+					total: paginatedProducts.length
 				})));
-			})))), /* @__PURE__ */ __h("div", { className: "admin-products__mobile-grid" }, filteredProducts.map((prod, idx) => {
+			})))), /* @__PURE__ */ __h("div", { className: "admin-products__mobile-grid" }, paginatedProducts.map((prod, idx) => {
 				const priceInfo = getProductPriceInfo(prod);
 				const iconUrl = prod.images?.icon || prod.images?.image || prod.imageUrl;
 				const actions = [
@@ -770,9 +785,33 @@
 				}, prod.isActive !== false ? "Active" : "Inactive"), /* @__PURE__ */ __h("span", { className: "admin-products__mobile-sold-badge" }, prod.totalSold ?? 0, " sold"))), /* @__PURE__ */ __h("div", { className: "admin-products__mobile-actions" }, /* @__PURE__ */ __h(AdminTableActions, {
 					actions,
 					index: idx,
-					total: filteredProducts.length
+					total: paginatedProducts.length
 				}))));
-			}))), /* @__PURE__ */ __h(AnimatePresence, null, isDetailsModalOpen && activeProduct && /* @__PURE__ */ __h("div", {
+			})), !loading && totalPages > 1 && /* @__PURE__ */ __h("div", { className: "admin-products__pagination" }, /* @__PURE__ */ __h("div", { className: "admin-products__pagination-info" }, "Showing ", (currentPage - 1) * PAGE_SIZE + 1, "–", Math.min(currentPage * PAGE_SIZE, filteredProducts.length), " of ", filteredProducts.length, " products"), /* @__PURE__ */ __h("div", { className: "admin-products__pagination-controls" }, /* @__PURE__ */ __h("button", {
+				type: "button",
+				className: "admin-products__page-btn",
+				onClick: () => setCurrentPage(1),
+				disabled: currentPage === 1,
+				title: "First page"
+			}, "«"), /* @__PURE__ */ __h("button", {
+				type: "button",
+				className: "admin-products__page-btn",
+				onClick: () => setCurrentPage((p) => Math.max(1, p - 1)),
+				disabled: currentPage === 1,
+				title: "Previous page"
+			}, "‹ Prev"), /* @__PURE__ */ __h("span", { className: "admin-products__page-current" }, "Page ", currentPage, " of ", totalPages), /* @__PURE__ */ __h("button", {
+				type: "button",
+				className: "admin-products__page-btn",
+				onClick: () => setCurrentPage((p) => Math.min(totalPages, p + 1)),
+				disabled: currentPage === totalPages,
+				title: "Next page"
+			}, "Next ›"), /* @__PURE__ */ __h("button", {
+				type: "button",
+				className: "admin-products__page-btn",
+				onClick: () => setCurrentPage(totalPages),
+				disabled: currentPage === totalPages,
+				title: "Last page"
+			}, "»")))), /* @__PURE__ */ __h(AnimatePresence, null, isDetailsModalOpen && activeProduct && /* @__PURE__ */ __h("div", {
 				className: "animated-modal-overlay",
 				style: {
 					position: "fixed",

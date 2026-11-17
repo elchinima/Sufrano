@@ -131,7 +131,7 @@ const StripePaymentModal = ({ isOpen, onClose, serviceId, finalAmount, promoCode
 		setCvc(raw);
 	};
 	const handleCardholderChange = (e) => {
-		const val = e.target.value.toUpperCase();
+		const val = e.target.value.replace(/[^a-zA-Z]/g, "").slice(0, 30).toUpperCase();
 		setCardholderName(val);
 	};
 	const handleBlur = (field) => {
@@ -173,7 +173,7 @@ const StripePaymentModal = ({ isOpen, onClose, serviceId, finalAmount, promoCode
 		} else if (cvc.length !== 3) {
 			newErrors.cvc = t("errCvcDigits");
 		}
-		if (cardholderName && cardholderName.trim().length < 3) {
+		if (cardholderName && !/^[a-zA-Z]{3,30}$/.test(cardholderName)) {
 			newErrors.cardholderName = t("errCardholderInvalid");
 		}
 		if (!agreedToRules) {
@@ -438,6 +438,12 @@ const StripePaymentModal = ({ isOpen, onClose, serviceId, finalAmount, promoCode
 		placeholder: t("cardholderPlaceholder"),
 		value: cardholderName,
 		onChange: handleCardholderChange,
+		onKeyDown: (e) => {
+			if (e.key === " ") {
+				e.preventDefault();
+			}
+		},
+		maxLength: 30,
 		onBlur: () => handleBlur("cardholderName"),
 		className: "form-input",
 		autoComplete: "cc-name",
