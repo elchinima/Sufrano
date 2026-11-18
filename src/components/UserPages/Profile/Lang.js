@@ -71,7 +71,13 @@ export const translations = {
 		"crop_modal_hint": "Перетащите и настройте масштаб в квадратной области",
 		"crop_modal_cancel": "Отмена",
 		"crop_modal_apply": "Применить",
-		"crop_modal_saving": "Сохранение"
+		"crop_modal_saving": "Сохранение",
+		"profile_verify_title": "Верификация аккаунта",
+		"profile_verify_desc_not_verificated": "Ваш аккаунт ещё не верифицирован. Подтвердите его для полного доступа к функциям сервиса.",
+		"profile_verify_desc_in_progress": "Запрос на верификацию отправлен и находится на рассмотрении администрации.",
+		"profile_verify_btn": "Верифицировать аккаунт",
+		"profile_verify_status_in_progress": "В процессе",
+		"profile_verify_toast_requested": "Запрос на верификацию успешно отправлен."
 	},
 	en: {
 		"profile_hero_title": "My Profile",
@@ -145,7 +151,13 @@ export const translations = {
 		"crop_modal_hint": "Drag to move and use slider to zoom into square",
 		"crop_modal_cancel": "Cancel",
 		"crop_modal_apply": "Apply",
-		"crop_modal_saving": "Saving"
+		"crop_modal_saving": "Saving",
+		"profile_verify_title": "Account Verification",
+		"profile_verify_desc_not_verificated": "Your account is not verified yet. Verify it to unlock all privileges and features.",
+		"profile_verify_desc_in_progress": "Your verification request has been submitted and is currently under review.",
+		"profile_verify_btn": "Verify Account",
+		"profile_verify_status_in_progress": "In Progress",
+		"profile_verify_toast_requested": "Verification request submitted successfully."
 	},
 	az: {
 		"profile_hero_title": "Mənim profilim",
@@ -219,7 +231,13 @@ export const translations = {
 		"crop_modal_hint": "Şəkli tənzimləmək üçün sürükləyin və miqyası dəyişin",
 		"crop_modal_cancel": "Ləğv et",
 		"crop_modal_apply": "Tətbiq et",
-		"crop_modal_saving": "Saxlanılır"
+		"crop_modal_saving": "Saxlanılır",
+		"profile_verify_title": "Hesab təsdiqlənməsi",
+		"profile_verify_desc_not_verificated": "Hesabınız hələ təsdiqlənməyib. Bütün imkanlardan faydalanmaq üçün hesabınızı təsdiqləyin.",
+		"profile_verify_desc_in_progress": "Təsdiqləmə sorğunuz göndərilib və hazırda baxılma prosesindədir.",
+		"profile_verify_btn": "Hesabı təsdiqlə",
+		"profile_verify_status_in_progress": "Gözləmədə",
+		"profile_verify_toast_requested": "Təsdiqləmə sorğusu uğurla göndərildi."
 	}
 };
 export const getProfileTranslation = (lang, dataId) => {

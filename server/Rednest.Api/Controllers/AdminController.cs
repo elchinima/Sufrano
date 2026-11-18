@@ -510,6 +510,13 @@ public class AdminController : ControllerBase
                 user.Session.TwoFactorEnabled = request.TwoFactorEnabled.Value;
             if (request.Subscribe.HasValue)
                 user.Session.Subscribe = request.Subscribe.Value;
+            if (!string.IsNullOrWhiteSpace(request.Verification))
+            {
+                if (Enum.TryParse<VerificationStatus>(request.Verification.Replace(" ", ""), true, out var parsedVerif))
+                {
+                    user.Session.Verification = parsedVerif;
+                }
+            }
         }
 
         await _context.SaveChangesAsync();
@@ -2890,6 +2897,7 @@ public class AdminUpdateUserRequest
     public bool? IsActive { get; set; }
     public bool? TwoFactorEnabled { get; set; }
     public bool? Subscribe { get; set; }
+    public string? Verification { get; set; }
 }
 
 public class AdminProductPricesRequest

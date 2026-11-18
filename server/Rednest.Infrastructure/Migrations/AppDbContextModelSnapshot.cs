@@ -457,12 +457,6 @@ namespace Rednest.Infrastructure.Migrations
                         .HasDefaultValue(true)
                         .HasColumnName("IsActive");
 
-                    b.Property<bool>("IsVerificated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("IsVerificated");
-
                     b.Property<string>("RegistrationIp")
                         .HasColumnType("text");
 
@@ -481,6 +475,13 @@ namespace Rednest.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false)
                         .HasColumnName("2FA");
+
+                    b.Property<string>("Verification")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("Verification")
+                        .HasDefaultValueSql("'\"NotVerificated\"'::jsonb");
 
                     b.HasKey("UserId");
 

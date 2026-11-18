@@ -87,7 +87,8 @@ public class AuthController : ControllerBase
                     profilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
                     balance = user.Balance,
                     role = user.Role == UserRole.SuperAdmin ? "Super Admin" : (user.Role == UserRole.LeadStaff ? "Lead Staff" : user.Role.ToString()),
-                    twoFactorEnabled = userSession?.TwoFactorEnabled ?? false
+                    twoFactorEnabled = userSession?.TwoFactorEnabled ?? false,
+                    verification = (userSession?.Verification ?? VerificationStatus.NotVerificated).ToString()
                 }
             });
         }
@@ -154,7 +155,8 @@ public class AuthController : ControllerBase
                     profilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
                     balance = user.Balance,
                     role = user.Role == UserRole.SuperAdmin ? "Super Admin" : (user.Role == UserRole.LeadStaff ? "Lead Staff" : user.Role.ToString()),
-                    twoFactorEnabled = userSession?.TwoFactorEnabled ?? false
+                    twoFactorEnabled = userSession?.TwoFactorEnabled ?? false,
+                    verification = (userSession?.Verification ?? VerificationStatus.NotVerificated).ToString()
                 }
             });
         }
@@ -210,7 +212,8 @@ public class AuthController : ControllerBase
                     profilePictureUrl = AvatarHelper.Resolve(result.User.ProfilePictureUrl),
                     balance = result.User.Balance,
                     role = result.User.Role == UserRole.SuperAdmin ? "Super Admin" : (result.User.Role == UserRole.LeadStaff ? "Lead Staff" : result.User.Role.ToString()),
-                    twoFactorEnabled = true
+                    twoFactorEnabled = true,
+                    verification = (result.User.Session?.Verification ?? VerificationStatus.NotVerificated).ToString()
                 }
             });
         }
@@ -429,7 +432,8 @@ public class AuthController : ControllerBase
                     profilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
                     balance = user.Balance,
                     role = user.Role == UserRole.SuperAdmin ? "Super Admin" : (user.Role == UserRole.LeadStaff ? "Lead Staff" : user.Role.ToString()),
-                    twoFactorEnabled = userSession?.TwoFactorEnabled ?? false
+                    twoFactorEnabled = userSession?.TwoFactorEnabled ?? false,
+                    verification = (userSession?.Verification ?? VerificationStatus.NotVerificated).ToString()
                 }
             });
         }
@@ -592,12 +596,75 @@ public class AuthController : ControllerBase
                 ProfilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
                 Balance = user.Balance,
                 Role = user.Role == UserRole.SuperAdmin ? "Super Admin" : (user.Role == UserRole.LeadStaff ? "Lead Staff" : user.Role.ToString()),
-                TwoFactorEnabled = userSession?.TwoFactorEnabled ?? false
+                TwoFactorEnabled = userSession?.TwoFactorEnabled ?? false,
+                Verification = (userSession?.Verification ?? VerificationStatus.NotVerificated).ToString()
             });
         }
         catch (Exception ex)
         {
             return BadRequest(new { Message = ex.Message });
+        }
+    }
+
+    [Microsoft.AspNetCore.Authorization.Authorize]
+    [HttpPost("verification/request")]
+    public async Task<IActionResult> RequestVerification([FromServices] IUserRepository userRepository)
+    {
+        try
+        {
+            var userIdString = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+            {
+                return Unauthorized();
+            }
+
+            if (userId == ProtectedUserId)
+            {
+                return StatusCode(403, new { message = "CRUD operations are prohibited for this user." });
+            }
+
+            var user = await userRepository.GetByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found." });
+            }
+
+            if (user.Role == UserRole.AI || user.Role == UserRole.Bot)
+            {
+                return BadRequest(new { message = "Action not supported for bot or AI accounts." });
+            }
+
+            var session = user.Session ?? await userRepository.GetSessionByUserIdAsync(user.Id);
+            if (session == null)
+            {
+                session = new UserSession
+                {
+                    UserId = user.Id,
+                    Verification = VerificationStatus.InProgress,
+                    IsActive = true
+                };
+                await userRepository.AddSessionAsync(session);
+            }
+            else
+            {
+                if (session.Verification == VerificationStatus.Comfirmed)
+                {
+                    return BadRequest(new { message = "Account is already verified.", verification = "Comfirmed" });
+                }
+
+                session.Verification = VerificationStatus.InProgress;
+                await userRepository.UpdateSessionAsync(session);
+            }
+
+            return Ok(new
+            {
+                message = "Verification requested successfully.",
+                verification = session.Verification.ToString()
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
         }
     }
 

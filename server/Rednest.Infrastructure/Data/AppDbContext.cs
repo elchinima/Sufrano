@@ -70,7 +70,7 @@ public class AppDbContext : DbContext
             entity.Property(e => e.Verification)
                   .HasColumnName("Verification")
                   .HasColumnType("jsonb")
-                  .HasDefaultValueSql("'"NotVerificated"'::jsonb")
+                  .HasDefaultValueSql("'\"NotVerificated\"'::jsonb")
                   .HasConversion(
                       v => System.Text.Json.JsonSerializer.Serialize(v.ToString(), (System.Text.Json.JsonSerializerOptions?)null),
                       s => Enum.Parse<VerificationStatus>(System.Text.Json.JsonSerializer.Deserialize<string>(s, (System.Text.Json.JsonSerializerOptions?)null)!));

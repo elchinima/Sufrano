@@ -38,6 +38,10 @@ const Profile = () => {
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
 	const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+	const [verificationLoading, setVerificationLoading] = useState(false);
+	const verificationStatus = (user?.verification || user?.Verification || "NotVerificated").toString();
+	const isConfirmed = verificationStatus === "Comfirmed" || user?.role === "Bot" || user?.role === "AI";
+	const isInProgress = verificationStatus === "InProgress";
 	const fileInputRef = useRef(null);
 	const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
 	const rawAvatarUrl = user?.profilePictureUrl || user?.ProfilePictureUrl || null;
@@ -181,6 +185,53 @@ const Profile = () => {
 			setTwoFactorLoading(false);
 		}
 	};
+	useEffect(() => {
+		let isMounted = true;
+		const fetchFreshVerification = async () => {
+			try {
+				const res = await fetch(`${apiUrl}/api/auth/me`, { credentials: "include" });
+				if (res.ok) {
+					const data = await res.json();
+					const freshVerif = data.verification || data.Verification;
+					if (freshVerif && isMounted) {
+						updateUser({
+							verification: freshVerif,
+							Verification: freshVerif
+						});
+					}
+				}
+			} catch {}
+		};
+		fetchFreshVerification();
+		return () => { isMounted = false; };
+	}, []);
+	const handleRequestVerification = async () => {
+		if (verificationLoading || isInProgress || isConfirmed) return;
+		setVerificationLoading(true);
+		try {
+			const res = await fetch(`${apiUrl}/api/auth/verification/request`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				credentials: "include"
+			});
+			if (res.ok) {
+				const data = await res.json();
+				const nextStatus = data.verification || "InProgress";
+				updateUser({
+					verification: nextStatus,
+					Verification: nextStatus
+				});
+				showSuccess(t("profile_verify_toast_requested"));
+			} else {
+				const data = await res.json().catch(() => ({}));
+				showError(data.message || "Failed to submit verification request.");
+			}
+		} catch {
+			showError("Connection error. Please try again.");
+		} finally {
+			setVerificationLoading(false);
+		}
+	};
 	return /* @__PURE__ */ __h(motion.div, {
 		className: "profile-page",
 		initial: { opacity: 0 },
@@ -206,7 +257,45 @@ const Profile = () => {
 				1
 			]
 		}
-	}, /* @__PURE__ */ __h("h1", null, t("profile_hero_title")), /* @__PURE__ */ __h("p", { className: "profile-hero-desc" }, t("profile_hero_desc"))), /* @__PURE__ */ __h(motion.div, {
+	}, /* @__PURE__ */ __h("h1", null, t("profile_hero_title")), /* @__PURE__ */ __h("p", { className: "profile-hero-desc" }, t("profile_hero_desc")), !isConfirmed && /* @__PURE__ */ __h("div", {
+		className: `profile-verify-banner ${isInProgress ? "profile-verify-banner--in-progress" : "profile-verify-banner--not-verified"}`
+	}, /* @__PURE__ */ __h("div", { className: "profile-verify-banner__left" }, /* @__PURE__ */ __h("div", { className: "profile-verify-banner__icon-wrap" }, isInProgress ? /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		width: "22",
+		height: "22",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2",
+		strokeLinecap: "round",
+		strokeLinejoin: "round"
+	}, /* @__PURE__ */ __h("circle", { cx: "12", cy: "12", r: "10" }), /* @__PURE__ */ __h("polyline", { points: "12 6 12 12 16 14" })) : /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		width: "22",
+		height: "22",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2",
+		strokeLinecap: "round",
+		strokeLinejoin: "round"
+	}, /* @__PURE__ */ __h("path", { d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" }), /* @__PURE__ */ __h("line", { x1: "12", y1: "8", x2: "12", y2: "12" }), /* @__PURE__ */ __h("line", { x1: "12", y1: "16", x2: "12.01", y2: "16" }))), /* @__PURE__ */ __h("div", { className: "profile-verify-banner__info" }, /* @__PURE__ */ __h("h3", { className: "profile-verify-banner__title" }, t("profile_verify_title")), /* @__PURE__ */ __h("p", { className: "profile-verify-banner__desc" }, isInProgress ? t("profile_verify_desc_in_progress") : t("profile_verify_desc_not_verificated")))), /* @__PURE__ */ __h("div", { className: "profile-verify-banner__action" }, isInProgress ? /* @__PURE__ */ __h("div", { className: "profile-verify-banner__badge in-progress" }, /* @__PURE__ */ __h("span", { className: "profile-verify-banner__pulse-dot" }), /* @__PURE__ */ __h("span", null, t("profile_verify_status_in_progress"))) : /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "cta-btn sm profile-verify-banner__btn",
+		onClick: handleRequestVerification,
+		disabled: verificationLoading
+	}, verificationLoading ? /* @__PURE__ */ __h("img", {
+		src: loaderIcon,
+		alt: "Loading",
+		className: "btn-loader"
+	}) : /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		width: "16",
+		height: "16",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2.2",
+		strokeLinecap: "round",
+		strokeLinejoin: "round"
+	}, /* @__PURE__ */ __h("path", { d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" }), /* @__PURE__ */ __h("polyline", { points: "9 12 11 14 15 10" })), /* @__PURE__ */ __h("span", null, t("profile_verify_btn"))))))), /* @__PURE__ */ __h(motion.div, {
 		className: "profile-card",
 		initial: {
 			opacity: 0,
