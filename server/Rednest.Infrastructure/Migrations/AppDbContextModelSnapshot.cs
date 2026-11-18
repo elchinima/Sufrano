@@ -457,6 +457,12 @@ namespace Rednest.Infrastructure.Migrations
                         .HasDefaultValue(true)
                         .HasColumnName("IsActive");
 
+                    b.Property<bool>("IsVerificated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsVerificated");
+
                     b.Property<string>("RegistrationIp")
                         .HasColumnType("text");
 

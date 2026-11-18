@@ -496,6 +496,26 @@ public static class ErrorLocalizer
                 "Неверный пароль.",
                 "Incorrect password."
             ),
+            ["Incorrect password. Please try again."] = (
+                "Yanlış şifrə. Yenidən cəhd edin.",
+                "Неверный пароль. Попробуйте еще раз.",
+                "Incorrect password. Please try again."
+            ),
+            ["Password is required."] = (
+                "Şifrə tələb olunur.",
+                "Пароль обязателен.",
+                "Password is required."
+            ),
+            ["Password verified successfully."] = (
+                "Şifrə uğurla təsdiqləndi.",
+                "Пароль успешно подтвержден.",
+                "Password verified successfully."
+            ),
+            ["Connection error. Please try again."] = (
+                "Bağlantı xətası. Yenidən cəhd edin.",
+                "Ошибка подключения. Попробуйте еще раз.",
+                "Connection error. Please try again."
+            ),
             ["Account suspended."] = (
                 "Hesab dayandırılıb.",
                 "Учетная запись заблокирована.",

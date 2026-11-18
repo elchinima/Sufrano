@@ -6,6 +6,7 @@ const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 import { fetchWithRefresh } from "../../utils/fetchWithRefresh.js";
 import { useLang } from "../../utils/useLang.js";
 import { getWidgetTranslation } from "./Lang.js";
+import { translateError } from "../../utils/errorTranslator.js";
 const EyeIcon = ({ visible }) => visible ? /* @__PURE__ */ __h("svg", {
 	viewBox: "0 0 24 24",
 	fill: "none",
@@ -85,13 +86,14 @@ const ProfilePasswordModal = ({ isOpen, onClose, onSuccess, title, description }
 					onSuccess();
 				}
 			} else {
-				setError(data.message || (lang === "az" ? "Yanlış şifrə. Yenidən cəhd edin." : lang === "en" ? "Incorrect password. Please try again." : "Неверный пароль. Попробуйте еще раз."));
+				const localizedErr = translateError(data?.message, lang);
+				setError(localizedErr || (lang === "az" ? "Yanlış şifrə. Yenidən cəhd edin." : lang === "en" ? "Incorrect password. Please try again." : "Неверный пароль. Попробуйте еще раз."));
 				if (inputRef.current) {
 					inputRef.current.select();
 				}
 			}
 		} catch {
-			setError(lang === "az" ? "Bağlantı xətası. Yenidən cəhd edin." : lang === "en" ? "Connection error. Please try again." : "Ошибка подключения. Попробуйте еще раз.");
+			setError(translateError("Connection error. Please try again.", lang) || (lang === "az" ? "Bağlantı xətası. Yenidən cəhd edin." : lang === "en" ? "Connection error. Please try again." : "Ошибка подключения. Попробуйте еще раз."));
 		} finally {
 			setLoading(false);
 		}

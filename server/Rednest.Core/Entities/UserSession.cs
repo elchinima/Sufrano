@@ -7,6 +7,7 @@ public class UserSession
     public bool TwoFactorEnabled { get; set; } = false;
     public bool Subscribe { get; set; } = false;
     public bool IsActive { get; set; } = true;
+    public VerificationStatus Verification { get; set; } = VerificationStatus.NotVerificated;
     public List<AccountVerifyEntry> AccountVerify { get; set; } = new();
     public List<SessionEntry> Sessions { get; set; } = new();
 

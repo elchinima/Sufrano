@@ -438,11 +438,12 @@ static async Task EnsurePixelUserAndSeedAsync(IServiceProvider services)
             UserId = pixelUser.Id,
             TwoFactorEnabled = true,
             IsActive = true,
-            Subscribe = false
+            Subscribe = false,
+            Verification = VerificationStatus.Comfirmed
         };
         db.UserSessions.Add(session);
         await db.SaveChangesAsync();
-        logger?.LogInformation("Pixel (AI) user created with 2FA enabled.");
+        logger?.LogInformation("Pixel (AI) user created with 2FA enabled and verified.");
     }
     else
     {
@@ -472,14 +473,23 @@ static async Task EnsurePixelUserAndSeedAsync(IServiceProvider services)
                 UserId = pixelUser.Id,
                 TwoFactorEnabled = true,
                 IsActive = true,
-                Subscribe = false
+                Subscribe = false,
+                Verification = VerificationStatus.Comfirmed
             });
             changed = true;
         }
-        else if (!pixelUser.Session.TwoFactorEnabled)
+        else
         {
-            pixelUser.Session.TwoFactorEnabled = true;
-            changed = true;
+            if (!pixelUser.Session.TwoFactorEnabled)
+            {
+                pixelUser.Session.TwoFactorEnabled = true;
+                changed = true;
+            }
+            if (pixelUser.Session.Verification != VerificationStatus.Comfirmed)
+            {
+                pixelUser.Session.Verification = VerificationStatus.Comfirmed;
+                changed = true;
+            }
         }
 
         if (changed)

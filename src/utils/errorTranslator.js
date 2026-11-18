@@ -486,6 +486,31 @@ const ERROR_ENTRIES = [
 		az: "Ödəniş icrası zamanı xəta baş verdi.",
 		ru: "Произошла ошибка при обработке платежа.",
 		en: "An error occurred while processing the payment."
+	},
+	{
+		az: "Yanlış şifrə. Yenidən cəhd edin.",
+		ru: "Неверный пароль. Попробуйте еще раз.",
+		en: "Incorrect password. Please try again."
+	},
+	{
+		az: "Yanlış şifrə.",
+		ru: "Неверный пароль.",
+		en: "Incorrect password."
+	},
+	{
+		az: "Şifrə tələb olunur.",
+		ru: "Пароль обязателен.",
+		en: "Password is required."
+	},
+	{
+		az: "Şifrə uğurla təsdiqləndi.",
+		ru: "Пароль успешно подтвержден.",
+		en: "Password verified successfully."
+	},
+	{
+		az: "Bağlantı xətası. Yenidən cəhd edin.",
+		ru: "Ошибка подключения. Попробуйте еще раз.",
+		en: "Connection error. Please try again."
 	}
 ];
 

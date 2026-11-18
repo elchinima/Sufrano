@@ -27,7 +27,9 @@ export const translations = {
 		"sessions_sec_desc_suffix": ". Не забывайте выходить из аккаунта на общедоступных компьютерах.",
 		"sessions_toast_revoked": "Сессия успешно завершена.",
 		"sessions_toast_ip_copied": "IP-адрес скопирован в буфер обмена!",
-		"sessions_toast_revoke_error": "Ошибка при завершении сессии."
+		"sessions_toast_revoke_error": "Ошибка при завершении сессии.",
+		"sessions_load_more": "Показать дальше",
+		"sessions_load_more_remaining": "осталось"
 	},
 	en: {
 		"sessions_hero_title": "Active Sessions",
@@ -57,7 +59,9 @@ export const translations = {
 		"sessions_sec_desc_suffix": ". Remember to always sign out when using public or shared computers.",
 		"sessions_toast_revoked": "Session terminated successfully.",
 		"sessions_toast_ip_copied": "IP address copied to clipboard!",
-		"sessions_toast_revoke_error": "Error revoking session."
+		"sessions_toast_revoke_error": "Error revoking session.",
+		"sessions_load_more": "Show More",
+		"sessions_load_more_remaining": "remaining"
 	},
 	az: {
 		"sessions_hero_title": "Aktiv sessiyalar",
@@ -87,7 +91,9 @@ export const translations = {
 		"sessions_sec_desc_suffix": " şifrənizi yeniləyin. İctimai kompüterlərdən istifadə etdikdə hesabınızdan çıxmağı unutmayın.",
 		"sessions_toast_revoked": "Sessiya uğurla dayandırıldı.",
 		"sessions_toast_ip_copied": "IP ünvanı kopyalandı!",
-		"sessions_toast_revoke_error": "Sessiya dayandırılarkən xəta baş verdi."
+		"sessions_toast_revoke_error": "Sessiya dayandırılarkən xəta baş verdi.",
+		"sessions_load_more": "Daha çox göstər",
+		"sessions_load_more_remaining": "qaldı"
 	}
 };
 export const getSessionsTranslation = (lang, dataId) => {

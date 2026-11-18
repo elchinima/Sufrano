@@ -275,6 +275,7 @@ public class AdminController : ControllerBase
                 balance = u.Balance,
                 role = u.Role == UserRole.SuperAdmin ? "Super Admin" : (u.Role == UserRole.LeadStaff ? "Lead Staff" : u.Role.ToString()),
                 isActive = u.Session?.IsActive ?? true,
+                verification = (u.Session?.Verification ?? ((u.Role == UserRole.Bot || u.Role == UserRole.AI) ? VerificationStatus.Comfirmed : VerificationStatus.NotVerificated)).ToString(),
                 twoFactorEnabled = u.Session?.TwoFactorEnabled ?? false,
                 subscribe = u.Session?.Subscribe ?? false,
                 registrationIp = u.Session?.RegistrationIp,
@@ -343,6 +344,7 @@ public class AdminController : ControllerBase
                 user.Session.TwoFactorEnabled,
                 user.Session.Subscribe,
                 user.Session.IsActive,
+                verification = user.Session.Verification.ToString(),
                 sessions = user.Session.Sessions ?? new List<SessionEntry>(),
                 accountVerify = user.Session.AccountVerify ?? new List<AccountVerifyEntry>()
             } : null,
@@ -469,6 +471,12 @@ public class AdminController : ControllerBase
                     }
 
                     user.Role = parsedRole;
+                    if (user.Session != null)
+                    {
+                        user.Session.Verification = (parsedRole == UserRole.Bot || parsedRole == UserRole.AI)
+                            ? VerificationStatus.Comfirmed
+                            : VerificationStatus.NotVerificated;
+                    }
                 }
             }
             else
@@ -483,6 +491,7 @@ public class AdminController : ControllerBase
             {
                 UserId = user.Id,
                 IsActive = request.IsActive ?? true,
+                Verification = (user.Role == UserRole.Bot || user.Role == UserRole.AI) ? VerificationStatus.Comfirmed : VerificationStatus.NotVerificated,
                 TwoFactorEnabled = request.TwoFactorEnabled ?? false,
                 Subscribe = request.Subscribe ?? false
             };

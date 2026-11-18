@@ -1,5 +1,5 @@
 import { __h, __Fragment } from '../../../utils/runtime.js';
-import React, { useState, useEffect } from "../../../utils/runtime.js";
+import React, { useState, useEffect, useMemo } from "../../../utils/runtime.js";
 import { motion, AnimatePresence } from "../../../utils/motion.js";
 import { Link, useNavigate } from "../../../utils/router.js";
 import { useAuth } from "../../../context/AuthContext.js";
@@ -104,6 +104,7 @@ const formatBakuDate = (dateStr) => {
 		return "—";
 	}
 };
+const PAGE_SIZE = 10;
 const Sessions = () => {
 	const { user } = useAuth();
 	const { requireProfileAccess } = useProfileSecurity();
@@ -111,6 +112,7 @@ const Sessions = () => {
 	const lang = useLang();
 	const t = (id) => getSessionsTranslation(lang, id);
 	const [sessions, setSessions] = useState([]);
+	const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [revokingId, setRevokingId] = useState(null);
@@ -122,9 +124,17 @@ const Sessions = () => {
 			setToastMessage(null);
 		}, duration);
 	};
+	const visibleSessions = useMemo(() => {
+		return sessions.slice(0, visibleCount);
+	}, [sessions, visibleCount]);
+	const hasMore = visibleCount < sessions.length;
+	const handleLoadMore = () => {
+		setVisibleCount((prev) => prev + PAGE_SIZE);
+	};
 	const fetchSessions = async () => {
 		setLoading(true);
 		setError(null);
+		setVisibleCount(PAGE_SIZE);
 		try {
 			const res = await fetchWithRefresh(`${apiUrl}/api/auth/sessions`);
 			if (!res.ok) {
@@ -272,7 +282,7 @@ const Sessions = () => {
 		initial: { opacity: 0 },
 		animate: { opacity: 1 },
 		transition: { duration: .3 }
-	}, /* @__PURE__ */ __h(AnimatePresence, null, sessions.map((session, idx) => {
+	}, /* @__PURE__ */ __h(AnimatePresence, null, visibleSessions.map((session, idx) => {
 		const isCurrent = session.isCurrent;
 		const isActive = session.isActive;
 		const isRevoking = revokingId === session.id;
@@ -468,7 +478,12 @@ const Sessions = () => {
 			x2: "15",
 			y2: "15"
 		})), /* @__PURE__ */ __h("span", null, t("sessions_btn_revoke")))) : /* @__PURE__ */ __h("span", { className: "session-card__terminated-note" }, t("sessions_terminated_note"))));
-	}))), /* @__PURE__ */ __h(motion.div, {
+	})), hasMore && /* @__PURE__ */ __h("div", { className: "sessions__load-more-wrap" }, /* @__PURE__ */ __h("button", {
+		id: "sessions-load-more-btn",
+		type: "button",
+		className: "cta-btn secondary sessions__load-more-btn",
+		onClick: handleLoadMore
+	}, /* @__PURE__ */ __h("span", null, t("sessions_load_more")), /* @__PURE__ */ __h("span", { className: "sessions__load-more-count" }, "(", sessions.length - visibleCount, " ", t("sessions_load_more_remaining"), ")")))), /* @__PURE__ */ __h(motion.div, {
 		className: "sessions-security-card",
 		initial: {
 			opacity: 0,

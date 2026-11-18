@@ -34,7 +34,9 @@
 				"sessions_sec_desc_suffix": ". Не забывайте выходить из аккаунта на общедоступных компьютерах.",
 				"sessions_toast_revoked": "Сессия успешно завершена.",
 				"sessions_toast_ip_copied": "IP-адрес скопирован в буфер обмена!",
-				"sessions_toast_revoke_error": "Ошибка при завершении сессии."
+				"sessions_toast_revoke_error": "Ошибка при завершении сессии.",
+				"sessions_load_more": "Показать дальше",
+				"sessions_load_more_remaining": "осталось"
 			},
 			en: {
 				"sessions_hero_title": "Active Sessions",
@@ -64,7 +66,9 @@
 				"sessions_sec_desc_suffix": ". Remember to always sign out when using public or shared computers.",
 				"sessions_toast_revoked": "Session terminated successfully.",
 				"sessions_toast_ip_copied": "IP address copied to clipboard!",
-				"sessions_toast_revoke_error": "Error revoking session."
+				"sessions_toast_revoke_error": "Error revoking session.",
+				"sessions_load_more": "Show More",
+				"sessions_load_more_remaining": "remaining"
 			},
 			az: {
 				"sessions_hero_title": "Aktiv sessiyalar",
@@ -94,7 +98,9 @@
 				"sessions_sec_desc_suffix": " şifrənizi yeniləyin. İctimai kompüterlərdən istifadə etdikdə hesabınızdan çıxmağı unutmayın.",
 				"sessions_toast_revoked": "Sessiya uğurla dayandırıldı.",
 				"sessions_toast_ip_copied": "IP ünvanı kopyalandı!",
-				"sessions_toast_revoke_error": "Sessiya dayandırılarkən xəta baş verdi."
+				"sessions_toast_revoke_error": "Sessiya dayandırılarkən xəta baş verdi.",
+				"sessions_load_more": "Daha çox göstər",
+				"sessions_load_more_remaining": "qaldı"
 			}
 		};
 		const getSessionsTranslation = (lang, dataId) => {
@@ -112,7 +118,7 @@
 		const { __h, __Fragment } = __require("utils/runtime.js");
 		const __imp_0 = __require("utils/runtime.js");
 		const React = __imp_0.default !== undefined ? __imp_0.default : __imp_0;
-		const { useState, useEffect } = __imp_0;
+		const { useState, useEffect, useMemo } = __imp_0;
 		const { motion, AnimatePresence } = __require("utils/motion.js");
 		const { Link, useNavigate } = __require("utils/router.js");
 		const { useAuth } = __require("context/AuthContext.js");
@@ -219,6 +225,7 @@
 				return "—";
 			}
 		};
+		const PAGE_SIZE = 10;
 		const Sessions = () => {
 			const { user } = useAuth();
 			const { requireProfileAccess } = useProfileSecurity();
@@ -226,6 +233,7 @@
 			const lang = useLang();
 			const t = (id) => getSessionsTranslation(lang, id);
 			const [sessions, setSessions] = useState([]);
+			const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 			const [loading, setLoading] = useState(true);
 			const [error, setError] = useState(null);
 			const [revokingId, setRevokingId] = useState(null);
@@ -237,9 +245,17 @@
 					setToastMessage(null);
 				}, duration);
 			};
+			const visibleSessions = useMemo(() => {
+				return sessions.slice(0, visibleCount);
+			}, [sessions, visibleCount]);
+			const hasMore = visibleCount < sessions.length;
+			const handleLoadMore = () => {
+				setVisibleCount((prev) => prev + PAGE_SIZE);
+			};
 			const fetchSessions = async () => {
 				setLoading(true);
 				setError(null);
+				setVisibleCount(PAGE_SIZE);
 				try {
 					const res = await fetchWithRefresh(`${apiUrl}/api/auth/sessions`);
 					if (!res.ok) {
@@ -387,7 +403,7 @@
 				initial: { opacity: 0 },
 				animate: { opacity: 1 },
 				transition: { duration: .3 }
-			}, /* @__PURE__ */ __h(AnimatePresence, null, sessions.map((session, idx) => {
+			}, /* @__PURE__ */ __h(AnimatePresence, null, visibleSessions.map((session, idx) => {
 				const isCurrent = session.isCurrent;
 				const isActive = session.isActive;
 				const isRevoking = revokingId === session.id;
@@ -583,7 +599,12 @@
 					x2: "15",
 					y2: "15"
 				})), /* @__PURE__ */ __h("span", null, t("sessions_btn_revoke")))) : /* @__PURE__ */ __h("span", { className: "session-card__terminated-note" }, t("sessions_terminated_note"))));
-			}))), /* @__PURE__ */ __h(motion.div, {
+			})), hasMore && /* @__PURE__ */ __h("div", { className: "sessions__load-more-wrap" }, /* @__PURE__ */ __h("button", {
+				id: "sessions-load-more-btn",
+				type: "button",
+				className: "cta-btn secondary sessions__load-more-btn",
+				onClick: handleLoadMore
+			}, /* @__PURE__ */ __h("span", null, t("sessions_load_more")), /* @__PURE__ */ __h("span", { className: "sessions__load-more-count" }, "(", sessions.length - visibleCount, " ", t("sessions_load_more_remaining"), ")")))), /* @__PURE__ */ __h(motion.div, {
 				className: "sessions-security-card",
 				initial: {
 					opacity: 0,

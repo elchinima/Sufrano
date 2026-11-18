@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 64px 32px;
+  padding: 100px 32px 64px;
   box-sizing: border-box;
 }
 
@@ -55,6 +55,31 @@
   gap: 16px;
   width: 100%;
   box-sizing: border-box;
+}
+
+.sessions__load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  width: 100%;
+}
+@media (max-width: 640px) {
+  .sessions__load-more-wrap {
+    margin-top: 12px;
+  }
+}
+.sessions__load-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.sessions__load-more-count {
+  opacity: 0.65;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .session-card {

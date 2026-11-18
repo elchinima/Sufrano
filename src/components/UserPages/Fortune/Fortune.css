@@ -16,6 +16,8 @@
   flex-direction: column;
   width: 100%;
   min-height: 100vh;
+  padding-top: 68px;
+  box-sizing: border-box;
   overflow-x: hidden;
 }
 
@@ -512,6 +514,8 @@
   }
   .fortune-main {
     min-height: 100dvh;
+    padding-top: 60px;
+    box-sizing: border-box;
     flex-shrink: 0;
   }
   .fortune-content-wrapper {
