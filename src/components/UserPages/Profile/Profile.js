@@ -31,6 +31,7 @@ const Profile = () => {
 	const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
 	const [isDeleteAvatarModalOpen, setIsDeleteAvatarModalOpen] = useState(false);
 	const [isCropModalOpen, setIsCropModalOpen] = useState(false);
+	const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
 	const [cropperImageSrc, setCropperImageSrc] = useState("");
 	const [cropperFileName, setCropperFileName] = useState("");
 	const [avatarUploading, setAvatarUploading] = useState(false);
@@ -205,7 +206,7 @@ const Profile = () => {
 		fetchFreshVerification();
 		return () => { isMounted = false; };
 	}, []);
-	const handleRequestVerification = async () => {
+	const handleConfirmVerification = async () => {
 		if (verificationLoading || isInProgress || isConfirmed) return;
 		setVerificationLoading(true);
 		try {
@@ -221,6 +222,7 @@ const Profile = () => {
 					verification: nextStatus,
 					Verification: nextStatus
 				});
+				setIsVerifyModalOpen(false);
 				showSuccess(t("profile_verify_toast_requested"));
 			} else {
 				const data = await res.json().catch(() => ({}));
@@ -280,7 +282,7 @@ const Profile = () => {
 	}, /* @__PURE__ */ __h("path", { d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" }), /* @__PURE__ */ __h("line", { x1: "12", y1: "8", x2: "12", y2: "12" }), /* @__PURE__ */ __h("line", { x1: "12", y1: "16", x2: "12.01", y2: "16" }))), /* @__PURE__ */ __h("div", { className: "profile-verify-banner__info" }, /* @__PURE__ */ __h("h3", { className: "profile-verify-banner__title" }, t("profile_verify_title")), /* @__PURE__ */ __h("p", { className: "profile-verify-banner__desc" }, isInProgress ? t("profile_verify_desc_in_progress") : t("profile_verify_desc_not_verificated")))), /* @__PURE__ */ __h("div", { className: "profile-verify-banner__action" }, isInProgress ? /* @__PURE__ */ __h("div", { className: "profile-verify-banner__badge in-progress" }, /* @__PURE__ */ __h("span", { className: "profile-verify-banner__pulse-dot" }), /* @__PURE__ */ __h("span", null, t("profile_verify_status_in_progress"))) : /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "cta-btn sm profile-verify-banner__btn",
-		onClick: handleRequestVerification,
+		onClick: () => setIsVerifyModalOpen(true),
 		disabled: verificationLoading
 	}, verificationLoading ? /* @__PURE__ */ __h("img", {
 		src: loaderIcon,
@@ -509,7 +511,53 @@ const Profile = () => {
 		},
 		onCrop: handleCropComplete,
 		loading: avatarUploading
-	}), /* @__PURE__ */ __h("div", { className: "profile-toast-container" }, /* @__PURE__ */ __h(AnimatePresence, null, error && /* @__PURE__ */ __h(motion.div, {
+	}), /* @__PURE__ */ __h(AnimatedModalWrapper, {
+		isOpen: isVerifyModalOpen,
+		onClose: () => !verificationLoading && setIsVerifyModalOpen(false),
+		targetBorderRadius: "24px"
+	}, /* @__PURE__ */ __h("div", { className: "profile-modal" }, /* @__PURE__ */ __h("div", { className: "profile-modal__icon profile-modal__icon--verify" }, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2",
+		strokeLinecap: "round",
+		strokeLinejoin: "round"
+	}, /* @__PURE__ */ __h("path", { d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" }), /* @__PURE__ */ __h("polyline", { points: "9 12 11 14 15 10" }))), /* @__PURE__ */ __h("h3", { className: "profile-modal__title" }, t("profile_verify_modal_title")), /* @__PURE__ */ __h("p", {
+		className: "profile-modal__text",
+		style: { marginBottom: "16px" }
+	}, t("profile_verify_modal_text")), /* @__PURE__ */ __h("div", { className: "profile-modal__notice" }, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2",
+		strokeLinecap: "round",
+		strokeLinejoin: "round"
+	}, /* @__PURE__ */ __h("circle", { cx: "12", cy: "12", r: "10" }), /* @__PURE__ */ __h("polyline", { points: "12 6 12 12 16 14" })), /* @__PURE__ */ __h("span", null, t("profile_verify_modal_notice"))), /* @__PURE__ */ __h("div", { className: "profile-modal__actions" }, /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "cta-btn sm profile-modal__btn profile-modal__btn--cancel",
+		onClick: () => setIsVerifyModalOpen(false),
+		disabled: verificationLoading
+	}, t("profile_verify_modal_cancel")), /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "cta-btn sm profile-modal__btn profile-modal__btn--confirm-verify",
+		onClick: handleConfirmVerification,
+		disabled: verificationLoading
+	}, verificationLoading ? /* @__PURE__ */ __h("span", {
+		style: {
+			display: "flex",
+			alignItems: "center",
+			justifyContent: "center",
+			gap: "8px"
+		}
+	}, /* @__PURE__ */ __h("img", {
+		src: loaderIcon,
+		alt: "Sending...",
+		style: {
+			width: "16px",
+			height: "16px",
+			flexShrink: 0
+		}
+	}), t("profile_verify_modal_sending")) : t("profile_verify_modal_confirm"))))), /* @__PURE__ */ __h("div", { className: "profile-toast-container" }, /* @__PURE__ */ __h(AnimatePresence, null, error && /* @__PURE__ */ __h(motion.div, {
 		className: "profile-toast profile-toast--error",
 		initial: {
 			opacity: 0,

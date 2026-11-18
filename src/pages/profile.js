@@ -84,7 +84,13 @@
 				"profile_verify_desc_in_progress": "Запрос на верификацию отправлен и находится на рассмотрении администрации.",
 				"profile_verify_btn": "Верифицировать аккаунт",
 				"profile_verify_status_in_progress": "В процессе",
-				"profile_verify_toast_requested": "Запрос на верификацию успешно отправлен."
+				"profile_verify_toast_requested": "Запрос на верификацию успешно отправлен.",
+				"profile_verify_modal_title": "Подтверждение верификации",
+				"profile_verify_modal_text": "Отправить заявку на верификацию аккаунта? Наша автоматическая система проверит подлинность вашего имени.",
+				"profile_verify_modal_notice": "Обычно проверка занимает до 4 часов (в некоторых случаях до 24 часов).",
+				"profile_verify_modal_cancel": "Отмена",
+				"profile_verify_modal_confirm": "Подтвердить",
+				"profile_verify_modal_sending": "Отправка..."
 			},
 			en: {
 				"profile_hero_title": "My Profile",
@@ -164,7 +170,13 @@
 				"profile_verify_desc_in_progress": "Your verification request has been submitted and is currently under review.",
 				"profile_verify_btn": "Verify Account",
 				"profile_verify_status_in_progress": "In Progress",
-				"profile_verify_toast_requested": "Verification request submitted successfully."
+				"profile_verify_toast_requested": "Verification request submitted successfully.",
+				"profile_verify_modal_title": "Confirm Verification",
+				"profile_verify_modal_text": "Submit a request to verify your account? Our automated system will verify your profile name.",
+				"profile_verify_modal_notice": "Verification usually takes within 4 hours (occasionally up to 24 hours).",
+				"profile_verify_modal_cancel": "Cancel",
+				"profile_verify_modal_confirm": "Confirm",
+				"profile_verify_modal_sending": "Sending..."
 			},
 			az: {
 				"profile_hero_title": "Mənim profilim",
@@ -244,7 +256,13 @@
 				"profile_verify_desc_in_progress": "Təsdiqləmə sorğunuz göndərilib və hazırda baxılma prosesindədir.",
 				"profile_verify_btn": "Hesabı təsdiqlə",
 				"profile_verify_status_in_progress": "Gözləmədə",
-				"profile_verify_toast_requested": "Təsdiqləmə sorğusu uğurla göndərildi."
+				"profile_verify_toast_requested": "Təsdiqləmə sorğusu uğurla göndərildi.",
+				"profile_verify_modal_title": "Təsdiqləmə sorğusu",
+				"profile_verify_modal_text": "Hesabınızı təsdiqləmək üçün sorğu göndərilsin? Avtomatlaşdırılmış sistemimiz adınızın həqiqiliyini yoxlayacaqdır.",
+				"profile_verify_modal_notice": "Yoxlama adətən 4 saat ərzində (bəzən 24 saata qədər) tamamlanır.",
+				"profile_verify_modal_cancel": "Ləğv et",
+				"profile_verify_modal_confirm": "Təsdiqlə",
+				"profile_verify_modal_sending": "Göndərilir..."
 			}
 		};
 		const getProfileTranslation = (lang, dataId) => {
@@ -807,6 +825,7 @@
 			const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
 			const [isDeleteAvatarModalOpen, setIsDeleteAvatarModalOpen] = useState(false);
 			const [isCropModalOpen, setIsCropModalOpen] = useState(false);
+			const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
 			const [cropperImageSrc, setCropperImageSrc] = useState("");
 			const [cropperFileName, setCropperFileName] = useState("");
 			const [avatarUploading, setAvatarUploading] = useState(false);
@@ -981,7 +1000,7 @@
 				fetchFreshVerification();
 				return () => { isMounted = false; };
 			}, []);
-			const handleRequestVerification = async () => {
+			const handleConfirmVerification = async () => {
 				if (verificationLoading || isInProgress || isConfirmed) return;
 				setVerificationLoading(true);
 				try {
@@ -997,6 +1016,7 @@
 							verification: nextStatus,
 							Verification: nextStatus
 						});
+						setIsVerifyModalOpen(false);
 						showSuccess(t("profile_verify_toast_requested"));
 					} else {
 						const data = await res.json().catch(() => ({}));
@@ -1056,7 +1076,7 @@
 			}, /* @__PURE__ */ __h("path", { d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" }), /* @__PURE__ */ __h("line", { x1: "12", y1: "8", x2: "12", y2: "12" }), /* @__PURE__ */ __h("line", { x1: "12", y1: "16", x2: "12.01", y2: "16" }))), /* @__PURE__ */ __h("div", { className: "profile-verify-banner__info" }, /* @__PURE__ */ __h("h3", { className: "profile-verify-banner__title" }, t("profile_verify_title")), /* @__PURE__ */ __h("p", { className: "profile-verify-banner__desc" }, isInProgress ? t("profile_verify_desc_in_progress") : t("profile_verify_desc_not_verificated")))), /* @__PURE__ */ __h("div", { className: "profile-verify-banner__action" }, isInProgress ? /* @__PURE__ */ __h("div", { className: "profile-verify-banner__badge in-progress" }, /* @__PURE__ */ __h("span", { className: "profile-verify-banner__pulse-dot" }), /* @__PURE__ */ __h("span", null, t("profile_verify_status_in_progress"))) : /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "cta-btn sm profile-verify-banner__btn",
-				onClick: handleRequestVerification,
+				onClick: () => setIsVerifyModalOpen(true),
 				disabled: verificationLoading
 			}, verificationLoading ? /* @__PURE__ */ __h("img", {
 				src: loaderIcon,
@@ -1285,7 +1305,53 @@
 				},
 				onCrop: handleCropComplete,
 				loading: avatarUploading
-			}), /* @__PURE__ */ __h("div", { className: "profile-toast-container" }, /* @__PURE__ */ __h(AnimatePresence, null, error && /* @__PURE__ */ __h(motion.div, {
+			}), /* @__PURE__ */ __h(AnimatedModalWrapper, {
+				isOpen: isVerifyModalOpen,
+				onClose: () => !verificationLoading && setIsVerifyModalOpen(false),
+				targetBorderRadius: "24px"
+			}, /* @__PURE__ */ __h("div", { className: "profile-modal" }, /* @__PURE__ */ __h("div", { className: "profile-modal__icon profile-modal__icon--verify" }, /* @__PURE__ */ __h("svg", {
+				viewBox: "0 0 24 24",
+				fill: "none",
+				stroke: "currentColor",
+				strokeWidth: "2",
+				strokeLinecap: "round",
+				strokeLinejoin: "round"
+			}, /* @__PURE__ */ __h("path", { d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" }), /* @__PURE__ */ __h("polyline", { points: "9 12 11 14 15 10" }))), /* @__PURE__ */ __h("h3", { className: "profile-modal__title" }, t("profile_verify_modal_title")), /* @__PURE__ */ __h("p", {
+				className: "profile-modal__text",
+				style: { marginBottom: "16px" }
+			}, t("profile_verify_modal_text")), /* @__PURE__ */ __h("div", { className: "profile-modal__notice" }, /* @__PURE__ */ __h("svg", {
+				viewBox: "0 0 24 24",
+				fill: "none",
+				stroke: "currentColor",
+				strokeWidth: "2",
+				strokeLinecap: "round",
+				strokeLinejoin: "round"
+			}, /* @__PURE__ */ __h("circle", { cx: "12", cy: "12", r: "10" }), /* @__PURE__ */ __h("polyline", { points: "12 6 12 12 16 14" })), /* @__PURE__ */ __h("span", null, t("profile_verify_modal_notice"))), /* @__PURE__ */ __h("div", { className: "profile-modal__actions" }, /* @__PURE__ */ __h("button", {
+				type: "button",
+				className: "cta-btn sm profile-modal__btn profile-modal__btn--cancel",
+				onClick: () => setIsVerifyModalOpen(false),
+				disabled: verificationLoading
+			}, t("profile_verify_modal_cancel")), /* @__PURE__ */ __h("button", {
+				type: "button",
+				className: "cta-btn sm profile-modal__btn profile-modal__btn--confirm-verify",
+				onClick: handleConfirmVerification,
+				disabled: verificationLoading
+			}, verificationLoading ? /* @__PURE__ */ __h("span", {
+				style: {
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					gap: "8px"
+				}
+			}, /* @__PURE__ */ __h("img", {
+				src: loaderIcon,
+				alt: "Sending...",
+				style: {
+					width: "16px",
+					height: "16px",
+					flexShrink: 0
+				}
+			}), t("profile_verify_modal_sending")) : t("profile_verify_modal_confirm"))))), /* @__PURE__ */ __h("div", { className: "profile-toast-container" }, /* @__PURE__ */ __h(AnimatePresence, null, error && /* @__PURE__ */ __h(motion.div, {
 				className: "profile-toast profile-toast--error",
 				initial: {
 					opacity: 0,

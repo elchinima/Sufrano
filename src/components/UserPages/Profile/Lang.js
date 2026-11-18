@@ -77,7 +77,13 @@ export const translations = {
 		"profile_verify_desc_in_progress": "Запрос на верификацию отправлен и находится на рассмотрении администрации.",
 		"profile_verify_btn": "Верифицировать аккаунт",
 		"profile_verify_status_in_progress": "В процессе",
-		"profile_verify_toast_requested": "Запрос на верификацию успешно отправлен."
+		"profile_verify_toast_requested": "Запрос на верификацию успешно отправлен.",
+		"profile_verify_modal_title": "Подтверждение верификации",
+		"profile_verify_modal_text": "Отправить заявку на верификацию аккаунта? Наша автоматическая система проверит подлинность вашего имени.",
+		"profile_verify_modal_notice": "Обычно проверка занимает до 4 часов (в некоторых случаях до 24 часов).",
+		"profile_verify_modal_cancel": "Отмена",
+		"profile_verify_modal_confirm": "Подтвердить",
+		"profile_verify_modal_sending": "Отправка..."
 	},
 	en: {
 		"profile_hero_title": "My Profile",
@@ -157,7 +163,13 @@ export const translations = {
 		"profile_verify_desc_in_progress": "Your verification request has been submitted and is currently under review.",
 		"profile_verify_btn": "Verify Account",
 		"profile_verify_status_in_progress": "In Progress",
-		"profile_verify_toast_requested": "Verification request submitted successfully."
+		"profile_verify_toast_requested": "Verification request submitted successfully.",
+		"profile_verify_modal_title": "Confirm Verification",
+		"profile_verify_modal_text": "Submit a request to verify your account? Our automated system will verify your profile name.",
+		"profile_verify_modal_notice": "Verification usually takes within 4 hours (occasionally up to 24 hours).",
+		"profile_verify_modal_cancel": "Cancel",
+		"profile_verify_modal_confirm": "Confirm",
+		"profile_verify_modal_sending": "Sending..."
 	},
 	az: {
 		"profile_hero_title": "Mənim profilim",
@@ -237,7 +249,13 @@ export const translations = {
 		"profile_verify_desc_in_progress": "Təsdiqləmə sorğunuz göndərilib və hazırda baxılma prosesindədir.",
 		"profile_verify_btn": "Hesabı təsdiqlə",
 		"profile_verify_status_in_progress": "Gözləmədə",
-		"profile_verify_toast_requested": "Təsdiqləmə sorğusu uğurla göndərildi."
+		"profile_verify_toast_requested": "Təsdiqləmə sorğusu uğurla göndərildi.",
+		"profile_verify_modal_title": "Təsdiqləmə sorğusu",
+		"profile_verify_modal_text": "Hesabınızı təsdiqləmək üçün sorğu göndərilsin? Avtomatlaşdırılmış sistemimiz adınızın həqiqiliyini yoxlayacaqdır.",
+		"profile_verify_modal_notice": "Yoxlama adətən 4 saat ərzində (bəzən 24 saata qədər) tamamlanır.",
+		"profile_verify_modal_cancel": "Ləğv et",
+		"profile_verify_modal_confirm": "Təsdiqlə",
+		"profile_verify_modal_sending": "Göndərilir..."
 	}
 };
 export const getProfileTranslation = (lang, dataId) => {
