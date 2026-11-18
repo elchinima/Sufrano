@@ -56,7 +56,7 @@ public class AuthService : IAuthService
         {
             if (user.Role == UserRole.AI || user.Role == UserRole.Bot)
             {
-                throw new UnauthorizedAccessException("System accounts cannot sign in interactively.");
+                throw new UnauthorizedAccessException("Access denied. Logging into accounts with the Bot or AI role is prohibited.");
             }
 
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
@@ -156,9 +156,14 @@ public class AuthService : IAuthService
         }
 
         var user = await _userRepository.GetByEmailAsync(request.Email);
-        if (user == null || user.Role == UserRole.AI || user.Role == UserRole.Bot)
+        if (user == null)
         {
             throw new UnauthorizedAccessException("Invalid credentials");
+        }
+
+        if (user.Role == UserRole.AI || user.Role == UserRole.Bot)
+        {
+            throw new UnauthorizedAccessException("Access denied. Logging into accounts with the Bot or AI role is prohibited.");
         }
 
         var userSession = user.Session ?? await _userRepository.GetSessionByUserIdAsync(user.Id);
@@ -474,6 +479,11 @@ public class AuthService : IAuthService
             throw new KeyNotFoundException("No account found with this email address.");
         }
 
+        if (user.Role == UserRole.AI || user.Role == UserRole.Bot)
+        {
+            throw new UnauthorizedAccessException("Access denied. Logging into accounts with the Bot or AI role is prohibited.");
+        }
+
         var userSession = user.Session ?? await _userRepository.GetSessionByUserIdAsync(user.Id);
         if (userSession != null && !userSession.IsActive)
         {
@@ -548,6 +558,11 @@ public class AuthService : IAuthService
         if (user == null)
         {
             throw new KeyNotFoundException("No account found with this email address.");
+        }
+
+        if (user.Role == UserRole.AI || user.Role == UserRole.Bot)
+        {
+            throw new UnauthorizedAccessException("Access denied. Logging into accounts with the Bot or AI role is prohibited.");
         }
 
         var userSession = user.Session ?? await _userRepository.GetSessionByUserIdAsync(user.Id);
@@ -658,6 +673,10 @@ public class AuthService : IAuthService
             result = await _userRepository.GetByPreviousRefreshTokenAsync(refreshToken);
             if (result != null)
             {
+                if (result.Value.User.Role == UserRole.AI || result.Value.User.Role == UserRole.Bot)
+                {
+                    throw new UnauthorizedAccessException("Access denied. Logging into accounts with the Bot or AI role is prohibited.");
+                }
                 if (result.Value.Session.IsActive == false || result.Value.Entry.IsActive == false || IsSessionExpired(result.Value.Entry, now))
                 {
                     throw new UnauthorizedAccessException("Invalid, terminated or expired refresh token");
@@ -674,6 +693,11 @@ public class AuthService : IAuthService
         if (result == null || result.Value.Session.IsActive == false || result.Value.Entry.IsActive == false || IsSessionExpired(result.Value.Entry, now))
         {
             throw new UnauthorizedAccessException("Invalid, terminated or expired refresh token");
+        }
+
+        if (result.Value.User.Role == UserRole.AI || result.Value.User.Role == UserRole.Bot)
+        {
+            throw new UnauthorizedAccessException("Access denied. Logging into accounts with the Bot or AI role is prohibited.");
         }
 
         var (user, session, oldEntry) = result.Value;
@@ -1048,6 +1072,11 @@ public class AuthService : IAuthService
         if (user == null)
         {
             throw new KeyNotFoundException("Account not found. Please register first with your email and password before signing in with Google.");
+        }
+
+        if (user.Role == UserRole.AI || user.Role == UserRole.Bot)
+        {
+            throw new UnauthorizedAccessException("Access denied. Logging into accounts with the Bot or AI role is prohibited.");
         }
 
         var userSession = user.Session ?? await _userRepository.GetSessionByUserIdAsync(user.Id);

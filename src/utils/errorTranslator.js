@@ -236,6 +236,21 @@ const ERROR_ENTRIES = [
 		en: "Your account has been suspended or blocked."
 	},
 	{
+		az: "Giriş qadağandır. Bot və ya AI roluna malik hesablara daxil olmaq qadağandır.",
+		ru: "Доступ запрещен. Вход в учетные записи с ролью Bot или AI запрещен.",
+		en: "Access denied. Logging into accounts with the Bot or AI role is prohibited."
+	},
+	{
+		az: "Bot və AI hesabları üçün giriş qadağandır.",
+		ru: "Доступ запрещен для учетных записей Bot и AI.",
+		en: "Access denied for Bot and AI accounts."
+	},
+	{
+		az: "Giriş qadağandır. Bot və AI hesabları daxil ola bilməz.",
+		ru: "Доступ запрещен. Учетные записи Bot и AI не могут войти в систему.",
+		en: "Access denied. Bot and AI accounts cannot sign in."
+	},
+	{
 		az: "Sistem hesabları interaktiv daxil ola bilməz.",
 		ru: "Системные учетные записи не могут войти интерактивно.",
 		en: "System accounts cannot sign in interactively."
@@ -354,6 +369,16 @@ const ERROR_ENTRIES = [
 		az: "Ad boş ola bilməz.",
 		ru: "Имя не может быть пустым.",
 		en: "Name cannot be empty."
+	},
+	{
+		az: "Ad boşluq simvolu ehtiva edə bilməz.",
+		ru: "Имя не может содержать пробелы.",
+		en: "Name cannot contain spaces."
+	},
+	{
+		az: "Ad boşluq simvolu ehtiva etməməlidir.",
+		ru: "Имя не должно содержать пробелы.",
+		en: "Name must not contain spaces."
 	},
 	{
 		az: "Ad 50 simvoldan çox ola bilməz.",

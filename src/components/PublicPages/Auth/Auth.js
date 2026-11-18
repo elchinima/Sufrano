@@ -481,13 +481,32 @@ const Auth = () => {
 			setLoading(false);
 		}
 	};
+	const handleNameChange = (e) => {
+		let val = e.target.value.replace(/\s+/g, "");
+		if (val.length > 0) {
+			val = val.charAt(0).toLocaleUpperCase(lang === "az" ? "az" : undefined) + val.slice(1);
+		}
+		setName(val);
+		if (error) setError(null);
+	};
+	const handleNameKeyDown = (e) => {
+		if (e.key === " " || e.code === "Space" || e.keyCode === 32) {
+			e.preventDefault();
+		}
+	};
 	const handleNameSubmit = async (e) => {
 		e.preventDefault();
 		if (loading) return;
-		if (!name.trim()) {
+		const cleanName = name.trim();
+		if (!cleanName) {
 			setError(t("auth_err_name"));
 			return;
 		}
+		if (/\s/.test(name)) {
+			setError(t("auth_err_name_spaces"));
+			return;
+		}
+		const capitalized = cleanName.charAt(0).toLocaleUpperCase(lang === "az" ? "az" : undefined) + cleanName.slice(1);
 		setLoading(true);
 		setError(null);
 		try {
@@ -495,7 +514,7 @@ const Auth = () => {
 				method: "PUT",
 				credentials: "include",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ name })
+				body: JSON.stringify({ name: capitalized })
 			});
 			if (!response.ok) {
 				const errorData = await response.json();
@@ -654,7 +673,8 @@ const Auth = () => {
 		autoComplete: "name",
 		placeholder: t("auth_placeholder_name"),
 		value: name,
-		onChange: (e) => setName(e.target.value),
+		onChange: handleNameChange,
+		onKeyDown: handleNameKeyDown,
 		required: true,
 		autoFocus: true
 	})), /* @__PURE__ */ __h("div", { className: "error-wrapper" }, error && /* @__PURE__ */ __h("div", { className: "auth-error" }, translateError(error, lang))), /* @__PURE__ */ __h("button", {

@@ -239,6 +239,36 @@ public static class ErrorLocalizer
                 "Ваша учетная запись заблокирована или приостановлена.",
                 "Your account has been suspended or blocked."
             ),
+            ["Access denied. Logging into accounts with the Bot or AI role is prohibited."] = (
+                "Giriş qadağandır. Bot və ya AI roluna malik hesablara daxil olmaq qadağandır.",
+                "Доступ запрещен. Вход в учетные записи с ролью Bot или AI запрещен.",
+                "Access denied. Logging into accounts with the Bot or AI role is prohibited."
+            ),
+            ["Access denied. Logging into accounts with the Bot or AI role is prohibited"] = (
+                "Giriş qadağandır. Bot və ya AI roluna malik hesablara daxil olmaq qadağandır.",
+                "Доступ запрещен. Вход в учетные записи с ролью Bot или AI запрещен.",
+                "Access denied. Logging into accounts with the Bot or AI role is prohibited."
+            ),
+            ["Access denied for Bot and AI accounts."] = (
+                "Bot və AI hesabları üçün giriş qadağandır.",
+                "Доступ запрещен для учетных записей Bot и AI.",
+                "Access denied for Bot and AI accounts."
+            ),
+            ["Access denied for Bot and AI accounts"] = (
+                "Bot və AI hesabları üçün giriş qadağandır.",
+                "Доступ запрещен для учетных записей Bot и AI.",
+                "Access denied for Bot and AI accounts."
+            ),
+            ["Access denied. Bot and AI accounts cannot sign in."] = (
+                "Giriş qadağandır. Bot və AI hesabları daxil ola bilməz.",
+                "Доступ запрещен. Учетные записи Bot и AI не могут войти в систему.",
+                "Access denied. Bot and AI accounts cannot sign in."
+            ),
+            ["Access denied. Bot and AI accounts cannot sign in"] = (
+                "Giriş qadağandır. Bot və AI hesabları daxil ola bilməz.",
+                "Доступ запрещен. Учетные записи Bot и AI не могут войти в систему.",
+                "Access denied. Bot and AI accounts cannot sign in."
+            ),
             ["System accounts cannot sign in interactively."] = (
                 "Sistem hesabları interaktiv daxil ola bilməz.",
                 "Системные учетные записи не могут войти интерактивно.",
@@ -358,6 +388,16 @@ public static class ErrorLocalizer
                 "Ad boş ola bilməz.",
                 "Имя не может быть пустым.",
                 "Name cannot be empty."
+            ),
+            ["Name cannot contain spaces."] = (
+                "Ad boşluq simvolu ehtiva edə bilməz.",
+                "Имя не может содержать пробелы.",
+                "Name cannot contain spaces."
+            ),
+            ["Name must not contain spaces."] = (
+                "Ad boşluq simvolu ehtiva etməməlidir.",
+                "Имя не должно содержать пробелы.",
+                "Name must not contain spaces."
             ),
             ["Name cannot exceed 50 characters."] = (
                 "Ad 50 simvoldan çox ola bilməz.",

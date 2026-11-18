@@ -4610,6 +4610,21 @@
 				en: "Your account has been suspended or blocked."
 			},
 			{
+				az: "Giriş qadağandır. Bot və ya AI roluna malik hesablara daxil olmaq qadağandır.",
+				ru: "Доступ запрещен. Вход в учетные записи с ролью Bot или AI запрещен.",
+				en: "Access denied. Logging into accounts with the Bot or AI role is prohibited."
+			},
+			{
+				az: "Bot və AI hesabları üçün giriş qadağandır.",
+				ru: "Доступ запрещен для учетных записей Bot и AI.",
+				en: "Access denied for Bot and AI accounts."
+			},
+			{
+				az: "Giriş qadağandır. Bot və AI hesabları daxil ola bilməz.",
+				ru: "Доступ запрещен. Учетные записи Bot и AI не могут войти в систему.",
+				en: "Access denied. Bot and AI accounts cannot sign in."
+			},
+			{
 				az: "Sistem hesabları interaktiv daxil ola bilməz.",
 				ru: "Системные учетные записи не могут войти интерактивно.",
 				en: "System accounts cannot sign in interactively."
@@ -4728,6 +4743,16 @@
 				az: "Ad boş ola bilməz.",
 				ru: "Имя не может быть пустым.",
 				en: "Name cannot be empty."
+			},
+			{
+				az: "Ad boşluq simvolu ehtiva edə bilməz.",
+				ru: "Имя не может содержать пробелы.",
+				en: "Name cannot contain spaces."
+			},
+			{
+				az: "Ad boşluq simvolu ehtiva etməməlidir.",
+				ru: "Имя не должно содержать пробелы.",
+				en: "Name must not contain spaces."
 			},
 			{
 				az: "Ad 50 simvoldan çox ola bilməz.",
@@ -6558,6 +6583,7 @@
 				"auth_err_password": "Пожалуйста, введите пароль.",
 				"auth_err_code_length": "Пожалуйста, введите полный 4-значный код.",
 				"auth_err_name": "Пожалуйста, введите ваше имя.",
+				"auth_err_name_spaces": "Имя не должно содержать пробелы.",
 				"google_connecting_title": "Подключение к Google",
 				"google_connecting_desc": "Выполняется вход в аккаунт, пожалуйста, подождите...",
 				"google_not_found_title": "Аккаунт не найден",
@@ -6617,6 +6643,7 @@
 				"auth_err_password": "Please enter your password.",
 				"auth_err_code_length": "Please enter the full 4-digit code.",
 				"auth_err_name": "Please enter your name.",
+				"auth_err_name_spaces": "Name must not contain spaces.",
 				"google_connecting_title": "Connecting to Google",
 				"google_connecting_desc": "Authenticating your account, please wait a moment...",
 				"google_not_found_title": "Account Not Found",
@@ -6676,6 +6703,7 @@
 				"auth_err_password": "Zəhmət olmasa şifrənizi daxil edin.",
 				"auth_err_code_length": "Zəhmət olmasa 4 rəqəmli kodu tam daxil edin.",
 				"auth_err_name": "Zəhmət olmasa adınızı daxil edin.",
+				"auth_err_name_spaces": "Ad boşluq simvolu ehtiva etməməlidir.",
 				"google_connecting_title": "Google ilə əlaqə qurulur",
 				"google_connecting_desc": "Hesabınız təsdiqlənir, zəhmət olmasa bir qədər gözləyin...",
 				"google_not_found_title": "Hesab tapılmadı",

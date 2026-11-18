@@ -2476,7 +2476,11 @@ div:has(> iframe[src*="link.stripe.com"]) {
 /* === components/AdminPages/AdminLayout/AdminLayout.css === */
 .admin-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow: hidden;
   background: #24050d;
   background-image: radial-gradient(circle at top right, rgba(197, 160, 89, 0.12) 0%, transparent 45%), radial-gradient(circle at bottom left, #24050d 0%, #4a0e1c 100%);
   position: relative;
@@ -2484,6 +2488,11 @@ div:has(> iframe[src*="link.stripe.com"]) {
 @media (max-width: 860px) {
   .admin-layout {
     flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow: hidden;
   }
 }
 
@@ -2500,7 +2509,8 @@ div:has(> iframe[src*="link.stripe.com"]) {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    position: sticky;
+    flex-shrink: 0;
+    position: relative;
     top: 0;
     z-index: 50;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
@@ -2591,9 +2601,11 @@ div:has(> iframe[src*="link.stripe.com"]) {
   display: flex;
   flex-direction: column;
   padding: 24px 16px;
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  position: relative;
+  height: 100%;
+  max-height: 100vh;
+  max-height: 100dvh;
+  box-sizing: border-box;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
   z-index: 100;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2613,6 +2625,7 @@ div:has(> iframe[src*="link.stripe.com"]) {
     -webkit-backdrop-filter: blur(20px);
     transform: translateX(-100%);
     box-shadow: none;
+    overflow-y: auto;
   }
   .admin-sidebar--open {
     transform: translateX(0);
@@ -2626,6 +2639,7 @@ div:has(> iframe[src*="link.stripe.com"]) {
   padding: 4px 10px 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   margin-bottom: 24px;
+  flex-shrink: 0;
 }
 .admin-sidebar__header-info {
   display: flex;
@@ -2695,6 +2709,21 @@ div:has(> iframe[src*="link.stripe.com"]) {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197, 160, 89, 0.3) transparent;
+}
+.admin-sidebar__nav::-webkit-scrollbar {
+  width: 4px;
+}
+.admin-sidebar__nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+.admin-sidebar__nav::-webkit-scrollbar-thumb {
+  background: rgba(197, 160, 89, 0.3);
+  border-radius: 4px;
 }
 .admin-sidebar__link {
   display: flex;
@@ -2766,6 +2795,8 @@ div:has(> iframe[src*="link.stripe.com"]) {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex-shrink: 0;
+  padding-top: 16px;
 }
 @media (max-width: 860px) {
   .admin-sidebar__bottom-actions {
@@ -2881,6 +2912,8 @@ div:has(> iframe[src*="link.stripe.com"]) {
 
 .admin-content {
   flex: 1;
+  height: 100%;
+  height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 40px 48px;
@@ -2894,6 +2927,9 @@ div:has(> iframe[src*="link.stripe.com"]) {
 }
 @media (max-width: 860px) {
   .admin-content {
+    flex: 1;
+    min-height: 0;
+    height: auto;
     padding: 24px 16px;
   }
 }

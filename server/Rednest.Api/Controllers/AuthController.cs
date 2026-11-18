@@ -573,6 +573,11 @@ public class AuthController : ControllerBase
                 return NotFound("User not found.");
             }
 
+            if (user.Role == UserRole.AI || user.Role == UserRole.Bot)
+            {
+                return Unauthorized(new { message = "Access denied. Logging into accounts with the Bot or AI role is prohibited." });
+            }
+
             var userSession = user.Session ?? await userRepository.GetSessionByUserIdAsync(user.Id);
             if (userSession != null && !userSession.IsActive)
             {
@@ -807,6 +812,11 @@ public class AuthController : ControllerBase
                 return NotFound("User not found.");
             }
 
+            if (user.Role == UserRole.AI || user.Role == UserRole.Bot)
+            {
+                return Unauthorized(new { message = "Access denied. Logging into accounts with the Bot or AI role is prohibited." });
+            }
+
             if (!string.IsNullOrWhiteSpace(user.Name))
             {
                 var secToken = Request.Cookies[SecurityVerificationHelper.CookieName];
@@ -820,7 +830,29 @@ public class AuthController : ControllerBase
                 }
             }
 
-            user.Name = nameRequest.Name;
+            if (nameRequest == null || string.IsNullOrWhiteSpace(nameRequest.Name))
+            {
+                return BadRequest(new { message = "Name cannot be empty." });
+            }
+
+            if (nameRequest.Name.Any(char.IsWhiteSpace))
+            {
+                return BadRequest(new { message = "Name cannot contain spaces." });
+            }
+
+            var rawName = nameRequest.Name.Trim();
+            if (rawName.Length > 50)
+            {
+                return BadRequest(new { message = "Name cannot exceed 50 characters." });
+            }
+
+            var culture = Request.Headers.AcceptLanguage.ToString().Contains("az", StringComparison.OrdinalIgnoreCase)
+                ? new System.Globalization.CultureInfo("az-Latn-AZ")
+                : System.Globalization.CultureInfo.InvariantCulture;
+
+            var capitalizedName = char.ToUpper(rawName[0], culture) + (rawName.Length > 1 ? rawName.Substring(1) : string.Empty);
+
+            user.Name = capitalizedName;
             await userRepository.UpdateAsync(user);
 
             SecurityVerificationHelper.AppendSecurityCookie(Response, user.Id.ToString());
