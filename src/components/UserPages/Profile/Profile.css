@@ -111,10 +111,10 @@
 }
 
 .profile-verify-banner__desc {
-  font-size: 0.84rem;
+  font-size: 0.59rem;
   color: rgba(255, 248, 231, 0.72);
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .profile-verify-banner__action {
@@ -211,7 +211,7 @@
     font-size: 0.94rem;
   }
   .profile-verify-banner__desc {
-    font-size: 0.8rem;
+    font-size: 0.56rem;
   }
   .profile-verify-banner__action {
     width: 100%;
