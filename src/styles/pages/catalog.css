@@ -324,8 +324,8 @@
   .catalog-skeleton-card {
     flex: 0 0 82vw;
     max-width: 320px;
-    height: 330px;
-    aspect-ratio: auto;
+    aspect-ratio: 350/500;
+    height: auto;
     scroll-snap-align: center;
     scroll-snap-stop: always;
   }
@@ -336,11 +336,11 @@
     scroll-snap-stop: always;
   }
   .catalog-card .card-image-container {
-    height: 200px;
-    min-height: 200px;
-    max-height: 200px;
-    aspect-ratio: auto;
+    aspect-ratio: 1 / 1;
     width: 100%;
+    height: auto;
+    min-height: auto;
+    max-height: none;
   }
   .catalog-card .card-image-container .item-image {
     width: 100%;

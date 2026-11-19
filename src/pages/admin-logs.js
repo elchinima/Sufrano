@@ -27,6 +27,7 @@
 			"Orders",
 			"Promos",
 			"Reviews",
+			"Advert",
 			"Newsletter",
 			"Database",
 			"Footer"

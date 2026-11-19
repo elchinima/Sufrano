@@ -575,10 +575,11 @@
     scroll-snap-align: center;
   }
   .popular-menu-section .menu-item-card .menu-img-placeholder {
-    height: 200px;
-    min-height: 200px;
-    max-height: 200px;
-    aspect-ratio: auto;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    min-height: auto;
+    max-height: none;
     object-fit: cover;
   }
   .popular-menu-section .menu-item-card .menu-info {

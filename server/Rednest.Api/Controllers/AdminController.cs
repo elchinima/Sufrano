@@ -2865,6 +2865,408 @@ public class AdminController : ControllerBase
         return true;
     }
 
+    [HttpGet("adverts")]
+    [HttpGet("advert")]
+    public async Task<IActionResult> GetAdverts()
+    {
+        if (!await IsAdminAuthenticatedAsync())
+            return StatusCode(403, new { message = "Access denied. Only Moderator, Admin and Super Admin roles can access adverts." });
+
+        var adverts = await _context.Adverts
+            .AsNoTracking()
+            .ToListAsync();
+
+        var userIds = adverts
+            .SelectMany(a => new[] { a.Logs?.CreateUserId, a.Logs?.UpdateUserId })
+            .Where(id => id.HasValue)
+            .Select(id => id!.Value)
+            .Distinct()
+            .ToList();
+
+        var users = userIds.Count > 0
+            ? await _context.Users
+                .Where(u => userIds.Contains(u.Id))
+                .AsNoTracking()
+                .ToDictionaryAsync(u => u.Id)
+            : new Dictionary<Guid, User>();
+
+        var ordered = adverts
+            .OrderByDescending(a => a.Logs?.CreateDate ?? DateTime.MinValue)
+            .Select(a =>
+            {
+                User? createUser = null;
+                User? updateUser = null;
+                if (a.Logs?.CreateUserId != null)
+                    users.TryGetValue(a.Logs.CreateUserId.Value, out createUser);
+                if (a.Logs?.UpdateUserId != null)
+                    users.TryGetValue(a.Logs.UpdateUserId.Value, out updateUser);
+
+                return new
+                {
+                    id = a.Id,
+                    title = a.Title,
+                    description = a.Description,
+                    mediaUrl = a.MediaUrl,
+                    isActive = a.IsActive,
+                    likesCount = a.Likes?.Count ?? 0,
+                    likes = a.Likes ?? new List<Guid>(),
+                    logs = new
+                    {
+                        createUserId = a.Logs?.CreateUserId,
+                        createDate = a.Logs?.CreateDate,
+                        updateUserId = a.Logs?.UpdateUserId,
+                        updateDate = a.Logs?.UpdateDate,
+                        note = a.Logs?.Note,
+                        createUser = createUser != null ? new
+                        {
+                            id = createUser.Id,
+                            name = createUser.Name,
+                            email = createUser.Email,
+                            role = createUser.Role == UserRole.SuperAdmin ? "Super Admin" : (createUser.Role == UserRole.LeadStaff ? "Lead Staff" : createUser.Role.ToString()),
+                            profilePictureUrl = AvatarHelper.Resolve(createUser.ProfilePictureUrl)
+                        } : null,
+                        updateUser = updateUser != null ? new
+                        {
+                            id = updateUser.Id,
+                            name = updateUser.Name,
+                            email = updateUser.Email,
+                            role = updateUser.Role == UserRole.SuperAdmin ? "Super Admin" : (updateUser.Role == UserRole.LeadStaff ? "Lead Staff" : updateUser.Role.ToString()),
+                            profilePictureUrl = AvatarHelper.Resolve(updateUser.ProfilePictureUrl)
+                        } : null
+                    }
+                };
+            })
+            .ToList();
+
+        return Ok(ordered);
+    }
+
+    [HttpGet("adverts/{id:guid}")]
+    [HttpGet("advert/{id:guid}")]
+    public async Task<IActionResult> GetAdvertById(Guid id)
+    {
+        if (!await IsAdminAuthenticatedAsync())
+            return StatusCode(403, new { message = "Access denied. Only Moderator, Admin and Super Admin roles can access adverts." });
+
+        var advert = await _context.Adverts
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.Id == id);
+
+        if (advert == null)
+            return NotFound(new { message = "Advert not found." });
+
+        User? createUser = null;
+        User? updateUser = null;
+        if (advert.Logs?.CreateUserId != null)
+            createUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == advert.Logs.CreateUserId.Value);
+        if (advert.Logs?.UpdateUserId != null)
+            updateUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == advert.Logs.UpdateUserId.Value);
+
+        return Ok(new
+        {
+            id = advert.Id,
+            title = advert.Title,
+            description = advert.Description,
+            mediaUrl = advert.MediaUrl,
+            isActive = advert.IsActive,
+            likesCount = advert.Likes?.Count ?? 0,
+            likes = advert.Likes ?? new List<Guid>(),
+            logs = new
+            {
+                createUserId = advert.Logs?.CreateUserId,
+                createDate = advert.Logs?.CreateDate,
+                updateUserId = advert.Logs?.UpdateUserId,
+                updateDate = advert.Logs?.UpdateDate,
+                note = advert.Logs?.Note,
+                createUser = createUser != null ? new
+                {
+                    id = createUser.Id,
+                    name = createUser.Name,
+                    email = createUser.Email,
+                    role = createUser.Role == UserRole.SuperAdmin ? "Super Admin" : (createUser.Role == UserRole.LeadStaff ? "Lead Staff" : createUser.Role.ToString()),
+                    profilePictureUrl = AvatarHelper.Resolve(createUser.ProfilePictureUrl)
+                } : null,
+                updateUser = updateUser != null ? new
+                {
+                    id = updateUser.Id,
+                    name = updateUser.Name,
+                    email = updateUser.Email,
+                    role = updateUser.Role == UserRole.SuperAdmin ? "Super Admin" : (updateUser.Role == UserRole.LeadStaff ? "Lead Staff" : updateUser.Role.ToString()),
+                    profilePictureUrl = AvatarHelper.Resolve(updateUser.ProfilePictureUrl)
+                } : null
+            }
+        });
+    }
+
+    [HttpPost("adverts")]
+    [HttpPost("advert")]
+    public async Task<IActionResult> CreateAdvert([FromBody] AdminAdvertRequest request)
+    {
+        var (auth, adminUser) = await GetAdminUserAsync();
+        if (!auth || adminUser == null)
+            return StatusCode(403, new { message = "Access denied. Only Moderator, Admin and Super Admin roles can create adverts." });
+
+        if (string.IsNullOrWhiteSpace(request.Title))
+            return BadRequest(new { message = "Advert title is required." });
+
+        if (request.Title.Trim().Length > 120)
+            return BadRequest(new { message = "Advert title cannot exceed 120 characters." });
+
+        if (string.IsNullOrWhiteSpace(request.Description))
+            return BadRequest(new { message = "Advert description is required." });
+
+        if (request.Description.Trim().Length > 2000)
+            return BadRequest(new { message = "Advert description cannot exceed 2000 characters." });
+
+        var nowBaku = DateTime.UtcNow.AddHours(4);
+        var advert = new Advert
+        {
+            Id = Guid.NewGuid(),
+            Title = request.Title.Trim(),
+            Description = request.Description.Trim(),
+            MediaUrl = string.IsNullOrWhiteSpace(request.MediaUrl) ? null : request.MediaUrl.Trim(),
+            IsActive = request.IsActive ?? true,
+            Likes = new List<Guid>(),
+            Logs = new AdvertLogs
+            {
+                CreateUserId = adminUser.Id,
+                CreateDate = nowBaku,
+                UpdateUserId = null,
+                UpdateDate = null,
+                Note = string.IsNullOrWhiteSpace(request.Note) ? null : request.Note.Trim()
+            }
+        };
+
+        _context.Adverts.Add(advert);
+        await _context.SaveChangesAsync();
+
+        await LogAdminActionAsync(
+            adminUser.Id,
+            adminUser.Role.ToString(),
+            "Advert",
+            "POST",
+            new
+            {
+                action = "CreateAdvert",
+                advertId = advert.Id,
+                title = advert.Title,
+                mediaUrl = advert.MediaUrl,
+                isActive = advert.IsActive,
+                note = advert.Logs.Note
+            });
+
+        return Ok(new
+        {
+            message = "Advert created successfully.",
+            id = advert.Id,
+            title = advert.Title,
+            description = advert.Description,
+            mediaUrl = advert.MediaUrl,
+            isActive = advert.IsActive,
+            likesCount = 0,
+            likes = advert.Likes,
+            logs = new
+            {
+                createUserId = advert.Logs.CreateUserId,
+                createDate = advert.Logs.CreateDate,
+                updateUserId = advert.Logs.UpdateUserId,
+                updateDate = advert.Logs.UpdateDate,
+                note = advert.Logs.Note,
+                createUser = new
+                {
+                    id = adminUser.Id,
+                    name = adminUser.Name,
+                    email = adminUser.Email,
+                    role = adminUser.Role == UserRole.SuperAdmin ? "Super Admin" : adminUser.Role.ToString(),
+                    profilePictureUrl = AvatarHelper.Resolve(adminUser.ProfilePictureUrl)
+                },
+                updateUser = (object?)null
+            }
+        });
+    }
+
+    [HttpPut("adverts/{id:guid}")]
+    [HttpPut("advert/{id:guid}")]
+    public async Task<IActionResult> UpdateAdvert(Guid id, [FromBody] AdminAdvertRequest request)
+    {
+        var (auth, adminUser) = await GetAdminUserAsync();
+        if (!auth || adminUser == null || !IsFullAdminRole(adminUser.Role))
+            return StatusCode(403, new { message = "Access denied. Only Admin and Super Admin roles can edit adverts." });
+
+        var advert = await _context.Adverts.FirstOrDefaultAsync(a => a.Id == id);
+        if (advert == null)
+            return NotFound(new { message = "Advert not found." });
+
+        var oldTitle = advert.Title;
+        var oldDescription = advert.Description;
+        var oldMediaUrl = advert.MediaUrl;
+        var oldIsActive = advert.IsActive;
+        var oldNote = advert.Logs?.Note;
+
+        if (request.Title != null)
+        {
+            if (string.IsNullOrWhiteSpace(request.Title))
+                return BadRequest(new { message = "Advert title cannot be empty." });
+            if (request.Title.Trim().Length > 120)
+                return BadRequest(new { message = "Advert title cannot exceed 120 characters." });
+            advert.Title = request.Title.Trim();
+        }
+
+        if (request.Description != null)
+        {
+            if (string.IsNullOrWhiteSpace(request.Description))
+                return BadRequest(new { message = "Advert description cannot be empty." });
+            if (request.Description.Trim().Length > 2000)
+                return BadRequest(new { message = "Advert description cannot exceed 2000 characters." });
+            advert.Description = request.Description.Trim();
+        }
+
+        if (request.MediaUrl != null)
+        {
+            advert.MediaUrl = string.IsNullOrWhiteSpace(request.MediaUrl) ? null : request.MediaUrl.Trim();
+        }
+
+        if (request.IsActive.HasValue)
+        {
+            advert.IsActive = request.IsActive.Value;
+        }
+
+        var nowBaku = DateTime.UtcNow.AddHours(4);
+        var prevLogs = advert.Logs ?? new AdvertLogs();
+        advert.Logs = new AdvertLogs
+        {
+            CreateUserId = prevLogs.CreateUserId,
+            CreateDate = prevLogs.CreateDate == default ? nowBaku : prevLogs.CreateDate,
+            UpdateUserId = adminUser.Id,
+            UpdateDate = nowBaku,
+            Note = request.Note != null
+                ? (string.IsNullOrWhiteSpace(request.Note) ? null : request.Note.Trim())
+                : prevLogs.Note
+        };
+        _context.Entry(advert).Property(a => a.Logs).IsModified = true;
+
+        var changes = new List<string>();
+        if (oldTitle != advert.Title) changes.Add($"Title: '{oldTitle}' -> '{advert.Title}'");
+        if (oldDescription != advert.Description) changes.Add("Description updated");
+        if (oldMediaUrl != advert.MediaUrl) changes.Add($"MediaUrl: '{oldMediaUrl}' -> '{advert.MediaUrl}'");
+        if (oldIsActive != advert.IsActive) changes.Add($"IsActive: '{oldIsActive}' -> '{advert.IsActive}'");
+        if (oldNote != advert.Logs.Note) changes.Add($"Note: '{oldNote}' -> '{advert.Logs.Note}'");
+
+        await _context.SaveChangesAsync();
+
+        await LogAdminActionAsync(
+            adminUser.Id,
+            adminUser.Role.ToString(),
+            "Advert",
+            "PUT",
+            new
+            {
+                action = "UpdateAdvert",
+                advertId = advert.Id,
+                title = advert.Title,
+                changes = changes.Count > 0 ? changes : null,
+                before = new { title = oldTitle, description = oldDescription, mediaUrl = oldMediaUrl, isActive = oldIsActive, note = oldNote },
+                after = new { title = advert.Title, description = advert.Description, mediaUrl = advert.MediaUrl, isActive = advert.IsActive, note = advert.Logs.Note }
+            });
+
+        return Ok(new
+        {
+            message = "Advert updated successfully.",
+            id = advert.Id,
+            title = advert.Title,
+            description = advert.Description,
+            mediaUrl = advert.MediaUrl,
+            isActive = advert.IsActive,
+            likesCount = advert.Likes?.Count ?? 0,
+            likes = advert.Likes ?? new List<Guid>(),
+            logs = advert.Logs
+        });
+    }
+
+    [HttpPatch("adverts/{id:guid}/toggle-active")]
+    [HttpPatch("advert/{id:guid}/toggle-active")]
+    public async Task<IActionResult> ToggleAdvertActive(Guid id)
+    {
+        var (auth, adminUser) = await GetAdminUserAsync();
+        if (!auth || adminUser == null || !IsFullAdminRole(adminUser.Role))
+            return StatusCode(403, new { message = "Access denied. Only Admin and Super Admin roles can change advert status." });
+
+        var advert = await _context.Adverts.FirstOrDefaultAsync(a => a.Id == id);
+        if (advert == null)
+            return NotFound(new { message = "Advert not found." });
+
+        var prevActive = advert.IsActive;
+        advert.IsActive = !advert.IsActive;
+
+        var nowBaku = DateTime.UtcNow.AddHours(4);
+        var prevLogs = advert.Logs ?? new AdvertLogs();
+        advert.Logs = new AdvertLogs
+        {
+            CreateUserId = prevLogs.CreateUserId,
+            CreateDate = prevLogs.CreateDate == default ? nowBaku : prevLogs.CreateDate,
+            UpdateUserId = adminUser.Id,
+            UpdateDate = nowBaku,
+            Note = prevLogs.Note
+        };
+        _context.Entry(advert).Property(a => a.Logs).IsModified = true;
+
+        await _context.SaveChangesAsync();
+
+        await LogAdminActionAsync(
+            adminUser.Id,
+            adminUser.Role.ToString(),
+            "Advert",
+            "PATCH",
+            new
+            {
+                action = "ToggleAdvertActive",
+                advertId = advert.Id,
+                title = advert.Title,
+                changes = new { isActive = new { from = prevActive, to = advert.IsActive } },
+                before = new { isActive = prevActive },
+                after = new { isActive = advert.IsActive }
+            });
+
+        return Ok(new
+        {
+            message = advert.IsActive ? "Advert activated." : "Advert deactivated.",
+            id = advert.Id,
+            isActive = advert.IsActive
+        });
+    }
+
+    [HttpDelete("adverts/{id:guid}")]
+    [HttpDelete("advert/{id:guid}")]
+    public async Task<IActionResult> DeleteAdvert(Guid id)
+    {
+        var (auth, adminUser) = await GetAdminUserAsync();
+        if (!auth || adminUser == null || !IsFullAdminRole(adminUser.Role))
+            return StatusCode(403, new { message = "Access denied. Only Admin and Super Admin roles can delete adverts." });
+
+        var advert = await _context.Adverts.FirstOrDefaultAsync(a => a.Id == id);
+        if (advert == null)
+            return NotFound(new { message = "Advert not found." });
+
+        var title = advert.Title;
+
+        _context.Adverts.Remove(advert);
+        await _context.SaveChangesAsync();
+
+        await LogAdminActionAsync(
+            adminUser.Id,
+            adminUser.Role.ToString(),
+            "Advert",
+            "DELETE",
+            new
+            {
+                action = "DeleteAdvert",
+                advertId = id,
+                title = title
+            });
+
+        return Ok(new { message = "Advert deleted successfully." });
+    }
+
     private static CookieOptions AdminSessionCookieOptions() => new()
     {
         HttpOnly = true,
@@ -2962,4 +3364,13 @@ public class AdminSendTestEmailRequest
     public string? ButtonText { get; set; }
     public string? ButtonUrl { get; set; }
     public string? SenderName { get; set; }
+}
+
+public class AdminAdvertRequest
+{
+    public string? Title { get; set; }
+    public string? Description { get; set; }
+    public string? MediaUrl { get; set; }
+    public bool? IsActive { get; set; }
+    public string? Note { get; set; }
 }

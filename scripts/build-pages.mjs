@@ -146,6 +146,10 @@ const PAGE_CONFIG = {
     entry: 'components/AdminPages/Footer/Footer.js',
     css: ['components/AdminPages/Footer/Footer.css']
   },
+  'admin-advert': {
+    entry: 'components/AdminPages/Advert/Advert.js',
+    css: ['components/AdminPages/Advert/Advert.css']
+  },
   cashbox: {
     entry: 'components/Cashbox/Cashbox.js',
     css: ['components/Cashbox/Cashbox.css']

@@ -3961,7 +3961,9 @@
 				"/promos",
 				"/order",
 				"/orders",
-				"/error"
+				"/error",
+				"/footer",
+				"/advert"
 			];
 			if (hiddenPaths.includes(location.pathname) || location.pathname.startsWith("/admin") || location.pathname.startsWith("/cashbox")) {
 				return null;
@@ -4385,7 +4387,9 @@
 				"/orders",
 				"/rules",
 				"/terms",
-				"/error"
+				"/error",
+				"/footer",
+				"/advert"
 			];
 			if (hiddenPaths.includes(location.pathname) || location.pathname.startsWith("/admin") || location.pathname.startsWith("/cashbox")) {
 				return null;
@@ -4581,7 +4585,9 @@
 				"/orders",
 				"/rules",
 				"/terms",
-				"/error"
+				"/error",
+				"/footer",
+				"/advert"
 			];
 			if (hiddenPaths.includes(location.pathname) || location.pathname.startsWith("/admin") || location.pathname.startsWith("/cashbox")) {
 				return null;
@@ -4647,6 +4653,7 @@
 		const AdminNewsletter = lazy(() => loadPage("admin-newsletter", null));
 		const AdminLogs = lazy(() => loadPage("admin-logs", null));
 		const AdminFooter = lazy(() => loadPage("admin-footer", null));
+		const AdminAdvert = lazy(() => loadPage("admin-advert", null));
 		const Cashbox = lazy(() => loadPage("cashbox", null));
 		const CashboxHistory = lazy(() => loadPage("cashbox-history", null));
 		const __imp_1 = __require("routes/ProtectedRoute.js");
@@ -4814,6 +4821,12 @@
 			}), /* @__PURE__ */ __h(Route, {
 				path: "/footer",
 				element: /* @__PURE__ */ __h(AdminProtectedRoute, { requiredRoles: ["superadmin"] }, /* @__PURE__ */ __h(AdminFooter, null))
+			}), /* @__PURE__ */ __h(Route, {
+				path: "/admin/advert",
+				element: /* @__PURE__ */ __h(AdminProtectedRoute, { requiredRoles: ["moderator", "admin", "superadmin"] }, /* @__PURE__ */ __h(AdminAdvert, null))
+			}), /* @__PURE__ */ __h(Route, {
+				path: "/advert",
+				element: /* @__PURE__ */ __h(AdminProtectedRoute, { requiredRoles: ["moderator", "admin", "superadmin"] }, /* @__PURE__ */ __h(AdminAdvert, null))
 			}), /* @__PURE__ */ __h(Route, {
 				path: "/cashbox",
 				element: /* @__PURE__ */ __h(CashboxProtectedRoute, null, /* @__PURE__ */ __h(Cashbox, null))
@@ -8268,6 +8281,16 @@
 				}, /* @__PURE__ */ __h("polygon", { points: "12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" }))
 			},
 			{
+				to: "/admin/advert",
+				label: "Advert",
+				icon: /* @__PURE__ */ __h("svg", {
+					viewBox: "0 0 24 24",
+					fill: "none",
+					stroke: "currentColor",
+					strokeWidth: "2"
+				}, /* @__PURE__ */ __h("path", { d: "m3 11 18-5v12L3 14v-3z" }), /* @__PURE__ */ __h("path", { d: "M11.6 16.8a3 3 0 1 1-5.8-1.6" }))
+			},
+			{
 				to: "/admin/database",
 				label: "Database",
 				requiredRoles: ["admin", "superadmin"],
@@ -8468,11 +8491,12 @@
 				y2: "18"
 			})))), /* @__PURE__ */ __h("nav", { className: "admin-sidebar__nav" }, /* @__PURE__ */ __h("p", { className: "admin-sidebar__section-label" }, "Navigation"), NAV_ITEMS.map((item) => {
 				const isLocked = item.requiredRoles && !item.requiredRoles.includes(currentUserRole);
+				const isAliasActive = (item.to === "/admin/advert" && location.pathname === "/advert") || (item.to === "/admin/footer" && location.pathname === "/footer");
 				return /* @__PURE__ */ __h(NavLink, {
 					key: item.to,
 					to: isLocked ? "#" : item.to,
 					id: `admin-nav-${item.label.toLowerCase()}`,
-					className: ({ isActive }) => `admin-sidebar__link${isActive && !isLocked ? " admin-sidebar__link--active" : ""}${isLocked ? " admin-sidebar__link--locked" : ""}`,
+					className: ({ isActive }) => `admin-sidebar__link${(isActive || isAliasActive) && !isLocked ? " admin-sidebar__link--active" : ""}${isLocked ? " admin-sidebar__link--locked" : ""}`,
 					onClick: async (e) => {
 						const restrictionText = item.requiredRoles && item.requiredRoles.length === 1 && item.requiredRoles[0] === "superadmin"
 							? "Super Admin only"
@@ -8492,7 +8516,7 @@
 							}
 						}
 					}
-				}, ({ isActive }) => /* @__PURE__ */ __h(__Fragment, null, isActive && !isLocked && /* @__PURE__ */ __h(motion.div, {
+				}, ({ isActive }) => /* @__PURE__ */ __h(__Fragment, null, (isActive || isAliasActive) && !isLocked && /* @__PURE__ */ __h(motion.div, {
 					layoutId: "admin-nav-indicator",
 					className: "admin-sidebar__link-bg",
 					transition: {

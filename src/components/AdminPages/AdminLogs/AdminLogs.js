@@ -17,6 +17,7 @@ const PAGES_LIST = [
 	"Orders",
 	"Promos",
 	"Reviews",
+	"Advert",
 	"Newsletter",
 	"Database",
 	"Footer"
