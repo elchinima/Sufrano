@@ -66,6 +66,47 @@ namespace Rednest.Infrastructure.Migrations
                     b.ToTable("AdminLogs", (string)null);
                 });
 
+            modelBuilder.Entity("Rednest.Core.Entities.Advert", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.PrimitiveCollection<string>("Likes")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("Likes")
+                        .HasDefaultValueSql("'[]'::jsonb");
+
+                    b.Property<AdvertLogs>("Logs")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("Logs")
+                        .HasDefaultValueSql("'{}'::jsonb");
+
+                    b.Property<string>("MediaUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Advert", (string)null);
+                });
+
             modelBuilder.Entity("Rednest.Core.Entities.Analytics", b =>
                 {
                     b.Property<string>("MonthYear")

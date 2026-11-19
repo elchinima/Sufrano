@@ -37,11 +37,28 @@
 				const errorParam = searchParams.get("error");
 				const errorDescription = searchParams.get("error_description");
 				if (errorParam) {
+					if (window.opener && !window.opener.closed) {
+						try {
+							window.opener.postMessage({
+								type: "SUFRANO_GOOGLE_AUTH_ERROR",
+								error: errorParam,
+								message: errorDescription || "Google authorization was canceled or denied."
+							}, window.location.origin);
+							window.close();
+							return;
+						} catch {}
+					}
 					setStatus("error");
 					setErrorMessage(errorDescription || "Google authorization was canceled or denied.");
 					return;
 				}
 				if (!code) {
+					if (window.opener && !window.opener.closed) {
+						try {
+							window.close();
+							return;
+						} catch {}
+					}
 					navigate("/login", { replace: true });
 					return;
 				}
@@ -65,18 +82,59 @@
 						const data = await response.json().catch(() => ({}));
 						if (!response.ok) {
 							if (response.status === 404 || data.errorType === "ACCOUNT_NOT_FOUND") {
+								if (window.opener && !window.opener.closed) {
+									try {
+										window.opener.postMessage({
+											type: "SUFRANO_GOOGLE_AUTH_ERROR",
+											errorType: "ACCOUNT_NOT_FOUND",
+											message: data.message || "Account not found. Please register first before signing in with Google."
+										}, window.location.origin);
+										window.close();
+										return;
+									} catch {}
+								}
 								setStatus("account_not_found");
 								setErrorMessage(data.message || "Account not found. Please register first before signing in with Google.");
 								return;
 							}
+							if (window.opener && !window.opener.closed) {
+								try {
+									window.opener.postMessage({
+										type: "SUFRANO_GOOGLE_AUTH_ERROR",
+										message: data.message || "Failed to authenticate with Google. Please try again."
+									}, window.location.origin);
+									window.close();
+									return;
+								} catch {}
+							}
 							throw new Error(data.message || "Failed to authenticate with Google. Please try again.");
 						}
 						localStorage.setItem("rednest_auth", "true");
+						if (window.opener && !window.opener.closed) {
+							try {
+								window.opener.postMessage({
+									type: "SUFRANO_GOOGLE_AUTH_SUCCESS",
+									user: data.user
+								}, window.location.origin);
+								window.close();
+								return;
+							} catch {}
+						}
 						if (data.user) {
 							login(data.user);
 						}
 						navigate("/", { replace: true });
 					} catch (err) {
+						if (window.opener && !window.opener.closed) {
+							try {
+								window.opener.postMessage({
+									type: "SUFRANO_GOOGLE_AUTH_ERROR",
+									message: err.message || "An unexpected error occurred during Google sign-in."
+								}, window.location.origin);
+								window.close();
+								return;
+							} catch {}
+						}
 						setStatus("error");
 						setErrorMessage(err.message || "An unexpected error occurred during Google sign-in.");
 					}

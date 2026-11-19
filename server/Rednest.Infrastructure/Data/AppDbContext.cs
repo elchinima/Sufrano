@@ -15,6 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<Analytics> Analytics => Set<Analytics>();
     public DbSet<Footer> Footers => Set<Footer>();
     public DbSet<Cashbox> Cashboxes => Set<Cashbox>();
+    public DbSet<Advert> Adverts => Set<Advert>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -348,6 +349,33 @@ public class AppDbContext : DbContext
                   .WithMany()
                   .HasForeignKey(e => e.UserId)
                   .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<Advert>(entity =>
+        {
+            entity.ToTable("Advert");
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Title)
+                  .IsRequired();
+
+            entity.Property(e => e.Description)
+                  .IsRequired();
+
+            entity.Property(e => e.MediaUrl);
+
+            entity.Property(e => e.Logs)
+                  .HasColumnName("Logs")
+                  .HasColumnType("jsonb")
+                  .HasDefaultValueSql("'{}'::jsonb");
+
+            entity.Property(e => e.IsActive)
+                  .HasDefaultValue(true);
+
+            entity.Property(e => e.Likes)
+                  .HasColumnName("Likes")
+                  .HasColumnType("jsonb")
+                  .HasDefaultValueSql("'[]'::jsonb");
         });
     }
 }

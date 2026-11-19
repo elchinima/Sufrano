@@ -573,6 +573,13 @@
     align-self: stretch;
     scroll-snap-align: center;
   }
+  .popular-menu-section .menu-item-card .menu-img-placeholder {
+    height: 200px;
+    min-height: 200px;
+    max-height: 200px;
+    aspect-ratio: auto;
+    object-fit: cover;
+  }
   .popular-menu-section .menu-item-card .menu-info {
     padding: 14px 16px 16px;
     display: flex;

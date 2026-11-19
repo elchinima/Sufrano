@@ -79,6 +79,10 @@
 			const { login, isAuthenticated, fetchCurrentUser } = useAuth();
 			const navigate = useNavigate();
 			const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
+			const googlePopupRef = useRef(null);
+			const googlePollTimerRef = useRef(null);
+			const googleAuthPendingRef = useRef(false);
+			const googleTimeoutRef = useRef(null);
 			const handleLanguageChange = (newLang) => {
 				setStoredLanguage(newLang);
 			};
@@ -87,6 +91,111 @@
 					navigate("/", { replace: true });
 				}
 			}, [isAuthenticated, navigate]);
+			useEffect(() => {
+				const handlePageShow = () => {
+					if (googlePollTimerRef.current) {
+						clearInterval(googlePollTimerRef.current);
+						googlePollTimerRef.current = null;
+					}
+					if (googleTimeoutRef.current) {
+						clearTimeout(googleTimeoutRef.current);
+						googleTimeoutRef.current = null;
+					}
+					googlePopupRef.current = null;
+					googleAuthPendingRef.current = false;
+					setLoading(false);
+				};
+
+				const handleMessage = (event) => {
+					if (event.origin !== window.location.origin) return;
+					if (event.data?.type === "SUFRANO_GOOGLE_AUTH_SUCCESS") {
+						if (googlePollTimerRef.current) {
+							clearInterval(googlePollTimerRef.current);
+							googlePollTimerRef.current = null;
+						}
+						if (googleTimeoutRef.current) {
+							clearTimeout(googleTimeoutRef.current);
+							googleTimeoutRef.current = null;
+						}
+						googlePopupRef.current = null;
+						googleAuthPendingRef.current = false;
+						setLoading(false);
+						if (event.data.user) {
+							login(event.data.user);
+						}
+						navigate("/", { replace: true });
+					} else if (event.data?.type === "SUFRANO_GOOGLE_AUTH_ERROR") {
+						if (googlePollTimerRef.current) {
+							clearInterval(googlePollTimerRef.current);
+							googlePollTimerRef.current = null;
+						}
+						if (googleTimeoutRef.current) {
+							clearTimeout(googleTimeoutRef.current);
+							googleTimeoutRef.current = null;
+						}
+						googlePopupRef.current = null;
+						googleAuthPendingRef.current = false;
+						setLoading(false);
+						if (event.data.message) {
+							setError(translateError(event.data.message, lang));
+						}
+					}
+				};
+
+				const handleVisibilityChange = () => {
+					if (document.visibilityState === "visible") {
+						if (googleAuthPendingRef.current && (!googlePopupRef.current || googlePopupRef.current.closed)) {
+							if (googlePollTimerRef.current) {
+								clearInterval(googlePollTimerRef.current);
+								googlePollTimerRef.current = null;
+							}
+							if (googleTimeoutRef.current) {
+								clearTimeout(googleTimeoutRef.current);
+								googleTimeoutRef.current = null;
+							}
+							googlePopupRef.current = null;
+							googleAuthPendingRef.current = false;
+							setLoading(false);
+						}
+					}
+				};
+
+				const handleWindowFocus = () => {
+					if (googleAuthPendingRef.current && (!googlePopupRef.current || googlePopupRef.current.closed)) {
+						if (googlePollTimerRef.current) {
+							clearInterval(googlePollTimerRef.current);
+							googlePollTimerRef.current = null;
+						}
+						if (googleTimeoutRef.current) {
+							clearTimeout(googleTimeoutRef.current);
+							googleTimeoutRef.current = null;
+						}
+						googlePopupRef.current = null;
+						googleAuthPendingRef.current = false;
+						setLoading(false);
+					}
+				};
+
+				window.addEventListener("pageshow", handlePageShow);
+				window.addEventListener("message", handleMessage);
+				document.addEventListener("visibilitychange", handleVisibilityChange);
+				window.addEventListener("focus", handleWindowFocus);
+
+				return () => {
+					if (googlePollTimerRef.current) {
+						clearInterval(googlePollTimerRef.current);
+						googlePollTimerRef.current = null;
+					}
+					if (googleTimeoutRef.current) {
+						clearTimeout(googleTimeoutRef.current);
+						googleTimeoutRef.current = null;
+					}
+					window.removeEventListener("pageshow", handlePageShow);
+					window.removeEventListener("message", handleMessage);
+					document.removeEventListener("visibilitychange", handleVisibilityChange);
+					window.removeEventListener("focus", handleWindowFocus);
+				};
+			}, [login, navigate, lang]);
 			useEffect(() => {
 				let interval = null;
 				if (step === "2fa") {
@@ -368,21 +477,96 @@
 				if (loading) return;
 				setLoading(true);
 				setError(null);
+				googleAuthPendingRef.current = true;
+
+				const width = 500;
+				const height = 650;
+				const left = window.screenX + (window.outerWidth - width) / 2;
+				const top = window.screenY + (window.outerHeight - height) / 2;
+				const popupFeatures = `width=${width},height=${height},left=${left},top=${top},status=no,resizable=yes,scrollbars=yes`;
+
+				let popup = null;
+				try {
+					popup = window.open("about:blank", "sufrano_google_auth", popupFeatures);
+				} catch (e) {
+					popup = null;
+				}
+
+				if (googleTimeoutRef.current) clearTimeout(googleTimeoutRef.current);
+				googleTimeoutRef.current = setTimeout(() => {
+					if (googleAuthPendingRef.current) {
+						if (googlePollTimerRef.current) {
+							clearInterval(googlePollTimerRef.current);
+							googlePollTimerRef.current = null;
+						}
+						googleAuthPendingRef.current = false;
+						googlePopupRef.current = null;
+						setLoading(false);
+					}
+				}, 60000);
+
 				try {
 					const redirectUri = `${window.location.origin}/google-auth`;
 					const response = await fetch(`${apiUrl}/api/auth/google/url?redirect_uri=${encodeURIComponent(redirectUri)}`);
 					if (!response.ok) {
 						const data = await response.json().catch(() => ({}));
+						if (popup && !popup.closed) {
+							try { popup.close(); } catch {}
+						}
 						throw new Error(data.message || "Google authorization is currently unavailable");
 					}
 					const data = await response.json();
-					if (data.url) {
-						window.location.href = data.url;
-					} else {
+					if (!data.url) {
+						if (popup && !popup.closed) {
+							try { popup.close(); } catch {}
+						}
 						throw new Error("Failed to obtain Google authorization URL");
 					}
+
+					if (popup && !popup.closed && typeof popup.closed !== "undefined") {
+						googlePopupRef.current = popup;
+						try {
+							popup.location.href = data.url;
+						} catch (e) {
+							window.location.href = data.url;
+							return;
+						}
+						if (popup.focus) popup.focus();
+
+						if (googlePollTimerRef.current) clearInterval(googlePollTimerRef.current);
+						googlePollTimerRef.current = setInterval(() => {
+							if (!googlePopupRef.current || googlePopupRef.current.closed) {
+								if (googlePollTimerRef.current) {
+									clearInterval(googlePollTimerRef.current);
+									googlePollTimerRef.current = null;
+								}
+								if (googleTimeoutRef.current) {
+									clearTimeout(googleTimeoutRef.current);
+									googleTimeoutRef.current = null;
+								}
+								googlePopupRef.current = null;
+								googleAuthPendingRef.current = false;
+								setLoading(false);
+							}
+						}, 400);
+					} else {
+						window.location.href = data.url;
+					}
 				} catch (err) {
-					setError(err.message);
+					if (popup && !popup.closed) {
+						try { popup.close(); } catch {}
+					}
+					if (googlePollTimerRef.current) {
+						clearInterval(googlePollTimerRef.current);
+						googlePollTimerRef.current = null;
+					}
+					if (googleTimeoutRef.current) {
+						clearTimeout(googleTimeoutRef.current);
+						googleTimeoutRef.current = null;
+					}
+					googleAuthPendingRef.current = false;
+					googlePopupRef.current = null;
+					setError(translateError(err.message, lang));
 					setLoading(false);
 				}
 			};
