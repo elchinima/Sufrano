@@ -674,7 +674,7 @@ const Advert = () => {
 		type: "button",
 		className: "advert-modal__copy-btn",
 		onClick: () => handleCopyId(activeAdvert.id)
-	}, copiedId === activeAdvert.id ? "Copied" : "Copy"))), /* @__PURE__ */ __h("div", { className: "advert-modal__footer" }, /* @__PURE__ */ __h("button", {
+	}, copiedId === activeAdvert.id ? "Copied" : "Copy")))), /* @__PURE__ */ __h("div", { className: "advert-modal__footer" }, /* @__PURE__ */ __h("button", {
 		type: "button",
 		className: "admin-advert__btn-secondary",
 		onClick: () => setIsDetailsModalOpen(false)
