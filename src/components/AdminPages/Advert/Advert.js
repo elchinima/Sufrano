@@ -440,16 +440,6 @@ const Advert = () => {
 		strokeWidth: "2"
 	}, /* @__PURE__ */ __h("path", { d: "M20 6L9 17l-5-5" })), /* @__PURE__ */ __h("span", null, toast.message))), /* @__PURE__ */ __h("div", { className: "admin-advert__header" }, /* @__PURE__ */ __h("div", null, /* @__PURE__ */ __h("div", { className: "admin-advert__title-row" }, /* @__PURE__ */ __h("h1", { className: "admin-advert__title" }, "Adverts"), /* @__PURE__ */ __h("span", { className: "admin-advert__role-badge" }, canModify ? "Full Access" : "Moderator Access (View & Add)")), /* @__PURE__ */ __h("p", { className: "admin-advert__subtitle" }, "Create and manage promotional announcements, media banners, visibility status, and likes")), /* @__PURE__ */ __h("div", { className: "admin-advert__header-actions" }, /* @__PURE__ */ __h("button", {
 		type: "button",
-		className: "admin-advert__btn-secondary",
-		onClick: fetchAdverts,
-		disabled: loading
-	}, /* @__PURE__ */ __h("svg", {
-		viewBox: "0 0 24 24",
-		fill: "none",
-		stroke: "currentColor",
-		strokeWidth: "2"
-	}, /* @__PURE__ */ __h("polyline", { points: "23 4 23 10 17 10" }), /* @__PURE__ */ __h("polyline", { points: "1 20 1 14 7 14" }), /* @__PURE__ */ __h("path", { d: "M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" })), "Refresh"), /* @__PURE__ */ __h("button", {
-		type: "button",
 		className: "admin-advert__btn-primary",
 		onClick: handleOpenCreate
 	}, /* @__PURE__ */ __h("svg", {
