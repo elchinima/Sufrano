@@ -2875,9 +2875,24 @@
 				en: "Name must not contain spaces."
 			},
 			{
+				az: "Ad 25 simvoldan çox ola bilməz.",
+				ru: "Имя не может превышать 25 символов.",
+				en: "Name cannot exceed 25 characters."
+			},
+			{
+				az: "Adda emojilərdən istifadə etmək olmaz.",
+				ru: "Имя не должно содержать эмодзи.",
+				en: "Name cannot contain emojis."
+			},
+			{
 				az: "Ad 50 simvoldan çox ola bilməz.",
 				ru: "Имя не может превышать 50 символов.",
 				en: "Name cannot exceed 50 characters."
+			},
+			{
+				az: "Hesab təsdiqlənməsi gözləmədə və ya təsdiqlənmiş olduğu müddətdə ad dəyişdirilə bilməz.",
+				ru: "Имя нельзя изменить, пока верификация аккаунта находится в процессе или подтверждена.",
+				en: "Name cannot be changed while account verification is in progress or confirmed."
 			},
 			{
 				az: "Bu hesab üçün İki Mərhələli Təsdiqləmə aktivləşdirilməyib.",
@@ -6624,6 +6639,8 @@
 				"auth_err_code_length": "Пожалуйста, введите полный 4-значный код.",
 				"auth_err_name": "Пожалуйста, введите ваше имя.",
 				"auth_err_name_spaces": "Имя не должно содержать пробелы.",
+				"auth_err_name_length": "Имя не может превышать 25 символов.",
+				"auth_err_name_emoji": "Имя не должно содержать эмодзи.",
 				"google_connecting_title": "Подключение к Google",
 				"google_connecting_desc": "Выполняется вход в аккаунт, пожалуйста, подождите...",
 				"google_not_found_title": "Аккаунт не найден",
@@ -6684,6 +6701,8 @@
 				"auth_err_code_length": "Please enter the full 4-digit code.",
 				"auth_err_name": "Please enter your name.",
 				"auth_err_name_spaces": "Name must not contain spaces.",
+				"auth_err_name_length": "Name cannot exceed 25 characters.",
+				"auth_err_name_emoji": "Name cannot contain emojis.",
 				"google_connecting_title": "Connecting to Google",
 				"google_connecting_desc": "Authenticating your account, please wait a moment...",
 				"google_not_found_title": "Account Not Found",
@@ -6744,6 +6763,8 @@
 				"auth_err_code_length": "Zəhmət olmasa 4 rəqəmli kodu tam daxil edin.",
 				"auth_err_name": "Zəhmət olmasa adınızı daxil edin.",
 				"auth_err_name_spaces": "Ad boşluq simvolu ehtiva etməməlidir.",
+				"auth_err_name_length": "Ad 25 simvoldan çox ola bilməz.",
+				"auth_err_name_emoji": "Adda emojilərdən istifadə etmək olmaz.",
 				"google_connecting_title": "Google ilə əlaqə qurulur",
 				"google_connecting_desc": "Hesabınız təsdiqlənir, zəhmət olmasa bir qədər gözləyin...",
 				"google_not_found_title": "Hesab tapılmadı",

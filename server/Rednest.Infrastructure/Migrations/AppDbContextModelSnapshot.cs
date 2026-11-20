@@ -686,6 +686,8 @@ namespace Rednest.Infrastructure.Migrations
                             b1.Property<string>("Status")
                                 .IsRequired();
 
+                            b1.Property<string>("Note");
+
                             b1.Property<DateTime>("UpdatedAt");
 
                             b1.HasKey("ReviewId");

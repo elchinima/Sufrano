@@ -33,6 +33,7 @@ public class ReviewStatusInfo
 {
     public ReviewStatus Status { get; set; } = ReviewStatus.Pending;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow.AddHours(4);
+    public string? Note { get; set; }
 }
 
 public class Review

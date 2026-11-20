@@ -399,6 +399,16 @@ public static class ErrorLocalizer
                 "Имя не должно содержать пробелы.",
                 "Name must not contain spaces."
             ),
+            ["Name cannot exceed 25 characters."] = (
+                "Ad 25 simvoldan çox ola bilməz.",
+                "Имя не может превышать 25 символов.",
+                "Name cannot exceed 25 characters."
+            ),
+            ["Name cannot contain emojis."] = (
+                "Adda emojilərdən istifadə etmək olmaz.",
+                "Имя не должно содержать эмодзи.",
+                "Name cannot contain emojis."
+            ),
             ["Name cannot exceed 50 characters."] = (
                 "Ad 50 simvoldan çox ola bilməz.",
                 "Имя не может превышать 50 символов.",

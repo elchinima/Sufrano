@@ -381,9 +381,24 @@ const ERROR_ENTRIES = [
 		en: "Name must not contain spaces."
 	},
 	{
+		az: "Ad 25 simvoldan çox ola bilməz.",
+		ru: "Имя не может превышать 25 символов.",
+		en: "Name cannot exceed 25 characters."
+	},
+	{
+		az: "Adda emojilərdən istifadə etmək olmaz.",
+		ru: "Имя не должно содержать эмодзи.",
+		en: "Name cannot contain emojis."
+	},
+	{
 		az: "Ad 50 simvoldan çox ola bilməz.",
 		ru: "Имя не может превышать 50 символов.",
 		en: "Name cannot exceed 50 characters."
+	},
+	{
+		az: "Hesab təsdiqlənməsi gözləmədə və ya təsdiqlənmiş olduğu müddətdə ad dəyişdirilə bilməz.",
+		ru: "Имя нельзя изменить, пока верификация аккаунта находится в процессе или подтверждена.",
+		en: "Name cannot be changed while account verification is in progress or confirmed."
 	},
 	{
 		az: "Bu hesab üçün İki Mərhələli Təsdiqləmə aktivləşdirilməyib.",

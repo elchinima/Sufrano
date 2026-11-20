@@ -416,7 +416,18 @@ public class AdminController : ControllerBase
         var oldSubscribe = user.Session?.Subscribe;
 
         if (request.Name != null)
-            user.Name = string.IsNullOrWhiteSpace(request.Name) ? null : request.Name.Trim();
+        {
+            var trimmedName = request.Name.Trim();
+            if (trimmedName.Length > NameValidationHelper.MaxNameLength)
+            {
+                return BadRequest(new { message = "Name cannot exceed 25 characters." });
+            }
+            if (NameValidationHelper.ContainsEmoji(trimmedName))
+            {
+                return BadRequest(new { message = "Name cannot contain emojis." });
+            }
+            user.Name = string.IsNullOrWhiteSpace(trimmedName) ? null : trimmedName;
+        }
 
         if (!string.IsNullOrWhiteSpace(request.Email) && request.Email.Trim().ToLower() != user.Email.ToLower())
         {
@@ -1137,6 +1148,8 @@ public class AdminController : ControllerBase
                 category = r.Category.ToString(),
                 status = r.Status.Status.ToString(),
                 statusUpdatedAt = r.Status.UpdatedAt,
+                note = r.Status.Note,
+                statusNote = r.Status.Note,
                 language = r.Language?.ToString(),
                 rating = r.ReviewData.Rating,
                 comment = r.ReviewData.Comment,
@@ -1193,6 +1206,8 @@ public class AdminController : ControllerBase
             category = review.Category.ToString(),
             status = review.Status.Status.ToString(),
             statusUpdatedAt = review.Status.UpdatedAt,
+            note = review.Status.Note,
+            statusNote = review.Status.Note,
             language = review.Language?.ToString(),
             rating = review.ReviewData.Rating,
             comment = review.ReviewData.Comment,
@@ -1221,6 +1236,7 @@ public class AdminController : ControllerBase
         var prevStatus = review.Status.Status.ToString();
         review.Status.Status = statusEnum;
         review.Status.UpdatedAt = DateTime.UtcNow.AddHours(4);
+        review.Status.Note = null;
         await _context.SaveChangesAsync();
 
         var (auth, adminUser) = await GetAdminUserAsync();
@@ -1245,7 +1261,9 @@ public class AdminController : ControllerBase
             message = "Review status updated successfully.",
             id = review.Id,
             status = review.Status.Status.ToString(),
-            statusUpdatedAt = review.Status.UpdatedAt
+            statusUpdatedAt = review.Status.UpdatedAt,
+            note = review.Status.Note,
+            statusNote = review.Status.Note
         });
     }
 

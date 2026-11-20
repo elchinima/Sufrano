@@ -1,4 +1,4 @@
-namespace Rednest.Infrastructure.Services;
+﻿namespace Rednest.Infrastructure.Services;
 
 public class ReviewModerationService : BackgroundService
 {
@@ -171,13 +171,22 @@ public class ReviewModerationService : BackgroundService
 
             try
             {
-                var (isClean, detectedLanguage) = await ModerateReviewAsync(apiKey, review, stoppingToken);
+                var moderation = await ModerateReviewAsync(apiKey, review, stoppingToken);
+                if (moderation == null)
+                {
+                    _logger.LogWarning("Review {ReviewId} left Pending: AI returned no valid result; will retry on next poll.", review.Id);
+                    await Task.Delay(DelayBetweenRequestsMs, stoppingToken);
+                    continue;
+                }
+
+                var (isClean, detectedLanguage, note) = moderation.Value;
 
                 var parsedLang = ParseDetectedLanguage(detectedLanguage);
                 review.Language = parsedLang;
 
                 review.Status.Status = isClean ? ReviewStatus.Published : ReviewStatus.Verification;
                 review.Status.UpdatedAt = GetBakuTime();
+                review.Status.Note = isClean ? null : note;
 
                 await db.SaveChangesAsync(stoppingToken);
 
@@ -216,7 +225,7 @@ public class ReviewModerationService : BackgroundService
         return null;
     }
 
-    private async Task<(bool IsClean, string DetectedLanguage)> ModerateReviewAsync(
+    private async Task<(bool IsClean, string DetectedLanguage, string? Note)?> ModerateReviewAsync(
         string apiKey,
         Review review,
         CancellationToken stoppingToken)
@@ -245,10 +254,11 @@ public class ReviewModerationService : BackgroundService
 
             3. Advertising & Links:
                - Set hasAdvertising to true if there is promotional spam or marketing; otherwise false.
-               - Set hasLinks to true if there are URLs, domains, emails, phone numbers, or social media handles (@username); otherwise false.
+               - Set hasLinks to true if there are URLs or domains; otherwise false.
+                - Set hasContactInfo to true if the user left contact information: a phone number, an email address, or a social media account/handle (e.g. @username, instagram, telegram, whatsapp, facebook, tiktok links or nicknames); otherwise false.
 
             4. Overall Decision:
-               - isClean must be true ONLY IF hasOffensiveContent is false, hasAdvertising is false, hasLinks is false, and hasWrongLanguage is false.
+               - isClean must be true ONLY IF hasOffensiveContent is false, hasAdvertising is false, hasLinks is false, hasContactInfo is false, and hasWrongLanguage is false.
                - If any violation is found, isClean MUST be false.
 
             Respond ONLY with a valid JSON object:
@@ -257,9 +267,10 @@ public class ReviewModerationService : BackgroundService
               "hasOffensiveContent": true or false,
               "hasAdvertising": true or false,
               "hasLinks": true or false,
+              "hasContactInfo": true or false,
               "hasWrongLanguage": true or false,
               "detectedLanguage": "Russian" | "English" | "Azerbaijani" | "Other",
-              "summary": "Brief explanation in English"
+              "note": "REQUIRED. If isClean is false: the exact short reason in English (max 10 words) why this specific review failed moderation, naming the actual violation found (e.g. phone number, email, social media handle, profanity, advertising, link, unsupported language). If isClean is true: empty string."
             }
             """;
 
@@ -298,13 +309,13 @@ public class ReviewModerationService : BackgroundService
         {
             _logger.LogWarning("AI API error for review {ReviewId}: {Status} - {Body}",
                 review.Id, response.StatusCode, responseBody);
-            return (false, "Unknown");
+            return null;
         }
 
         return ParseResponse(responseBody, review.Id);
     }
 
-    private (bool IsClean, string DetectedLanguage) ParseResponse(string responseBody, Guid reviewId)
+    private (bool IsClean, string DetectedLanguage, string? Note)? ParseResponse(string responseBody, Guid reviewId)
     {
         try
         {
@@ -348,16 +359,29 @@ public class ReviewModerationService : BackgroundService
             var links = root.GetProperty("hasLinks").GetBoolean();
             var wrongLang = root.GetProperty("hasWrongLanguage").GetBoolean();
             var isCleanReported = root.GetProperty("isClean").GetBoolean();
-            var isClean = isCleanReported && !offensive && !advertising && !links && !wrongLang;
+            var contact = root.TryGetProperty("hasContactInfo", out var contactProp) && contactProp.ValueKind == JsonValueKind.True;
+            var isClean = isCleanReported && !offensive && !advertising && !links && !contact && !wrongLang;
             var detectedLang = root.TryGetProperty("detectedLanguage", out var lang) ? lang.GetString() ?? "Unknown" : "Unknown";
 
-            return (isClean, detectedLang);
+            string? note = null;
+            if (!isClean)
+            {
+                note = root.TryGetProperty("note", out var noteProp) && noteProp.ValueKind == JsonValueKind.String ? noteProp.GetString()?.Trim() : null;
+                if (string.IsNullOrWhiteSpace(note))
+                {
+                    _logger.LogWarning("AI response for review {ReviewId} is not clean but has no note.", reviewId);
+                    return null;
+                }
+                if (note.Length > 200) note = note[..200];
+            }
+
+            return (isClean, detectedLang, note);
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to parse AI response for review {ReviewId}. Body: {Body}",
                 reviewId, responseBody.Length > 500 ? responseBody[..500] : responseBody);
-            return (false, "Unknown");
+            return null;
         }
     }
 

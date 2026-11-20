@@ -675,7 +675,10 @@
 				}
 			};
 			const handleNameChange = (e) => {
-				let val = e.target.value.replace(/\s+/g, "");
+				let val = e.target.value.replace(/\s+/g, "").replace(/[\p{Extended_Pictographic}\p{Emoji_Presentation}\uFE0F\u200D]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u27BF]/gu, "");
+				if (val.length > 25) {
+					val = val.slice(0, 25);
+				}
 				if (val.length > 0) {
 					val = val.charAt(0).toLocaleUpperCase(lang === "az" ? "az" : undefined) + val.slice(1);
 				}
@@ -697,6 +700,14 @@
 				}
 				if (/\s/.test(name)) {
 					setError(t("auth_err_name_spaces"));
+					return;
+				}
+				if (cleanName.length > 25) {
+					setError(t("auth_err_name_length"));
+					return;
+				}
+				if (/[\p{Extended_Pictographic}\p{Emoji_Presentation}\uFE0F\u200D]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u27BF]/u.test(cleanName)) {
+					setError(t("auth_err_name_emoji"));
 					return;
 				}
 				const capitalized = cleanName.charAt(0).toLocaleUpperCase(lang === "az" ? "az" : undefined) + cleanName.slice(1);
@@ -866,6 +877,7 @@
 				autoComplete: "name",
 				placeholder: t("auth_placeholder_name"),
 				value: name,
+				maxLength: 25,
 				onChange: handleNameChange,
 				onKeyDown: handleNameKeyDown,
 				required: true,

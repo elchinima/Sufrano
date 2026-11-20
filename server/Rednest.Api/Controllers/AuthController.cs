@@ -884,8 +884,19 @@ public class AuthController : ControllerBase
                 return Unauthorized(new { message = "Access denied. Logging into accounts with the Bot or AI role is prohibited." });
             }
 
+            var userSession = user.Session ?? await userRepository.GetSessionByUserIdAsync(user.Id);
+            var currentVerification = userSession?.Verification ?? VerificationStatus.NotVerificated;
+
             if (!string.IsNullOrWhiteSpace(user.Name))
             {
+                if (currentVerification != VerificationStatus.NotVerificated)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new
+                    {
+                        message = "Name cannot be changed while account verification is in progress or confirmed."
+                    });
+                }
+
                 var secToken = Request.Cookies[SecurityVerificationHelper.CookieName];
                 if (string.IsNullOrEmpty(secToken) || !SecurityVerificationHelper.ValidateToken(secToken, userIdString))
                 {
@@ -908,9 +919,14 @@ public class AuthController : ControllerBase
             }
 
             var rawName = nameRequest.Name.Trim();
-            if (rawName.Length > 50)
+            if (rawName.Length > NameValidationHelper.MaxNameLength)
             {
-                return BadRequest(new { message = "Name cannot exceed 50 characters." });
+                return BadRequest(new { message = "Name cannot exceed 25 characters." });
+            }
+
+            if (NameValidationHelper.ContainsEmoji(rawName))
+            {
+                return BadRequest(new { message = "Name cannot contain emojis." });
             }
 
             var culture = Request.Headers.AcceptLanguage.ToString().Contains("az", StringComparison.OrdinalIgnoreCase)
@@ -930,7 +946,8 @@ public class AuthController : ControllerBase
                 Name = user.Name,
                 Email = user.Email,
                 ProfilePictureUrl = AvatarHelper.Resolve(user.ProfilePictureUrl),
-                Balance = user.Balance
+                Balance = user.Balance,
+                Verification = currentVerification.ToString()
             });
         }
         catch (Exception ex)

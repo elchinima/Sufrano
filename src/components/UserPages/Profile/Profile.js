@@ -40,9 +40,13 @@ const Profile = () => {
 	const [success, setSuccess] = useState("");
 	const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
 	const [verificationLoading, setVerificationLoading] = useState(false);
-	const verificationStatus = (user?.verification || user?.Verification || "NotVerificated").toString();
+	const rawVerification = (user?.verification || user?.Verification || "").toString();
+	const verificationStatus = rawVerification || "NotVerificated";
 	const isConfirmed = verificationStatus === "Comfirmed" || user?.role === "Bot" || user?.role === "AI";
 	const isInProgress = verificationStatus === "InProgress";
+	const canEditName = !isConfirmed && !isInProgress && (rawVerification === "NotVerificated" || rawVerification === "NotVerification");
+	const [nameInput, setNameInput] = useState(user?.name || user?.Name || "");
+	const [nameSaving, setNameSaving] = useState(false);
 	const fileInputRef = useRef(null);
 	const apiUrl = window.__SUFRANO_API_URL__ || "" || "";
 	const rawAvatarUrl = user?.profilePictureUrl || user?.ProfilePictureUrl || null;
@@ -187,6 +191,9 @@ const Profile = () => {
 		}
 	};
 	useEffect(() => {
+		setNameInput(user?.name || user?.Name || "");
+	}, [user?.name, user?.Name, canEditName]);
+	useEffect(() => {
 		let isMounted = true;
 		const fetchFreshVerification = async () => {
 			try {
@@ -194,11 +201,18 @@ const Profile = () => {
 				if (res.ok) {
 					const data = await res.json();
 					const freshVerif = data.verification || data.Verification;
-					if (freshVerif && isMounted) {
-						updateUser({
-							verification: freshVerif,
-							Verification: freshVerif
-						});
+					const freshName = data.name || data.Name;
+					if (isMounted && (freshVerif || freshName)) {
+						const patch = {};
+						if (freshVerif) {
+							patch.verification = freshVerif;
+							patch.Verification = freshVerif;
+						}
+						if (freshName) {
+							patch.name = freshName;
+							patch.Name = freshName;
+						}
+						updateUser(patch);
 					}
 				}
 			} catch {}
@@ -206,6 +220,54 @@ const Profile = () => {
 		fetchFreshVerification();
 		return () => { isMounted = false; };
 	}, []);
+	const handleSaveName = async () => {
+		if (!canEditName || nameSaving) return;
+		const trimmed = nameInput.trim();
+		if (!trimmed) {
+			showError("Name cannot be empty.");
+			return;
+		}
+		if (/\s/.test(trimmed)) {
+			showError("Name cannot contain spaces.");
+			return;
+		}
+		if (trimmed.length > 25) {
+			showError("Name cannot exceed 25 characters.");
+			return;
+		}
+		if (/[\p{Extended_Pictographic}\p{Emoji_Presentation}\uFE0F\u200D]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u27BF]/u.test(trimmed)) {
+			showError("Name cannot contain emojis.");
+			return;
+		}
+		if (trimmed === (user?.name || user?.Name || "").trim()) return;
+		setNameSaving(true);
+		setError("");
+		try {
+			const res = await fetch(`${apiUrl}/api/auth/name`, {
+				method: "PUT",
+				headers: { "Content-Type": "application/json" },
+				credentials: "include",
+				body: JSON.stringify({ name: trimmed })
+			});
+			if (res.ok) {
+				const data = await res.json();
+				const updatedName = data.name || data.Name || trimmed;
+				updateUser({
+					name: updatedName,
+					Name: updatedName
+				});
+				setNameInput(updatedName);
+				showSuccess(t("profile_toast_name_updated"));
+			} else {
+				const data = await res.json().catch(() => ({}));
+				showError(data.message || data.Message || "Failed to update name.");
+			}
+		} catch {
+			showError("Connection error. Please try again.");
+		} finally {
+			setNameSaving(false);
+		}
+	};
 	const handleConfirmVerification = async () => {
 		if (verificationLoading || isInProgress || isConfirmed) return;
 		setVerificationLoading(true);
@@ -343,7 +405,35 @@ const Profile = () => {
 		stroke: "currentColor",
 		strokeWidth: "2",
 		className: "btn-icon"
-	}, /* @__PURE__ */ __h("polyline", { points: "3 6 5 6 21 6" }), /* @__PURE__ */ __h("path", { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" })), t("profile_avatar_delete"))))), /* @__PURE__ */ __h("div", { className: "profile-card__info-section" }, /* @__PURE__ */ __h("div", { className: "profile-field-group" }, /* @__PURE__ */ __h("label", { className: "profile-field-label" }, t("profile_field_name")), /* @__PURE__ */ __h("div", { className: "profile-field-input-wrap" }, /* @__PURE__ */ __h("input", {
+	}, /* @__PURE__ */ __h("polyline", { points: "3 6 5 6 21 6" }), /* @__PURE__ */ __h("path", { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" })), t("profile_avatar_delete"))))), /* @__PURE__ */ __h("div", { className: "profile-card__info-section" }, /* @__PURE__ */ __h("div", { className: "profile-field-group" }, /* @__PURE__ */ __h("label", { className: "profile-field-label" }, t("profile_field_name")), canEditName ? /* @__PURE__ */ __h("div", { className: "profile-field-input-wrap profile-field-input-wrap--editable" }, /* @__PURE__ */ __h("input", {
+		type: "text",
+		className: "profile-field-input profile-field-input--editable",
+		value: nameInput,
+		onChange: (e) => {
+			let val = e.target.value.replace(/\s+/g, "").replace(/[\p{Extended_Pictographic}\p{Emoji_Presentation}\uFE0F\u200D]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u27BF]/gu, "");
+			if (val.length > 25) val = val.slice(0, 25);
+			setNameInput(val);
+		},
+		maxLength: 25,
+		disabled: nameSaving
+	}), /* @__PURE__ */ __h("button", {
+		type: "button",
+		className: "cta-btn sm profile-name-save-btn",
+		onClick: handleSaveName,
+		disabled: nameSaving || !nameInput.trim() || nameInput.trim() === (user?.name || user?.Name || "").trim()
+	}, nameSaving ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("img", {
+		src: loaderIcon,
+		alt: "Saving",
+		className: "btn-loader"
+	}), /* @__PURE__ */ __h("span", null, t("profile_name_saving"))) : /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("svg", {
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2.2",
+		strokeLinecap: "round",
+		strokeLinejoin: "round",
+		className: "btn-icon"
+	}, /* @__PURE__ */ __h("polyline", { points: "20 6 9 17 4 12" })), /* @__PURE__ */ __h("span", null, t("profile_name_done_btn"))))) : /* @__PURE__ */ __h("div", { className: "profile-field-input-wrap" }, /* @__PURE__ */ __h("input", {
 		type: "text",
 		className: "profile-field-input",
 		value: userName,
