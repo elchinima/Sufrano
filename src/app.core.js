@@ -1611,7 +1611,7 @@
 
 		    if (!existing) {
 		      link.rel = 'stylesheet';
-		      link.href = `styles/pages/${pageName}.css?v=3`;
+		      link.href = `styles/pages/${pageName}.css?v=4`;
 		      link.setAttribute('data-sufrano-page-css', pageName);
 		      document.head.appendChild(link);
 		    } else if (existing.sheet) {
@@ -1656,7 +1656,7 @@
 		    script.addEventListener('error', handleError, { once: true });
 
 		    if (!existing) {
-		      script.src = `pages/${pageName}.js?v=3`;
+		      script.src = `pages/${pageName}.js?v=4`;
 		      script.async = true;
 		      script.setAttribute('data-sufrano-page-js', pageName);
 		      document.head.appendChild(script);

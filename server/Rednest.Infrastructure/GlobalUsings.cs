@@ -27,3 +27,7 @@ global using Rednest.Application.Interfaces;
 global using Rednest.Infrastructure.Data;
 global using Rednest.Infrastructure.Repositories;
 global using Rednest.Infrastructure.Services;
+global using Microsoft.EntityFrameworkCore.Infrastructure;
+global using Microsoft.EntityFrameworkCore.Migrations;
+global using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+global using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;

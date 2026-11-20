@@ -364,6 +364,8 @@ public class AppDbContext : DbContext
 
             entity.Property(e => e.MediaUrl);
 
+            entity.Property(e => e.Link);
+
             entity.Property(e => e.Logs)
                   .HasColumnName("Logs")
                   .HasColumnType("jsonb")

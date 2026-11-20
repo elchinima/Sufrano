@@ -1096,3 +1096,75 @@
   color: #ffffff;
   padding: 0 6px;
 }
+.admin-advert__link-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: monospace;
+  font-size: 0.76rem;
+  color: #e8cfa0;
+  background: rgba(197, 160, 89, 0.14);
+  border: 1px solid rgba(197, 160, 89, 0.32);
+  padding: 3px 8px;
+  border-radius: 6px;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.admin-advert__link-empty {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.84rem;
+}
+.advert-modal__presets {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.advert-modal__presets-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: rgba(255, 248, 231, 0.65);
+}
+.advert-modal__presets-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.advert-modal__preset-chip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: rgba(255, 248, 231, 0.82);
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+.advert-modal__preset-chip:hover {
+  background: rgba(197, 160, 89, 0.16);
+  border-color: rgba(197, 160, 89, 0.45);
+  color: #ffffff;
+}
+.advert-modal__preset-chip.added {
+  border-color: rgba(52, 211, 153, 0.32);
+  background: rgba(52, 211, 153, 0.1);
+  color: #a7f3d0;
+}
+.advert-modal__input-mono {
+  font-family: monospace !important;
+  font-size: 0.84rem !important;
+}
+.advert-modal__link-code {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.84rem;
+  color: #e8cfa0;
+  background: rgba(197, 160, 89, 0.14);
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  padding: 4px 10px;
+  border-radius: 6px;
+  word-break: break-all;
+}

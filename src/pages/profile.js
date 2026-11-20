@@ -815,6 +815,7 @@
 		const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 		const { useLang } = __require("utils/useLang.js");
 		const { translateError } = __require("utils/errorTranslator.js");
+		const { fetchWithRefresh } = __require("utils/fetchWithRefresh.js");
 		const { getProfileTranslation } = __require("components/UserPages/Profile/Lang.js");
 		const { DEFAULT_USER_AVATAR, getUserAvatarUrl, handleAvatarError, isDefaultAvatarUrl } = __require("utils/avatar.js");
 		const ALLOWED_TYPES = [
@@ -843,11 +844,11 @@
 			const [success, setSuccess] = useState("");
 			const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
 			const [verificationLoading, setVerificationLoading] = useState(false);
-			const rawVerification = (user?.verification || user?.Verification || "").toString();
-			const verificationStatus = rawVerification || "NotVerificated";
-			const isConfirmed = verificationStatus === "Comfirmed" || user?.role === "Bot" || user?.role === "AI";
-			const isInProgress = verificationStatus === "InProgress";
-			const canEditName = !isConfirmed && !isInProgress && (rawVerification === "NotVerificated" || rawVerification === "NotVerification");
+			const verificationStatus = (user?.verification ?? user?.Verification ?? "NotVerificated").toString().trim() || "NotVerificated";
+			const normalizedVerification = verificationStatus.toLowerCase();
+			const isConfirmed = normalizedVerification === "comfirmed" || normalizedVerification === "confirmed" || user?.role === "Bot" || user?.role === "AI";
+			const isInProgress = normalizedVerification === "inprogress";
+			const canEditName = !isConfirmed && !isInProgress && (normalizedVerification === "notverificated" || normalizedVerification === "notverification" || normalizedVerification === "0");
 			const [nameInput, setNameInput] = useState(user?.name || user?.Name || "");
 			const [nameSaving, setNameSaving] = useState(false);
 			const fileInputRef = useRef(null);
@@ -1000,7 +1001,7 @@
 				let isMounted = true;
 				const fetchFreshVerification = async () => {
 					try {
-						const res = await fetch(`${apiUrl}/api/auth/me`, { credentials: "include" });
+						const res = await fetchWithRefresh(`${apiUrl}/api/auth/me`);
 						if (res.ok) {
 							const data = await res.json();
 							const freshVerif = data.verification || data.Verification;
@@ -1046,10 +1047,9 @@
 				setNameSaving(true);
 				setError("");
 				try {
-					const res = await fetch(`${apiUrl}/api/auth/name`, {
+					const res = await fetchWithRefresh(`${apiUrl}/api/auth/name`, {
 						method: "PUT",
 						headers: { "Content-Type": "application/json" },
-						credentials: "include",
 						body: JSON.stringify({ name: trimmed })
 					});
 					if (res.ok) {
@@ -1208,7 +1208,10 @@
 				stroke: "currentColor",
 				strokeWidth: "2",
 				className: "btn-icon"
-			}, /* @__PURE__ */ __h("polyline", { points: "3 6 5 6 21 6" }), /* @__PURE__ */ __h("path", { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" })), t("profile_avatar_delete"))))), /* @__PURE__ */ __h("div", { className: "profile-card__info-section" }, /* @__PURE__ */ __h("div", { className: "profile-field-group" }, /* @__PURE__ */ __h("label", { className: "profile-field-label" }, t("profile_field_name")), canEditName ? /* @__PURE__ */ __h("div", { className: "profile-field-input-wrap profile-field-input-wrap--editable" }, /* @__PURE__ */ __h("input", {
+			}, /* @__PURE__ */ __h("polyline", { points: "3 6 5 6 21 6" }), /* @__PURE__ */ __h("path", { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" })), t("profile_avatar_delete"))))), /* @__PURE__ */ __h("div", { className: "profile-card__info-section" }, /* @__PURE__ */ __h("div", { className: "profile-field-group" }, /* @__PURE__ */ __h("label", { className: "profile-field-label" }, t("profile_field_name")), canEditName ? /* @__PURE__ */ __h("div", {
+				key: "name-editable",
+				className: "profile-field-input-wrap profile-field-input-wrap--editable"
+			}, /* @__PURE__ */ __h("input", {
 				type: "text",
 				className: "profile-field-input profile-field-input--editable",
 				value: nameInput,
@@ -1236,7 +1239,10 @@
 				strokeLinecap: "round",
 				strokeLinejoin: "round",
 				className: "btn-icon"
-			}, /* @__PURE__ */ __h("polyline", { points: "20 6 9 17 4 12" })), /* @__PURE__ */ __h("span", null, t("profile_name_done_btn"))))) : /* @__PURE__ */ __h("div", { className: "profile-field-input-wrap" }, /* @__PURE__ */ __h("input", {
+			}, /* @__PURE__ */ __h("polyline", { points: "20 6 9 17 4 12" })), /* @__PURE__ */ __h("span", null, t("profile_name_done_btn"))))) : /* @__PURE__ */ __h("div", {
+				key: "name-locked",
+				className: "profile-field-input-wrap"
+			}, /* @__PURE__ */ __h("input", {
 				type: "text",
 				className: "profile-field-input",
 				value: userName,

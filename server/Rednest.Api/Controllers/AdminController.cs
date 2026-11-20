@@ -2925,6 +2925,7 @@ public class AdminController : ControllerBase
                     title = a.Title,
                     description = a.Description,
                     mediaUrl = a.MediaUrl,
+                    link = a.Link,
                     isActive = a.IsActive,
                     likesCount = a.Likes?.Count ?? 0,
                     likes = a.Likes ?? new List<Guid>(),
@@ -2986,6 +2987,7 @@ public class AdminController : ControllerBase
             title = advert.Title,
             description = advert.Description,
             mediaUrl = advert.MediaUrl,
+            link = advert.Link,
             isActive = advert.IsActive,
             likesCount = advert.Likes?.Count ?? 0,
             likes = advert.Likes ?? new List<Guid>(),
@@ -3043,6 +3045,7 @@ public class AdminController : ControllerBase
             Title = request.Title.Trim(),
             Description = request.Description.Trim(),
             MediaUrl = string.IsNullOrWhiteSpace(request.MediaUrl) ? null : request.MediaUrl.Trim(),
+            Link = string.IsNullOrWhiteSpace(request.Link) ? null : request.Link.Trim(),
             IsActive = request.IsActive ?? true,
             Likes = new List<Guid>(),
             Logs = new AdvertLogs
@@ -3069,6 +3072,7 @@ public class AdminController : ControllerBase
                 advertId = advert.Id,
                 title = advert.Title,
                 mediaUrl = advert.MediaUrl,
+                link = advert.Link,
                 isActive = advert.IsActive,
                 note = advert.Logs.Note
             });
@@ -3080,6 +3084,7 @@ public class AdminController : ControllerBase
             title = advert.Title,
             description = advert.Description,
             mediaUrl = advert.MediaUrl,
+            link = advert.Link,
             isActive = advert.IsActive,
             likesCount = 0,
             likes = advert.Likes,
@@ -3118,6 +3123,7 @@ public class AdminController : ControllerBase
         var oldTitle = advert.Title;
         var oldDescription = advert.Description;
         var oldMediaUrl = advert.MediaUrl;
+        var oldLink = advert.Link;
         var oldIsActive = advert.IsActive;
         var oldNote = advert.Logs?.Note;
 
@@ -3139,15 +3145,16 @@ public class AdminController : ControllerBase
             advert.Description = request.Description.Trim();
         }
 
-        if (request.MediaUrl != null)
+        if (request.MediaUrl != null) advert.MediaUrl = string.IsNullOrWhiteSpace(request.MediaUrl) ? null : request.MediaUrl.Trim();
+        
+
+        if (request.Link != null)
         {
-            advert.MediaUrl = string.IsNullOrWhiteSpace(request.MediaUrl) ? null : request.MediaUrl.Trim();
+            advert.Link = string.IsNullOrWhiteSpace(request.Link) ? null : request.Link.Trim();
         }
 
-        if (request.IsActive.HasValue)
-        {
-            advert.IsActive = request.IsActive.Value;
-        }
+        if (request.IsActive.HasValue) advert.IsActive = request.IsActive.Value;
+        
 
         var nowBaku = DateTime.UtcNow.AddHours(4);
         var prevLogs = advert.Logs ?? new AdvertLogs();
@@ -3167,6 +3174,7 @@ public class AdminController : ControllerBase
         if (oldTitle != advert.Title) changes.Add($"Title: '{oldTitle}' -> '{advert.Title}'");
         if (oldDescription != advert.Description) changes.Add("Description updated");
         if (oldMediaUrl != advert.MediaUrl) changes.Add($"MediaUrl: '{oldMediaUrl}' -> '{advert.MediaUrl}'");
+        if (oldLink != advert.Link) changes.Add($"Link: '{oldLink}' -> '{advert.Link}'");
         if (oldIsActive != advert.IsActive) changes.Add($"IsActive: '{oldIsActive}' -> '{advert.IsActive}'");
         if (oldNote != advert.Logs.Note) changes.Add($"Note: '{oldNote}' -> '{advert.Logs.Note}'");
 
@@ -3183,8 +3191,8 @@ public class AdminController : ControllerBase
                 advertId = advert.Id,
                 title = advert.Title,
                 changes = changes.Count > 0 ? changes : null,
-                before = new { title = oldTitle, description = oldDescription, mediaUrl = oldMediaUrl, isActive = oldIsActive, note = oldNote },
-                after = new { title = advert.Title, description = advert.Description, mediaUrl = advert.MediaUrl, isActive = advert.IsActive, note = advert.Logs.Note }
+                before = new { title = oldTitle, description = oldDescription, mediaUrl = oldMediaUrl, link = oldLink, isActive = oldIsActive, note = oldNote },
+                after = new { title = advert.Title, description = advert.Description, mediaUrl = advert.MediaUrl, link = advert.Link, isActive = advert.IsActive, note = advert.Logs.Note }
             });
 
         return Ok(new
@@ -3194,6 +3202,7 @@ public class AdminController : ControllerBase
             title = advert.Title,
             description = advert.Description,
             mediaUrl = advert.MediaUrl,
+            link = advert.Link,
             isActive = advert.IsActive,
             likesCount = advert.Likes?.Count ?? 0,
             likes = advert.Likes ?? new List<Guid>(),
@@ -3389,6 +3398,7 @@ public class AdminAdvertRequest
     public string? Title { get; set; }
     public string? Description { get; set; }
     public string? MediaUrl { get; set; }
+    public string? Link { get; set; }
     public bool? IsActive { get; set; }
     public string? Note { get; set; }
 }

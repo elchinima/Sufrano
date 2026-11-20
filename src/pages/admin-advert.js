@@ -24,6 +24,17 @@
 		const cleanRole = (role) => (role || "").toLowerCase().replace(/\s+/g, "");
 		const PAGE_SIZE = 10;
 
+		const PRESET_QUICK_LINKS = [
+			{ link: "/", label: "Home" },
+			{ link: "/catalog", label: "Catalog" },
+			{ link: "/review", label: "Reviews" },
+			{ link: "/fortune", label: "Wheel of Fortune" },
+			{ link: "/promos", label: "Promo Codes" },
+			{ link: "/orders", label: "My Orders" },
+			{ link: "/basket", label: "Basket" },
+			{ link: "/rules", label: "Rules" }
+		];
+
 		const formatBakuDate = (isoStr) => {
 			if (!isoStr) return "—";
 			try {
@@ -72,6 +83,7 @@
 				title: "",
 				description: "",
 				mediaUrl: "",
+				link: "",
 				note: "",
 				isActive: true
 			});
@@ -120,6 +132,7 @@
 					const matchesSearch = !q ||
 						(item.title || "").toLowerCase().includes(q) ||
 						(item.description || "").toLowerCase().includes(q) ||
+						(item.link || "").toLowerCase().includes(q) ||
 						(item.logs?.note || "").toLowerCase().includes(q) ||
 						(item.id || "").toLowerCase().includes(q) ||
 						(item.logs?.createUser?.name || "").toLowerCase().includes(q) ||
@@ -197,6 +210,7 @@
 					title: "",
 					description: "",
 					mediaUrl: "",
+					link: "",
 					note: "",
 					isActive: true
 				});
@@ -213,6 +227,7 @@
 					title: advert.title || "",
 					description: advert.description || "",
 					mediaUrl: advert.mediaUrl || "",
+					link: advert.link || "",
 					note: advert.logs?.note || "",
 					isActive: advert.isActive !== false
 				});
@@ -292,6 +307,7 @@
 					title: trimmedTitle,
 					description: trimmedDesc,
 					mediaUrl: form.mediaUrl.trim() || null,
+					link: form.link.trim(),
 					note: form.note.trim() || null,
 					isActive: form.isActive
 				};
@@ -513,7 +529,7 @@
 				y2: "16.65"
 			})), /* @__PURE__ */ __h("input", {
 				type: "text",
-				placeholder: "Search by advert title, description, note, author, or ID...",
+				placeholder: "Search by advert title, description, link, note, author, or ID...",
 				value: searchQuery,
 				onChange: (e) => setSearchQuery(e.target.value)
 			}), searchQuery && /* @__PURE__ */ __h("button", {
@@ -541,7 +557,7 @@
 				fill: "none",
 				stroke: "currentColor",
 				strokeWidth: "2"
-			}, /* @__PURE__ */ __h("path", { d: "m3 11 18-5v12L3 14v-3z" }), /* @__PURE__ */ __h("path", { d: "M11.6 16.8a3 3 0 1 1-5.8-1.6" })), /* @__PURE__ */ __h("h3", null, "No adverts found"), /* @__PURE__ */ __h("p", null, searchQuery || selectedStatus !== "all" || selectedMedia !== "all" ? "Try adjusting your search query or filters." : "No promotional adverts have been created yet. Click \"Add Advert\" above to publish one.")) : /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("div", { className: "admin-advert__table-wrapper" }, /* @__PURE__ */ __h("table", { className: "admin-advert__table" }, /* @__PURE__ */ __h("thead", null, /* @__PURE__ */ __h("tr", null, /* @__PURE__ */ __h("th", null, "Advert"), /* @__PURE__ */ __h("th", null, "Created / Logs"), /* @__PURE__ */ __h("th", { className: "text-center" }, "Likes"), /* @__PURE__ */ __h("th", { className: "text-center" }, "Status"), /* @__PURE__ */ __h("th", null, "Actions"))), /* @__PURE__ */ __h("tbody", null, paginatedAdverts.map((adv, idx) => {
+			}, /* @__PURE__ */ __h("path", { d: "m3 11 18-5v12L3 14v-3z" }), /* @__PURE__ */ __h("path", { d: "M11.6 16.8a3 3 0 1 1-5.8-1.6" })), /* @__PURE__ */ __h("h3", null, "No adverts found"), /* @__PURE__ */ __h("p", null, searchQuery || selectedStatus !== "all" || selectedMedia !== "all" ? "Try adjusting your search query or filters." : "No promotional adverts have been created yet. Click \"Add Advert\" above to publish one.")) : /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("div", { className: "admin-advert__table-wrapper" }, /* @__PURE__ */ __h("table", { className: "admin-advert__table" }, /* @__PURE__ */ __h("thead", null, /* @__PURE__ */ __h("tr", null, /* @__PURE__ */ __h("th", null, "Advert"), /* @__PURE__ */ __h("th", null, "Link"), /* @__PURE__ */ __h("th", null, "Created / Logs"), /* @__PURE__ */ __h("th", { className: "text-center" }, "Likes"), /* @__PURE__ */ __h("th", { className: "text-center" }, "Status"), /* @__PURE__ */ __h("th", null, "Actions"))), /* @__PURE__ */ __h("tbody", null, paginatedAdverts.map((adv, idx) => {
 				const likesCount = adv.likesCount ?? (Array.isArray(adv.likes) ? adv.likes.length : 0);
 				const creator = adv.logs?.createUser;
 				const updater = adv.logs?.updateUser;
@@ -557,7 +573,7 @@
 				}) : /* @__PURE__ */ __h("span", { className: "admin-advert__thumb-fallback" }, "📢")), /* @__PURE__ */ __h("div", { className: "admin-advert__item-info" }, /* @__PURE__ */ __h("span", {
 					className: "admin-advert__item-title",
 					onClick: () => handleOpenDetails(adv)
-				}, adv.title), /* @__PURE__ */ __h("span", { className: "admin-advert__item-desc" }, adv.description), adv.logs?.note && /* @__PURE__ */ __h("span", { className: "admin-advert__item-note" }, "Note: ", adv.logs.note)))), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-advert__logs-cell" }, /* @__PURE__ */ __h("div", { className: "admin-advert__author-row" }, creator?.profilePictureUrl ? /* @__PURE__ */ __h("img", {
+				}, adv.title), /* @__PURE__ */ __h("span", { className: "admin-advert__item-desc" }, adv.description), adv.logs?.note && /* @__PURE__ */ __h("span", { className: "admin-advert__item-note" }, "Note: ", adv.logs.note)))), /* @__PURE__ */ __h("td", null, adv.link ? /* @__PURE__ */ __h("code", { className: "admin-advert__link-badge" }, adv.link) : /* @__PURE__ */ __h("span", { className: "admin-advert__link-empty" }, "—")), /* @__PURE__ */ __h("td", null, /* @__PURE__ */ __h("div", { className: "admin-advert__logs-cell" }, /* @__PURE__ */ __h("div", { className: "admin-advert__author-row" }, creator?.profilePictureUrl ? /* @__PURE__ */ __h("img", {
 					src: creator.profilePictureUrl,
 					alt: creator.name || "Author",
 					className: "admin-advert__author-avatar"
@@ -599,7 +615,7 @@
 						e.stopPropagation();
 						handleToggleActive(adv);
 					}
-				}, adv.isActive !== false ? "Active" : "Inactive"), /* @__PURE__ */ __h("span", { className: "admin-advert__likes-pill" }, "♥ ", likesCount), /* @__PURE__ */ __h("span", { className: "admin-advert__mobile-date" }, formatBakuDate(adv.logs?.createDate), creator ? ` • ${creator.name || creator.email}` : ""))), /* @__PURE__ */ __h("div", { className: "admin-advert__mobile-actions" }, /* @__PURE__ */ __h(AdminTableActions, {
+				}, adv.isActive !== false ? "Active" : "Inactive"), adv.link && /* @__PURE__ */ __h("code", { className: "admin-advert__link-badge" }, adv.link), /* @__PURE__ */ __h("span", { className: "admin-advert__likes-pill" }, "♥ ", likesCount), /* @__PURE__ */ __h("span", { className: "admin-advert__mobile-date" }, formatBakuDate(adv.logs?.createDate), creator ? ` • ${creator.name || creator.email}` : ""))), /* @__PURE__ */ __h("div", { className: "admin-advert__mobile-actions" }, /* @__PURE__ */ __h(AdminTableActions, {
 					actions,
 					index: idx,
 					total: paginatedAdverts.length
@@ -671,7 +687,7 @@
 				onError: (e) => {
 					e.target.style.display = "none";
 				}
-			})), /* @__PURE__ */ __h("div", { className: "advert-modal__details-head" }, /* @__PURE__ */ __h("h4", { className: "advert-modal__details-title" }, activeAdvert.title), /* @__PURE__ */ __h("div", { className: "advert-modal__details-badges" }, /* @__PURE__ */ __h("span", { className: `admin-advert__status-badge ${activeAdvert.isActive !== false ? "admin-advert__status-badge--active" : "admin-advert__status-badge--inactive"}` }, activeAdvert.isActive !== false ? "Active" : "Inactive"), /* @__PURE__ */ __h("span", { className: "admin-advert__likes-pill" }, "♥ ", activeAdvert.likesCount ?? (Array.isArray(activeAdvert.likes) ? activeAdvert.likes.length : 0), " likes"))), /* @__PURE__ */ __h("div", { className: "advert-modal__details-box" }, /* @__PURE__ */ __h("span", { className: "advert-modal__box-label" }, "Description"), /* @__PURE__ */ __h("p", { className: "advert-modal__details-desc" }, activeAdvert.description)), activeAdvert.logs?.note && /* @__PURE__ */ __h("div", { className: "advert-modal__details-box" }, /* @__PURE__ */ __h("span", { className: "advert-modal__box-label" }, "Log Note"), /* @__PURE__ */ __h("p", { className: "advert-modal__details-note" }, activeAdvert.logs.note)), /* @__PURE__ */ __h("div", { className: "advert-modal__details-row" }, /* @__PURE__ */ __h("div", { className: "advert-modal__details-box" }, /* @__PURE__ */ __h("span", { className: "advert-modal__box-label" }, "Created By"), /* @__PURE__ */ __h("p", { className: "advert-modal__box-val" }, activeAdvert.logs?.createUser?.name || activeAdvert.logs?.createUser?.email || "Admin"), /* @__PURE__ */ __h("span", { className: "advert-modal__box-sub" }, formatBakuDate(activeAdvert.logs?.createDate))), /* @__PURE__ */ __h("div", { className: "advert-modal__details-box" }, /* @__PURE__ */ __h("span", { className: "advert-modal__box-label" }, "Last Updated"), activeAdvert.logs?.updateDate ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("p", { className: "advert-modal__box-val" }, activeAdvert.logs?.updateUser?.name || activeAdvert.logs?.updateUser?.email || "Admin"), /* @__PURE__ */ __h("span", { className: "advert-modal__box-sub" }, formatBakuDate(activeAdvert.logs.updateDate))) : /* @__PURE__ */ __h("p", { className: "advert-modal__box-sub" }, "Never modified"))), /* @__PURE__ */ __h("div", { className: "advert-modal__details-box" }, /* @__PURE__ */ __h("span", { className: "advert-modal__box-label" }, "Advert ID"), /* @__PURE__ */ __h("div", { className: "advert-modal__id-row" }, /* @__PURE__ */ __h("code", null, activeAdvert.id), /* @__PURE__ */ __h("button", {
+			})), /* @__PURE__ */ __h("div", { className: "advert-modal__details-head" }, /* @__PURE__ */ __h("h4", { className: "advert-modal__details-title" }, activeAdvert.title), /* @__PURE__ */ __h("div", { className: "advert-modal__details-badges" }, /* @__PURE__ */ __h("span", { className: `admin-advert__status-badge ${activeAdvert.isActive !== false ? "admin-advert__status-badge--active" : "admin-advert__status-badge--inactive"}` }, activeAdvert.isActive !== false ? "Active" : "Inactive"), /* @__PURE__ */ __h("span", { className: "admin-advert__likes-pill" }, "♥ ", activeAdvert.likesCount ?? (Array.isArray(activeAdvert.likes) ? activeAdvert.likes.length : 0), " likes"))), /* @__PURE__ */ __h("div", { className: "advert-modal__details-box" }, /* @__PURE__ */ __h("span", { className: "advert-modal__box-label" }, "Description"), /* @__PURE__ */ __h("p", { className: "advert-modal__details-desc" }, activeAdvert.description)), /* @__PURE__ */ __h("div", { className: "advert-modal__details-box" }, /* @__PURE__ */ __h("span", { className: "advert-modal__box-label" }, "Link / Route"), activeAdvert.link ? /* @__PURE__ */ __h("code", { className: "advert-modal__link-code" }, activeAdvert.link) : /* @__PURE__ */ __h("p", { className: "advert-modal__box-sub" }, "Not set")), activeAdvert.logs?.note && /* @__PURE__ */ __h("div", { className: "advert-modal__details-box" }, /* @__PURE__ */ __h("span", { className: "advert-modal__box-label" }, "Log Note"), /* @__PURE__ */ __h("p", { className: "advert-modal__details-note" }, activeAdvert.logs.note)), /* @__PURE__ */ __h("div", { className: "advert-modal__details-row" }, /* @__PURE__ */ __h("div", { className: "advert-modal__details-box" }, /* @__PURE__ */ __h("span", { className: "advert-modal__box-label" }, "Created By"), /* @__PURE__ */ __h("p", { className: "advert-modal__box-val" }, activeAdvert.logs?.createUser?.name || activeAdvert.logs?.createUser?.email || "Admin"), /* @__PURE__ */ __h("span", { className: "advert-modal__box-sub" }, formatBakuDate(activeAdvert.logs?.createDate))), /* @__PURE__ */ __h("div", { className: "advert-modal__details-box" }, /* @__PURE__ */ __h("span", { className: "advert-modal__box-label" }, "Last Updated"), activeAdvert.logs?.updateDate ? /* @__PURE__ */ __h(__Fragment, null, /* @__PURE__ */ __h("p", { className: "advert-modal__box-val" }, activeAdvert.logs?.updateUser?.name || activeAdvert.logs?.updateUser?.email || "Admin"), /* @__PURE__ */ __h("span", { className: "advert-modal__box-sub" }, formatBakuDate(activeAdvert.logs.updateDate))) : /* @__PURE__ */ __h("p", { className: "advert-modal__box-sub" }, "Never modified"))), /* @__PURE__ */ __h("div", { className: "advert-modal__details-box" }, /* @__PURE__ */ __h("span", { className: "advert-modal__box-label" }, "Advert ID"), /* @__PURE__ */ __h("div", { className: "advert-modal__id-row" }, /* @__PURE__ */ __h("code", null, activeAdvert.id), /* @__PURE__ */ __h("button", {
 				type: "button",
 				className: "advert-modal__copy-btn",
 				onClick: () => handleCopyId(activeAdvert.id)
@@ -774,7 +790,28 @@
 					...form,
 					mediaUrl: e.target.value
 				})
-			})))), /* @__PURE__ */ __h("div", { className: "advert-modal__form-row" }, /* @__PURE__ */ __h("div", { className: "advert-modal__form-group" }, /* @__PURE__ */ __h("label", null, "Audit Note (Optional)"), /* @__PURE__ */ __h("input", {
+			})))), /* @__PURE__ */ __h("div", { className: "advert-modal__form-group" }, /* @__PURE__ */ __h("label", null, "Link / Route (Optional)"), /* @__PURE__ */ __h("div", { className: "advert-modal__presets" }, /* @__PURE__ */ __h("span", { className: "advert-modal__presets-label" }, "Quick Add Route:"), /* @__PURE__ */ __h("div", { className: "advert-modal__presets-chips" }, PRESET_QUICK_LINKS.map((preset) => {
+				const isSelected = form.link.trim() === preset.link;
+				return /* @__PURE__ */ __h("button", {
+					key: preset.link,
+					type: "button",
+					className: `advert-modal__preset-chip ${isSelected ? "added" : ""}`,
+					onClick: () => setForm({
+						...form,
+						link: isSelected ? "" : preset.link
+					}),
+					title: `Set ${preset.label} (${preset.link})`
+				}, `${preset.label} (${preset.link})`);
+			}))), /* @__PURE__ */ __h("input", {
+				type: "text",
+				placeholder: "/catalog",
+				className: "advert-modal__input-mono",
+				value: form.link,
+				onChange: (e) => setForm({
+					...form,
+					link: e.target.value
+				})
+			})), /* @__PURE__ */ __h("div", { className: "advert-modal__form-row" }, /* @__PURE__ */ __h("div", { className: "advert-modal__form-group" }, /* @__PURE__ */ __h("label", null, "Audit Note (Optional)"), /* @__PURE__ */ __h("input", {
 				type: "text",
 				placeholder: "Internal note stored in Logs...",
 				value: form.note,

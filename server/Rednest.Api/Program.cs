@@ -417,6 +417,10 @@ static async Task EnsurePixelUserAndSeedAsync(IServiceProvider services)
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
 
+    try { await db.Database.ExecuteSqlRawAsync(@"ALTER TABLE IF EXISTS ""Advert"" ADD COLUMN IF NOT EXISTS ""Link"" text;"); }
+    
+    catch (Exception ex) { logger?.LogWarning(ex, "Could not ensure Link column on Advert table."); }
+
     var pixelRandomSecret = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
 
     var pixelUser = await db.Users.Include(u => u.Session).FirstOrDefaultAsync(u => u.Email == "myrednest@gmail.com");
