@@ -2383,6 +2383,7 @@
 				"widget_support_tooltip": "Готовы помочь вам с выбором",
 				"nav_home": "Главная",
 				"nav_menu": "Меню",
+				"nav_advert": "Объявление",
 				"nav_review": "Отзывы",
 				"user_nav_login": "Войти",
 				"user_nav_profile": "Профиль",
@@ -2418,6 +2419,7 @@
 				"widget_support_tooltip": "Ready to help you with your choice",
 				"nav_home": "Home",
 				"nav_menu": "Menu",
+				"nav_advert": "Advert",
 				"nav_review": "Review",
 				"user_nav_login": "Log In",
 				"user_nav_profile": "Profile",
@@ -2453,6 +2455,7 @@
 				"widget_support_tooltip": "Seçiminizdə sizə kömək etməyə hazırıq",
 				"nav_home": "Ana səhifə",
 				"nav_menu": "Menyu",
+				"nav_advert": "Elanlar",
 				"nav_review": "Rəylər",
 				"user_nav_login": "Daxil ol",
 				"user_nav_profile": "Profil",
@@ -3977,8 +3980,7 @@
 				"/order",
 				"/orders",
 				"/error",
-				"/footer",
-				"/advert"
+				"/footer"
 			];
 			if (hiddenPaths.includes(location.pathname) || location.pathname.startsWith("/admin") || location.pathname.startsWith("/cashbox")) {
 				return null;
@@ -4403,8 +4405,7 @@
 				"/rules",
 				"/terms",
 				"/error",
-				"/footer",
-				"/advert"
+				"/footer"
 			];
 			if (hiddenPaths.includes(location.pathname) || location.pathname.startsWith("/admin") || location.pathname.startsWith("/cashbox")) {
 				return null;
@@ -4601,8 +4602,7 @@
 				"/rules",
 				"/terms",
 				"/error",
-				"/footer",
-				"/advert"
+				"/footer"
 			];
 			if (hiddenPaths.includes(location.pathname) || location.pathname.startsWith("/admin") || location.pathname.startsWith("/cashbox")) {
 				return null;
@@ -4682,6 +4682,7 @@
 		const ErrorPage = lazy(() => loadPage("error-page", null));
 		const Rules = lazy(() => loadPage("rules", null));
 		const Reviews = lazy(() => loadPage("reviews", null));
+		const Advert = lazy(() => loadPage("advert", null));
 		const __imp_5 = __require("components/Elements/ScrollToTop.js");
 		const ScrollToTop = __imp_5.default !== undefined ? __imp_5.default : __imp_5;
 		const __imp_6 = __require("components/Elements/SupportWidget.js");
@@ -4841,7 +4842,7 @@
 				element: /* @__PURE__ */ __h(AdminProtectedRoute, { requiredRoles: ["moderator", "admin", "superadmin"] }, /* @__PURE__ */ __h(AdminAdvert, null))
 			}), /* @__PURE__ */ __h(Route, {
 				path: "/advert",
-				element: /* @__PURE__ */ __h(AdminProtectedRoute, { requiredRoles: ["moderator", "admin", "superadmin"] }, /* @__PURE__ */ __h(AdminAdvert, null))
+				element: /* @__PURE__ */ __h(Advert, null)
 			}), /* @__PURE__ */ __h(Route, {
 				path: "/cashbox",
 				element: /* @__PURE__ */ __h(CashboxProtectedRoute, null, /* @__PURE__ */ __h(Cashbox, null))
@@ -6348,10 +6349,10 @@
 				height: "7",
 				rx: "1"
 			})), /* @__PURE__ */ __h("span", null, t("nav_menu"))), /* @__PURE__ */ __h(Link, {
-				to: "/review",
-				className: `nav-link ${location.pathname === "/review" || location.pathname === "/reviews" ? "active" : ""}`,
+				to: "/advert",
+				className: `nav-link ${location.pathname === "/advert" || location.pathname === "/review" ? "active" : ""}`,
 				onClick: handleCloseMenu,
-				"data-id": "nav_review"
+				"data-id": "nav_advert"
 			}, /* @__PURE__ */ __h("svg", {
 				className: "nav-link__icon",
 				viewBox: "0 0 24 24",
@@ -6360,7 +6361,7 @@
 				strokeWidth: "1.5",
 				strokeLinecap: "round",
 				strokeLinejoin: "round"
-			}, /* @__PURE__ */ __h("path", { d: "M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" })), /* @__PURE__ */ __h("span", null, t("nav_review")))), /* @__PURE__ */ __h("div", { className: "nav-menu__footer" }, /* @__PURE__ */ __h("div", { className: "nav-menu__social" }, instagramUrl && /* @__PURE__ */ __h("a", {
+			}, /* @__PURE__ */ __h("path", { d: "m3 11 18-5v12L3 14v-3z" }), /* @__PURE__ */ __h("path", { d: "M11.6 16.8a3 3 0 1 1-5.8-1.6" })), /* @__PURE__ */ __h("span", null, t("nav_advert")))), /* @__PURE__ */ __h("div", { className: "nav-menu__footer" }, /* @__PURE__ */ __h("div", { className: "nav-menu__social" }, instagramUrl && /* @__PURE__ */ __h("a", {
 				href: instagramUrl,
 				target: "_blank",
 				rel: "noopener noreferrer",
@@ -7181,6 +7182,8 @@
 	__define("components/PublicPages/Reviews/Lang.js", function (exports, __require, module) {
 		const translations = {
 			ru: {
+				"subnav_advert": "Объявление",
+				"subnav_review": "Отзывы",
 				"reviews_hero_title": "Отзывы",
 				"reviews_hero_subtitle": "Узнайте искренние отзывы и впечатления наших гостей.",
 				"reviews_count_singular": "отзыв",
@@ -7232,6 +7235,8 @@
 				"reviews_order_card_order": "Заказ"
 			},
 			en: {
+				"subnav_advert": "Advert",
+				"subnav_review": "Review",
 				"reviews_hero_title": "Review",
 				"reviews_hero_subtitle": "Discover authentic thoughts and stories from our restaurant guests.",
 				"reviews_count_singular": "review",
@@ -7283,6 +7288,8 @@
 				"reviews_order_card_order": "Order"
 			},
 			az: {
+				"subnav_advert": "Elanlar",
+				"subnav_review": "Rəylər",
 				"reviews_hero_title": "Rəylər",
 				"reviews_hero_subtitle": "Qonaqlarımızın səmimi fikirlərini və hekayələrini kəşf edin.",
 				"reviews_count_singular": "rəy",

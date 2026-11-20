@@ -39,6 +39,7 @@ import CashboxProtectedRoute from "./CashboxProtectedRoute.js";
 const ErrorPage = lazy(() => loadPage("error-page", () => import("../components/PublicPages/ErrorPage/ErrorPage.js")));
 const Rules = lazy(() => loadPage("rules", () => import("../components/PublicPages/Rules/Rules.js")));
 const Reviews = lazy(() => loadPage("reviews", () => import("../components/PublicPages/Reviews/Reviews.js")));
+const Advert = lazy(() => loadPage("advert", () => import("../components/PublicPages/Advert/Advert.js")));
 import ScrollToTop from "../components/Elements/ScrollToTop.js";
 import SupportWidget from "../components/Elements/SupportWidget.js";
 import BuyNowWidget from "../components/Elements/BuyNowWidget.js";
@@ -194,7 +195,7 @@ const AnimatedRoutes = () => {
 		element: /* @__PURE__ */ __h(AdminProtectedRoute, { requiredRoles: ["moderator", "admin", "superadmin"] }, /* @__PURE__ */ __h(AdminAdvert, null))
 	}), /* @__PURE__ */ __h(Route, {
 		path: "/advert",
-		element: /* @__PURE__ */ __h(AdminProtectedRoute, { requiredRoles: ["moderator", "admin", "superadmin"] }, /* @__PURE__ */ __h(AdminAdvert, null))
+		element: /* @__PURE__ */ __h(Advert, null)
 	}), /* @__PURE__ */ __h(Route, {
 		path: "/cashbox",
 		element: /* @__PURE__ */ __h(CashboxProtectedRoute, null, /* @__PURE__ */ __h(Cashbox, null))

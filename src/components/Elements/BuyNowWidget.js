@@ -190,8 +190,7 @@ const BuyNowWidget = () => {
 		"/rules",
 		"/terms",
 		"/error",
-		"/footer",
-		"/advert"
+		"/footer"
 	];
 	if (hiddenPaths.includes(location.pathname) || location.pathname.startsWith("/admin") || location.pathname.startsWith("/cashbox")) {
 		return null;

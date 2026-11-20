@@ -46,6 +46,10 @@ const PAGE_CONFIG = {
       'components/PublicPages/Reviews/Reviews.css'
     ]
   },
+  advert: {
+    entry: 'components/PublicPages/Advert/Advert.js',
+    css: ['components/PublicPages/Advert/Advert.css']
+  },
   'error-page': {
     entry: 'components/PublicPages/ErrorPage/ErrorPage.js',
     css: ['components/PublicPages/ErrorPage/ErrorPage.css']

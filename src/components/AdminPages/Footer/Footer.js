@@ -18,6 +18,7 @@ const LANG_CONFIGS = [
 const PRESET_QUICK_LINKS = [
 	{ link: "/", RU: "Главная", EN: "Home", AZ: "Ana səhifə" },
 	{ link: "/catalog", RU: "Каталог", EN: "Catalog", AZ: "Kataloq" },
+	{ link: "/advert", RU: "Объявление", EN: "Advert", AZ: "Elanlar" },
 	{ link: "/review", RU: "Отзывы", EN: "Reviews", AZ: "Rəylər" },
 	{ link: "/fortune", RU: "Колесо фортуны", EN: "Wheel of Fortune", AZ: "Şans çarxı" },
 	{ link: "/promos", RU: "Промокоды", EN: "Promo Codes", AZ: "Promo kodlar" },

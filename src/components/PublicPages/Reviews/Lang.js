@@ -1,5 +1,7 @@
 export const translations = {
 	ru: {
+		"subnav_advert": "Объявление",
+		"subnav_review": "Отзывы",
 		"reviews_hero_title": "Отзывы",
 		"reviews_hero_subtitle": "Узнайте искренние отзывы и впечатления наших гостей.",
 		"reviews_count_singular": "отзыв",
@@ -51,6 +53,8 @@ export const translations = {
 		"reviews_order_card_order": "Заказ"
 	},
 	en: {
+		"subnav_advert": "Advert",
+		"subnav_review": "Review",
 		"reviews_hero_title": "Review",
 		"reviews_hero_subtitle": "Discover authentic thoughts and stories from our restaurant guests.",
 		"reviews_count_singular": "review",
@@ -102,6 +106,8 @@ export const translations = {
 		"reviews_order_card_order": "Order"
 	},
 	az: {
+		"subnav_advert": "Elanlar",
+		"subnav_review": "Rəylər",
 		"reviews_hero_title": "Rəylər",
 		"reviews_hero_subtitle": "Qonaqlarımızın səmimi fikirlərini və hekayələrini kəşf edin.",
 		"reviews_count_singular": "rəy",

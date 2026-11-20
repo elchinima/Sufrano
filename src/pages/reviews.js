@@ -9,7 +9,7 @@
 		const __imp_0 = __require("utils/runtime.js");
 		const React = __imp_0.default !== undefined ? __imp_0.default : __imp_0;
 		const { useState, useEffect, useMemo, useCallback } = __imp_0;
-		const { useSearchParams, useNavigate } = __require("utils/router.js");
+		const { Link, useSearchParams, useNavigate, useLocation } = __require("utils/router.js");
 		const { motion, AnimatePresence } = __require("utils/motion.js");
 		const __imp_1 = __require("components/Elements/Navbar.js");
 		const Navbar = __imp_1.default !== undefined ? __imp_1.default : __imp_1;
@@ -32,6 +32,7 @@
 			const t = (dataId) => getReviewsTranslation(lang, dataId);
 			const [searchParams, setSearchParams] = useSearchParams();
 			const navigate = useNavigate();
+			const location = useLocation();
 			const { user, isAuthenticated } = useAuth();
 			const [reviews, setReviews] = useState([]);
 			const [loading, setLoading] = useState(true);
@@ -246,7 +247,36 @@
 				animate: { opacity: 1 },
 				exit: { opacity: 0 },
 				transition: { duration: .3 }
-			}, /* @__PURE__ */ __h(Navbar, null), /* @__PURE__ */ __h("main", { className: "reviews-main" }, /* @__PURE__ */ __h("div", { className: "reviews-ambient-glow reviews-ambient-glow--1" }), /* @__PURE__ */ __h("div", { className: "reviews-ambient-glow reviews-ambient-glow--2" }), /* @__PURE__ */ __h("div", { className: "reviews-container" }, /* @__PURE__ */ __h("div", { className: "reviews-hero" }, /* @__PURE__ */ __h("h1", { "data-id": "reviews_hero_title" }, t("reviews_hero_title")), /* @__PURE__ */ __h("p", { "data-id": "reviews_hero_subtitle" }, t("reviews_hero_subtitle")), /* @__PURE__ */ __h("div", { className: "reviews-overall-badge" }, /* @__PURE__ */ __h("div", { className: "overall-score" }, /* @__PURE__ */ __h("span", { className: "score-num" }, averageRating), /* @__PURE__ */ __h("svg", {
+			}, /* @__PURE__ */ __h(Navbar, null), /* @__PURE__ */ __h("div", { className: "community-subnav-bar" }, /* @__PURE__ */ __h("nav", {
+				className: "community-subnav",
+				"aria-label": "Secondary navigation"
+			}, /* @__PURE__ */ __h(Link, {
+				to: "/advert",
+				className: `community-subnav__link ${location.pathname === "/advert" ? "active" : ""}`,
+				"data-id": "subnav_advert"
+			}, /* @__PURE__ */ __h("svg", {
+				viewBox: "0 0 24 24",
+				width: "16",
+				height: "16",
+				fill: "none",
+				stroke: "currentColor",
+				strokeWidth: "1.8",
+				strokeLinecap: "round",
+				strokeLinejoin: "round"
+			}, /* @__PURE__ */ __h("path", { d: "m3 11 18-5v12L3 14v-3z" }), /* @__PURE__ */ __h("path", { d: "M11.6 16.8a3 3 0 1 1-5.8-1.6" })), /* @__PURE__ */ __h("span", null, t("subnav_advert"))), /* @__PURE__ */ __h(Link, {
+				to: "/review",
+				className: `community-subnav__link ${location.pathname === "/review" ? "active" : ""}`,
+				"data-id": "subnav_review"
+			}, /* @__PURE__ */ __h("svg", {
+				viewBox: "0 0 24 24",
+				width: "16",
+				height: "16",
+				fill: "none",
+				stroke: "currentColor",
+				strokeWidth: "1.8",
+				strokeLinecap: "round",
+				strokeLinejoin: "round"
+			}, /* @__PURE__ */ __h("path", { d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" })), /* @__PURE__ */ __h("span", null, t("subnav_review"))))), /* @__PURE__ */ __h("main", { className: "reviews-main" }, /* @__PURE__ */ __h("div", { className: "reviews-ambient-glow reviews-ambient-glow--1" }), /* @__PURE__ */ __h("div", { className: "reviews-ambient-glow reviews-ambient-glow--2" }), /* @__PURE__ */ __h("div", { className: "reviews-container" }, /* @__PURE__ */ __h("div", { className: "reviews-hero" }, /* @__PURE__ */ __h("h1", { "data-id": "reviews_hero_title" }, t("reviews_hero_title")), /* @__PURE__ */ __h("p", { "data-id": "reviews_hero_subtitle" }, t("reviews_hero_subtitle")), /* @__PURE__ */ __h("div", { className: "reviews-overall-badge" }, /* @__PURE__ */ __h("div", { className: "overall-score" }, /* @__PURE__ */ __h("span", { className: "score-num" }, averageRating), /* @__PURE__ */ __h("svg", {
 				viewBox: "0 0 24 24",
 				width: "16",
 				height: "16",

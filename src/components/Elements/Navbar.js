@@ -100,10 +100,10 @@ const Navbar = () => {
 		height: "7",
 		rx: "1"
 	})), /* @__PURE__ */ __h("span", null, t("nav_menu"))), /* @__PURE__ */ __h(Link, {
-		to: "/review",
-		className: `nav-link ${location.pathname === "/review" || location.pathname === "/reviews" ? "active" : ""}`,
+		to: "/advert",
+		className: `nav-link ${location.pathname === "/advert" || location.pathname === "/review" ? "active" : ""}`,
 		onClick: handleCloseMenu,
-		"data-id": "nav_review"
+		"data-id": "nav_advert"
 	}, /* @__PURE__ */ __h("svg", {
 		className: "nav-link__icon",
 		viewBox: "0 0 24 24",
@@ -112,7 +112,7 @@ const Navbar = () => {
 		strokeWidth: "1.5",
 		strokeLinecap: "round",
 		strokeLinejoin: "round"
-	}, /* @__PURE__ */ __h("path", { d: "M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" })), /* @__PURE__ */ __h("span", null, t("nav_review")))), /* @__PURE__ */ __h("div", { className: "nav-menu__footer" }, /* @__PURE__ */ __h("div", { className: "nav-menu__social" }, instagramUrl && /* @__PURE__ */ __h("a", {
+	}, /* @__PURE__ */ __h("path", { d: "m3 11 18-5v12L3 14v-3z" }), /* @__PURE__ */ __h("path", { d: "M11.6 16.8a3 3 0 1 1-5.8-1.6" })), /* @__PURE__ */ __h("span", null, t("nav_advert")))), /* @__PURE__ */ __h("div", { className: "nav-menu__footer" }, /* @__PURE__ */ __h("div", { className: "nav-menu__social" }, instagramUrl && /* @__PURE__ */ __h("a", {
 		href: instagramUrl,
 		target: "_blank",
 		rel: "noopener noreferrer",

@@ -27,6 +27,7 @@
 		const PRESET_QUICK_LINKS = [
 			{ link: "/", label: "Home" },
 			{ link: "/catalog", label: "Catalog" },
+			{ link: "/advert", label: "Advert" },
 			{ link: "/review", label: "Reviews" },
 			{ link: "/fortune", label: "Wheel of Fortune" },
 			{ link: "/promos", label: "Promo Codes" },
