@@ -276,7 +276,7 @@
 
 .sufrano-board-card__media {
   width: 100%;
-  height: 220px;
+  aspect-ratio: 16 / 10;
   background: rgba(0, 0, 0, 0.35);
   overflow: hidden;
   position: relative;
@@ -287,6 +287,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
   transition: transform 0.4s ease;
 }
@@ -440,9 +441,6 @@
     font-size: 0.95rem;
     line-height: 1.45;
     padding: 0 8px;
-  }
-  .sufrano-board-card__media {
-    height: 185px;
   }
   .sufrano-board-card__content {
     padding: 18px;
