@@ -4,29 +4,46 @@ public class ReviewModerationService : BackgroundService
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
     private readonly ILogger<ReviewModerationService> _logger;
+    private readonly SemaphoreSlim _aiApiLock = new(1, 1);
 
     private const int PollIntervalSeconds = 60;
-    private const int DelayBetweenRequestsMs = 60000;
-
-    private static readonly string Model = Environment.GetEnvironmentVariable("REVIEW_AI_MODEL") ?? "gemma-4-31b-it";
-    private static readonly string BaseUrl = "https://generativelanguage.googleapis.com/v1beta/models";
+    private const int DelayBetweenRequestsMs = 15000;
+    private const string DefaultModel = "gemma-4-31b-it";
+    private const string BaseUrl = "https://generativelanguage.googleapis.com/v1beta/models";
 
     private static DateTime GetBakuTime() => DateTime.UtcNow.AddHours(4);
 
     public ReviewModerationService(
         IServiceScopeFactory scopeFactory,
         IHttpClientFactory httpClientFactory,
+        IConfiguration configuration,
         ILogger<ReviewModerationService> logger)
     {
         _scopeFactory = scopeFactory;
         _httpClientFactory = httpClientFactory;
+        _configuration = configuration;
         _logger = logger;
+    }
+
+    private string GetModel()
+    {
+        var raw = Environment.GetEnvironmentVariable("REVIEW_AI_MODEL")
+                  ?? _configuration["REVIEW_AI_MODEL"];
+        return string.IsNullOrWhiteSpace(raw) ? DefaultModel : raw.Trim().Trim('"', '\'');
+    }
+
+    private string? GetApiKey()
+    {
+        var raw = Environment.GetEnvironmentVariable("REVIEW_AI_API")
+                  ?? _configuration["REVIEW_AI_API"];
+        return string.IsNullOrWhiteSpace(raw) ? null : raw.Trim().Trim('"', '\'');
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("ReviewModerationService started with model {Model}.", Model);
+        _logger.LogInformation("ReviewModerationService started with model {Model}.", GetModel());
 
         var reviewLoopTask = RunReviewModerationLoopAsync(stoppingToken);
         var userVerificationLoopTask = RunHourlyUserVerificationLoopAsync(stoppingToken);
@@ -44,7 +61,7 @@ public class ReviewModerationService : BackgroundService
             {
                 await CleanupExpiredCancelledReviewsAsync(stoppingToken);
 
-                var apiKey = Environment.GetEnvironmentVariable("REVIEW_AI_API");
+                var apiKey = GetApiKey();
                 if (!string.IsNullOrWhiteSpace(apiKey))
                 {
                     await ProcessNextBatchAsync(apiKey, stoppingToken);
@@ -74,16 +91,32 @@ public class ReviewModerationService : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            var delay = GetDelayUntilNextHour();
-            var nextRunBaku = GetBakuTime().Add(delay);
+            var bakuNow = GetBakuTime();
+            var nextHour = new DateTime(bakuNow.Year, bakuNow.Month, bakuNow.Day, bakuNow.Hour, 0, 0, DateTimeKind.Unspecified).AddHours(1);
+            var delay = nextHour - bakuNow;
+            if (delay <= TimeSpan.Zero)
+            {
+                delay = TimeSpan.FromHours(1);
+                nextHour = bakuNow.Add(delay);
+            }
 
             _logger.LogInformation(
                 "Hourly user verification AI check scheduled at {NextRunBaku:yyyy-MM-dd HH:mm:ss} UTC+4 (in {Minutes}m {Seconds}s).",
-                nextRunBaku, (int)delay.TotalMinutes, delay.Seconds);
+                nextHour, (int)delay.TotalMinutes, delay.Seconds);
 
             try
             {
                 await Task.Delay(delay, stoppingToken);
+
+                var afterDelay = GetBakuTime();
+                if (afterDelay < nextHour)
+                {
+                    var remaining = nextHour - afterDelay + TimeSpan.FromMilliseconds(250);
+                    if (remaining > TimeSpan.Zero && remaining < TimeSpan.FromMinutes(1))
+                    {
+                        await Task.Delay(remaining, stoppingToken);
+                    }
+                }
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {
@@ -92,7 +125,7 @@ public class ReviewModerationService : BackgroundService
 
             try
             {
-                var apiKey = Environment.GetEnvironmentVariable("REVIEW_AI_API");
+                var apiKey = GetApiKey();
                 if (!string.IsNullOrWhiteSpace(apiKey))
                 {
                     await ProcessPendingUserVerificationsAsync(apiKey, stoppingToken);
@@ -111,14 +144,6 @@ public class ReviewModerationService : BackgroundService
                 _logger.LogError(ex, "Unexpected error during hourly user verification AI check.");
             }
         }
-    }
-
-    private static TimeSpan GetDelayUntilNextHour()
-    {
-        var bakuNow = GetBakuTime();
-        var nextHour = new DateTime(bakuNow.Year, bakuNow.Month, bakuNow.Day, bakuNow.Hour, 0, 0, bakuNow.Kind).AddHours(1);
-        var delay = nextHour - bakuNow;
-        return delay > TimeSpan.Zero ? delay : TimeSpan.FromHours(1);
     }
 
     private async Task CleanupExpiredCancelledReviewsAsync(CancellationToken stoppingToken)
@@ -225,6 +250,163 @@ public class ReviewModerationService : BackgroundService
         return null;
     }
 
+    private async Task<string?> SendAiGenerateContentAsync(
+        string apiKey,
+        string prompt,
+        int maxOutputTokens,
+        string contextLabel,
+        CancellationToken stoppingToken)
+    {
+        var model = GetModel();
+        var url = $"{BaseUrl}/{model}:generateContent";
+
+        await _aiApiLock.WaitAsync(stoppingToken);
+        try
+        {
+            bool useJsonMimeType = true;
+            const int maxAttempts = 3;
+
+            for (int attempt = 1; attempt <= maxAttempts; attempt++)
+            {
+                object generationConfig = useJsonMimeType
+                    ? new { temperature = 0.1, maxOutputTokens, responseMimeType = "application/json" }
+                    : new { temperature = 0.1, maxOutputTokens };
+
+                var requestBody = new
+                {
+                    contents = new[]
+                    {
+                        new
+                        {
+                            parts = new[]
+                            {
+                                new { text = prompt }
+                            }
+                        }
+                    },
+                    generationConfig
+                };
+
+                var json = JsonSerializer.Serialize(requestBody);
+                var httpClient = _httpClientFactory.CreateClient();
+                httpClient.Timeout = TimeSpan.FromSeconds(60);
+
+                using var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
+                requestMessage.Headers.Add("X-goog-api-key", apiKey);
+                requestMessage.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                using var response = await httpClient.SendAsync(requestMessage, stoppingToken);
+                var responseBody = await response.Content.ReadAsStringAsync(stoppingToken);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseBody;
+                }
+
+                // Some Gemma endpoints reject responseMimeType="application/json" with HTTP 400.
+                if ((int)response.StatusCode == 400 && useJsonMimeType)
+                {
+                    _logger.LogWarning(
+                        "AI API returned 400 with responseMimeType for {Context} (model {Model}); retrying without responseMimeType.",
+                        contextLabel, model);
+                    useJsonMimeType = false;
+                    continue;
+                }
+
+                // Retry on rate limit (429) or transient server errors (5xx).
+                if (((int)response.StatusCode == 429 || (int)response.StatusCode >= 500) && attempt < maxAttempts)
+                {
+                    var backoffSeconds = 10 * attempt;
+                    _logger.LogWarning(
+                        "AI API returned {Status} for {Context} (attempt {Attempt}/{Max}); retrying in {Seconds}s. Body: {Body}",
+                        response.StatusCode, contextLabel, attempt, maxAttempts, backoffSeconds,
+                        responseBody.Length > 300 ? responseBody[..300] : responseBody);
+                    await Task.Delay(TimeSpan.FromSeconds(backoffSeconds), stoppingToken);
+                    continue;
+                }
+
+                _logger.LogWarning("AI API error for {Context}: {Status} - {Body}",
+                    contextLabel, response.StatusCode, responseBody);
+                return null;
+            }
+
+            return null;
+        }
+        finally
+        {
+            _aiApiLock.Release();
+        }
+    }
+
+    private static string? ExtractJsonFromCandidateResponse(string responseBody)
+    {
+        using var doc = JsonDocument.Parse(responseBody);
+        if (!doc.RootElement.TryGetProperty("candidates", out var candidates) ||
+            candidates.ValueKind != JsonValueKind.Array ||
+            candidates.GetArrayLength() == 0)
+        {
+            return null;
+        }
+
+        var firstCandidate = candidates[0];
+        if (!firstCandidate.TryGetProperty("content", out var content) ||
+            !content.TryGetProperty("parts", out var parts) ||
+            parts.ValueKind != JsonValueKind.Array ||
+            parts.GetArrayLength() == 0)
+        {
+            return null;
+        }
+
+        var sb = new StringBuilder();
+        var fallbackSb = new StringBuilder();
+
+        foreach (var part in parts.EnumerateArray())
+        {
+            bool isThought = part.TryGetProperty("thought", out var thoughtProp) &&
+                             thoughtProp.ValueKind == JsonValueKind.True;
+
+            if (part.TryGetProperty("text", out var textProp) && textProp.ValueKind == JsonValueKind.String)
+            {
+                var partText = textProp.GetString();
+                if (!string.IsNullOrWhiteSpace(partText))
+                {
+                    if (isThought)
+                        fallbackSb.AppendLine(partText);
+                    else
+                        sb.AppendLine(partText);
+                }
+            }
+        }
+
+        var text = sb.Length > 0 ? sb.ToString().Trim() : fallbackSb.ToString().Trim();
+        if (string.IsNullOrWhiteSpace(text))
+            return null;
+
+        var startIdx = text.IndexOf('{');
+        var endIdx = text.LastIndexOf('}');
+        if (startIdx >= 0 && endIdx > startIdx)
+        {
+            return text[startIdx..(endIdx + 1)];
+        }
+
+        return null;
+    }
+
+    private static bool TryReadBool(JsonElement root, string propertyName, bool defaultValue = false)
+    {
+        if (!root.TryGetProperty(propertyName, out var prop))
+            return defaultValue;
+
+        return prop.ValueKind switch
+        {
+            JsonValueKind.True => true,
+            JsonValueKind.False => false,
+            JsonValueKind.String => bool.TryParse(prop.GetString(), out var b) ? b : defaultValue,
+            JsonValueKind.Number => prop.TryGetInt32(out var n) ? n != 0 : defaultValue,
+            _ => defaultValue
+        };
+    }
+
     private async Task<(bool IsClean, string DetectedLanguage, string? Note)?> ModerateReviewAsync(
         string apiKey,
         Review review,
@@ -255,7 +437,7 @@ public class ReviewModerationService : BackgroundService
             3. Advertising & Links:
                - Set hasAdvertising to true if there is promotional spam or marketing; otherwise false.
                - Set hasLinks to true if there are URLs or domains; otherwise false.
-                - Set hasContactInfo to true if the user left contact information: a phone number, an email address, or a social media account/handle (e.g. @username, instagram, telegram, whatsapp, facebook, tiktok links or nicknames); otherwise false.
+               - Set hasContactInfo to true if the user left contact information: a phone number, an email address, or a social media account/handle (e.g. @username, instagram, telegram, whatsapp, facebook, tiktok links or nicknames); otherwise false.
 
             4. Overall Decision:
                - isClean must be true ONLY IF hasOffensiveContent is false, hasAdvertising is false, hasLinks is false, hasContactInfo is false, and hasWrongLanguage is false.
@@ -274,43 +456,11 @@ public class ReviewModerationService : BackgroundService
             }
             """;
 
-        var requestBody = new
-        {
-            contents = new[]
-            {
-                new
-                {
-                    parts = new[]
-                    {
-                        new { text = prompt }
-                    }
-                }
-            },
-            generationConfig = new
-            {
-                temperature = 0.1,
-                maxOutputTokens = 2048,
-                responseMimeType = "application/json"
-            }
-        };
+        var responseBody = await SendAiGenerateContentAsync(
+            apiKey, prompt, maxOutputTokens: 4096, $"review {review.Id}", stoppingToken);
 
-        var json = JsonSerializer.Serialize(requestBody);
-        var url = $"{BaseUrl}/{Model}:generateContent";
-
-        var httpClient = _httpClientFactory.CreateClient();
-        using var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
-        requestMessage.Headers.Add("X-goog-api-key", apiKey);
-        requestMessage.Content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        using var response = await httpClient.SendAsync(requestMessage, stoppingToken);
-        var responseBody = await response.Content.ReadAsStringAsync(stoppingToken);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            _logger.LogWarning("AI API error for review {ReviewId}: {Status} - {Body}",
-                review.Id, response.StatusCode, responseBody);
+        if (responseBody == null)
             return null;
-        }
 
         return ParseResponse(responseBody, review.Id);
     }
@@ -319,58 +469,37 @@ public class ReviewModerationService : BackgroundService
     {
         try
         {
-            using var doc = JsonDocument.Parse(responseBody);
-            var candidates = doc.RootElement.GetProperty("candidates");
-            var firstCandidate = candidates[0];
-            var parts = firstCandidate.GetProperty("content").GetProperty("parts");
-
-            string text = string.Empty;
-            foreach (var part in parts.EnumerateArray())
+            var jsonText = ExtractJsonFromCandidateResponse(responseBody);
+            if (string.IsNullOrWhiteSpace(jsonText))
             {
-                if (part.TryGetProperty("thought", out var isThought) && isThought.GetBoolean())
-                {
-                    continue;
-                }
-                if (part.TryGetProperty("text", out var textProp))
-                {
-                    text = textProp.GetString() ?? string.Empty;
-                }
+                _logger.LogWarning("AI response for review {ReviewId} contained no JSON object. Raw: {Body}",
+                    reviewId, responseBody.Length > 500 ? responseBody[..500] : responseBody);
+                return null;
             }
 
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                text = parts[0].GetProperty("text").GetString() ?? string.Empty;
-            }
-
-            text = text.Trim();
-            if (text.StartsWith("```"))
-            {
-                var startIdx = text.IndexOf('{');
-                var endIdx = text.LastIndexOf('}');
-                if (startIdx >= 0 && endIdx > startIdx)
-                    text = text[startIdx..(endIdx + 1)];
-            }
-
-            using var resultDoc = JsonDocument.Parse(text);
+            using var resultDoc = JsonDocument.Parse(jsonText);
             var root = resultDoc.RootElement;
 
-            var offensive = root.GetProperty("hasOffensiveContent").GetBoolean();
-            var advertising = root.GetProperty("hasAdvertising").GetBoolean();
-            var links = root.GetProperty("hasLinks").GetBoolean();
-            var wrongLang = root.GetProperty("hasWrongLanguage").GetBoolean();
-            var isCleanReported = root.GetProperty("isClean").GetBoolean();
-            var contact = root.TryGetProperty("hasContactInfo", out var contactProp) && contactProp.ValueKind == JsonValueKind.True;
+            var offensive = TryReadBool(root, "hasOffensiveContent");
+            var advertising = TryReadBool(root, "hasAdvertising");
+            var links = TryReadBool(root, "hasLinks");
+            var wrongLang = TryReadBool(root, "hasWrongLanguage");
+            var isCleanReported = TryReadBool(root, "isClean");
+            var contact = TryReadBool(root, "hasContactInfo");
             var isClean = isCleanReported && !offensive && !advertising && !links && !contact && !wrongLang;
-            var detectedLang = root.TryGetProperty("detectedLanguage", out var lang) ? lang.GetString() ?? "Unknown" : "Unknown";
+            var detectedLang = root.TryGetProperty("detectedLanguage", out var lang) && lang.ValueKind == JsonValueKind.String
+                ? lang.GetString() ?? "Unknown"
+                : "Unknown";
 
             string? note = null;
             if (!isClean)
             {
-                note = root.TryGetProperty("note", out var noteProp) && noteProp.ValueKind == JsonValueKind.String ? noteProp.GetString()?.Trim() : null;
+                note = root.TryGetProperty("note", out var noteProp) && noteProp.ValueKind == JsonValueKind.String
+                    ? noteProp.GetString()?.Trim()
+                    : null;
                 if (string.IsNullOrWhiteSpace(note))
                 {
-                    _logger.LogWarning("AI response for review {ReviewId} is not clean but has no note.", reviewId);
-                    return null;
+                    note = "Review did not pass automated content moderation.";
                 }
                 if (note.Length > 200) note = note[..200];
             }
@@ -390,28 +519,17 @@ public class ReviewModerationService : BackgroundService
         using var scope = _scopeFactory.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        List<UserSession> pendingSessions;
-        try
-        {
-            pendingSessions = await db.UserSessions
-                .Include(s => s.User)
-                .Where(s => s.Verification == VerificationStatus.InProgress)
-                .ToListAsync(stoppingToken);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Direct LINQ query on Verification failed; falling back to in-memory filter.");
-            var allSessions = await db.UserSessions
-                .Include(s => s.User)
-                .ToListAsync(stoppingToken);
-            pendingSessions = allSessions
-                .Where(s => s.Verification == VerificationStatus.InProgress)
-                .ToList();
-        }
+        var allSessions = await db.UserSessions
+            .Include(s => s.User)
+            .ToListAsync(stoppingToken);
+
+        var pendingSessions = allSessions
+            .Where(s => s.Verification == VerificationStatus.InProgress)
+            .ToList();
 
         if (pendingSessions.Count == 0)
         {
-            _logger.LogInformation("Hourly user verification check: No users with InProgress status found.");
+            _logger.LogInformation("Hourly user verification check: No users with InProgress status found (checked {Total} sessions).", allSessions.Count);
             return;
         }
 
@@ -457,6 +575,12 @@ public class ReviewModerationService : BackgroundService
                     _logger.LogInformation(
                         "User {UserId} (Name='{UserName}') verification completed: IsRealName={IsRealName}, Status={Status}, Reason={Reason}",
                         session.UserId, userName, isRealName.Value, session.Verification, reason);
+                }
+                else
+                {
+                    _logger.LogWarning(
+                        "User {UserId} (Name='{UserName}') verification returned no AI decision ({Reason}); remains InProgress.",
+                        session.UserId, userName, reason);
                 }
             }
             catch (Exception ex)
@@ -505,41 +629,11 @@ public class ReviewModerationService : BackgroundService
             }
             """;
 
-        var requestBody = new
+        var responseBody = await SendAiGenerateContentAsync(
+            apiKey, prompt, maxOutputTokens: 4096, $"user verification {userId}", stoppingToken);
+
+        if (responseBody == null)
         {
-            contents = new[]
-            {
-                new
-                {
-                    parts = new[]
-                    {
-                        new { text = prompt }
-                    }
-                }
-            },
-            generationConfig = new
-            {
-                temperature = 0.1,
-                maxOutputTokens = 1024,
-                responseMimeType = "application/json"
-            }
-        };
-
-        var json = JsonSerializer.Serialize(requestBody);
-        var url = $"{BaseUrl}/{Model}:generateContent";
-
-        var httpClient = _httpClientFactory.CreateClient();
-        using var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
-        requestMessage.Headers.Add("X-goog-api-key", apiKey);
-        requestMessage.Content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        using var response = await httpClient.SendAsync(requestMessage, stoppingToken);
-        var responseBody = await response.Content.ReadAsStringAsync(stoppingToken);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            _logger.LogWarning("AI API error for user verification {UserId}: {Status} - {Body}",
-                userId, response.StatusCode, responseBody);
             return (null, "API request failed");
         }
 
@@ -550,45 +644,23 @@ public class ReviewModerationService : BackgroundService
     {
         try
         {
-            using var doc = JsonDocument.Parse(responseBody);
-            var candidates = doc.RootElement.GetProperty("candidates");
-            var firstCandidate = candidates[0];
-            var parts = firstCandidate.GetProperty("content").GetProperty("parts");
-
-            string text = string.Empty;
-            foreach (var part in parts.EnumerateArray())
+            var jsonText = ExtractJsonFromCandidateResponse(responseBody);
+            if (string.IsNullOrWhiteSpace(jsonText))
             {
-                if (part.TryGetProperty("thought", out var isThought) && isThought.GetBoolean())
-                {
-                    continue;
-                }
-                if (part.TryGetProperty("text", out var textProp))
-                {
-                    text = textProp.GetString() ?? string.Empty;
-                }
+                _logger.LogWarning("AI response for user verification {UserId} contained no JSON object. Raw: {Body}",
+                    userId, responseBody.Length > 500 ? responseBody[..500] : responseBody);
+                return (null, "Empty or non-JSON AI response");
             }
 
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                text = parts[0].GetProperty("text").GetString() ?? string.Empty;
-            }
-
-            text = text.Trim();
-            if (text.StartsWith("```"))
-            {
-                var startIdx = text.IndexOf('{');
-                var endIdx = text.LastIndexOf('}');
-                if (startIdx >= 0 && endIdx > startIdx)
-                    text = text[startIdx..(endIdx + 1)];
-            }
-
-            using var resultDoc = JsonDocument.Parse(text);
+            using var resultDoc = JsonDocument.Parse(jsonText);
             var root = resultDoc.RootElement;
 
-            var isRealReported = root.GetProperty("isRealName").GetBoolean();
-            var offensive = root.TryGetProperty("hasOffensiveContent", out var offProp) && offProp.GetBoolean();
-            var gibberishOrFake = root.TryGetProperty("isGibberishOrFake", out var fakeProp) && fakeProp.GetBoolean();
-            var reason = root.TryGetProperty("reason", out var reasonProp) ? reasonProp.GetString() ?? string.Empty : string.Empty;
+            var isRealReported = TryReadBool(root, "isRealName");
+            var offensive = TryReadBool(root, "hasOffensiveContent");
+            var gibberishOrFake = TryReadBool(root, "isGibberishOrFake");
+            var reason = root.TryGetProperty("reason", out var reasonProp) && reasonProp.ValueKind == JsonValueKind.String
+                ? reasonProp.GetString() ?? string.Empty
+                : string.Empty;
 
             var isReal = isRealReported && !offensive && !gibberishOrFake;
             return (isReal, reason);

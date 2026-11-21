@@ -10,8 +10,9 @@ public class RequireVerifiedAccountAttribute : Attribute, IAsyncActionFilter
 
     public static async Task<bool> IsVerifiedAsync(AppDbContext db, Guid userId)
     {
-        return await db.UserSessions.AsNoTracking()
-            .AnyAsync(s => s.UserId == userId && s.Verification == VerificationStatus.Comfirmed);
+        var session = await db.UserSessions.AsNoTracking()
+            .FirstOrDefaultAsync(s => s.UserId == userId);
+        return session?.Verification == VerificationStatus.Comfirmed;
     }
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

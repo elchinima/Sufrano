@@ -74,7 +74,7 @@ public class AppDbContext : DbContext
                   .HasDefaultValueSql("'\"NotVerificated\"'::jsonb")
                   .HasConversion(
                       v => System.Text.Json.JsonSerializer.Serialize(v.ToString(), (System.Text.Json.JsonSerializerOptions?)null),
-                      s => Enum.Parse<VerificationStatus>(System.Text.Json.JsonSerializer.Deserialize<string>(s, (System.Text.Json.JsonSerializerOptions?)null)!));
+                      s => ParseVerificationStatus(s));
 
             entity.Property(e => e.AccountVerify)
                   .HasColumnName("AccountVerify")
@@ -379,5 +379,33 @@ public class AppDbContext : DbContext
                   .HasColumnType("jsonb")
                   .HasDefaultValueSql("'[]'::jsonb");
         });
+    }
+
+    private static VerificationStatus ParseVerificationStatus(string? raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw))
+            return VerificationStatus.NotVerificated;
+
+        string cleaned = raw.Trim();
+        try
+        {
+            if (cleaned.StartsWith('"') && cleaned.EndsWith('"'))
+            {
+                cleaned = System.Text.Json.JsonSerializer.Deserialize<string>(cleaned) ?? string.Empty;
+            }
+        }
+        catch
+        {
+            cleaned = cleaned.Trim('"');
+        }
+
+        cleaned = cleaned.Trim();
+        if (string.Equals(cleaned, "Confirmed", StringComparison.OrdinalIgnoreCase))
+            return VerificationStatus.Comfirmed;
+
+        if (Enum.TryParse<VerificationStatus>(cleaned, ignoreCase: true, out var parsed))
+            return parsed;
+
+        return VerificationStatus.NotVerificated;
     }
 }

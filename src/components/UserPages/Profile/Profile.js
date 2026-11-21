@@ -23,7 +23,7 @@ const ALLOWED_TYPES = [
 const MAX_SIZE_MB = 10;
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
 const Profile = () => {
-	const { user, logout, updateUser, authLoading } = useAuth();
+	const { user, logout, updateUser, authLoading, fetchCurrentUser } = useAuth();
 	const navigate = useNavigate();
 	const lang = useLang();
 	const t = (id) => getProfileTranslation(lang, id);
@@ -268,14 +268,20 @@ const Profile = () => {
 			setNameSaving(false);
 		}
 	};
+	useEffect(() => {
+		if (!isInProgress || !fetchCurrentUser) return;
+		const id = setInterval(() => {
+			fetchCurrentUser();
+		}, 3e4);
+		return () => clearInterval(id);
+	}, [isInProgress, fetchCurrentUser]);
 	const handleConfirmVerification = async () => {
 		if (verificationLoading || isInProgress || isConfirmed) return;
 		setVerificationLoading(true);
 		try {
-			const res = await fetch(`${apiUrl}/api/auth/verification/request`, {
+			const res = await fetchWithRefresh(`${apiUrl}/api/auth/verification/request`, {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				credentials: "include"
+				headers: { "Content-Type": "application/json" }
 			});
 			if (res.ok) {
 				const data = await res.json();
