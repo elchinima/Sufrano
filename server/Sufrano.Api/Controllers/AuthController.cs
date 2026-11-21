@@ -50,8 +50,7 @@ public class AuthController : ControllerBase
                 return BadRequest(new { message = "Authorization code is required." });
             }
 
-            var ipAddress = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()?.Split(',')[0].Trim()
-                            ?? HttpContext.Connection.RemoteIpAddress?.ToString();
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
             var userAgent = Request.Headers["User-Agent"].ToString();
             var platformVersion = Request.Headers["Sec-CH-UA-Platform-Version"].FirstOrDefault()
                                   ?? Request.Headers["X-Platform-Version"].FirstOrDefault();
@@ -113,8 +112,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var ipAddress = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()?.Split(',')[0].Trim()
-                            ?? HttpContext.Connection.RemoteIpAddress?.ToString();
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
             var userAgent = Request.Headers["User-Agent"].ToString();
             var platformVersion = Request.Headers["Sec-CH-UA-Platform-Version"].FirstOrDefault()
                                   ?? Request.Headers["X-Platform-Version"].FirstOrDefault();
@@ -184,8 +182,7 @@ public class AuthController : ControllerBase
                 return Unauthorized(new { message = "Two-factor verification session expired or invalid. Please sign in with your password again.", Message = "Two-factor verification session expired or invalid. Please sign in with your password again." });
             }
 
-            var ipAddress = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()?.Split(',')[0].Trim()
-                            ?? HttpContext.Connection.RemoteIpAddress?.ToString();
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
             var userAgent = Request.Headers["User-Agent"].ToString();
             var platformVersion = Request.Headers["Sec-CH-UA-Platform-Version"].FirstOrDefault()
                                   ?? Request.Headers["X-Platform-Version"].FirstOrDefault();
@@ -398,8 +395,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var ipAddress = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()?.Split(',')[0].Trim()
-                            ?? HttpContext.Connection.RemoteIpAddress?.ToString();
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
             var userAgent = Request.Headers["User-Agent"].ToString();
             var platformVersion = Request.Headers["Sec-CH-UA-Platform-Version"].FirstOrDefault()
                                   ?? Request.Headers["X-Platform-Version"].FirstOrDefault();
@@ -466,8 +462,7 @@ public class AuthController : ControllerBase
         }
         try
         {
-            var ipAddress = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()?.Split(',')[0].Trim()
-                            ?? HttpContext.Connection.RemoteIpAddress?.ToString();
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
             var userAgent = Request.Headers["User-Agent"].ToString();
             var platformVersion = Request.Headers["Sec-CH-UA-Platform-Version"].FirstOrDefault()
                                   ?? Request.Headers["X-Platform-Version"].FirstOrDefault();
@@ -1502,7 +1497,7 @@ public class AuthController : ControllerBase
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.None,
+            SameSite = SameSiteMode.Lax,
             Path = "/"
         };
         Response.Cookies.Delete("accessToken", cookieOptions);
@@ -1518,7 +1513,7 @@ public class AuthController : ControllerBase
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.None,
+            SameSite = SameSiteMode.Lax,
             Path = "/",
             Expires = DateTime.UtcNow.AddMinutes(15)
         };
@@ -1527,7 +1522,7 @@ public class AuthController : ControllerBase
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.None,
+            SameSite = SameSiteMode.Lax,
             Path = "/",
             Expires = DateTime.UtcNow.AddDays(15)
         };

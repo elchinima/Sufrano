@@ -75,22 +75,26 @@ builder.Services.AddSingleton<AdminLogCleanupService>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<AdminLogCleanupService>());
 builder.Services.AddSingleton<IAdminLogCleanupService>(sp => sp.GetRequiredService<AdminLogCleanupService>());
 
+var allowedOrigins = new List<string>();
+if (builder.Environment.IsDevelopment())
+{
+    allowedOrigins.AddRange(new[]
+    {
+        "http://localhost:5173",
+        "http://localhost:5045",
+        "http://localhost:8080",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500"
+    });
+}
+var configuredBaseUrl = Environment.GetEnvironmentVariable("BASE_URL");
+if (!string.IsNullOrEmpty(configuredBaseUrl))
+    allowedOrigins.Add(configuredBaseUrl.TrimEnd('/'));
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        var allowedOrigins = new List<string>
-        {
-            "http://localhost:5173",
-            "http://localhost:5045",
-            "http://localhost:8080",
-            "http://localhost:5500",
-            "http://127.0.0.1:5500"
-        };
-        var baseUrl = Environment.GetEnvironmentVariable("BASE_URL");
-        if (!string.IsNullOrEmpty(baseUrl))
-            allowedOrigins.Add(baseUrl.TrimEnd('/'));
-
         policy.WithOrigins(allowedOrigins.ToArray())
               .AllowAnyMethod()
               .AllowAnyHeader()
@@ -104,6 +108,9 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto;
     options.KnownIPNetworks.Clear();
     options.KnownProxies.Clear();
+    // Trust only the last proxy hop (Render's edge). Anything the client put in
+    // X-Forwarded-For further left is ignored, so the IP cannot be spoofed.
+    options.ForwardLimit = 1;
 });
 
 builder.Services.AddRateLimiter(options =>
@@ -283,6 +290,44 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowAll");
 
+// CSRF protection: state-changing /api requests coming from a browser must originate
+// from this site (or an explicitly allowed origin).
+app.Use(async (context, next) =>
+{
+    var method = context.Request.Method;
+    var isSafeMethod = HttpMethods.IsGet(method) || HttpMethods.IsHead(method) ||
+                       HttpMethods.IsOptions(method) || HttpMethods.IsTrace(method);
+
+    if (!isSafeMethod && context.Request.Path.StartsWithSegments("/api"))
+    {
+        var origin = context.Request.Headers.Origin.ToString();
+        if (string.IsNullOrEmpty(origin))
+        {
+            var referer = context.Request.Headers.Referer.ToString();
+            if (Uri.TryCreate(referer, UriKind.Absolute, out var refererUri))
+                origin = refererUri.GetLeftPart(UriPartial.Authority);
+        }
+
+        if (!string.IsNullOrEmpty(origin))
+        {
+            var normalized = origin.TrimEnd('/');
+            var selfOrigin = $"{context.Request.Scheme}://{context.Request.Host}";
+            var isAllowed = string.Equals(normalized, selfOrigin, StringComparison.OrdinalIgnoreCase) ||
+                            allowedOrigins.Contains(normalized, StringComparer.OrdinalIgnoreCase);
+
+            if (!isAllowed)
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsJsonAsync(new { message = "Cross-site request blocked." });
+                return;
+            }
+        }
+    }
+
+    await next(context);
+});
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
@@ -334,8 +379,7 @@ app.Use(async (context, next) =>
                 {
                     try
                     {
-                        var ipAddress = context.Request.Headers["X-Forwarded-For"].FirstOrDefault()?.Split(',')[0].Trim()
-                                        ?? context.Connection.RemoteIpAddress?.ToString();
+                        var ipAddress = context.Connection.RemoteIpAddress?.ToString();
                         var userAgent = context.Request.Headers["User-Agent"].ToString();
                         var platformVersion = context.Request.Headers["Sec-CH-UA-Platform-Version"].FirstOrDefault()
                                               ?? context.Request.Headers["X-Platform-Version"].FirstOrDefault();
@@ -348,7 +392,7 @@ app.Use(async (context, next) =>
                         {
                             HttpOnly = true,
                             Secure = true,
-                            SameSite = SameSiteMode.None,
+                            SameSite = SameSiteMode.Lax,
                             Path = "/",
                             Expires = DateTime.UtcNow.AddMinutes(15)
                         };
@@ -357,7 +401,7 @@ app.Use(async (context, next) =>
                         {
                             HttpOnly = true,
                             Secure = true,
-                            SameSite = SameSiteMode.None,
+                            SameSite = SameSiteMode.Lax,
                             Path = "/",
                             Expires = DateTime.UtcNow.AddDays(15)
                         };

@@ -253,7 +253,42 @@ public class CashboxController : ControllerBase
             return BadRequest(new { message = "Order must contain at least one item." });
         }
 
+        if (request.Products.Count > 100 ||
+            request.Products.Any(p => p.ProductId == Guid.Empty || p.Quantity < 1 || p.Quantity > 100))
+        {
+            return BadRequest(new { message = "Invalid product list. Quantity must be between 1 and 100." });
+        }
+
+        var merged = request.Products
+            .GroupBy(p => p.ProductId)
+            .Select(g => new { ProductId = g.Key, Quantity = Math.Min(100, g.Sum(x => x.Quantity)) })
+            .ToList();
+
+        var productIds = merged.Select(m => m.ProductId).ToList();
+        var dbProducts = await _context.Products
+            .AsNoTracking()
+            .Where(p => productIds.Contains(p.Id) && p.IsActive)
+            .ToDictionaryAsync(p => p.Id);
+
+        if (dbProducts.Count != productIds.Count)
+        {
+            return BadRequest(new { message = "One or more products were not found or are inactive." });
+        }
+
+        var lines = merged
+            .Select(m => (Product: dbProducts[m.ProductId], Quantity: m.Quantity))
+            .ToList();
+
+        var initialAmount = Math.Round(
+            lines.Sum(l => PromoDiscountCalculator.GetEffectivePrice(l.Product) * l.Quantity), 2);
+
+        await using var tx = await _context.Database.BeginTransactionAsync();
+
         Sufrano.Core.Entities.UserPromo? promo = null;
+        decimal discount = 0m;
+        decimal cashbackAmount = 0m;
+        string? appliedPromoCode = null;
+
         if (!string.IsNullOrWhiteSpace(request.PromoCodeId))
         {
             var rawCode = request.PromoCodeId.Trim();
@@ -275,35 +310,45 @@ public class CashboxController : ControllerBase
                 return BadRequest(new { message = "Promo code not found." });
             }
 
+            // Row lock + reload: prevents the same promo being redeemed twice concurrently.
+            await _context.Database.ExecuteSqlInterpolatedAsync(
+                $"SELECT 1 FROM \"UserPromos\" WHERE \"Id\" = {promo.Id} FOR UPDATE");
+            await _context.Entry(promo).ReloadAsync();
+
             if (!promo.IsActive || promo.Dates.ExpiresAt < DateTime.UtcNow)
             {
                 return BadRequest(new { message = "Promo code is expired or has already been used." });
             }
 
-            if (promo.PrizeInfo.Type == PrizeType.CashbackOnPurchases || promo.PrizeInfo.CashbackPercent > 0)
+            var (calcDiscount, cashbackPercent) = PromoDiscountCalculator.Calculate(promo, lines, initialAmount);
+            discount = calcDiscount;
+
+            if (cashbackPercent > 0)
             {
-                var cbPct = promo.PrizeInfo.CashbackPercent > 0 ? promo.PrizeInfo.CashbackPercent : 10;
-                var cbAmount = Math.Round(Math.Max(0m, request.TotalAmount) * (cbPct / 100m), 2);
-                if (cbAmount > 0)
+                var payable = Math.Max(0m, Math.Round(initialAmount - discount, 2));
+                cashbackAmount = Math.Round(payable * (cashbackPercent / 100m), 2);
+            }
+
+            if (discount > 0 || cashbackAmount > 0)
+            {
+                appliedPromoCode = promo.Codes.PromoCode;
+
+                if (cashbackAmount > 0)
                 {
                     var promoOwner = await _context.Users.FirstOrDefaultAsync(u => u.Id == promo.UserId);
                     if (promoOwner != null && !string.Equals(promoOwner.Email, "myrednest@gmail.com", StringComparison.OrdinalIgnoreCase))
                     {
-                        promoOwner.Balance = Math.Round(promoOwner.Balance + cbAmount, 2);
+                        promoOwner.Balance = Math.Round(promoOwner.Balance + cashbackAmount, 2);
                         _context.Users.Update(promoOwner);
                     }
                 }
+
+                promo.IsActive = false;
+                _context.UserPromos.Update(promo);
             }
-
-            promo.IsActive = false;
-            _context.UserPromos.Update(promo);
         }
 
-        var status = CashboxStatus.Success;
-        if (!string.IsNullOrWhiteSpace(request.Status) && Enum.TryParse<CashboxStatus>(request.Status.Trim(), true, out var parsedStatus))
-        {
-            status = parsedStatus;
-        }
+        var totalAmount = Math.Max(0m, Math.Round(initialAmount - discount, 2));
 
         var cashierName = !string.IsNullOrWhiteSpace(cashierUser.Name) ? cashierUser.Name : (cashierUser.Email ?? "Cashier");
 
@@ -313,18 +358,18 @@ public class CashboxController : ControllerBase
             PayMethod = string.Equals(request.PayMethod, "Card", StringComparison.OrdinalIgnoreCase)
                 ? CashboxPayMethod.Card
                 : CashboxPayMethod.Cash,
-            Products = request.Products.Select(p => new CashboxProductItem
+            Products = merged.Select(m => new CashboxProductItem
             {
-                ProductId = p.ProductId,
-                Quantity = p.Quantity
+                ProductId = m.ProductId,
+                Quantity = m.Quantity
             }).ToList(),
             Paid = new CashboxPaidDetails
             {
-                InitialAmount = request.InitialAmount,
-                PromoCodeId = promo?.Codes.PromoCode ?? request.PromoCodeId,
-                TotalAmount = request.TotalAmount
+                InitialAmount = initialAmount,
+                PromoCodeId = appliedPromoCode,
+                TotalAmount = totalAmount
             },
-            Status = status,
+            Status = CashboxStatus.Success,
             Description = new CashboxDescription
             {
                 Note = string.IsNullOrWhiteSpace(request.Note) ? null : request.Note.Trim(),
@@ -337,10 +382,11 @@ public class CashboxController : ControllerBase
 
         _context.Cashboxes.Add(cashboxRecord);
         await _context.SaveChangesAsync();
+        await tx.CommitAsync();
 
         _ = Task.Run(() => _analyticsTrackingService.TrackAnalyticsAsync());
 
-        return Ok(new { success = true, orderId = cashboxRecord.Id });
+        return Ok(new { success = true, orderId = cashboxRecord.Id, initialAmount, discountAmount = discount, totalAmount });
     }
 
     [HttpGet("history")]
@@ -602,6 +648,11 @@ public class CashboxController : ControllerBase
 
         if (!string.IsNullOrWhiteSpace(request.Status))
         {
+            if (!IsAllowedCashboxHistoryRole(cashierUser.Role))
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new { message = "Only Lead Staff, Admin and Super Admin can change the status of cashbox orders." });
+            }
+
             if (Enum.TryParse<CashboxStatus>(request.Status.Trim(), true, out var newStatus))
             {
                 cashboxRecord.Status = newStatus;

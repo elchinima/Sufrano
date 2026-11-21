@@ -300,7 +300,8 @@ public class AdminController : ControllerBase
         if (id == ProtectedUserId)
             return StatusCode(403, new { message = "Access denied. CRUD operations are prohibited for this user." });
 
-        if (!await IsFullAdminAuthenticatedAsync())
+        var (detailAuth, detailAdmin) = await GetAdminUserAsync();
+        if (!detailAuth || detailAdmin == null || !IsFullAdminRole(detailAdmin.Role))
             return StatusCode(403, new { message = "Access denied. Only Super Admin and Admin roles can access user details." });
 
         var user = await _context.Users
@@ -311,6 +312,9 @@ public class AdminController : ControllerBase
 
         if (user == null)
             return NotFound(new { message = "User not found." });
+
+        if (detailAdmin.Id != id && GetUserRoleLevel(detailAdmin.Role) <= GetUserRoleLevel(user.Role))
+            return StatusCode(403, new { message = $"Access denied. You cannot view the details of a user with an equal or higher role ({user.Role})." });
 
         var userOrders = await _context.Orders
             .Where(o => o.UserId == id)
@@ -345,8 +349,27 @@ public class AdminController : ControllerBase
                 user.Session.Subscribe,
                 user.Session.IsActive,
                 verification = user.Session.Verification.ToString(),
-                sessions = user.Session.Sessions ?? new List<SessionEntry>(),
-                accountVerify = user.Session.AccountVerify ?? new List<AccountVerifyEntry>()
+                // Never expose refresh tokens or one-time codes.
+                sessions = (user.Session.Sessions ?? new List<SessionEntry>()).Select(s => new
+                {
+                    s.LastLoginIp,
+                    s.OperatingSystem,
+                    s.DeviceName,
+                    s.DeviceType,
+                    s.UserAgent,
+                    s.CreatedAt,
+                    s.LastActiveAt,
+                    s.RefreshTokenExpiryTime,
+                    s.IsActive,
+                    s.AuthType
+                }).ToList(),
+                accountVerify = (user.Session.AccountVerify ?? new List<AccountVerifyEntry>()).Select(v => new
+                {
+                    v.Type,
+                    v.Expire,
+                    v.CreateData,
+                    v.Attempts
+                }).ToList()
             } : null,
             promos = user.Promos?.Select(p => new
             {
@@ -3298,7 +3321,7 @@ public class AdminController : ControllerBase
     {
         HttpOnly = true,
         Secure = true,
-        SameSite = SameSiteMode.None,
+        SameSite = SameSiteMode.Lax,
         Path = "/",
         Expires = DateTimeOffset.UtcNow.AddHours(AdminSessionHours)
     };

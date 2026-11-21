@@ -149,7 +149,7 @@ public static class SecurityVerificationHelper
     {
         HttpOnly = true,
         Secure = true,
-        SameSite = SameSiteMode.None,
+        SameSite = SameSiteMode.Lax,
         Path = "/",
         Expires = DateTimeOffset.UtcNow.AddMinutes(ExpirationMinutes)
     };
@@ -158,7 +158,7 @@ public static class SecurityVerificationHelper
     {
         HttpOnly = true,
         Secure = true,
-        SameSite = SameSiteMode.None,
+        SameSite = SameSiteMode.Lax,
         Path = "/",
         Expires = DateTimeOffset.UtcNow.AddMinutes(TwoFactorChallengeMinutes)
     };
