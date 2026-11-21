@@ -256,6 +256,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPost("stripe/create-intent")]
+    [RequireVerifiedAccount]
     public async Task<IActionResult> CreateStripePaymentIntent([FromBody] StripeIntentRequest? request)
     {
         var userId = GetUserId();
@@ -336,6 +337,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPost("stripe/confirm")]
+    [RequireVerifiedAccount]
     public async Task<IActionResult> ConfirmStripeOrder([FromBody] ConfirmStripeOrderRequest request)
     {
         var userId = GetUserId();
@@ -375,6 +377,12 @@ public class OrdersController : ControllerBase
             parsedIntentUserId != userId.Value)
         {
             return StatusCode(StatusCodes.Status403Forbidden, new { message = "This payment intent does not belong to your account." });
+        }
+
+        if (paymentMethod != CorePaymentMethod.CashDeskCash &&
+            !await RequireVerifiedAccountAttribute.IsVerifiedAsync(_context, userId.Value))
+        {
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "Unverified accounts can only pay with cash.", requiresVerification = true });
         }
 
         var userLock = OrderLocks.GetOrAdd(userId.Value, _ => new SemaphoreSlim(1, 1));

@@ -150,6 +150,7 @@ public class PaymentMethodsController : ControllerBase
     }
 
     [HttpPost]
+    [RequireVerifiedAccount]
     public async Task<IActionResult> AddPaymentMethod([FromBody] PaymentMethodRequest request)
     {
         var userId = GetUserId();

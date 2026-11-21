@@ -59,6 +59,7 @@ public class AddressesController : ControllerBase
     }
 
     [HttpPost]
+    [RequireVerifiedAccount]
     public async Task<IActionResult> CreateAddress([FromBody] AddressRequest request)
     {
         var userId = GetUserId();
@@ -121,6 +122,7 @@ public class AddressesController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [RequireVerifiedAccount]
     public async Task<IActionResult> UpdateAddress(int id, [FromBody] AddressRequest request)
     {
         var userId = GetUserId();

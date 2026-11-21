@@ -209,6 +209,7 @@ public class ReviewsController : ControllerBase
 
     [HttpPost]
     [Authorize]
+    [RequireVerifiedAccount]
     public async Task<IActionResult> Create([FromBody] CreateReviewRequest request)
     {
         var userId = GetUserId();

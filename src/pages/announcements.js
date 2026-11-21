@@ -81,10 +81,10 @@
 			if (!isoStr) return "";
 			try {
 				if (typeof isoStr === "string") {
-					const match = isoStr.match(/^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})/);
+					const match = isoStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
 					if (match) {
-						const [, year, month, day, hour, minute] = match;
-						return `${day}.${month}.${year}, ${hour}:${minute}`;
+						const [, year, month, day] = match;
+						return `${day}.${month}.${year}`;
 					}
 				}
 				const d = new Date(isoStr);
@@ -92,9 +92,7 @@
 				const day = String(d.getDate()).padStart(2, "0");
 				const month = String(d.getMonth() + 1).padStart(2, "0");
 				const year = d.getFullYear();
-				const hour = String(d.getHours()).padStart(2, "0");
-				const minute = String(d.getMinutes()).padStart(2, "0");
-				return `${day}.${month}.${year}, ${hour}:${minute}`;
+				return `${day}.${month}.${year}`;
 			} catch {
 				return "";
 			}
