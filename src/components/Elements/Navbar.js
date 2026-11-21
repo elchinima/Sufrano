@@ -1,7 +1,7 @@
 import { __h, __Fragment } from '../../utils/runtime.js';
 import React, { useState, useEffect } from "../../utils/runtime.js";
 import { Link, useLocation } from "../../utils/router.js";
-const logo = "/assets/icons/rednest_logo.png";
+const logo = "/assets/icons/sufrano_logo.png";
 import UserNavPills from "./UserNavPills.js";
 import { useLang } from "../../utils/useLang.js";
 import { useFooterData } from "../../utils/footerData.js";

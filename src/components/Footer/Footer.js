@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "../../utils/runtime.js";
 import { motion } from "../../utils/motion.js";
 import { Link } from "../../utils/router.js";
 import AppDownloadBanner from "./AppDownloadBanner.js";
-const logo = "/assets/icons/rednest_logo.png";
+const logo = "/assets/icons/sufrano_logo.png";
 const getBakuYear = () => {
 	try {
 		return new Intl.DateTimeFormat("en-US", {

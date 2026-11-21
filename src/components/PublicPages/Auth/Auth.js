@@ -2,7 +2,7 @@ import { __h, __Fragment } from '../../../utils/runtime.js';
 import React, { useState, useEffect, useRef } from "../../../utils/runtime.js";
 import { motion } from "../../../utils/motion.js";
 import { Link, useNavigate } from "../../../utils/router.js";
-const logo = "/assets/icons/rednest_logo.png";
+const logo = "/assets/icons/sufrano_logo.png";
 const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 import { useAuth } from "../../../context/AuthContext.js";
 import { ensureClientHintsHeaders } from "../../../utils/clientHints.js";
@@ -443,7 +443,7 @@ const Auth = () => {
 			if (!data.hasName) {
 				setStep("name");
 			} else {
-				localStorage.setItem("rednest_auth", "true");
+				localStorage.setItem("sufrano_auth", "true");
 				if (data.user) {
 					login(data.user);
 				} else {
@@ -604,7 +604,7 @@ const Auth = () => {
 			} else if (!data.hasName) {
 				setStep("name");
 			} else {
-				localStorage.setItem("rednest_auth", "true");
+				localStorage.setItem("sufrano_auth", "true");
 				if (data.user) {
 					login(data.user);
 				} else {
@@ -651,7 +651,7 @@ const Auth = () => {
 			if (!data.hasName) {
 				setStep("name");
 			} else {
-				localStorage.setItem("rednest_auth", "true");
+				localStorage.setItem("sufrano_auth", "true");
 				if (data.user) {
 					login(data.user);
 				} else {
@@ -716,7 +716,7 @@ const Auth = () => {
 				throw new Error(errorData.message || "Failed to update name");
 			}
 			const data = await response.json().catch(() => ({}));
-			localStorage.setItem("rednest_auth", "true");
+			localStorage.setItem("sufrano_auth", "true");
 			if (data && (data.name || data.Name)) {
 				login(data);
 			} else {

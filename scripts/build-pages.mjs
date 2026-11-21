@@ -171,7 +171,7 @@ const CORE_CSS_FILES = [
   'index.css',
   'components/Elements/AdminTableActions.css',
   'components/Elements/ProfilePasswordModal.css',
-  'components/Elements/RednestModal.css',
+  'components/Elements/SufranoModal.css',
   'components/Elements/UserNavPills.css',
   'components/Footer/AppDownloadBanner.css',
   'components/Footer/Footer.css',

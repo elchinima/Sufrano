@@ -1,7 +1,7 @@
 import { __h, __Fragment } from '../../utils/runtime.js';
 import React, { useState, useEffect, useRef } from "../../utils/runtime.js";
 import AnimatedModalWrapper from "./AnimatedModalWrapper.js";
-const logo = "/assets/icons/rednest_logo.png";
+const logo = "/assets/icons/sufrano_logo.png";
 const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 import { fetchWithRefresh } from "../../utils/fetchWithRefresh.js";
 import { useLang } from "../../utils/useLang.js";

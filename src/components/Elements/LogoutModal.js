@@ -15,9 +15,9 @@ const LogoutModal = ({ isOpen, onClose, onConfirm, loading, title, text, confirm
 		onClose: () => !loading && onClose(),
 		targetBorderRadius: "24px"
 	}, /* @__PURE__ */ __h("div", {
-		className: "rednest-modal",
+		className: "sufrano-modal",
 		onClick: (e) => e.stopPropagation()
-	}, /* @__PURE__ */ __h("div", { className: "rednest-modal__icon rednest-modal__icon--danger" }, /* @__PURE__ */ __h("svg", {
+	}, /* @__PURE__ */ __h("div", { className: "sufrano-modal__icon sufrano-modal__icon--danger" }, /* @__PURE__ */ __h("svg", {
 		viewBox: "0 0 24 24",
 		fill: "none",
 		stroke: "currentColor",
@@ -29,14 +29,14 @@ const LogoutModal = ({ isOpen, onClose, onConfirm, loading, title, text, confirm
 		y1: "12",
 		x2: "9",
 		y2: "12"
-	}))), /* @__PURE__ */ __h("h3", { className: "rednest-modal__title" }, displayTitle), /* @__PURE__ */ __h("p", { className: "rednest-modal__text" }, displayText), /* @__PURE__ */ __h("div", { className: "rednest-modal__actions" }, /* @__PURE__ */ __h("button", {
+	}))), /* @__PURE__ */ __h("h3", { className: "sufrano-modal__title" }, displayTitle), /* @__PURE__ */ __h("p", { className: "sufrano-modal__text" }, displayText), /* @__PURE__ */ __h("div", { className: "sufrano-modal__actions" }, /* @__PURE__ */ __h("button", {
 		type: "button",
-		className: "rednest-modal__btn rednest-modal__btn--cancel",
+		className: "sufrano-modal__btn sufrano-modal__btn--cancel",
 		onClick: onClose,
 		disabled: loading
 	}, t("modal_logout_cancel")), /* @__PURE__ */ __h("button", {
 		type: "button",
-		className: "rednest-modal__btn rednest-modal__btn--danger",
+		className: "sufrano-modal__btn sufrano-modal__btn--danger",
 		onClick: onConfirm,
 		disabled: loading
 	}, loading ? /* @__PURE__ */ __h("span", { style: {

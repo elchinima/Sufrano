@@ -6,7 +6,7 @@ import { fetchWithRefresh } from "../../../utils/fetchWithRefresh.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import { fetchFooterData } from "../../../utils/footerData.js";
 
-const logo = "/assets/icons/rednest_logo.png";
+const logo = "/assets/icons/sufrano_logo.png";
 const loaderIcon = "/assets/icons/loader-animated.svg";
 
 const LANG_CONFIGS = [

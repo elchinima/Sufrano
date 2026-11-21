@@ -15,7 +15,7 @@
 		const { ensureClientHintsHeaders } = __require("utils/clientHints.js");
 		const { useLang } = __require("utils/useLang.js");
 		const { getAuthTranslation } = __require("components/PublicPages/Auth/Lang.js");
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 		const GoogleAuth = () => {
 			const lang = useLang();
@@ -109,7 +109,7 @@
 							}
 							throw new Error(data.message || "Failed to authenticate with Google. Please try again.");
 						}
-						localStorage.setItem("rednest_auth", "true");
+						localStorage.setItem("sufrano_auth", "true");
 						if (window.opener && !window.opener.closed) {
 							try {
 								window.opener.postMessage({

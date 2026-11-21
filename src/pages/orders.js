@@ -212,7 +212,7 @@
 		const cashierIcon = "/assets/icons/cashier-register.svg";
 		const onlineIcon = "/assets/icons/online-card.svg";
 		const cartIcon = "/assets/icons/cart-animated.svg";
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const __imp_1 = __require("components/Elements/Navbar.js");
 		const Navbar = __imp_1.default !== undefined ? __imp_1.default : __imp_1;
 		const __imp_2 = __require("components/Footer/Footer.js");

@@ -5,10 +5,10 @@ import { API_URL } from "../utils/config.js";
 const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
 	const [isAuthenticated, setIsAuthenticated] = useState(() => {
-		return localStorage.getItem("rednest_auth") === "true";
+		return localStorage.getItem("sufrano_auth") === "true";
 	});
 	const [user, setUser] = useState(() => {
-		const saved = localStorage.getItem("rednest_user");
+		const saved = localStorage.getItem("sufrano_user");
 		return saved ? JSON.parse(saved) : null;
 	});
 	const [authLoading, setAuthLoading] = useState(true);
@@ -23,8 +23,8 @@ export const AuthProvider = ({ children }) => {
 				email: ""
 			};
 		}
-		localStorage.setItem("rednest_auth", "true");
-		localStorage.setItem("rednest_user", JSON.stringify(profile));
+		localStorage.setItem("sufrano_auth", "true");
+		localStorage.setItem("sufrano_user", JSON.stringify(profile));
 		setIsAuthenticated(true);
 		setUser(profile);
 	}, []);
@@ -36,8 +36,8 @@ export const AuthProvider = ({ children }) => {
 				credentials: "include"
 			});
 		} catch {}
-		localStorage.removeItem("rednest_auth");
-		localStorage.removeItem("rednest_user");
+		localStorage.removeItem("sufrano_auth");
+		localStorage.removeItem("sufrano_user");
 		setIsAuthenticated(false);
 		setUser(null);
 	}, []);
@@ -72,12 +72,12 @@ export const AuthProvider = ({ children }) => {
 		}
 	}, [login]);
 	const checkAuthStatus = useCallback(async () => {
-		const hasAuth = localStorage.getItem("rednest_auth") === "true";
+		const hasAuth = localStorage.getItem("sufrano_auth") === "true";
 		if (!hasAuth) return { ok: false };
 		const result = await fetchCurrentUser();
 		if (result && result.unauthorized) {
-			localStorage.removeItem("rednest_auth");
-			localStorage.removeItem("rednest_user");
+			localStorage.removeItem("sufrano_auth");
+			localStorage.removeItem("sufrano_user");
 			setIsAuthenticated(false);
 			setUser(null);
 		}
@@ -85,8 +85,8 @@ export const AuthProvider = ({ children }) => {
 	}, [fetchCurrentUser]);
 	useEffect(() => {
 		const handleUnauthorized = () => {
-			localStorage.removeItem("rednest_auth");
-			localStorage.removeItem("rednest_user");
+			localStorage.removeItem("sufrano_auth");
+			localStorage.removeItem("sufrano_user");
 			setIsAuthenticated(false);
 			setUser(null);
 		};
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
 	}, []);
 	useEffect(() => {
 		const validateSession = async () => {
-			const hasAuth = localStorage.getItem("rednest_auth") === "true";
+			const hasAuth = localStorage.getItem("sufrano_auth") === "true";
 			if (!hasAuth) {
 				setAuthLoading(false);
 				return;
@@ -109,8 +109,8 @@ export const AuthProvider = ({ children }) => {
 				result = await fetchCurrentUser();
 			}
 			if (result && result.unauthorized) {
-				localStorage.removeItem("rednest_auth");
-				localStorage.removeItem("rednest_user");
+				localStorage.removeItem("sufrano_auth");
+				localStorage.removeItem("sufrano_user");
 				setIsAuthenticated(false);
 				setUser(null);
 			}
@@ -124,7 +124,7 @@ export const AuthProvider = ({ children }) => {
 				...prev,
 				...updatedFields
 			};
-			localStorage.setItem("rednest_user", JSON.stringify(updated));
+			localStorage.setItem("sufrano_user", JSON.stringify(updated));
 			return updated;
 		});
 	}, []);

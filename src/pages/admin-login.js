@@ -11,7 +11,7 @@
 		const { useState } = __imp_0;
 		const { useNavigate, Navigate, useLocation } = __require("utils/router.js");
 		const { motion } = __require("utils/motion.js");
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const loaderIcon = "/assets/icons/loader-animated.svg";
 		const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 		const { useAdminAuth } = __require("context/AdminAuthContext.js");

@@ -1,15 +1,15 @@
 import { useState, useEffect } from "./runtime.js";
 export const getStoredLanguage = () => {
 	try {
-		return localStorage.getItem("rednest_language") || "az";
+		return localStorage.getItem("sufrano_language") || "az";
 	} catch {
 		return "az";
 	}
 };
 export const setStoredLanguage = (newLang) => {
 	try {
-		localStorage.setItem("rednest_language", newLang);
-		localStorage.setItem("rednest_language_updated_at", new Date().toISOString());
+		localStorage.setItem("sufrano_language", newLang);
+		localStorage.setItem("sufrano_language_updated_at", new Date().toISOString());
 		window.dispatchEvent(new CustomEvent("languagechange", { detail: newLang }));
 	} catch {}
 };

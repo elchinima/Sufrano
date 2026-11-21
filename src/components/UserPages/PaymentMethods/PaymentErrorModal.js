@@ -12,9 +12,9 @@ const PaymentErrorModal = ({ isOpen, onClose, message, title = "Card Error" }) =
 		targetBorderRadius: "24px",
 		zIndex: 100005
 	}, /* @__PURE__ */ __h("div", {
-		className: "rednest-modal",
+		className: "sufrano-modal",
 		onClick: (e) => e.stopPropagation()
-	}, /* @__PURE__ */ __h("div", { className: "rednest-modal__icon rednest-modal__icon--danger" }, /* @__PURE__ */ __h("svg", {
+	}, /* @__PURE__ */ __h("div", { className: "sufrano-modal__icon sufrano-modal__icon--danger" }, /* @__PURE__ */ __h("svg", {
 		viewBox: "0 0 24 24",
 		fill: "none",
 		stroke: "currentColor",
@@ -35,9 +35,9 @@ const PaymentErrorModal = ({ isOpen, onClose, message, title = "Card Error" }) =
 		y1: "9",
 		x2: "15",
 		y2: "15"
-	}))), /* @__PURE__ */ __h("h3", { className: "rednest-modal__title" }, title), /* @__PURE__ */ __h("p", { className: "rednest-modal__text" }, message || "An error occurred while processing your card."), /* @__PURE__ */ __h("div", { className: "rednest-modal__actions" }, /* @__PURE__ */ __h("button", {
+	}))), /* @__PURE__ */ __h("h3", { className: "sufrano-modal__title" }, title), /* @__PURE__ */ __h("p", { className: "sufrano-modal__text" }, message || "An error occurred while processing your card."), /* @__PURE__ */ __h("div", { className: "sufrano-modal__actions" }, /* @__PURE__ */ __h("button", {
 		type: "button",
-		className: "rednest-modal__btn rednest-modal__btn--danger",
+		className: "sufrano-modal__btn sufrano-modal__btn--danger",
 		onClick: onClose
 	}, t("modal_understand")))));
 };

@@ -460,7 +460,7 @@ const AppDownloadBanner = () => {
 	}, [currentLang]);
 	const [isVisible, setIsVisible] = useState(() => {
 		try {
-			const hiddenUntil = localStorage.getItem("rednest_app_banner_hidden_until");
+			const hiddenUntil = localStorage.getItem("sufrano_app_banner_hidden_until");
 			if (hiddenUntil) {
 				const time = parseInt(hiddenUntil, 10);
 				if (!isNaN(time) && Date.now() < time) {
@@ -476,7 +476,7 @@ const AppDownloadBanner = () => {
 		e.stopPropagation();
 		try {
 			const hideUntil = Date.now() + 24 * 60 * 60 * 1e3;
-			localStorage.setItem("rednest_app_banner_hidden_until", hideUntil.toString());
+			localStorage.setItem("sufrano_app_banner_hidden_until", hideUntil.toString());
 		} catch {}
 		setIsVisible(false);
 	};
@@ -484,7 +484,7 @@ const AppDownloadBanner = () => {
 	const modelImg = isWinter ? winterModel : summerModel;
 	const modelAlt = isWinter ? "Süfrano Winter Restaurant App" : "Süfrano Summer Restaurant App";
 	return /* @__PURE__ */ __h(AnimatePresence, null, isVisible && /* @__PURE__ */ __h(motion.section, {
-		className: "rednest-app-banner",
+		className: "sufrano-app-banner",
 		initial: {
 			opacity: 0,
 			y: 35

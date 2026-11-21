@@ -16,7 +16,7 @@
 		const { useAuth } = __require("context/AuthContext.js");
 		const { fetchFooterData } = __require("utils/footerData.js");
 
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const loaderIcon = "/assets/icons/loader-animated.svg";
 
 		const LANG_CONFIGS = [

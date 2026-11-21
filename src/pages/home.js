@@ -132,7 +132,7 @@
 		const __imp_0 = __require("utils/runtime.js");
 		const React = __imp_0.default !== undefined ? __imp_0.default : __imp_0;
 		const { useState, useEffect, useRef } = __imp_0;
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const loaderIcon = "/assets/icons/loader-animated.svg";
 		const __imp_1 = __require("components/Elements/AnimatedModalWrapper.js");
 		const AnimatedModalWrapper = __imp_1.default !== undefined ? __imp_1.default : __imp_1;
@@ -357,9 +357,9 @@
 				onClose,
 				targetBorderRadius: "24px"
 			}, /* @__PURE__ */ __h("div", {
-				className: "rednest-modal",
+				className: "sufrano-modal",
 				onClick: (e) => e.stopPropagation()
-			}, /* @__PURE__ */ __h("div", { className: "rednest-modal__icon rednest-modal__icon--warning" }, isAlreadySubscribed ? /* @__PURE__ */ __h("svg", {
+			}, /* @__PURE__ */ __h("div", { className: "sufrano-modal__icon sufrano-modal__icon--warning" }, isAlreadySubscribed ? /* @__PURE__ */ __h("svg", {
 				viewBox: "0 0 24 24",
 				fill: "none",
 				stroke: "currentColor",
@@ -388,16 +388,16 @@
 				x2: "12.01",
 				y2: "16"
 			}))), /* @__PURE__ */ __h("h3", {
-				className: "rednest-modal__title",
+				className: "sufrano-modal__title",
 				"data-id": "home_modal_err_title"
-			}, title), /* @__PURE__ */ __h("p", { className: "rednest-modal__text" }, message || (isAlreadySubscribed ? lang === "ru" ? "Этот адрес электронной почты уже подписан на рассылку. Если у вас возникли вопросы, свяжитесь со службой поддержки." : lang === "az" ? "Bu e-poç ünvanı artıq bülletenə abunədir. Suallarınız varsa, texniki dəstəklə əlaqə saxlayın." : "This email is already subscribed to the newsletter. If you have questions or need assistance, please contact technical support." : lang === "ru" ? "Этот адрес не зарегистрирован. Пожалуйста, сначала создайте аккаунт." : lang === "az" ? "Bu e-poç qeydiyyatdan keçməyib. Zəhmət olmasa, əvvəlcə hesab yaradın." : "This email is not registered. Please create an account first.")), /* @__PURE__ */ __h("div", { className: "rednest-modal__actions" }, /* @__PURE__ */ __h("button", {
+			}, title), /* @__PURE__ */ __h("p", { className: "sufrano-modal__text" }, message || (isAlreadySubscribed ? lang === "ru" ? "Этот адрес электронной почты уже подписан на рассылку. Если у вас возникли вопросы, свяжитесь со службой поддержки." : lang === "az" ? "Bu e-poç ünvanı artıq bülletenə abunədir. Suallarınız varsa, texniki dəstəklə əlaqə saxlayın." : "This email is already subscribed to the newsletter. If you have questions or need assistance, please contact technical support." : lang === "ru" ? "Этот адрес не зарегистрирован. Пожалуйста, сначала создайте аккаунт." : lang === "az" ? "Bu e-poç qeydiyyatdan keçməyib. Zəhmət olmasa, əvvəlcə hesab yaradın." : "This email is not registered. Please create an account first.")), /* @__PURE__ */ __h("div", { className: "sufrano-modal__actions" }, /* @__PURE__ */ __h("button", {
 				type: "button",
-				className: "rednest-modal__btn rednest-modal__btn--cancel",
+				className: "sufrano-modal__btn sufrano-modal__btn--cancel",
 				onClick: onClose,
 				"data-id": "home_modal_err_close"
 			}, t("home_modal_err_close")), isAlreadySubscribed && /* @__PURE__ */ __h("a", {
 				href: "mailto:hello@sufrano.com?subject=Newsletter%20Subscription%20Support",
-				className: "rednest-modal__btn rednest-modal__btn--danger",
+				className: "sufrano-modal__btn sufrano-modal__btn--danger",
 				style: {
 					textDecoration: "none",
 					background: "#9e7a36",
@@ -406,7 +406,7 @@
 				onClick: onClose
 			}, lang === "ru" ? "Служба поддержки" : lang === "az" ? "Dəstək xidməti" : "Contact Support"), !isAlreadySubscribed && isAccountRequired && onOpenRegister && /* @__PURE__ */ __h("button", {
 				type: "button",
-				className: "rednest-modal__btn rednest-modal__btn--danger",
+				className: "sufrano-modal__btn sufrano-modal__btn--danger",
 				style: {
 					background: "#c5a059",
 					boxShadow: "0 4px 14px rgba(197, 160, 89, 0.35)"
@@ -440,9 +440,9 @@
 				onClose,
 				targetBorderRadius: "24px"
 			}, /* @__PURE__ */ __h("div", {
-				className: "rednest-modal",
+				className: "sufrano-modal",
 				onClick: (e) => e.stopPropagation()
-			}, /* @__PURE__ */ __h("div", { className: "rednest-modal__icon rednest-modal__icon--success" }, /* @__PURE__ */ __h("svg", {
+			}, /* @__PURE__ */ __h("div", { className: "sufrano-modal__icon sufrano-modal__icon--success" }, /* @__PURE__ */ __h("svg", {
 				viewBox: "0 0 24 24",
 				fill: "none",
 				stroke: "currentColor",
@@ -450,11 +450,11 @@
 				strokeLinecap: "round",
 				strokeLinejoin: "round"
 			}, /* @__PURE__ */ __h("polyline", { points: "20 6 9 17 4 12" }))), /* @__PURE__ */ __h("h3", {
-				className: "rednest-modal__title",
+				className: "sufrano-modal__title",
 				"data-id": "home_modal_succ_title"
-			}, t("home_modal_succ_title")), /* @__PURE__ */ __h("p", { className: "rednest-modal__text" }, message || "Successfully subscribed to the Süfrano Club!"), /* @__PURE__ */ __h("div", { className: "rednest-modal__actions" }, /* @__PURE__ */ __h("button", {
+			}, t("home_modal_succ_title")), /* @__PURE__ */ __h("p", { className: "sufrano-modal__text" }, message || "Successfully subscribed to the Süfrano Club!"), /* @__PURE__ */ __h("div", { className: "sufrano-modal__actions" }, /* @__PURE__ */ __h("button", {
 				type: "button",
-				className: "rednest-modal__btn rednest-modal__btn--success",
+				className: "sufrano-modal__btn sufrano-modal__btn--success",
 				onClick: onClose,
 				"data-id": "home_modal_succ_btn"
 			}, t("home_modal_succ_btn")))));
@@ -472,7 +472,7 @@
 		const { useRef, useEffect, useState, useMemo } = __imp_0;
 		const { motion } = __require("utils/motion.js");
 		const { Link, useNavigate } = __require("utils/router.js");
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const premiumRoastIcon = "/assets/icons/premium_roast.svg";
 		const cozyAtmosphereIcon = "/assets/icons/cozy_atmosphere.svg";
 		const ecoFriendlyIcon = "/assets/icons/eco_friendly.svg";

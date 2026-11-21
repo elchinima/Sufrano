@@ -2,7 +2,7 @@ import { __h, __Fragment } from '../../../utils/runtime.js';
 import React, { useState, useEffect } from "../../../utils/runtime.js";
 import { NavLink, useNavigate, useLocation } from "../../../utils/router.js";
 import { motion, AnimatePresence } from "../../../utils/motion.js";
-const logo = "/assets/icons/rednest_logo.png";
+const logo = "/assets/icons/sufrano_logo.png";
 import { useAdminAuth } from "../../../context/AdminAuthContext.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import LogoutModal from "../../Elements/LogoutModal.js";

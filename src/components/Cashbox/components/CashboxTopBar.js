@@ -4,7 +4,7 @@ import { useNavigate } from "../../../utils/router.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import { isAllowedCashboxHistoryRole } from "../../../routes/CashboxProtectedRoute.js";
 import { getUserAvatarUrl, handleAvatarError } from "../../../utils/avatar.js";
-const logo = "/assets/icons/rednest_logo.png";
+const logo = "/assets/icons/sufrano_logo.png";
 const CashboxTopBar = ({ cashierName, cashierAvatar, searchQuery, setSearchQuery, searchPlaceholder, t, isHistory = false }) => {
 	const navigate = useNavigate();
 	const { user } = useAuth();

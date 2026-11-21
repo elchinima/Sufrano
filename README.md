@@ -28,10 +28,10 @@ Süfrano/
 │   ├── context/              # Auth, AdminAuth, Cart, Toast contexts
 │   └── utils/                # Vanilla JS DOM runtime, router, motion animations, helpers
 ├── server/                   # .NET 10 Backend (Clean Architecture)
-│   ├── Rednest.Core/         # Domain entities & interfaces
-│   ├── Rednest.Application/  # DTOs & service contracts
-│   ├── Rednest.Infrastructure/ # EF Core (PostgreSQL), Auth, Brevo Email, SignalR
-│   └── Rednest.Api/          # REST API controllers & static file host for src/
+│   ├── Sufrano.Core/         # Domain entities & interfaces
+│   ├── Sufrano.Application/  # DTOs & service contracts
+│   ├── Sufrano.Infrastructure/ # EF Core (PostgreSQL), Auth, Brevo Email, SignalR
+│   └── Sufrano.Api/          # REST API controllers & static file host for src/
 ├── secret/
 │   └── .env                  # Environment variables (local development)
 └── Dockerfile                # Production container for Render deployment
@@ -58,7 +58,7 @@ All configuration keys are loaded exclusively from environment variables (`secre
 Run the .NET 10 backend (which automatically loads `secret/.env` and serves the `src/` frontend at `http://localhost:5273`):
 
 ```powershell
-cd server/Rednest.Api
+cd server/Sufrano.Api
 dotnet run
 ```
 

@@ -2,7 +2,7 @@ import { __h, __Fragment } from '../../../utils/runtime.js';
 import React, { useState } from "../../../utils/runtime.js";
 import { useNavigate, Navigate, useLocation } from "../../../utils/router.js";
 import { motion } from "../../../utils/motion.js";
-const logo = "/assets/icons/rednest_logo.png";
+const logo = "/assets/icons/sufrano_logo.png";
 const loaderIcon = "/assets/icons/loader-animated.svg";
 const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 import { useAdminAuth } from "../../../context/AdminAuthContext.js";

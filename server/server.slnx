@@ -1,8 +1,8 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="Rednest.Api/Rednest.Api.csproj" />
-    <Project Path="Rednest.Application/Rednest.Application.csproj" />
-    <Project Path="Rednest.Core/Rednest.Core.csproj" />
-    <Project Path="Rednest.Infrastructure/Rednest.Infrastructure.csproj" />
+    <Project Path="Sufrano.Api/Sufrano.Api.csproj" />
+    <Project Path="Sufrano.Application/Sufrano.Application.csproj" />
+    <Project Path="Sufrano.Core/Sufrano.Core.csproj" />
+    <Project Path="Sufrano.Infrastructure/Sufrano.Infrastructure.csproj" />
   </Folder>
 </Solution>

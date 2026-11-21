@@ -4,8 +4,8 @@ import { useAuth } from "./AuthContext.js";
 import { fetchWithRefresh } from "../utils/fetchWithRefresh.js";
 import { API_URL } from "../utils/config.js";
 const BasketContext = createContext(null);
-const LOCAL_STORAGE_KEY = "rednest_basket";
-const basketChannel = typeof window !== "undefined" && "BroadcastChannel" in window ? new BroadcastChannel("rednest_basket_channel") : null;
+const LOCAL_STORAGE_KEY = "sufrano_basket";
+const basketChannel = typeof window !== "undefined" && "BroadcastChannel" in window ? new BroadcastChannel("sufrano_basket_channel") : null;
 function getLocalBasket() {
 	try {
 		const data = localStorage.getItem(LOCAL_STORAGE_KEY);

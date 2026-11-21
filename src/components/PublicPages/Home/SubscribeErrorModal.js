@@ -14,9 +14,9 @@ const SubscribeErrorModal = ({ isOpen, onClose, message, errorType, onOpenRegist
 		onClose,
 		targetBorderRadius: "24px"
 	}, /* @__PURE__ */ __h("div", {
-		className: "rednest-modal",
+		className: "sufrano-modal",
 		onClick: (e) => e.stopPropagation()
-	}, /* @__PURE__ */ __h("div", { className: "rednest-modal__icon rednest-modal__icon--warning" }, isAlreadySubscribed ? /* @__PURE__ */ __h("svg", {
+	}, /* @__PURE__ */ __h("div", { className: "sufrano-modal__icon sufrano-modal__icon--warning" }, isAlreadySubscribed ? /* @__PURE__ */ __h("svg", {
 		viewBox: "0 0 24 24",
 		fill: "none",
 		stroke: "currentColor",
@@ -45,16 +45,16 @@ const SubscribeErrorModal = ({ isOpen, onClose, message, errorType, onOpenRegist
 		x2: "12.01",
 		y2: "16"
 	}))), /* @__PURE__ */ __h("h3", {
-		className: "rednest-modal__title",
+		className: "sufrano-modal__title",
 		"data-id": "home_modal_err_title"
-	}, title), /* @__PURE__ */ __h("p", { className: "rednest-modal__text" }, message || (isAlreadySubscribed ? lang === "ru" ? "Этот адрес электронной почты уже подписан на рассылку. Если у вас возникли вопросы, свяжитесь со службой поддержки." : lang === "az" ? "Bu e-poç ünvanı artıq bülletenə abunədir. Suallarınız varsa, texniki dəstəklə əlaqə saxlayın." : "This email is already subscribed to the newsletter. If you have questions or need assistance, please contact technical support." : lang === "ru" ? "Этот адрес не зарегистрирован. Пожалуйста, сначала создайте аккаунт." : lang === "az" ? "Bu e-poç qeydiyyatdan keçməyib. Zəhmət olmasa, əvvəlcə hesab yaradın." : "This email is not registered. Please create an account first.")), /* @__PURE__ */ __h("div", { className: "rednest-modal__actions" }, /* @__PURE__ */ __h("button", {
+	}, title), /* @__PURE__ */ __h("p", { className: "sufrano-modal__text" }, message || (isAlreadySubscribed ? lang === "ru" ? "Этот адрес электронной почты уже подписан на рассылку. Если у вас возникли вопросы, свяжитесь со службой поддержки." : lang === "az" ? "Bu e-poç ünvanı artıq bülletenə abunədir. Suallarınız varsa, texniki dəstəklə əlaqə saxlayın." : "This email is already subscribed to the newsletter. If you have questions or need assistance, please contact technical support." : lang === "ru" ? "Этот адрес не зарегистрирован. Пожалуйста, сначала создайте аккаунт." : lang === "az" ? "Bu e-poç qeydiyyatdan keçməyib. Zəhmət olmasa, əvvəlcə hesab yaradın." : "This email is not registered. Please create an account first.")), /* @__PURE__ */ __h("div", { className: "sufrano-modal__actions" }, /* @__PURE__ */ __h("button", {
 		type: "button",
-		className: "rednest-modal__btn rednest-modal__btn--cancel",
+		className: "sufrano-modal__btn sufrano-modal__btn--cancel",
 		onClick: onClose,
 		"data-id": "home_modal_err_close"
 	}, t("home_modal_err_close")), isAlreadySubscribed && /* @__PURE__ */ __h("a", {
 		href: "mailto:hello@sufrano.com?subject=Newsletter%20Subscription%20Support",
-		className: "rednest-modal__btn rednest-modal__btn--danger",
+		className: "sufrano-modal__btn sufrano-modal__btn--danger",
 		style: {
 			textDecoration: "none",
 			background: "#9e7a36",
@@ -63,7 +63,7 @@ const SubscribeErrorModal = ({ isOpen, onClose, message, errorType, onOpenRegist
 		onClick: onClose
 	}, lang === "ru" ? "Служба поддержки" : lang === "az" ? "Dəstək xidməti" : "Contact Support"), !isAlreadySubscribed && isAccountRequired && onOpenRegister && /* @__PURE__ */ __h("button", {
 		type: "button",
-		className: "rednest-modal__btn rednest-modal__btn--danger",
+		className: "sufrano-modal__btn sufrano-modal__btn--danger",
 		style: {
 			background: "#c5a059",
 			boxShadow: "0 4px 14px rgba(197, 160, 89, 0.35)"

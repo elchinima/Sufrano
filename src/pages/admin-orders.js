@@ -21,7 +21,7 @@
 		const featureGPayIcon = "/assets/icons/feature-gpay.svg";
 		const cashierIcon = "/assets/icons/cashier-register.svg";
 		const onlineIcon = "/assets/icons/online-card.svg";
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const loaderIcon = "/assets/icons/loader-animated.svg";
 		const __imp_2 = __require("components/Elements/AdminTableActions.js");
 		const AdminTableActions = __imp_2.default !== undefined ? __imp_2.default : __imp_2;

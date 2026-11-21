@@ -11,7 +11,7 @@
 		const { useState, useEffect, useRef } = __imp_0;
 		const { motion } = __require("utils/motion.js");
 		const { Link, useNavigate } = __require("utils/router.js");
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 		const { useAuth } = __require("context/AuthContext.js");
 		const { ensureClientHintsHeaders } = __require("utils/clientHints.js");
@@ -452,7 +452,7 @@
 					if (!data.hasName) {
 						setStep("name");
 					} else {
-						localStorage.setItem("rednest_auth", "true");
+						localStorage.setItem("sufrano_auth", "true");
 						if (data.user) {
 							login(data.user);
 						} else {
@@ -613,7 +613,7 @@
 					} else if (!data.hasName) {
 						setStep("name");
 					} else {
-						localStorage.setItem("rednest_auth", "true");
+						localStorage.setItem("sufrano_auth", "true");
 						if (data.user) {
 							login(data.user);
 						} else {
@@ -660,7 +660,7 @@
 					if (!data.hasName) {
 						setStep("name");
 					} else {
-						localStorage.setItem("rednest_auth", "true");
+						localStorage.setItem("sufrano_auth", "true");
 						if (data.user) {
 							login(data.user);
 						} else {
@@ -725,7 +725,7 @@
 						throw new Error(errorData.message || "Failed to update name");
 					}
 					const data = await response.json().catch(() => ({}));
-					localStorage.setItem("rednest_auth", "true");
+					localStorage.setItem("sufrano_auth", "true");
 					if (data && (data.name || data.Name)) {
 						login(data);
 					} else {

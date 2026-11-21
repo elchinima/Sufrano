@@ -2,7 +2,7 @@ import { __h, __Fragment } from '../../../utils/runtime.js';
 import React, { useRef, useEffect, useState, useMemo } from "../../../utils/runtime.js";
 import { motion } from "../../../utils/motion.js";
 import { Link, useNavigate } from "../../../utils/router.js";
-const logo = "/assets/icons/rednest_logo.png";
+const logo = "/assets/icons/sufrano_logo.png";
 const premiumRoastIcon = "/assets/icons/premium_roast.svg";
 const cozyAtmosphereIcon = "/assets/icons/cozy_atmosphere.svg";
 const ecoFriendlyIcon = "/assets/icons/eco_friendly.svg";

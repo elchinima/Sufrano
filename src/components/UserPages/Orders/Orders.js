@@ -16,7 +16,7 @@ const featurePromoIcon = "/assets/icons/feature-promo.svg";
 const cashierIcon = "/assets/icons/cashier-register.svg";
 const onlineIcon = "/assets/icons/online-card.svg";
 const cartIcon = "/assets/icons/cart-animated.svg";
-const logo = "/assets/icons/rednest_logo.png";
+const logo = "/assets/icons/sufrano_logo.png";
 import Navbar from "../../Elements/Navbar.js";
 import Footer from "../../Footer/Footer.js";
 import AnimatedModalWrapper from "../../Elements/AnimatedModalWrapper.js";

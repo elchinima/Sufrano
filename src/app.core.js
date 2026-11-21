@@ -1750,15 +1750,15 @@
 		const { useState, useEffect } = __require("utils/runtime.js");
 		const getStoredLanguage = () => {
 			try {
-				return localStorage.getItem("rednest_language") || "az";
+				return localStorage.getItem("sufrano_language") || "az";
 			} catch {
 				return "az";
 			}
 		};
 		const setStoredLanguage = (newLang) => {
 			try {
-				localStorage.setItem("rednest_language", newLang);
-				localStorage.setItem("rednest_language_updated_at", new Date().toISOString());
+				localStorage.setItem("sufrano_language", newLang);
+				localStorage.setItem("sufrano_language_updated_at", new Date().toISOString());
 				window.dispatchEvent(new CustomEvent("languagechange", { detail: newLang }));
 			} catch {}
 		};
@@ -1922,8 +1922,8 @@
 						handleBackendErrorResponse(response);
 					}
 				} else {
-					localStorage.removeItem("rednest_auth");
-					localStorage.removeItem("rednest_user");
+					localStorage.removeItem("sufrano_auth");
+					localStorage.removeItem("sufrano_user");
 					window.dispatchEvent(new CustomEvent("auth:unauthorized"));
 				}
 			}
@@ -1945,10 +1945,10 @@
 		const AuthContext = createContext(null);
 		const AuthProvider = ({ children }) => {
 			const [isAuthenticated, setIsAuthenticated] = useState(() => {
-				return localStorage.getItem("rednest_auth") === "true";
+				return localStorage.getItem("sufrano_auth") === "true";
 			});
 			const [user, setUser] = useState(() => {
-				const saved = localStorage.getItem("rednest_user");
+				const saved = localStorage.getItem("sufrano_user");
 				return saved ? JSON.parse(saved) : null;
 			});
 			const [authLoading, setAuthLoading] = useState(true);
@@ -1963,8 +1963,8 @@
 						email: ""
 					};
 				}
-				localStorage.setItem("rednest_auth", "true");
-				localStorage.setItem("rednest_user", JSON.stringify(profile));
+				localStorage.setItem("sufrano_auth", "true");
+				localStorage.setItem("sufrano_user", JSON.stringify(profile));
 				setIsAuthenticated(true);
 				setUser(profile);
 			}, []);
@@ -1976,8 +1976,8 @@
 						credentials: "include"
 					});
 				} catch {}
-				localStorage.removeItem("rednest_auth");
-				localStorage.removeItem("rednest_user");
+				localStorage.removeItem("sufrano_auth");
+				localStorage.removeItem("sufrano_user");
 				setIsAuthenticated(false);
 				setUser(null);
 			}, []);
@@ -2012,12 +2012,12 @@
 				}
 			}, [login]);
 			const checkAuthStatus = useCallback(async () => {
-				const hasAuth = localStorage.getItem("rednest_auth") === "true";
+				const hasAuth = localStorage.getItem("sufrano_auth") === "true";
 				if (!hasAuth) return { ok: false };
 				const result = await fetchCurrentUser();
 				if (result && result.unauthorized) {
-					localStorage.removeItem("rednest_auth");
-					localStorage.removeItem("rednest_user");
+					localStorage.removeItem("sufrano_auth");
+					localStorage.removeItem("sufrano_user");
 					setIsAuthenticated(false);
 					setUser(null);
 				}
@@ -2025,8 +2025,8 @@
 			}, [fetchCurrentUser]);
 			useEffect(() => {
 				const handleUnauthorized = () => {
-					localStorage.removeItem("rednest_auth");
-					localStorage.removeItem("rednest_user");
+					localStorage.removeItem("sufrano_auth");
+					localStorage.removeItem("sufrano_user");
 					setIsAuthenticated(false);
 					setUser(null);
 				};
@@ -2037,7 +2037,7 @@
 			}, []);
 			useEffect(() => {
 				const validateSession = async () => {
-					const hasAuth = localStorage.getItem("rednest_auth") === "true";
+					const hasAuth = localStorage.getItem("sufrano_auth") === "true";
 					if (!hasAuth) {
 						setAuthLoading(false);
 						return;
@@ -2049,8 +2049,8 @@
 						result = await fetchCurrentUser();
 					}
 					if (result && result.unauthorized) {
-						localStorage.removeItem("rednest_auth");
-						localStorage.removeItem("rednest_user");
+						localStorage.removeItem("sufrano_auth");
+						localStorage.removeItem("sufrano_user");
 						setIsAuthenticated(false);
 						setUser(null);
 					}
@@ -2064,7 +2064,7 @@
 						...prev,
 						...updatedFields
 					};
-					localStorage.setItem("rednest_user", JSON.stringify(updated));
+					localStorage.setItem("sufrano_user", JSON.stringify(updated));
 					return updated;
 				});
 			}, []);
@@ -3117,7 +3117,7 @@
 		const { useState, useEffect, useRef } = __imp_0;
 		const __imp_1 = __require("components/Elements/AnimatedModalWrapper.js");
 		const AnimatedModalWrapper = __imp_1.default !== undefined ? __imp_1.default : __imp_1;
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 		const { fetchWithRefresh } = __require("utils/fetchWithRefresh.js");
 		const { useLang } = __require("utils/useLang.js");
@@ -4018,8 +4018,8 @@
 		const { fetchWithRefresh } = __require("utils/fetchWithRefresh.js");
 		const { API_URL } = __require("utils/config.js");
 		const BasketContext = createContext(null);
-		const LOCAL_STORAGE_KEY = "rednest_basket";
-		const basketChannel = typeof window !== "undefined" && "BroadcastChannel" in window ? new BroadcastChannel("rednest_basket_channel") : null;
+		const LOCAL_STORAGE_KEY = "sufrano_basket";
+		const basketChannel = typeof window !== "undefined" && "BroadcastChannel" in window ? new BroadcastChannel("sufrano_basket_channel") : null;
 		function getLocalBasket() {
 			try {
 				const data = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -5468,7 +5468,7 @@
 			}, [currentLang]);
 			const [isVisible, setIsVisible] = useState(() => {
 				try {
-					const hiddenUntil = localStorage.getItem("rednest_app_banner_hidden_until");
+					const hiddenUntil = localStorage.getItem("sufrano_app_banner_hidden_until");
 					if (hiddenUntil) {
 						const time = parseInt(hiddenUntil, 10);
 						if (!isNaN(time) && Date.now() < time) {
@@ -5484,7 +5484,7 @@
 				e.stopPropagation();
 				try {
 					const hideUntil = Date.now() + 24 * 60 * 60 * 1e3;
-					localStorage.setItem("rednest_app_banner_hidden_until", hideUntil.toString());
+					localStorage.setItem("sufrano_app_banner_hidden_until", hideUntil.toString());
 				} catch {}
 				setIsVisible(false);
 			};
@@ -5492,7 +5492,7 @@
 			const modelImg = isWinter ? winterModel : summerModel;
 			const modelAlt = isWinter ? "Süfrano Winter Restaurant App" : "Süfrano Summer Restaurant App";
 			return /* @__PURE__ */ __h(AnimatePresence, null, isVisible && /* @__PURE__ */ __h(motion.section, {
-				className: "rednest-app-banner",
+				className: "sufrano-app-banner",
 				initial: {
 					opacity: 0,
 					y: 35
@@ -5622,7 +5622,7 @@
 		const { useState, useEffect } = __require("utils/runtime.js");
 		const { API_URL } = __require("utils/config.js");
 		const { useLang, getStoredLanguage } = __require("utils/useLang.js");
-		const STORAGE_KEY = "rednest_footer_cache";
+		const STORAGE_KEY = "sufrano_footer_cache";
 		const loadStoredCache = () => {
 			try {
 				const raw = localStorage.getItem(STORAGE_KEY);
@@ -5755,7 +5755,7 @@
 		const { Link } = __require("utils/router.js");
 		const __imp_1 = __require("components/Footer/AppDownloadBanner.js");
 		const AppDownloadBanner = __imp_1.default !== undefined ? __imp_1.default : __imp_1;
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const getBakuYear = () => {
 			try {
 				return new Intl.DateTimeFormat("en-US", {
@@ -5929,9 +5929,9 @@
 				onClose: () => !loading && onClose(),
 				targetBorderRadius: "24px"
 			}, /* @__PURE__ */ __h("div", {
-				className: "rednest-modal",
+				className: "sufrano-modal",
 				onClick: (e) => e.stopPropagation()
-			}, /* @__PURE__ */ __h("div", { className: "rednest-modal__icon rednest-modal__icon--danger" }, /* @__PURE__ */ __h("svg", {
+			}, /* @__PURE__ */ __h("div", { className: "sufrano-modal__icon sufrano-modal__icon--danger" }, /* @__PURE__ */ __h("svg", {
 				viewBox: "0 0 24 24",
 				fill: "none",
 				stroke: "currentColor",
@@ -5943,14 +5943,14 @@
 				y1: "12",
 				x2: "9",
 				y2: "12"
-			}))), /* @__PURE__ */ __h("h3", { className: "rednest-modal__title" }, displayTitle), /* @__PURE__ */ __h("p", { className: "rednest-modal__text" }, displayText), /* @__PURE__ */ __h("div", { className: "rednest-modal__actions" }, /* @__PURE__ */ __h("button", {
+			}))), /* @__PURE__ */ __h("h3", { className: "sufrano-modal__title" }, displayTitle), /* @__PURE__ */ __h("p", { className: "sufrano-modal__text" }, displayText), /* @__PURE__ */ __h("div", { className: "sufrano-modal__actions" }, /* @__PURE__ */ __h("button", {
 				type: "button",
-				className: "rednest-modal__btn rednest-modal__btn--cancel",
+				className: "sufrano-modal__btn sufrano-modal__btn--cancel",
 				onClick: onClose,
 				disabled: loading
 			}, t("modal_logout_cancel")), /* @__PURE__ */ __h("button", {
 				type: "button",
-				className: "rednest-modal__btn rednest-modal__btn--danger",
+				className: "sufrano-modal__btn sufrano-modal__btn--danger",
 				onClick: onConfirm,
 				disabled: loading
 			}, loading ? /* @__PURE__ */ __h("span", { style: {
@@ -6249,7 +6249,7 @@
 		const React = __imp_0.default !== undefined ? __imp_0.default : __imp_0;
 		const { useState, useEffect } = __imp_0;
 		const { Link, useLocation } = __require("utils/router.js");
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const __imp_1 = __require("components/Elements/UserNavPills.js");
 		const UserNavPills = __imp_1.default !== undefined ? __imp_1.default : __imp_1;
 		const { useLang } = __require("utils/useLang.js");
@@ -6823,9 +6823,9 @@
 				onClose: () => !loading && onClose(),
 				targetBorderRadius: "24px"
 			}, /* @__PURE__ */ __h("div", {
-				className: "rednest-modal",
+				className: "sufrano-modal",
 				onClick: (e) => e.stopPropagation()
-			}, /* @__PURE__ */ __h("div", { className: "rednest-modal__icon rednest-modal__icon--danger" }, /* @__PURE__ */ __h("svg", {
+			}, /* @__PURE__ */ __h("div", { className: "sufrano-modal__icon sufrano-modal__icon--danger" }, /* @__PURE__ */ __h("svg", {
 				viewBox: "0 0 24 24",
 				fill: "none",
 				stroke: "currentColor",
@@ -6842,14 +6842,14 @@
 				y1: "11",
 				x2: "14",
 				y2: "17"
-			}))), /* @__PURE__ */ __h("h3", { className: "rednest-modal__title" }, displayTitle), /* @__PURE__ */ __h("p", { className: "rednest-modal__text" }, text || (itemName ? lang === "az" ? `${itemName} səbətinizdən silinsin?` : lang === "en" ? `Are you sure you want to remove ${itemName} from your basket?` : `Вы уверены, что хотите удалить ${itemName} из корзины?` : lang === "az" ? "Bu məhsulu silmək istədiyinizə əminsiniz?" : lang === "en" ? "Are you sure you want to remove this item?" : "Вы уверены, что хотите удалить этот элемент?")), /* @__PURE__ */ __h("div", { className: "rednest-modal__actions" }, /* @__PURE__ */ __h("button", {
+			}))), /* @__PURE__ */ __h("h3", { className: "sufrano-modal__title" }, displayTitle), /* @__PURE__ */ __h("p", { className: "sufrano-modal__text" }, text || (itemName ? lang === "az" ? `${itemName} səbətinizdən silinsin?` : lang === "en" ? `Are you sure you want to remove ${itemName} from your basket?` : `Вы уверены, что хотите удалить ${itemName} из корзины?` : lang === "az" ? "Bu məhsulu silmək istədiyinizə əminsiniz?" : lang === "en" ? "Are you sure you want to remove this item?" : "Вы уверены, что хотите удалить этот элемент?")), /* @__PURE__ */ __h("div", { className: "sufrano-modal__actions" }, /* @__PURE__ */ __h("button", {
 				type: "button",
-				className: "rednest-modal__btn rednest-modal__btn--cancel",
+				className: "sufrano-modal__btn sufrano-modal__btn--cancel",
 				onClick: onClose,
 				disabled: loading
 			}, t("modal_delete_cancel")), /* @__PURE__ */ __h("button", {
 				type: "button",
-				className: "rednest-modal__btn rednest-modal__btn--danger",
+				className: "sufrano-modal__btn sufrano-modal__btn--danger",
 				onClick: onConfirm,
 				disabled: loading
 			}, loading ? /* @__PURE__ */ __h("span", { style: {
@@ -8137,9 +8137,9 @@
 				targetBorderRadius: "24px",
 				zIndex: 100005
 			}, /* @__PURE__ */ __h("div", {
-				className: "rednest-modal",
+				className: "sufrano-modal",
 				onClick: (e) => e.stopPropagation()
-			}, /* @__PURE__ */ __h("div", { className: "rednest-modal__icon rednest-modal__icon--danger" }, /* @__PURE__ */ __h("svg", {
+			}, /* @__PURE__ */ __h("div", { className: "sufrano-modal__icon sufrano-modal__icon--danger" }, /* @__PURE__ */ __h("svg", {
 				viewBox: "0 0 24 24",
 				fill: "none",
 				stroke: "currentColor",
@@ -8160,9 +8160,9 @@
 				y1: "9",
 				x2: "15",
 				y2: "15"
-			}))), /* @__PURE__ */ __h("h3", { className: "rednest-modal__title" }, title), /* @__PURE__ */ __h("p", { className: "rednest-modal__text" }, message || "An error occurred while processing your card."), /* @__PURE__ */ __h("div", { className: "rednest-modal__actions" }, /* @__PURE__ */ __h("button", {
+			}))), /* @__PURE__ */ __h("h3", { className: "sufrano-modal__title" }, title), /* @__PURE__ */ __h("p", { className: "sufrano-modal__text" }, message || "An error occurred while processing your card."), /* @__PURE__ */ __h("div", { className: "sufrano-modal__actions" }, /* @__PURE__ */ __h("button", {
 				type: "button",
-				className: "rednest-modal__btn rednest-modal__btn--danger",
+				className: "sufrano-modal__btn sufrano-modal__btn--danger",
 				onClick: onClose
 			}, t("modal_understand")))));
 		};
@@ -8179,7 +8179,7 @@
 		const { useState, useEffect } = __imp_0;
 		const { NavLink, useNavigate, useLocation } = __require("utils/router.js");
 		const { motion, AnimatePresence } = __require("utils/motion.js");
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const { useAdminAuth } = __require("context/AdminAuthContext.js");
 		const { useAuth } = __require("context/AuthContext.js");
 		const __imp_1 = __require("components/Elements/LogoutModal.js");
@@ -9255,7 +9255,7 @@
 		const { useAuth } = __require("context/AuthContext.js");
 		const { isAllowedCashboxHistoryRole } = __require("routes/CashboxProtectedRoute.js");
 		const { getUserAvatarUrl, handleAvatarError } = __require("utils/avatar.js");
-		const logo = "/assets/icons/rednest_logo.png";
+		const logo = "/assets/icons/sufrano_logo.png";
 		const CashboxTopBar = ({ cashierName, cashierAvatar, searchQuery, setSearchQuery, searchPlaceholder, t, isHistory = false }) => {
 			const navigate = useNavigate();
 			const { user } = useAuth();

@@ -1139,8 +1139,8 @@ div:has(> iframe[src*="link.stripe.com"]) {
   }
 }
 
-/* === components/Elements/RednestModal.css === */
-.rednest-modal {
+/* === components/Elements/SufranoModal.css === */
+.sufrano-modal {
   background: rgba(36, 5, 13, 0.96);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
@@ -1153,7 +1153,7 @@ div:has(> iframe[src*="link.stripe.com"]) {
   -webkit-backdrop-filter: blur(24px);
   box-sizing: border-box;
 }
-.rednest-modal__icon {
+.sufrano-modal__icon {
   width: 54px;
   height: 54px;
   border-radius: 50%;
@@ -1164,33 +1164,33 @@ div:has(> iframe[src*="link.stripe.com"]) {
   justify-content: center;
   margin: 0 auto 16px;
 }
-.rednest-modal__icon svg {
+.sufrano-modal__icon svg {
   width: 26px;
   height: 26px;
   stroke: #ffffff;
 }
-.rednest-modal__icon--danger {
+.sufrano-modal__icon--danger {
   background: rgba(197, 160, 89, 0.15);
   border-color: rgba(197, 160, 89, 0.35);
 }
-.rednest-modal__icon--danger svg {
+.sufrano-modal__icon--danger svg {
   stroke: #c5a059;
 }
-.rednest-modal__icon--warning {
+.sufrano-modal__icon--warning {
   background: rgba(197, 160, 89, 0.15);
   border-color: rgba(197, 160, 89, 0.35);
 }
-.rednest-modal__icon--warning svg {
+.sufrano-modal__icon--warning svg {
   stroke: #c5a059;
 }
-.rednest-modal__icon--success {
+.sufrano-modal__icon--success {
   background: rgba(72, 187, 120, 0.15);
   border-color: rgba(72, 187, 120, 0.35);
 }
-.rednest-modal__icon--success svg {
+.sufrano-modal__icon--success svg {
   stroke: #48bb78;
 }
-.rednest-modal__title {
+.sufrano-modal__title {
   font-size: 1.4rem;
   font-weight: 800;
   margin: 0 0 4px;
@@ -1198,11 +1198,11 @@ div:has(> iframe[src*="link.stripe.com"]) {
   letter-spacing: -0.3px;
 }
 @media (max-width: 480px) {
-  .rednest-modal__title {
+  .sufrano-modal__title {
     font-size: 1.15rem;
   }
 }
-.rednest-modal__text {
+.sufrano-modal__text {
   font-size: 0.94rem;
   color: rgba(255, 248, 231, 0.82);
   line-height: 1.55;
@@ -1210,16 +1210,16 @@ div:has(> iframe[src*="link.stripe.com"]) {
   padding: 0 8px;
 }
 @media (max-width: 480px) {
-  .rednest-modal__text {
+  .sufrano-modal__text {
     font-size: 0.78rem;
   }
 }
-.rednest-modal__actions {
+.sufrano-modal__actions {
   display: flex;
   gap: 16px;
   justify-content: center;
 }
-.rednest-modal__btn {
+.sufrano-modal__btn {
   flex: 1;
   min-height: 44px;
   padding: 11px 20px;
@@ -1235,43 +1235,43 @@ div:has(> iframe[src*="link.stripe.com"]) {
   transition: all 0.25s ease;
 }
 @media (max-width: 480px) {
-  .rednest-modal__btn {
+  .sufrano-modal__btn {
     font-size: 0.82rem;
     min-height: 40px;
     padding: 9px 16px;
   }
 }
-.rednest-modal__btn--cancel {
+.sufrano-modal__btn--cancel {
   background: rgba(255, 255, 255, 0.08);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
-.rednest-modal__btn--cancel:hover:not(:disabled) {
+.sufrano-modal__btn--cancel:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.16);
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
 }
-.rednest-modal__btn--danger {
+.sufrano-modal__btn--danger {
   background: #c5a059;
   color: #ffffff;
   box-shadow: 0 4px 14px rgba(197, 160, 89, 0.35);
 }
-.rednest-modal__btn--danger:hover:not(:disabled) {
+.sufrano-modal__btn--danger:hover:not(:disabled) {
   background: #9e7a36;
   box-shadow: 0 6px 20px rgba(197, 160, 89, 0.45);
   transform: translateY(-1px);
 }
-.rednest-modal__btn--success {
+.sufrano-modal__btn--success {
   background: #48bb78;
   color: #ffffff;
   box-shadow: 0 4px 14px rgba(72, 187, 120, 0.35);
 }
-.rednest-modal__btn--success:hover:not(:disabled) {
+.sufrano-modal__btn--success:hover:not(:disabled) {
   background: #38a169;
   box-shadow: 0 6px 20px rgba(72, 187, 120, 0.45);
   transform: translateY(-1px);
 }
-.rednest-modal__btn:disabled {
+.sufrano-modal__btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none !important;
@@ -1684,7 +1684,7 @@ div:has(> iframe[src*="link.stripe.com"]) {
     transform: translateX(-50%);
   }
 }
-.rednest-app-banner {
+.sufrano-app-banner {
   width: calc(100% + 24px);
   margin: 32px -12px 24px;
   position: relative;
@@ -1692,12 +1692,12 @@ div:has(> iframe[src*="link.stripe.com"]) {
   overflow: hidden;
 }
 @media (max-width: 768px) {
-  .rednest-app-banner {
+  .sufrano-app-banner {
     width: 100%;
     margin: 24px 0;
   }
 }
-.rednest-app-banner .banner-inner {
+.sufrano-app-banner .banner-inner {
   position: relative;
   border-radius: 20px;
   background: linear-gradient(135deg, rgba(36, 5, 13, 0.88) 0%, rgba(30, 4, 4, 0.96) 100%);
@@ -1713,7 +1713,7 @@ div:has(> iframe[src*="link.stripe.com"]) {
   padding: 0 24px 0 0;
   min-height: 380px;
 }
-.rednest-app-banner .banner-inner .banner-close-btn {
+.sufrano-app-banner .banner-inner .banner-close-btn {
   position: absolute;
   top: 14px;
   right: 14px;
@@ -1732,16 +1732,16 @@ div:has(> iframe[src*="link.stripe.com"]) {
   padding: 0;
   transition: all 0.25s ease;
 }
-.rednest-app-banner .banner-inner .banner-close-btn:hover {
+.sufrano-app-banner .banner-inner .banner-close-btn:hover {
   background: rgba(197, 160, 89, 0.35);
   border-color: rgba(197, 160, 89, 0.6);
   transform: scale(1.08);
   box-shadow: 0 0 14px rgba(197, 160, 89, 0.35);
 }
-.rednest-app-banner .banner-inner .banner-close-btn:active {
+.sufrano-app-banner .banner-inner .banner-close-btn:active {
   transform: scale(0.92);
 }
-.rednest-app-banner .banner-inner .banner-close-btn .banner-close-icon {
+.sufrano-app-banner .banner-inner .banner-close-btn .banner-close-icon {
   width: 26px;
   height: 26px;
   transform: rotate(45deg);
@@ -1749,23 +1749,23 @@ div:has(> iframe[src*="link.stripe.com"]) {
   display: block;
   pointer-events: none;
 }
-.rednest-app-banner .banner-inner .banner-close-btn:hover .banner-close-icon {
+.sufrano-app-banner .banner-inner .banner-close-btn:hover .banner-close-icon {
   transform: rotate(135deg) scale(1.08);
 }
 @media (max-width: 480px) {
-  .rednest-app-banner .banner-inner .banner-close-btn {
+  .sufrano-app-banner .banner-inner .banner-close-btn {
     top: 10px;
     right: 10px;
     width: 30px;
     height: 30px;
   }
-  .rednest-app-banner .banner-inner .banner-close-btn .banner-close-icon {
+  .sufrano-app-banner .banner-inner .banner-close-btn .banner-close-icon {
     width: 22px;
     height: 22px;
   }
 }
 @media (max-width: 900px) {
-  .rednest-app-banner .banner-inner {
+  .sufrano-app-banner .banner-inner {
     flex-direction: column;
     align-items: center;
     padding: 24px 20px;
@@ -1774,13 +1774,13 @@ div:has(> iframe[src*="link.stripe.com"]) {
   }
 }
 @media (max-width: 480px) {
-  .rednest-app-banner .banner-inner {
+  .sufrano-app-banner .banner-inner {
     padding: 20px 14px;
     gap: 16px;
     border-radius: 16px;
   }
 }
-.rednest-app-banner .banner-ambient-glow {
+.sufrano-app-banner .banner-ambient-glow {
   position: absolute;
   top: -40%;
   left: 8%;
@@ -1791,7 +1791,7 @@ div:has(> iframe[src*="link.stripe.com"]) {
   filter: blur(50px);
   z-index: 1;
 }
-.rednest-app-banner .banner-model-col {
+.sufrano-app-banner .banner-model-col {
   position: relative;
   z-index: 2;
   display: flex;
@@ -1806,11 +1806,11 @@ div:has(> iframe[src*="link.stripe.com"]) {
   margin-bottom: 0;
 }
 @media (max-width: 900px) {
-  .rednest-app-banner .banner-model-col {
+  .sufrano-app-banner .banner-model-col {
     display: none !important;
   }
 }
-.rednest-app-banner .banner-model-col .model-glow-ring {
+.sufrano-app-banner .banner-model-col .model-glow-ring {
   position: absolute;
   width: 235px;
   height: 235px;
@@ -1822,7 +1822,7 @@ div:has(> iframe[src*="link.stripe.com"]) {
   filter: blur(28px);
   z-index: 1;
 }
-.rednest-app-banner .banner-model-col .model-img {
+.sufrano-app-banner .banner-model-col .model-img {
   position: relative;
   z-index: 2;
   height: 360px;
@@ -1836,20 +1836,20 @@ div:has(> iframe[src*="link.stripe.com"]) {
   filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.72));
   transition: transform 0.4s ease;
 }
-.rednest-app-banner .banner-model-col .model-img:hover {
+.sufrano-app-banner .banner-model-col .model-img:hover {
   transform: scale(1.03);
 }
 @media (max-width: 1100px) {
-  .rednest-app-banner .banner-model-col .model-img {
+  .sufrano-app-banner .banner-model-col .model-img {
     height: 315px;
   }
 }
 @media (max-width: 900px) {
-  .rednest-app-banner .banner-model-col .model-img {
+  .sufrano-app-banner .banner-model-col .model-img {
     height: 250px;
   }
 }
-.rednest-app-banner .banner-center-col {
+.sufrano-app-banner .banner-center-col {
   position: relative;
   z-index: 2;
   flex: 1;
@@ -1864,13 +1864,13 @@ div:has(> iframe[src*="link.stripe.com"]) {
   text-align: center;
 }
 @media (max-width: 900px) {
-  .rednest-app-banner .banner-center-col {
+  .sufrano-app-banner .banner-center-col {
     padding: 24px 0 0;
     width: 100%;
     order: 1;
   }
 }
-.rednest-app-banner .banner-center-col .banner-title {
+.sufrano-app-banner .banner-center-col .banner-title {
   font-size: 1.4rem;
   font-weight: 700;
   color: #ffffff;
@@ -1883,16 +1883,16 @@ div:has(> iframe[src*="link.stripe.com"]) {
   max-width: 100%;
 }
 @media (max-width: 1100px) {
-  .rednest-app-banner .banner-center-col .banner-title {
+  .sufrano-app-banner .banner-center-col .banner-title {
     font-size: 1.25rem;
   }
 }
 @media (max-width: 576px) {
-  .rednest-app-banner .banner-center-col .banner-title {
+  .sufrano-app-banner .banner-center-col .banner-title {
     font-size: 1.08rem;
   }
 }
-.rednest-app-banner .banner-features-track {
+.sufrano-app-banner .banner-features-track {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1901,7 +1901,7 @@ div:has(> iframe[src*="link.stripe.com"]) {
   max-width: 100%;
   margin: 0 auto;
 }
-.rednest-app-banner .banner-feature-card {
+.sufrano-app-banner .banner-feature-card {
   width: 600px;
   max-width: 100%;
   background: rgba(255, 255, 255, 0.05);
@@ -1918,27 +1918,27 @@ div:has(> iframe[src*="link.stripe.com"]) {
   user-select: none;
   -webkit-user-select: none;
 }
-.rednest-app-banner .banner-feature-card:hover {
+.sufrano-app-banner .banner-feature-card:hover {
   background: rgba(197, 160, 89, 0.14);
   border-color: rgba(197, 160, 89, 0.45);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4), 0 0 16px rgba(197, 160, 89, 0.22);
 }
-.rednest-app-banner .banner-feature-card:hover .feature-icon-box {
+.sufrano-app-banner .banner-feature-card:hover .feature-icon-box {
   background: #c5a059;
   color: #ffffff;
   transform: scale(1.08) rotate(3deg);
 }
-.rednest-app-banner .banner-feature-card.is-marquee-active {
+.sufrano-app-banner .banner-feature-card.is-marquee-active {
   background: rgba(197, 160, 89, 0.16);
   border-color: rgba(197, 160, 89, 0.48);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(197, 160, 89, 0.22);
 }
-.rednest-app-banner .banner-feature-card.is-marquee-active .feature-icon-box {
+.sufrano-app-banner .banner-feature-card.is-marquee-active .feature-icon-box {
   background: #c5a059;
   color: #ffffff;
   transform: scale(1.05);
 }
-.rednest-app-banner .banner-feature-card .feature-icon-box {
+.sufrano-app-banner .banner-feature-card .feature-icon-box {
   width: 36px;
   height: 36px;
   border-radius: 10px;
@@ -1951,11 +1951,11 @@ div:has(> iframe[src*="link.stripe.com"]) {
   flex-shrink: 0;
   transition: all 0.3s ease;
 }
-.rednest-app-banner .banner-feature-card .feature-icon-box svg {
+.sufrano-app-banner .banner-feature-card .feature-icon-box svg {
   width: 18px;
   height: 18px;
 }
-.rednest-app-banner .banner-feature-card .feature-text {
+.sufrano-app-banner .banner-feature-card .feature-text {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1965,7 +1965,7 @@ div:has(> iframe[src*="link.stripe.com"]) {
   text-align: left;
   overflow: hidden;
 }
-.rednest-app-banner .banner-feature-card .feature-text .feature-title {
+.sufrano-app-banner .banner-feature-card .feature-text .feature-title {
   font-size: 0.92rem;
   font-weight: 600;
   color: #ffffff;
@@ -1975,7 +1975,7 @@ div:has(> iframe[src*="link.stripe.com"]) {
   text-overflow: ellipsis;
   max-width: 100%;
 }
-.rednest-app-banner .banner-feature-card .feature-text .feature-desc {
+.sufrano-app-banner .banner-feature-card .feature-text .feature-desc {
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.75);
   line-height: 1.3;
@@ -1984,8 +1984,8 @@ div:has(> iframe[src*="link.stripe.com"]) {
   text-overflow: ellipsis;
   max-width: 100%;
 }
-.rednest-app-banner .banner-feature-card .feature-text .feature-title.is-marquee,
-.rednest-app-banner .banner-feature-card .feature-text .feature-desc.is-marquee {
+.sufrano-app-banner .banner-feature-card .feature-text .feature-title.is-marquee,
+.sufrano-app-banner .banner-feature-card .feature-text .feature-desc.is-marquee {
   text-overflow: clip;
   overflow: hidden;
   white-space: nowrap;
@@ -1993,8 +1993,8 @@ div:has(> iframe[src*="link.stripe.com"]) {
   width: 100%;
   max-width: 100%;
 }
-.rednest-app-banner .banner-feature-card .feature-text .feature-title.is-marquee .marquee-track,
-.rednest-app-banner .banner-feature-card .feature-text .feature-desc.is-marquee .marquee-track {
+.sufrano-app-banner .banner-feature-card .feature-text .feature-title.is-marquee .marquee-track,
+.sufrano-app-banner .banner-feature-card .feature-text .feature-desc.is-marquee .marquee-track {
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
@@ -2003,52 +2003,52 @@ div:has(> iframe[src*="link.stripe.com"]) {
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
-.rednest-app-banner .banner-feature-card .feature-text .feature-title.is-marquee .marquee-item,
-.rednest-app-banner .banner-feature-card .feature-text .feature-desc.is-marquee .marquee-item {
+.sufrano-app-banner .banner-feature-card .feature-text .feature-title.is-marquee .marquee-item,
+.sufrano-app-banner .banner-feature-card .feature-text .feature-desc.is-marquee .marquee-item {
   display: inline-block;
   white-space: nowrap;
   padding-right: 36px;
   flex-shrink: 0;
 }
 @media (max-width: 900px) {
-  .rednest-app-banner .banner-feature-card {
+  .sufrano-app-banner .banner-feature-card {
     padding: 10px 14px;
     gap: 12px;
   }
-  .rednest-app-banner .banner-feature-card .feature-text {
+  .sufrano-app-banner .banner-feature-card .feature-text {
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
     width: 100%;
   }
-  .rednest-app-banner .banner-feature-card .feature-text .feature-title {
+  .sufrano-app-banner .banner-feature-card .feature-text .feature-title {
     width: 100%;
   }
-  .rednest-app-banner .banner-feature-card .feature-text .feature-desc {
+  .sufrano-app-banner .banner-feature-card .feature-text .feature-desc {
     width: 100%;
   }
 }
 @media (max-width: 480px) {
-  .rednest-app-banner .banner-feature-card {
+  .sufrano-app-banner .banner-feature-card {
     padding: 9px 12px;
     gap: 10px;
   }
-  .rednest-app-banner .banner-feature-card .feature-icon-box {
+  .sufrano-app-banner .banner-feature-card .feature-icon-box {
     width: 32px;
     height: 32px;
   }
-  .rednest-app-banner .banner-feature-card .feature-icon-box svg {
+  .sufrano-app-banner .banner-feature-card .feature-icon-box svg {
     width: 16px;
     height: 16px;
   }
-  .rednest-app-banner .banner-feature-card .feature-text .feature-title {
+  .sufrano-app-banner .banner-feature-card .feature-text .feature-title {
     font-size: 0.88rem;
   }
-  .rednest-app-banner .banner-feature-card .feature-text .feature-desc {
+  .sufrano-app-banner .banner-feature-card .feature-text .feature-desc {
     font-size: 0.76rem;
   }
 }
-.rednest-app-banner .banner-stores-col {
+.sufrano-app-banner .banner-stores-col {
   position: relative;
   z-index: 2;
   display: flex;
@@ -2062,7 +2062,7 @@ div:has(> iframe[src*="link.stripe.com"]) {
   padding: 10px 0;
 }
 @media (max-width: 900px) {
-  .rednest-app-banner .banner-stores-col {
+  .sufrano-app-banner .banner-stores-col {
     flex-direction: row;
     flex-wrap: nowrap;
     width: 100%;
@@ -2075,16 +2075,16 @@ div:has(> iframe[src*="link.stripe.com"]) {
   }
 }
 @media (max-width: 480px) {
-  .rednest-app-banner .banner-stores-col {
+  .sufrano-app-banner .banner-stores-col {
     gap: 8px;
   }
 }
 @media (max-width: 360px) {
-  .rednest-app-banner .banner-stores-col {
+  .sufrano-app-banner .banner-stores-col {
     gap: 6px;
   }
 }
-.rednest-app-banner .store-btn {
+.sufrano-app-banner .store-btn {
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -2099,17 +2099,17 @@ div:has(> iframe[src*="link.stripe.com"]) {
   width: 170px;
   box-sizing: border-box;
 }
-.rednest-app-banner .store-btn:hover {
+.sufrano-app-banner .store-btn:hover {
   background: rgba(197, 160, 89, 0.22);
   border-color: rgba(197, 160, 89, 0.6);
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 16px rgba(197, 160, 89, 0.28);
 }
-.rednest-app-banner .store-btn:active {
+.sufrano-app-banner .store-btn:active {
   transform: scale(0.98);
 }
 @media (max-width: 900px) {
-  .rednest-app-banner .store-btn {
+  .sufrano-app-banner .store-btn {
     flex: 1 1 0;
     min-width: 0;
     width: auto;
@@ -2120,45 +2120,45 @@ div:has(> iframe[src*="link.stripe.com"]) {
   }
 }
 @media (max-width: 480px) {
-  .rednest-app-banner .store-btn {
+  .sufrano-app-banner .store-btn {
     padding: 8px 10px;
     gap: 8px;
     border-radius: 10px;
   }
 }
 @media (max-width: 360px) {
-  .rednest-app-banner .store-btn {
+  .sufrano-app-banner .store-btn {
     padding: 7px 6px;
     gap: 6px;
     border-radius: 8px;
   }
 }
-.rednest-app-banner .store-btn .store-icon {
+.sufrano-app-banner .store-btn .store-icon {
   width: 24px;
   height: 24px;
   flex-shrink: 0;
   color: #ffffff;
 }
 @media (max-width: 480px) {
-  .rednest-app-banner .store-btn .store-icon {
+  .sufrano-app-banner .store-btn .store-icon {
     width: 20px;
     height: 20px;
   }
 }
 @media (max-width: 360px) {
-  .rednest-app-banner .store-btn .store-icon {
+  .sufrano-app-banner .store-btn .store-icon {
     width: 18px;
     height: 18px;
   }
 }
-.rednest-app-banner .store-btn .store-text {
+.sufrano-app-banner .store-btn .store-text {
   display: flex;
   flex-direction: column;
   text-align: left;
   min-width: 0;
   overflow: hidden;
 }
-.rednest-app-banner .store-btn .store-text .store-sub {
+.sufrano-app-banner .store-btn .store-text .store-sub {
   font-size: 0.64rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -2169,18 +2169,18 @@ div:has(> iframe[src*="link.stripe.com"]) {
   text-overflow: ellipsis;
 }
 @media (max-width: 480px) {
-  .rednest-app-banner .store-btn .store-text .store-sub {
+  .sufrano-app-banner .store-btn .store-text .store-sub {
     font-size: 0.56rem;
     letter-spacing: 0.02em;
   }
 }
 @media (max-width: 360px) {
-  .rednest-app-banner .store-btn .store-text .store-sub {
+  .sufrano-app-banner .store-btn .store-text .store-sub {
     font-size: 0.5rem;
     letter-spacing: 0;
   }
 }
-.rednest-app-banner .store-btn .store-text .store-name {
+.sufrano-app-banner .store-btn .store-text .store-name {
   font-size: 0.94rem;
   font-weight: 700;
   color: #ffffff;
@@ -2190,12 +2190,12 @@ div:has(> iframe[src*="link.stripe.com"]) {
   text-overflow: ellipsis;
 }
 @media (max-width: 480px) {
-  .rednest-app-banner .store-btn .store-text .store-name {
+  .sufrano-app-banner .store-btn .store-text .store-name {
     font-size: 0.8rem;
   }
 }
 @media (max-width: 360px) {
-  .rednest-app-banner .store-btn .store-text .store-name {
+  .sufrano-app-banner .store-btn .store-text .store-name {
     font-size: 0.72rem;
   }
 }

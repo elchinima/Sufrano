@@ -6,7 +6,7 @@ import { useAuth } from "../../../context/AuthContext.js";
 import { ensureClientHintsHeaders } from "../../../utils/clientHints.js";
 import { useLang } from "../../../utils/useLang.js";
 import { getAuthTranslation } from "./Lang.js";
-const logo = "/assets/icons/rednest_logo.png";
+const logo = "/assets/icons/sufrano_logo.png";
 const loaderIconRed = "/assets/icons/loader-animated-red.svg";
 const GoogleAuth = () => {
 	const lang = useLang();
@@ -100,7 +100,7 @@ const GoogleAuth = () => {
 					}
 					throw new Error(data.message || "Failed to authenticate with Google. Please try again.");
 				}
-				localStorage.setItem("rednest_auth", "true");
+				localStorage.setItem("sufrano_auth", "true");
 				if (window.opener && !window.opener.closed) {
 					try {
 						window.opener.postMessage({

@@ -78,8 +78,8 @@ export async function fetchWithRefresh(url, options = {}) {
 				handleBackendErrorResponse(response);
 			}
 		} else {
-			localStorage.removeItem("rednest_auth");
-			localStorage.removeItem("rednest_user");
+			localStorage.removeItem("sufrano_auth");
+			localStorage.removeItem("sufrano_user");
 			window.dispatchEvent(new CustomEvent("auth:unauthorized"));
 		}
 	}

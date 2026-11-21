@@ -11,9 +11,9 @@ const SubscribeSuccessModal = ({ isOpen, onClose, message }) => {
 		onClose,
 		targetBorderRadius: "24px"
 	}, /* @__PURE__ */ __h("div", {
-		className: "rednest-modal",
+		className: "sufrano-modal",
 		onClick: (e) => e.stopPropagation()
-	}, /* @__PURE__ */ __h("div", { className: "rednest-modal__icon rednest-modal__icon--success" }, /* @__PURE__ */ __h("svg", {
+	}, /* @__PURE__ */ __h("div", { className: "sufrano-modal__icon sufrano-modal__icon--success" }, /* @__PURE__ */ __h("svg", {
 		viewBox: "0 0 24 24",
 		fill: "none",
 		stroke: "currentColor",
@@ -21,11 +21,11 @@ const SubscribeSuccessModal = ({ isOpen, onClose, message }) => {
 		strokeLinecap: "round",
 		strokeLinejoin: "round"
 	}, /* @__PURE__ */ __h("polyline", { points: "20 6 9 17 4 12" }))), /* @__PURE__ */ __h("h3", {
-		className: "rednest-modal__title",
+		className: "sufrano-modal__title",
 		"data-id": "home_modal_succ_title"
-	}, t("home_modal_succ_title")), /* @__PURE__ */ __h("p", { className: "rednest-modal__text" }, message || "Successfully subscribed to the Süfrano Club!"), /* @__PURE__ */ __h("div", { className: "rednest-modal__actions" }, /* @__PURE__ */ __h("button", {
+	}, t("home_modal_succ_title")), /* @__PURE__ */ __h("p", { className: "sufrano-modal__text" }, message || "Successfully subscribed to the Süfrano Club!"), /* @__PURE__ */ __h("div", { className: "sufrano-modal__actions" }, /* @__PURE__ */ __h("button", {
 		type: "button",
-		className: "rednest-modal__btn rednest-modal__btn--success",
+		className: "sufrano-modal__btn sufrano-modal__btn--success",
 		onClick: onClose,
 		"data-id": "home_modal_succ_btn"
 	}, t("home_modal_succ_btn")))));

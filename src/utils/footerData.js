@@ -1,7 +1,7 @@
 import { useState, useEffect } from "./runtime.js";
 import { API_URL } from "./config.js";
 import { useLang, getStoredLanguage } from "./useLang.js";
-const STORAGE_KEY = "rednest_footer_cache";
+const STORAGE_KEY = "sufrano_footer_cache";
 const loadStoredCache = () => {
 	try {
 		const raw = localStorage.getItem(STORAGE_KEY);
