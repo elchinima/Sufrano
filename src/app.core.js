@@ -1611,7 +1611,7 @@
 
 		    if (!existing) {
 		      link.rel = 'stylesheet';
-		      link.href = `styles/pages/${pageName}.css?v=4`;
+		      link.href = `styles/pages/${pageName}.css?v=5`;
 		      link.setAttribute('data-sufrano-page-css', pageName);
 		      document.head.appendChild(link);
 		    } else if (existing.sheet) {
@@ -1656,7 +1656,7 @@
 		    script.addEventListener('error', handleError, { once: true });
 
 		    if (!existing) {
-		      script.src = `pages/${pageName}.js?v=4`;
+		      script.src = `pages/${pageName}.js?v=5`;
 		      script.async = true;
 		      script.setAttribute('data-sufrano-page-js', pageName);
 		      document.head.appendChild(script);
@@ -4682,7 +4682,7 @@
 		const ErrorPage = lazy(() => loadPage("error-page", null));
 		const Rules = lazy(() => loadPage("rules", null));
 		const Reviews = lazy(() => loadPage("reviews", null));
-		const Advert = lazy(() => loadPage("advert", null));
+		const Advert = lazy(() => loadPage("announcements", null));
 		const __imp_5 = __require("components/Elements/ScrollToTop.js");
 		const ScrollToTop = __imp_5.default !== undefined ? __imp_5.default : __imp_5;
 		const __imp_6 = __require("components/Elements/SupportWidget.js");

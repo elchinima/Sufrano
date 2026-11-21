@@ -3,6 +3,7 @@ namespace Rednest.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Route("api/advert")]
+[Route("api/announcements")]
 public class AdvertsController : ControllerBase
 {
     private readonly AppDbContext _db;

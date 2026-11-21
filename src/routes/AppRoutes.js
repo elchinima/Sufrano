@@ -39,7 +39,7 @@ import CashboxProtectedRoute from "./CashboxProtectedRoute.js";
 const ErrorPage = lazy(() => loadPage("error-page", () => import("../components/PublicPages/ErrorPage/ErrorPage.js")));
 const Rules = lazy(() => loadPage("rules", () => import("../components/PublicPages/Rules/Rules.js")));
 const Reviews = lazy(() => loadPage("reviews", () => import("../components/PublicPages/Reviews/Reviews.js")));
-const Advert = lazy(() => loadPage("advert", () => import("../components/PublicPages/Advert/Advert.js")));
+const Advert = lazy(() => loadPage("announcements", () => import("../components/PublicPages/Advert/Advert.js")));
 import ScrollToTop from "../components/Elements/ScrollToTop.js";
 import SupportWidget from "../components/Elements/SupportWidget.js";
 import BuyNowWidget from "../components/Elements/BuyNowWidget.js";

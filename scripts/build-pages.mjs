@@ -46,7 +46,7 @@ const PAGE_CONFIG = {
       'components/PublicPages/Reviews/Reviews.css'
     ]
   },
-  advert: {
+  announcements: {
     entry: 'components/PublicPages/Advert/Advert.js',
     css: ['components/PublicPages/Advert/Advert.css']
   },
@@ -436,6 +436,15 @@ ${pageModulesCode}
 `;
     fs.writeFileSync(path.join(pagesJsDir, `${pageName}.js`), pageJsOutput, 'utf8');
     fs.writeFileSync(path.join(pagesCssDir, `${pageName}.css`), buildCssBundle(cfg.css), 'utf8');
+    if (pageName === 'announcements') {
+      const legacyJsOutput = pageJsOutput.replace(
+        '__pages["announcements"] = entryExports.default || entryExports;',
+        '__pages["announcements"] = __pages["advert"] = entryExports.default || entryExports;'
+      );
+      fs.writeFileSync(path.join(pagesJsDir, 'announcements.js'), legacyJsOutput, 'utf8');
+      fs.writeFileSync(path.join(pagesJsDir, 'advert.js'), legacyJsOutput, 'utf8');
+      fs.writeFileSync(path.join(pagesCssDir, 'advert.css'), buildCssBundle(cfg.css), 'utf8');
+    }
   }
 
   // 5. Write src/styles/core.css
