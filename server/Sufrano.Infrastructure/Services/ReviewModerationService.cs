@@ -11,6 +11,13 @@ public class ReviewModerationService : BackgroundService
     private const int PollIntervalSeconds = 60;
     private const int DelayBetweenRequestsMs = 15000;
     private const string DefaultModel = "gemma-4-31b-it";
+    private static readonly string[] FallbackModels =
+    [
+        "gemma-4-31b-it",
+        "gemma-4-26b-a4b-it",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite"
+    ];
     private const string BaseUrl = "https://generativelanguage.googleapis.com/v1beta/models";
 
     private static DateTime GetBakuTime() => DateTime.UtcNow.AddHours(4);
@@ -250,6 +257,20 @@ public class ReviewModerationService : BackgroundService
         return null;
     }
 
+    private List<string> GetCandidateModels()
+    {
+        var primary = GetModel();
+        var models = new List<string> { primary };
+        foreach (var fallback in FallbackModels)
+        {
+            if (!models.Contains(fallback, StringComparer.OrdinalIgnoreCase))
+            {
+                models.Add(fallback);
+            }
+        }
+        return models;
+    }
+
     private async Task<string?> SendAiGenerateContentAsync(
         string apiKey,
         string prompt,
@@ -257,77 +278,102 @@ public class ReviewModerationService : BackgroundService
         string contextLabel,
         CancellationToken stoppingToken)
     {
-        var model = GetModel();
-        var url = $"{BaseUrl}/{model}:generateContent";
+        var candidateModels = GetCandidateModels();
 
         await _aiApiLock.WaitAsync(stoppingToken);
         try
         {
-            bool useJsonMimeType = true;
-            const int maxAttempts = 3;
+            const int maxPasses = 2;
 
-            for (int attempt = 1; attempt <= maxAttempts; attempt++)
+            for (int pass = 1; pass <= maxPasses; pass++)
             {
-                object generationConfig = useJsonMimeType
-                    ? new { temperature = 0.1, maxOutputTokens, responseMimeType = "application/json" }
-                    : new { temperature = 0.1, maxOutputTokens };
-
-                var requestBody = new
+                foreach (var model in candidateModels)
                 {
-                    contents = new[]
+                    var url = $"{BaseUrl}/{model}:generateContent";
+                    bool useJsonMimeType = true;
+
+                    for (int formatAttempt = 0; formatAttempt < 2; formatAttempt++)
                     {
-                        new
+                        object generationConfig = useJsonMimeType
+                            ? new { temperature = 0.1, maxOutputTokens, responseMimeType = "application/json" }
+                            : new { temperature = 0.1, maxOutputTokens };
+
+                        var requestBody = new
                         {
-                            parts = new[]
+                            contents = new[]
                             {
-                                new { text = prompt }
-                            }
+                                new
+                                {
+                                    parts = new[]
+                                    {
+                                        new { text = prompt }
+                                    }
+                                }
+                            },
+                            generationConfig
+                        };
+
+                        var json = JsonSerializer.Serialize(requestBody);
+                        var httpClient = _httpClientFactory.CreateClient();
+                        httpClient.Timeout = TimeSpan.FromSeconds(45);
+
+                        using var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
+                        requestMessage.Headers.Add("X-goog-api-key", apiKey);
+                        requestMessage.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                        HttpResponseMessage response;
+                        string responseBody;
+                        try
+                        {
+                            response = await httpClient.SendAsync(requestMessage, stoppingToken);
+                            responseBody = await response.Content.ReadAsStringAsync(stoppingToken);
                         }
-                    },
-                    generationConfig
-                };
+                        catch (TaskCanceledException) when (!stoppingToken.IsCancellationRequested)
+                        {
+                            _logger.LogWarning(
+                                "AI API request timed out for {Context} on model {Model}; trying next fallback model.",
+                                contextLabel, model);
+                            break;
+                        }
 
-                var json = JsonSerializer.Serialize(requestBody);
-                var httpClient = _httpClientFactory.CreateClient();
-                httpClient.Timeout = TimeSpan.FromSeconds(60);
+                        using (response)
+                        {
+                            if (response.IsSuccessStatusCode)
+                            {
+                                return responseBody;
+                            }
 
-                using var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
-                requestMessage.Headers.Add("X-goog-api-key", apiKey);
-                requestMessage.Content = new StringContent(json, Encoding.UTF8, "application/json");
+                            // Some Gemma endpoints reject responseMimeType="application/json" with HTTP 400.
+                            if ((int)response.StatusCode == 400 && useJsonMimeType)
+                            {
+                                _logger.LogWarning(
+                                    "AI API returned 400 with responseMimeType for {Context} (model {Model}); retrying without responseMimeType.",
+                                    contextLabel, model);
+                                useJsonMimeType = false;
+                                continue;
+                            }
 
-                using var response = await httpClient.SendAsync(requestMessage, stoppingToken);
-                var responseBody = await response.Content.ReadAsStringAsync(stoppingToken);
+                            // On 429 (rate limit), 404 (model unavailable), or 5xx (e.g. 503 high demand), try the next fallback model.
+                            if ((int)response.StatusCode == 429 || (int)response.StatusCode == 404 || (int)response.StatusCode >= 500)
+                            {
+                                _logger.LogWarning(
+                                    "AI API returned {Status} for {Context} on model {Model} (pass {Pass}/{MaxPasses}); falling back to next model. Body: {Body}",
+                                    response.StatusCode, contextLabel, model, pass, maxPasses,
+                                    responseBody.Length > 300 ? responseBody[..300] : responseBody);
+                                break;
+                            }
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return responseBody;
+                            _logger.LogWarning("AI API fatal error for {Context} on model {Model}: {Status} - {Body}",
+                                contextLabel, model, response.StatusCode, responseBody);
+                            return null;
+                        }
+                    }
                 }
 
-                // Some Gemma endpoints reject responseMimeType="application/json" with HTTP 400.
-                if ((int)response.StatusCode == 400 && useJsonMimeType)
+                if (pass < maxPasses)
                 {
-                    _logger.LogWarning(
-                        "AI API returned 400 with responseMimeType for {Context} (model {Model}); retrying without responseMimeType.",
-                        contextLabel, model);
-                    useJsonMimeType = false;
-                    continue;
+                    await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
                 }
-
-                // Retry on rate limit (429) or transient server errors (5xx).
-                if (((int)response.StatusCode == 429 || (int)response.StatusCode >= 500) && attempt < maxAttempts)
-                {
-                    var backoffSeconds = 10 * attempt;
-                    _logger.LogWarning(
-                        "AI API returned {Status} for {Context} (attempt {Attempt}/{Max}); retrying in {Seconds}s. Body: {Body}",
-                        response.StatusCode, contextLabel, attempt, maxAttempts, backoffSeconds,
-                        responseBody.Length > 300 ? responseBody[..300] : responseBody);
-                    await Task.Delay(TimeSpan.FromSeconds(backoffSeconds), stoppingToken);
-                    continue;
-                }
-
-                _logger.LogWarning("AI API error for {Context}: {Status} - {Body}",
-                    contextLabel, response.StatusCode, responseBody);
-                return null;
             }
 
             return null;
