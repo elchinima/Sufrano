@@ -660,6 +660,266 @@ public static class ErrorLocalizer
                 "Qısa müddətdə həddindən artıq sorğu göndərdiniz. Zəhmət olmasa yenidən cəhd etməzdən əvvəl bir qədər gözləyin.",
                 "Вы сделали слишком много запросов за короткое время. Пожалуйста, подождите немного перед повторной попыткой.",
                 "You have made too many requests in a short period. Please wait a moment before trying again."
+            ),
+            ["Your account must be verified to perform this action."] = (
+                "Bu əməliyyatı yerinə yetirmək üçün hesabınız təsdiqlənməlidir.",
+                "Чтобы выполнить это действие, ваш аккаунт должен быть верифицирован.",
+                "Your account must be verified to perform this action."
+            ),
+            ["Unverified accounts can only pay with cash."] = (
+                "Təsdiqlənməmiş hesablar yalnız nağd ödəniş edə bilər.",
+                "Неверифицированные аккаунты могут оплачивать заказы только наличными.",
+                "Unverified accounts can only pay with cash."
+            ),
+            ["Account is already verified."] = (
+                "Hesabınız artıq təsdiqlənib.",
+                "Аккаунт уже верифицирован.",
+                "Account is already verified."
+            ),
+            ["Action not supported for bot or AI accounts."] = (
+                "Bu əməliyyat Bot və ya AI hesabları üçün dəstəklənmir.",
+                "Это действие не поддерживается для аккаунтов Bot или AI.",
+                "Action not supported for bot or AI accounts."
+            ),
+            ["Name cannot be changed while account verification is in progress or confirmed."] = (
+                "Hesab təsdiqlənməsi gözləmədə və ya təsdiqlənmiş olduğu müddətdə ad dəyişdirilə bilməz.",
+                "Имя нельзя изменить, пока верификация аккаунта находится в процессе или подтверждена.",
+                "Name cannot be changed while account verification is in progress or confirmed."
+            ),
+            ["CRUD operations are prohibited for this user."] = (
+                "Bu istifadəçi üçün bu əməliyyatlar qadağandır.",
+                "Операции для этого пользователя запрещены.",
+                "CRUD operations are prohibited for this user."
+            ),
+            ["Access denied."] = (
+                "Giriş qadağandır.",
+                "Доступ запрещен.",
+                "Access denied."
+            ),
+            ["Access denied. CRUD operations are prohibited for this user."] = (
+                "Giriş qadağandır. Bu istifadəçi üçün əməliyyatlar qadağandır.",
+                "Доступ запрещен. Операции для этого пользователя запрещены.",
+                "Access denied. CRUD operations are prohibited for this user."
+            ),
+            ["Two-factor verification session expired or invalid. Please sign in with your password again."] = (
+                "İki mərhələli təsdiqləmə sessiyası etibarsızdır və ya vaxtı bitib. Zəhmət olmasa şifrənizlə yenidən daxil olun.",
+                "Сессия двухфакторной проверки истекла или недействительна. Пожалуйста, войдите с паролем снова.",
+                "Two-factor verification session expired or invalid. Please sign in with your password again."
+            ),
+            ["Authorization code is required."] = (
+                "Avtorizasiya kodu tələb olunur.",
+                "Требуется код авторизации.",
+                "Authorization code is required."
+            ),
+            ["No refresh token provided."] = (
+                "Yeniləmə nişanı təqdim edilməyib.",
+                "Токен обновления не предоставлен.",
+                "No refresh token provided."
+            ),
+            ["Session not found."] = (
+                "Sessiya tapılmadı.",
+                "Сессия не найдена.",
+                "Session not found."
+            ),
+            ["Default avatar cannot be deleted."] = (
+                "Standart profil şəkli silinə bilməz.",
+                "Стандартный аватар нельзя удалить.",
+                "Default avatar cannot be deleted."
+            ),
+            ["All password fields are required."] = (
+                "Bütün şifrə sahələri doldurulmalıdır.",
+                "Все поля пароля обязательны для заполнения.",
+                "All password fields are required."
+            ),
+            ["New password must be at least 6 characters long."] = (
+                "Yeni şifrə ən azı 6 simvoldan ibarət olmalıdır.",
+                "Новый пароль должен содержать не менее 6 символов.",
+                "New password must be at least 6 characters long."
+            ),
+            ["Unauthorized"] = (
+                "İcazə verilmədi.",
+                "Не авторизован.",
+                "Unauthorized."
+            ),
+            ["Email and confirmation code are required"] = (
+                "E-poçt və təsdiq kodu tələb olunur.",
+                "Требуется электронная почта и код подтверждения.",
+                "Email and confirmation code are required."
+            ),
+            ["Invalid or expired confirmation code"] = (
+                "Yanlış və ya vaxtı bitmiş təsdiq kodu.",
+                "Неверный или истекший код подтверждения.",
+                "Invalid or expired confirmation code."
+            ),
+            ["Confirmation code has expired. Please request a new code."] = (
+                "Təsdiq kodunun vaxtı bitib. Zəhmət olmasa yeni kod tələb edin.",
+                "Срок действия кода подтверждения истек. Пожалуйста, запросите новый код.",
+                "Confirmation code has expired. Please request a new code."
+            ),
+            ["Invalid confirmation code"] = (
+                "Yanlış təsdiq kodu.",
+                "Неверный код подтверждения.",
+                "Invalid confirmation code."
+            ),
+            ["An unexpected error occurred while loading your promo."] = (
+                "Promokodunuz yüklənərkən gözlənilməz xəta baş verdi.",
+                "Произошла непредвиденная ошибка при загрузке вашего промокода.",
+                "An unexpected error occurred while loading your promo."
+            ),
+            ["An unexpected error occurred while loading promo codes."] = (
+                "Promokodlar yüklənərkən gözlənilməz xəta baş verdi.",
+                "Произошла непредвиденная ошибка при загрузке промокодов.",
+                "An unexpected error occurred while loading promo codes."
+            ),
+            ["Promo code cannot be empty."] = (
+                "Promokod boş ola bilməz.",
+                "Промокод не может быть пустым.",
+                "Promo code cannot be empty."
+            ),
+            ["Promo code not found. Please check the code and try again."] = (
+                "Promokod tapılmadı. Zəhmət olmasa kodu yoxlayıb yenidən cəhd edin.",
+                "Промокод не найден. Пожалуйста, проверьте код и попробуйте снова.",
+                "Promo code not found. Please check the code and try again."
+            ),
+            ["You have already activated this promo code."] = (
+                "Bu promokodu artıq aktivləşdirmisiniz.",
+                "Вы уже активировали этот промокод.",
+                "You have already activated this promo code."
+            ),
+            ["This promo code has already been activated by another user."] = (
+                "Bu promokod artıq başqa istifadəçi tərəfindən aktivləşdirilib.",
+                "Этот промокод уже был активирован другим пользователем.",
+                "This promo code has already been activated by another user."
+            ),
+            ["This promo code has expired or is no longer active."] = (
+                "Bu promokodun vaxtı bitib və ya artıq aktiv deyil.",
+                "Срок действия этого промокода истек или он больше не активен.",
+                "This promo code has expired or is no longer active."
+            ),
+            ["An unexpected error occurred while activating the promo code."] = (
+                "Promokodu aktivləşdirərkən gözlənilməz xəta baş verdi.",
+                "Произошла непредвиденная ошибка при активации промокода.",
+                "An unexpected error occurred while activating the promo code."
+            ),
+            ["You can only spin the wheel once a week."] = (
+                "Çarxı həftədə yalnız bir dəfə fırlada bilərsiniz.",
+                "Крутить колесо можно только один раз в неделю.",
+                "You can only spin the wheel once a week."
+            ),
+            ["An unexpected error occurred while spinning the wheel."] = (
+                "Çarxı fırladarkən gözlənilməz xəta baş verdi.",
+                "Произошла непредвиденная ошибка при вращении колеса.",
+                "An unexpected error occurred while spinning the wheel."
+            ),
+            ["Invalid promo code."] = (
+                "Yanlış promokod.",
+                "Неверный промокод.",
+                "Invalid promo code."
+            ),
+            ["You can only delete your own review."] = (
+                "Yalnız öz rəyinizi silə bilərsiniz.",
+                "Вы можете удалить только свой собственный отзыв.",
+                "You can only delete your own review."
+            ),
+            ["Advert not found."] = (
+                "Elan tapılmadı.",
+                "Объявление не найдено.",
+                "Advert not found."
+            ),
+            ["An unexpected error occurred on our server. Our team is already looking into it."] = (
+                "Serverimizdə gözlənilməz xəta baş verdi. Komandamız artıq bunun üzərində işləyir.",
+                "На сервере произошла непредвиденная ошибка. Наша команда уже разбирается с этим.",
+                "An unexpected error occurred on our server. Our team is already looking into it."
+            ),
+            ["Cross-site request blocked."] = (
+                "Saytlararası sorğu bloklandı.",
+                "Межсайтовый запрос заблокирован.",
+                "Cross-site request blocked."
+            ),
+            ["Authentication required."] = (
+                "Avtorizasiya tələb olunur.",
+                "Требуется аутентификация.",
+                "Authentication required."
+            ),
+            ["Access denied. Cashbox access is restricted to Staff, Lead Staff, Admin, and Super Admin."] = (
+                "Giriş qadağandır. Kassaya giriş yalnız Staff, Lead Staff, Admin və Super Admin rolları üçün mümkündür.",
+                "Доступ запрещен. Доступ к кассе разрешен только ролям Staff, Lead Staff, Admin и Super Admin.",
+                "Access denied. Cashbox access is restricted to Staff, Lead Staff, Admin, and Super Admin."
+            ),
+            ["Access denied. Cashbox history is restricted to Lead Staff, Admin, and Super Admin."] = (
+                "Giriş qadağandır. Kassa tarixçəsinə giriş yalnız Lead Staff, Admin və Super Admin rolları üçün mümkündür.",
+                "Доступ запрещен. Доступ к истории кассы разрешен только ролям Lead Staff, Admin и Super Admin.",
+                "Access denied. Cashbox history is restricted to Lead Staff, Admin, and Super Admin."
+            ),
+            ["Invalid product list. Quantity must be between 1 and 100."] = (
+                "Yanlış məhsul siyahısı. Miqdar 1 ilə 100 arasında olmalıdır.",
+                "Неверный список товаров. Количество должно быть от 1 до 100.",
+                "Invalid product list. Quantity must be between 1 and 100."
+            ),
+            ["One or more products were not found or are inactive."] = (
+                "Bir və ya bir neçə məhsul tapılmadı və ya aktiv deyil.",
+                "Один или несколько товаров не найдены или неактивны.",
+                "One or more products were not found or are inactive."
+            ),
+            ["Only Admin and Super Admin can delete cashbox records."] = (
+                "Kassa qeydlərini yalnız Admin və Super Admin silə bilər.",
+                "Удалять записи кассы могут только Admin и Super Admin.",
+                "Only Admin and Super Admin can delete cashbox records."
+            ),
+            ["Only Lead Staff, Admin and Super Admin can change the status of cashbox orders."] = (
+                "Kassa sifarişlərinin statusunu yalnız Lead Staff, Admin və Super Admin dəyişə bilər.",
+                "Изменять статус заказов кассы могут только Lead Staff, Admin и Super Admin.",
+                "Only Lead Staff, Admin and Super Admin can change the status of cashbox orders."
+            ),
+            ["Only Super Admin can change user balance."] = (
+                "İstifadəçi balansını yalnız Super Admin dəyişə bilər.",
+                "Изменять баланс пользователя может только Super Admin.",
+                "Only Super Admin can change user balance."
+            ),
+            ["Advert title is required."] = (
+                "Elan başlığı tələb olunur.",
+                "Заголовок объявления обязателен.",
+                "Advert title is required."
+            ),
+            ["Advert title cannot be empty."] = (
+                "Elan başlığı boş ola bilməz.",
+                "Заголовок объявления не может быть пустым.",
+                "Advert title cannot be empty."
+            ),
+            ["Advert title cannot exceed 120 characters."] = (
+                "Elan başlığı 120 simvoldan çox ola bilməz.",
+                "Заголовок объявления не может превышать 120 символов.",
+                "Advert title cannot exceed 120 characters."
+            ),
+            ["Advert description is required."] = (
+                "Elan təsviri tələb olunur.",
+                "Описание объявления обязательно.",
+                "Advert description is required."
+            ),
+            ["Advert description cannot be empty."] = (
+                "Elan təsviri boş ola bilməz.",
+                "Описание объявления не может быть пустым.",
+                "Advert description cannot be empty."
+            ),
+            ["Advert description cannot exceed 2000 characters."] = (
+                "Elan təsviri 2000 simvoldan çox ola bilməz.",
+                "Описание объявления не может превышать 2000 символов.",
+                "Advert description cannot exceed 2000 characters."
+            ),
+            ["Newsletter history record not found."] = (
+                "Bülleten tarixçəsi qeydi tapılmadı.",
+                "Запись истории рассылки не найдена.",
+                "Newsletter history record not found."
+            ),
+            ["Invalid footer data. FooterRU, FooterEN, and FooterAZ are required."] = (
+                "Yanlış footer məlumatları. FooterRU, FooterEN və FooterAZ tələb olunur.",
+                "Неверные данные футера. Поля FooterRU, FooterEN и FooterAZ обязательны.",
+                "Invalid footer data. FooterRU, FooterEN, and FooterAZ are required."
+            ),
+            ["Access denied. Super Admin privileges required."] = (
+                "Giriş qadağandır. Super Admin səlahiyyətləri tələb olunur.",
+                "Доступ запрещен. Требуются права Super Admin.",
+                "Access denied. Super Admin privileges required."
             )
         };
 
@@ -769,6 +1029,18 @@ public static class ErrorLocalizer
                 "ru" => $"Неверный статус. Допустимые значения: {vals}",
                 "en" => $"Invalid status. Allowed values: {vals}",
                 _ => $"Yanlış status. İcazə verilən dəyərlər: {vals}"
+            };
+        }
+
+        var discountMatch = Regex.Match(trimmed, @"^(\d+)% discount applied\.?$", RegexOptions.IgnoreCase);
+        if (discountMatch.Success)
+        {
+            var pct = discountMatch.Groups[1].Value;
+            return normalizedLang switch
+            {
+                "ru" => $"Применена скидка {pct}%.",
+                "en" => $"{pct}% discount applied.",
+                _ => $"{pct}% endirim tətbiq edildi."
             };
         }
 

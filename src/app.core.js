@@ -3023,6 +3023,281 @@
 				az: "Bağlantı xətası. Yenidən cəhd edin.",
 				ru: "Ошибка подключения. Попробуйте еще раз.",
 				en: "Connection error. Please try again."
+			},
+			{
+				az: "Bu əməliyyatı yerinə yetirmək üçün hesabınız təsdiqlənməlidir.",
+				ru: "Чтобы выполнить это действие, ваш аккаунт должен быть верифицирован.",
+				en: "Your account must be verified to perform this action."
+			},
+			{
+				az: "Təsdiqlənməmiş hesablar yalnız nağd ödəniş edə bilər.",
+				ru: "Неверифицированные аккаунты могут оплачивать заказы только наличными.",
+				en: "Unverified accounts can only pay with cash."
+			},
+			{
+				az: "Hesabınız artıq təsdiqlənib.",
+				ru: "Аккаунт уже верифицирован.",
+				en: "Account is already verified."
+			},
+			{
+				az: "Bu əməliyyat Bot və ya AI hesabları üçün dəstəklənmir.",
+				ru: "Это действие не поддерживается для аккаунтов Bot или AI.",
+				en: "Action not supported for bot or AI accounts."
+			},
+			{
+				az: "Bu istifadəçi üçün bu əməliyyatlar qadağandır.",
+				ru: "Операции для этого пользователя запрещены.",
+				en: "CRUD operations are prohibited for this user."
+			},
+			{
+				az: "Giriş qadağandır.",
+				ru: "Доступ запрещен.",
+				en: "Access denied."
+			},
+			{
+				az: "Giriş qadağandır. Bu istifadəçi üçün əməliyyatlar qadağandır.",
+				ru: "Доступ запрещен. Операции для этого пользователя запрещены.",
+				en: "Access denied. CRUD operations are prohibited for this user."
+			},
+			{
+				az: "İki mərhələli təsdiqləmə sessiyası etibarsızdır və ya vaxtı bitib. Zəhmət olmasa şifrənizlə yenidən daxil olun.",
+				ru: "Сессия двухфакторной проверки истекла или недействительна. Пожалуйста, войдите с паролем снова.",
+				en: "Two-factor verification session expired or invalid. Please sign in with your password again."
+			},
+			{
+				az: "Avtorizasiya kodu tələb olunur.",
+				ru: "Требуется код авторизации.",
+				en: "Authorization code is required."
+			},
+			{
+				az: "Yeniləmə nişanı təqdim edilməyib.",
+				ru: "Токен обновления не предоставлен.",
+				en: "No refresh token provided."
+			},
+			{
+				az: "Sessiya tapılmadı.",
+				ru: "Сессия не найдена.",
+				en: "Session not found."
+			},
+			{
+				az: "Standart profil şəkli silinə bilməz.",
+				ru: "Стандартный аватар нельзя удалить.",
+				en: "Default avatar cannot be deleted."
+			},
+			{
+				az: "Bütün şifrə sahələri doldurulmalıdır.",
+				ru: "Все поля пароля обязательны для заполнения.",
+				en: "All password fields are required."
+			},
+			{
+				az: "Yeni şifrə ən azı 6 simvoldan ibarət olmalıdır.",
+				ru: "Новый пароль должен содержать не менее 6 символов.",
+				en: "New password must be at least 6 characters long."
+			},
+			{
+				az: "İcazə verilmədi.",
+				ru: "Не авторизован.",
+				en: "Unauthorized"
+			},
+			{
+				az: "E-poçt və təsdiq kodu tələb olunur.",
+				ru: "Требуется электронная почта и код подтверждения.",
+				en: "Email and confirmation code are required"
+			},
+			{
+				az: "Yanlış və ya vaxtı bitmiş təsdiq kodu.",
+				ru: "Неверный или истекший код подтверждения.",
+				en: "Invalid or expired confirmation code"
+			},
+			{
+				az: "Təsdiq kodunun vaxtı bitib. Zəhmət olmasa yeni kod tələb edin.",
+				ru: "Срок действия кода подтверждения истек. Пожалуйста, запросите новый код.",
+				en: "Confirmation code has expired. Please request a new code."
+			},
+			{
+				az: "Yanlış təsdiq kodu.",
+				ru: "Неверный код подтверждения.",
+				en: "Invalid confirmation code"
+			},
+			{
+				az: "Promokodunuz yüklənərkən gözlənilməz xəta baş verdi.",
+				ru: "Произошла непредвиденная ошибка при загрузке вашего промокода.",
+				en: "An unexpected error occurred while loading your promo."
+			},
+			{
+				az: "Promokodlar yüklənərkən gözlənilməz xəta baş verdi.",
+				ru: "Произошла непредвиденная ошибка при загрузке промокодов.",
+				en: "An unexpected error occurred while loading promo codes."
+			},
+			{
+				az: "Promokod boş ola bilməz.",
+				ru: "Промокод не может быть пустым.",
+				en: "Promo code cannot be empty."
+			},
+			{
+				az: "Promokod tapılmadı. Zəhmət olmasa kodu yoxlayıb yenidən cəhd edin.",
+				ru: "Промокод не найден. Пожалуйста, проверьте код и попробуйте снова.",
+				en: "Promo code not found. Please check the code and try again."
+			},
+			{
+				az: "Bu promokodu artıq aktivləşdirmisiniz.",
+				ru: "Вы уже активировали этот промокод.",
+				en: "You have already activated this promo code."
+			},
+			{
+				az: "Bu promokod artıq başqa istifadəçi tərəfindən aktivləşdirilib.",
+				ru: "Этот промокод уже был активирован другим пользователем.",
+				en: "This promo code has already been activated by another user."
+			},
+			{
+				az: "Bu promokodun vaxtı bitib və ya artıq aktiv deyil.",
+				ru: "Срок действия этого промокода истек или он больше не активен.",
+				en: "This promo code has expired or is no longer active."
+			},
+			{
+				az: "Promokodu aktivləşdirərkən gözlənilməz xəta baş verdi.",
+				ru: "Произошла непредвиденная ошибка при активации промокода.",
+				en: "An unexpected error occurred while activating the promo code."
+			},
+			{
+				az: "Çarxı həftədə yalnız bir dəfə fırlada bilərsiniz.",
+				ru: "Крутить колесо можно только один раз в неделю.",
+				en: "You can only spin the wheel once a week."
+			},
+			{
+				az: "Çarxı fırladarkən gözlənilməz xəta baş verdi.",
+				ru: "Произошла непредвиденная ошибка при вращении колеса.",
+				en: "An unexpected error occurred while spinning the wheel."
+			},
+			{
+				az: "Yanlış promokod.",
+				ru: "Неверный промокод.",
+				en: "Invalid promo code."
+			},
+			{
+				az: "Yalnız öz rəyinizi silə bilərsiniz.",
+				ru: "Вы можете удалить только свой собственный отзыв.",
+				en: "You can only delete your own review."
+			},
+			{
+				az: "Elan tapılmadı.",
+				ru: "Объявление не найдено.",
+				en: "Advert not found."
+			},
+			{
+				az: "Serverimizdə gözlənilməz xəta baş verdi. Komandamız artıq bunun üzərində işləyir.",
+				ru: "На сервере произошла непредвиденная ошибка. Наша команда уже разбирается с этим.",
+				en: "An unexpected error occurred on our server. Our team is already looking into it."
+			},
+			{
+				az: "Saytlararası sorğu bloklandı.",
+				ru: "Межсайтовый запрос заблокирован.",
+				en: "Cross-site request blocked."
+			},
+			{
+				az: "Avtorizasiya tələb olunur.",
+				ru: "Требуется аутентификация.",
+				en: "Authentication required."
+			},
+			{
+				az: "Giriş qadağandır. Kassaya giriş yalnız Staff, Lead Staff, Admin və Super Admin rolları üçün mümkündür.",
+				ru: "Доступ запрещен. Доступ к кассе разрешен только ролям Staff, Lead Staff, Admin и Super Admin.",
+				en: "Access denied. Cashbox access is restricted to Staff, Lead Staff, Admin, and Super Admin."
+			},
+			{
+				az: "Giriş qadağandır. Kassa tarixçəsinə giriş yalnız Lead Staff, Admin və Super Admin rolları üçün mümkündür.",
+				ru: "Доступ запрещен. Доступ к истории кассы разрешен только ролям Lead Staff, Admin и Super Admin.",
+				en: "Access denied. Cashbox history is restricted to Lead Staff, Admin, and Super Admin."
+			},
+			{
+				az: "Yanlış məhsul siyahısı. Miqdar 1 ilə 100 arasında olmalıdır.",
+				ru: "Неверный список товаров. Количество должно быть от 1 до 100.",
+				en: "Invalid product list. Quantity must be between 1 and 100."
+			},
+			{
+				az: "Bir və ya bir neçə məhsul tapılmadı və ya aktiv deyil.",
+				ru: "Один или несколько товаров не найдены или неактивны.",
+				en: "One or more products were not found or are inactive."
+			},
+			{
+				az: "Kassa qeydlərini yalnız Admin və Super Admin silə bilər.",
+				ru: "Удалять записи кассы могут только Admin и Super Admin.",
+				en: "Only Admin and Super Admin can delete cashbox records."
+			},
+			{
+				az: "Kassa sifarişlərinin statusunu yalnız Lead Staff, Admin və Super Admin dəyişə bilər.",
+				ru: "Изменять статус заказов кассы могут только Lead Staff, Admin и Super Admin.",
+				en: "Only Lead Staff, Admin and Super Admin can change the status of cashbox orders."
+			},
+			{
+				az: "İstifadəçi balansını yalnız Super Admin dəyişə bilər.",
+				ru: "Изменять баланс пользователя может только Super Admin.",
+				en: "Only Super Admin can change user balance."
+			},
+			{
+				az: "Elan başlığı tələb olunur.",
+				ru: "Заголовок объявления обязателен.",
+				en: "Advert title is required."
+			},
+			{
+				az: "Elan başlığı boş ola bilməz.",
+				ru: "Заголовок объявления не может быть пустым.",
+				en: "Advert title cannot be empty."
+			},
+			{
+				az: "Elan başlığı 120 simvoldan çox ola bilməz.",
+				ru: "Заголовок объявления не может превышать 120 символов.",
+				en: "Advert title cannot exceed 120 characters."
+			},
+			{
+				az: "Elan təsviri tələb olunur.",
+				ru: "Описание объявления обязательно.",
+				en: "Advert description is required."
+			},
+			{
+				az: "Elan təsviri boş ola bilməz.",
+				ru: "Описание объявления не может быть пустым.",
+				en: "Advert description cannot be empty."
+			},
+			{
+				az: "Elan təsviri 2000 simvoldan çox ola bilməz.",
+				ru: "Описание объявления не может превышать 2000 символов.",
+				en: "Advert description cannot exceed 2000 characters."
+			},
+			{
+				az: "Bülleten tarixçəsi qeydi tapılmadı.",
+				ru: "Запись истории рассылки не найдена.",
+				en: "Newsletter history record not found."
+			},
+			{
+				az: "Yanlış footer məlumatları. FooterRU, FooterEN və FooterAZ tələb olunur.",
+				ru: "Неверные данные футера. Поля FooterRU, FooterEN и FooterAZ обязательны.",
+				en: "Invalid footer data. FooterRU, FooterEN, and FooterAZ are required."
+			},
+			{
+				az: "Giriş qadağandır. Super Admin səlahiyyətləri tələb olunur.",
+				ru: "Доступ запрещен. Требуются права Super Admin.",
+				en: "Access denied. Super Admin privileges required."
+			},
+			{
+				az: "Fayl seçilməyib.",
+				ru: "Файл не выбран.",
+				en: "File not selected."
+			},
+			{
+				az: "Fayl 10 MB limitini aşır.",
+				ru: "Размер файла превышает 10 МБ.",
+				en: "File exceeds 10 MB limit."
+			},
+			{
+				az: "İcazə verilən formatlar: PNG, JPG, JPEG.",
+				ru: "Допустимые форматы: PNG, JPG, JPEG.",
+				en: "Allowed formats: PNG, JPG, JPEG."
+			},
+			{
+				az: "Hesab dayandırılıb.",
+				ru: "Учетная запись заблокирована.",
+				en: "Account suspended."
 			}
 		];
 
@@ -3099,6 +3374,14 @@
 				if (targetLang === "ru") return `Неверный статус. Допустимые значения: ${v}`;
 				if (targetLang === "en") return `Invalid status. Allowed values: ${v}`;
 				return `Yanlış status. İcazə verilən dəyərlər: ${v}`;
+			}
+
+			const discountMatch = raw.match(/^(?:(\d+)% discount applied\.?|(\d+)% endirim tətbiq edildi\.?|Применена скидка (\d+)%\.?)$/i);
+			if (discountMatch) {
+				const pct = discountMatch[1] || discountMatch[2] || discountMatch[3];
+				if (targetLang === "ru") return `Применена скидка ${pct}%.`;
+				if (targetLang === "en") return `${pct}% discount applied.`;
+				return `${pct}% endirim tətbiq edildi.`;
 			}
 
 			return raw;
